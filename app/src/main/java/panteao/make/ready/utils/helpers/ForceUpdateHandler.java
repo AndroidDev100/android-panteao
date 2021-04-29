@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.callbacks.commonCallbacks.VersionUpdateCallBack;
@@ -11,23 +12,11 @@ import panteao.make.ready.callbacks.commonCallbacks.VersionValidator;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-import panteao.make.ready.MvHubPlusApplication;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import com.google.gson.Gson;
 import panteao.make.ready.utils.config.bean.ConfigBean;
 import panteao.make.ready.utils.config.bean.Version;
 
-import panteao.make.ready.MvHubPlusApplication;
-import panteao.make.ready.beanModel.configBean.ResponseConfig;
-import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
-import panteao.make.ready.callbacks.commonCallbacks.VersionUpdateCallBack;
-import panteao.make.ready.callbacks.commonCallbacks.VersionValidator;
-import panteao.make.ready.networking.apiendpoints.ApiInterface;
-import panteao.make.ready.networking.apiendpoints.RequestConfig;
-import panteao.make.ready.utils.commonMethods.AppCommonMethod;
-import panteao.make.ready.utils.config.bean.ConfigBean;
-import panteao.make.ready.utils.config.bean.Version;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,10 +45,10 @@ public class ForceUpdateHandler {
         checkVersion(configBean);
     }
 
-    MvHubPlusApplication application;
+    PanteaoApplication application;
     private void checkVersion(ConfigBean configBean) {
         if (configBean!=null){
-           application= ((MvHubPlusApplication) activity.getApplication());
+           application= ((PanteaoApplication) activity.getApplication());
            //configBean.getData().getAppConfig().getVersion().setForceUpdate(false);
            Version version=configBean.getData().getAppConfig().getVersion();
            if (version.getForceUpdate()){
@@ -159,9 +148,9 @@ public class ForceUpdateHandler {
     public void typeHandle(String type,VersionUpdateCallBack callBack) {
         versionUpdateCallBack = callBack;
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         materialDialog.showDialog(type, "", activity, new DialogInterface() {
             @Override

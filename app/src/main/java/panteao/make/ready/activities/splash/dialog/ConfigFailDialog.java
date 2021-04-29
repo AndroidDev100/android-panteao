@@ -8,14 +8,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 import java.util.Objects;
 
-import panteao.make.ready.MvHubPlusApplication;
+
 
 public class ConfigFailDialog {
     final Activity activity;
@@ -48,9 +48,9 @@ public class ConfigFailDialog {
             TextView positive=view.findViewById(R.id.positive_txt);
             TextView negative=view.findViewById(R.id.negative_txt);
 
-            desc.setText(MvHubPlusApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
-            positive.setText(MvHubPlusApplication.getInstance().getResources().getString(R.string.retry_dms));
-            negative.setText(MvHubPlusApplication.getInstance().getResources().getString(R.string.cancel));
+            desc.setText(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
+            positive.setText(PanteaoApplication.getInstance().getResources().getString(R.string.retry_dms));
+            negative.setText(PanteaoApplication.getInstance().getResources().getString(R.string.cancel));
 
             LinearLayout negative_button = view.findViewById(R.id.negative_button);
             LinearLayout positive_button = view.findViewById(R.id.positive_button);

@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.videoquality.callBack.NotificationItemClickListner;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.videoquality.bean.TrackItem;
@@ -23,9 +23,6 @@ import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
-
-import panteao.make.ready.MvHubPlusApplication;
-import panteao.make.ready.activities.videoquality.bean.TrackItem;
 
 
 public class VideoQualityAdapter extends RecyclerView.Adapter<VideoQualityAdapter.SingleItemRowHolder> {
@@ -41,9 +38,9 @@ public class VideoQualityAdapter extends RecyclerView.Adapter<VideoQualityAdapte
         this.itemClickListener = listener;
         pos = KsPreferenceKeys.getInstance().getQualityPosition();
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
 
     }

@@ -2,11 +2,9 @@ package panteao.make.ready.utils.helpers;
 
 import android.app.Activity;
 
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
-import panteao.make.ready.MvHubPlusApplication;
 
 public class AnalyticsController {
     private final Activity activity;
@@ -16,7 +14,7 @@ public class AnalyticsController {
     }
 
     public void callAnalytics(String screenname, String category, String action) {
-        MvHubPlusApplication application = (MvHubPlusApplication) activity.getApplication();
+        PanteaoApplication application = (PanteaoApplication) activity.getApplication();
         Tracker mTracker = application.getDefaultTracker();
         if (mTracker!=null){
             mTracker.setScreenName("Screen--" + screenname);

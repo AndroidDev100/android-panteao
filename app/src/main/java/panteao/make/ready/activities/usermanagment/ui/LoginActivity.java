@@ -320,6 +320,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
         getBinding().llLogin.setOnClickListener(view -> {
 
+
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                 return;
             }

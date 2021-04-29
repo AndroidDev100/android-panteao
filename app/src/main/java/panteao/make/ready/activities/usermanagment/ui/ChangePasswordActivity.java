@@ -151,6 +151,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
         });
 
         getBinding().tvChangePassword.setOnClickListener(view -> {
+
             if (CheckInternetConnection.isOnline(ChangePasswordActivity.this)) {
                 if (
                         editviewEmpty(getBinding().etNewPassword, getBinding().errorNewPwd, ChangePasswordActivity.this.getResources().getString(R.string.please_enter_new_password)) &&

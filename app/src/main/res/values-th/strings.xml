@@ -4,7 +4,7 @@
     <string name="something_went_wrong">มีปัญหาในระบบ</string>
 
     <string name="female">หญิง</string>
-    <string name="search_mv_hub">ค้นหา MVHub+ (อย่างน้อย 3 ตัวอักษร)</string>
+    <string name="search_mv_hub">Panteao</string>
     <string name="show_all_results">ดูทั้งหมด</string>
     <string name="change_password">เปลี่ยนพาสเวิร์ด</string>
     <string name="my_profile">ข้อมูลของฉัน</string>
@@ -48,7 +48,7 @@
     <string name="full_name">ชื่อ</string>
     <string name="signup"><b><u>ลงทะเบียน</u></b></string>
     <string name="login">เข้าสู่ระบบ</string>
-    <string name="sign_in_with_enveu">เข้าสู่ระบบโดย MVHub+</string>
+    <string name="sign_in_with_enveu">เข้าสู่ระบบโดย Panteao</string>
     <string name="facebook">เฟสบุ๊ค</string>
     <string name="sign_in_with_facebook">เข้าสู่ระบบโดย เฟสบุ๊ค</string>
     <string name="google">กูเกิ้ล</string>
@@ -171,7 +171,7 @@
     <string name="you_may_also_like">คุณอาจชอบ</string>
     <string name="splash_screen">หน้าจอ</string>
     <string name="new_version_available">มีเวอร์ชันใหม่</string>
-    <string name="please_update_your_app">เรามีเวอร์ชันใหม่ กรุณาอัปเดตเพื่อเพลิดเพลินกับ MvHub</string>
+    <string name="please_update_your_app">เรามีเวอร์ชันใหม่ กรุณาอัปเดตเพื่อเพลิดเพลินกับ Panteao</string>
 
     <string name="no_season">ไม่มีฤดูกาล</string>
     <string name="all">ทั้งหมด</string>
@@ -289,7 +289,7 @@
     <string name="verify_user">ตรวจสอบบัญชี</string>
     <string name="app_name">Panteao</string>
     <string name="retry">ลองอีกครั้ง</string>
-    <string name="on_enveu">บน MVHub Plus!</string>
+    <string name="on_enveu">บน Panteao!</string>
     <string name="later">ภายหลัง</string>
     <string name="watchlist_empty_message">ติดตามภาพยนตร์รายการทีวีและคลิปที่คุณต้องการรับชม</string>
     <string name="listing_title_text"><b>ภาพยนตร์</b></string>
@@ -341,8 +341,8 @@
     <string name="user_already_liked">ผู้ใช้ชอบเนื้อหานี้อยู่แล้ว​</string>
     <string name="delete">ลบ</string>
     <string name="redeemed_success">แลกสำเร็จแล้ว</string>
-    <string name="prime_memb_issue">MVHub+ ปัญหาการเป็นสมาชิก</string>
-    <string name="contactus_description">หากคุณได้รับแจ้งให้สมัครสมาชิก แต่มีบัญชีอื่นที่ได้สมัครสมาชิกกับ MvHub + แล้ว โปรดเข้าสู่ระบบโดยใช้บัญชีนั้น</string>
+    <string name="prime_memb_issue">Panteao ปัญหาการเป็นสมาชิก</string>
+    <string name="contactus_description">หากคุณได้รับแจ้งให้สมัครสมาชิก แต่มีบัญชีอื่นที่ได้สมัครสมาชิกกับ Panteao + แล้ว โปรดเข้าสู่ระบบโดยใช้บัญชีนั้น</string>
     <string name="contactus_second_desc">หากยังต้องการความช่วยเหลือ คุณต้องการติดต่อเราอย่างไร?</string>
 
     <string name="heading_movies">ภาพยนตร์</string>
@@ -366,7 +366,7 @@
     <string name="quarterly">ทุกไตรมาส</string>
     <string name="half_yearly">ครึ่งปี</string>
     <string name="annual">ประจำปี</string>
-    <string name="purchase_title">เข้าถึงเนื้อหาระดับพรีเมียมได้ในคลิกเดียว เลือกแพ็กเกจที่เหมาะที่สุดสำหรับคุณในการเข้าถึงเนื้อหานี้และเนื้อหาอื่น ๆ อีกมากมายที่ MVHub นำเสนอเฉพาะบน MVHub +</string>
+    <string name="purchase_title">เข้าถึงเนื้อหาระดับพรีเมียมได้ในคลิกเดียว เลือกแพ็กเกจที่เหมาะที่สุดสำหรับคุณในการเข้าถึงเนื้อหานี้และเนื้อหาอื่น ๆ อีกมากมายที่ Panteao นำเสนอเฉพาะบน Panteao </string>
 
     <string name="Downloading">กำลังดาวน์โหลด</string>
     <string name="Downloaded">ดาวน์โหลดแล้ว</string>

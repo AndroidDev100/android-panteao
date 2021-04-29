@@ -3,7 +3,7 @@ package panteao.make.ready.repository.purchase;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
@@ -99,7 +99,7 @@ public class PurchaseRepository {
                 PurchaseResponseModel purchaseResponseModel = new PurchaseResponseModel();
                 purchaseResponseModel.setStatus(false);
                 purchaseResponseModel.setResponseCode(500);
-                purchaseResponseModel.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
+                purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                 liveDataPurchaseResponse.postValue(purchaseResponseModel);
             }
         });
@@ -148,7 +148,7 @@ public class PurchaseRepository {
                 PurchaseResponseModel purchaseResponseModel = new PurchaseResponseModel();
                 purchaseResponseModel.setStatus(false);
                 purchaseResponseModel.setResponseCode(500);
-                purchaseResponseModel.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
+                purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                 liveDataPurchaseResponse.postValue(purchaseResponseModel);
             }
         });
@@ -305,7 +305,7 @@ public class PurchaseRepository {
                 PurchaseResponseModel purchaseResponseModel = new PurchaseResponseModel();
                 purchaseResponseModel.setStatus(false);
                 purchaseResponseModel.setResponseCode(500);
-                purchaseResponseModel.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
+                purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                 liveDataPurchaseResponse.postValue(purchaseResponseModel);
             }
         });

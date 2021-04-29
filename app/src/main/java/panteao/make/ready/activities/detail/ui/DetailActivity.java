@@ -42,7 +42,7 @@ import com.brightcove.player.network.DownloadStatus;
 import com.brightcove.player.offline.MediaDownloadable;
 import com.brightcove.player.pictureinpicture.PictureInPictureManager;
 import com.make.bookmarking.bean.GetBookmarkResponse;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
@@ -1314,9 +1314,9 @@ public class DetailActivity extends BaseBindingActivity<DetailScreenBinding> imp
         }
 
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
 
 

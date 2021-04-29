@@ -14,7 +14,7 @@
     <string name="wake_up_connection">Wake up your connection !</string>
     <string name="check_connection">Check Connection</string>
 
-    <string name="on_enveu">on MVHub Plus!</string>
+    <string name="on_enveu">on Panteao</string>
     <string name="full_name">Name</string>
     <string name="buy_for">Subscribe now for next</string>
     <string name="rent_for">Rent for</string>
@@ -44,7 +44,7 @@
     <string name="redeem_coupon">Redeem Coupon</string>
     <string name="signup"><b><u>Sign Up</u></b></string>
     <string name="login">Login</string>
-    <string name="sign_in_with_enveu">Sign in with MVHub+</string>
+    <string name="sign_in_with_enveu">Sign in with Panteao</string>
     <string name="facebook">Facebook</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="google">Google +</string>
@@ -67,8 +67,8 @@
     <string name="new_password">New Password</string>
     <string name="watchlist_empty_message">Keep track of Movies, TV shows and clips you want to watch</string>
     <string name="redeemed_success">Redeemed successfully.</string>
-    <string name="prime_memb_issue">MVHub+ Membership Issue</string>
-    <string name="contactus_description">If you are prompted to subscribe, but have another account which is subscribed to MvHub+, please log in using that account.</string>
+    <string name="prime_memb_issue">Panteao Membership Issue</string>
+    <string name="contactus_description">If you are prompted to subscribe, but have another account which is subscribed to Panteao, please log in using that account.</string>
     <string name="contactus_second_desc">Still need help? How would you like to contact us?</string>
     <string name="user_not_already_in_watchlist">This asset is not available in this user\'s watchlist</string>
     <string name="user_already_not_liked">This asset is not liked by the user​</string>
@@ -133,7 +133,7 @@
     <string name="image_upload_fail">Image upload failed</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="search_mv_hub">Search MVHub+ (min 3 char)</string>
+    <string name="search_mv_hub">Search Panteao (min 3 char)</string>
     <string name="show_all_results">Show All</string>
     <string name="series">Series</string>
     <string name="article">Article</string>
@@ -162,7 +162,7 @@
     <string name="exclusive">Premium</string>
     <string name="splash_screen">Splash screen</string>
     <string name="new_version_available">New version available</string>
-    <string name="please_update_your_app">We have a new version available. Kindly update to enjoy MvHub.</string>
+    <string name="please_update_your_app">We have a new version available. Kindly update to enjoy Panteao.</string>
     <string name="result_caps">RESULT</string>
     <string name="results_caps">RESULTS</string>
     <string name="no_season">No season</string>
@@ -344,7 +344,7 @@
     <string name="quarterly">Quarterly Pack</string>
     <string name="half_yearly">Half Yearly Pack</string>
     <string name="annual">Annual Pack</string>
-    <string name="purchase_title">Access to premium content is just a click away. Select the package best suited for you to access this content and many more titles brought to you by MVHub exclusively on MVHub+</string>
+    <string name="purchase_title">Access to premium content is just a click away. Select the package best suited for you to access this content and many more titles brought to you by Panteao exclusively on Panteao</string>
 
     <string name="Downloading">Downloading</string>
     <string name="Downloaded">Downloaded</string>

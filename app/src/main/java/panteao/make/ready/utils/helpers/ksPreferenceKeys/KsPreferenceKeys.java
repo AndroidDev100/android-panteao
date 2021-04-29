@@ -4,12 +4,10 @@ import android.content.Context;
 
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 
 import org.json.JSONObject;
-
-import panteao.make.ready.MvHubPlusApplication;
 
 
 public class KsPreferenceKeys extends SharedPrefHelper {
@@ -32,7 +30,7 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public static KsPreferenceKeys getInstance() {
 
         if (mInstance == null) {
-            mInstance = new KsPreferenceKeys(MvHubPlusApplication.getInstance());
+            mInstance = new KsPreferenceKeys(PanteaoApplication.getInstance());
         }
         return mInstance;
     }

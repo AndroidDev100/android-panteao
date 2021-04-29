@@ -1,6 +1,5 @@
 package panteao.make.ready.activities.splash.ui;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -20,7 +19,6 @@ import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +37,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.gson.Gson;
 import com.mmtv.utils.helpers.downloads.DownloadHelper;
+
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -47,7 +47,6 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.dependencies.providers.DTGPrefrencesProvider;
 import panteao.make.ready.BuildConfig;
-import panteao.make.ready.MvHubPlusApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.detail.ui.DetailActivity;
@@ -83,7 +82,6 @@ import javax.inject.Inject;
 
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
-import panteao.make.ready.utils.helpers.downloads.room.DownloadModel;
 
 public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -91,7 +89,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     DTGPrefrencesProvider dtgPrefrencesProvider;
     private ForceUpdateHandler forceUpdateHandler;
     private KsPreferenceKeys session;
-    private MvHubPlusApplication appState;
+    private PanteaoApplication appState;
     private boolean viaIntent;
     private long mLastClickTime = 0;
     private String currentLanguage;
@@ -138,7 +136,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         currentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
 
-        MvHubPlusApplication.getApplicationContext(this).getEnveuComponent().inject(this);
+        PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
         dtgPrefrencesProvider.saveExpiryDays(3);
         DownloadHelper downloadHelper = new DownloadHelper(this);
         downloadHelper.deleteAllExpiredVideos();
@@ -501,9 +499,9 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void configFailPopup() {
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         new ConfigFailDialog(ActivitySplash.this).showDialog(new DialogInterface() {
             @Override
@@ -732,9 +730,9 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     private boolean getForceUpdateValue(JSONObject jsonObject, int type) {
         Log.i("branchRedirectors er", "forceupdate");
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         forceUpdateHandler = new ForceUpdateHandler(ActivitySplash.this, configBean);
         forceUpdateHandler.checkCurrentVersion(new VersionValidator() {

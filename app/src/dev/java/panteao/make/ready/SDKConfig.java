@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SDKConfig {
     private static SDKConfig sdkConfigInstance;
-    boolean isTablet = MvHubPlusApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
+    boolean isTablet = PanteaoApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
     ConfigBean configBean;
     private SDKConfig() {
 

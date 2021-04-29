@@ -1,50 +1,34 @@
 {
   "project_info": {
-    "project_number": "1001366573423",
-    "firebase_url": "https://mvhub-qa.firebaseio.com",
-    "project_id": "mvhub-qa",
-    "storage_bucket": "mvhub-qa.appspot.com"
+    "project_number": "730654520816",
+    "project_id": "panteao-10932",
+    "storage_bucket": "panteao-10932.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1001366573423:android:6771ab9291d8ff6252589a",
+        "mobilesdk_app_id": "1:730654520816:android:897b81c09477c722f59935",
         "android_client_info": {
           "package_name": "panteao.make.ready.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1001366573423-3so3p2h83hsuq6tk2tes6pp6d5h1ml3r.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "panteao.make.ready.dev",
-            "certificate_hash": "cfaf7ba76c17030caf7c18540c7d8efdbf3e2805"
-          }
-        },
-        {
-          "client_id": "1001366573423-b96rpp4tedjmaomep6glscke8i9m0qar.apps.googleusercontent.com",
+          "client_id": "730654520816-bnhnjif470n2o5mmdhiqgftc5m19sf3f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADekMOEEBVcQ_TCO5ZcIwXP6XHMpTw8PA"
+          "current_key": "AIzaSyDjKhfB7hZUVGh_1Ras-uqUynyGQ-7Mifw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1001366573423-b96rpp4tedjmaomep6glscke8i9m0qar.apps.googleusercontent.com",
+              "client_id": "730654520816-bnhnjif470n2o5mmdhiqgftc5m19sf3f.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1001366573423-eoctl7dtlmokumaadog3uo4npeuo5j8s.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "panteao.make.ready.dev"
-              }
             }
           ]
         }

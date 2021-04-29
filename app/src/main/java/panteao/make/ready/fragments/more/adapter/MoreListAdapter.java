@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.callbacks.commonCallbacks.MoreItemClickListener;
 import panteao.make.ready.databinding.MoreItemBinding;
@@ -22,8 +22,6 @@ import panteao.make.ready.utils.helpers.DrawableHelper;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
-
-import panteao.make.ready.MvHubPlusApplication;
 
 public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHolder> {
     final MoreItemClickListener itemClickListener;
@@ -468,9 +466,9 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
             moreItemBinding = view;
             moreItemBinding.getRoot().setOnClickListener(view1 -> {
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-                    AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+                    AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
                 } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
-                    AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+                    AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
                 }
                 Logger.e("Caption", itemsList.get(getLayoutPosition()) + mContext.getResources().getString(R.string.redeem_coupon));
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {

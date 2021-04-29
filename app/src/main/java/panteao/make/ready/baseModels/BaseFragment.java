@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.make.baseCollection.baseCategoryServices.BaseCategoryServices;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -63,9 +63,9 @@ public class BaseFragment extends Fragment {
             KsPreferenceKeys.getInstance().setCurrentTheme(strCurrentTheme);
             KsPreferenceKeys.getInstance().setAppLanguage(strCurrentLanguage);
             if (strCurrentLanguage.equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-                AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
             } else if (strCurrentLanguage.equalsIgnoreCase("English")){
-                AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
             }
             //AppCommonMethod.updateLanguage(strCurrentLanguage,getBaseActivity());
            // new ActivityLauncher(getBaseActivity()).homeScreen(getBaseActivity(), HomeActivity.class);

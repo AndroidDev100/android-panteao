@@ -1,10 +1,10 @@
 package panteao.make.ready.utils.recoSense;
 
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
 import panteao.make.ready.networking.errormodel.ApiErrorModel;
 import panteao.make.ready.utils.recoSense.bean.RecosenceResponse;
-import panteao.make.ready.MvHubPlusApplication;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -45,10 +45,10 @@ public class RecoSenceManager {
             jsonObject1.put("language", SDKConfig.getInstance().getThaiLangCode());
             jsonObject.put("context",jsonObject1);
 
-            jsonObject.put("device_id", AppCommonMethod.getDeviceId(MvHubPlusApplication.getInstance().getContentResolver()));
+            jsonObject.put("device_id", AppCommonMethod.getDeviceId(PanteaoApplication.getInstance().getContentResolver()));
             jsonObject.put("item_id", String.valueOf(id));
             jsonObject.put("timestamp", AppCommonMethod.getCurrentTimeStamp());
-            jsonObject.put("user_id", AppCommonMethod.getDeviceId(MvHubPlusApplication.getInstance().getContentResolver()));
+            jsonObject.put("user_id", AppCommonMethod.getDeviceId(PanteaoApplication.getInstance().getContentResolver()));
 
 
             /*DateFormat df = DateFormat.getTimeInstance();

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.multidex.BuildConfig;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -30,16 +31,16 @@ import io.branch.referral.Branch;
  * This is a subclass of {@link Application} used to provide shared objects for this app, such as
  * the {@link Tracker}.
  */
-public class MvHubPlusApplication extends MultiDexApplication {
+public class PanteaoApplication extends MultiDexApplication {
     private EnveuComponent enveuComponent;
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
-    private static MvHubPlusApplication mvHubPlusApplication;
+    private static PanteaoApplication panteaoApplication;
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
-    public static MvHubPlusApplication getInstance() {
-        return mvHubPlusApplication;
+    public static PanteaoApplication getInstance() {
+        return panteaoApplication;
     }
 
     private void setupBaseClient() {
@@ -62,7 +63,7 @@ public class MvHubPlusApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        mvHubPlusApplication = this;
+        panteaoApplication = this;
         KsPreferenceKeys.getInstance();
         MultiDex.install(this);
         if (BuildConfig.FLAVOR.equals("dev"))
@@ -142,8 +143,8 @@ public class MvHubPlusApplication extends MultiDexApplication {
         MultiDex.install(this);
     }
 
-    public static MvHubPlusApplication getApplicationContext(Context context) {
-        return (MvHubPlusApplication) context.getApplicationContext();
+    public static PanteaoApplication getApplicationContext(Context context) {
+        return (PanteaoApplication) context.getApplicationContext();
     }
 
     public EnveuComponent getEnveuComponent() {

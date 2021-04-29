@@ -42,7 +42,7 @@ import panteao.make.ready.utils.helpers.downloads.room.DownloadDatabase
 import panteao.make.ready.utils.helpers.downloads.room.DownloadModel
 import panteao.make.ready.utils.helpers.downloads.room.DownloadedEpisodes
 import panteao.make.ready.utils.helpers.downloads.room.DownloadedVideo
-import panteao.make.ready.MvHubPlusApplication
+import panteao.make.ready.PanteaoApplication
 import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener
 import panteao.make.ready.activities.downloads.WifiPreferenceListener
@@ -82,7 +82,7 @@ class DownloadHelper() {
     constructor(activity: Activity) : this() {
         this.activity = activity
         db = Room.databaseBuilder(
-                MvHubPlusApplication.getApplicationContext(activity),
+                PanteaoApplication.getApplicationContext(activity),
                 DownloadDatabase::class.java, "enveu.db").build()
         init(activity)
     }
@@ -92,7 +92,7 @@ class DownloadHelper() {
         this.videoListener = videoListener
         this.activity = activity
         db = Room.databaseBuilder(
-                MvHubPlusApplication.getApplicationContext(activity),
+                PanteaoApplication.getApplicationContext(activity),
                 DownloadDatabase::class.java, "enveu.db").build()
         init(activity)
     }
@@ -244,7 +244,7 @@ class DownloadHelper() {
             }
             if (!::db.isInitialized) {
                 db = Room.databaseBuilder(
-                        MvHubPlusApplication.getApplicationContext(activity),
+                        PanteaoApplication.getApplicationContext(activity),
                         DownloadDatabase::class.java, "enveu.db").build()
             }
             val videosList = ArrayList<Video>()
@@ -608,7 +608,7 @@ class DownloadHelper() {
 
     private fun insertVideo(downloadedVideo: DownloadedVideo, downloadedEpisodes: DownloadedEpisodes?) {
         db = Room.databaseBuilder(
-                MvHubPlusApplication.getApplicationContext(activity),
+                PanteaoApplication.getApplicationContext(activity),
                 DownloadDatabase::class.java, "enveu.db").build()
         try {
             AsyncTask.execute {

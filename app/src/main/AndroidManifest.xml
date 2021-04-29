@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
-        android:name=".MvHubPlusApplication"
+        android:name=".PanteaoApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -111,7 +111,7 @@
             <intent-filter>
                 <data
                     android:host="open"
-                    android:scheme="mvhubplus" />
+                    android:scheme="panteao" />
 
                 <action android:name="android.intent.action.VIEW" />
 
@@ -128,7 +128,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.mvhub.com"
+                    android:host="www.panteao.com"
                     android:scheme="https" />
                 <!-- <data -->
                 <!-- android:host="www.watcho.com" -->
@@ -294,8 +294,9 @@
             android:name=".activities.redeemcoupon.RedeemCouponActivity"
             android:launchMode="singleTop" />
 
-        <service
-            android:name=".MvHubPlusMessagingService"
+
+
+        <service android:name=".PanteaoMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

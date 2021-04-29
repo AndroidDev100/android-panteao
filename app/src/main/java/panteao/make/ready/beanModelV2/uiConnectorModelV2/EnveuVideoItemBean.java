@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.internal.LinkedTreeMap;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV2.continueWatching.DataItem;
 import panteao.make.ready.beanModelV2.searchV2.ItemsItem;
@@ -18,13 +18,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import panteao.make.ready.MvHubPlusApplication;
-import panteao.make.ready.beanModelV2.continueWatching.DataItem;
-import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
-import panteao.make.ready.utils.CustomeFields;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class EnveuVideoItemBean implements Serializable {
     private String description;
@@ -962,7 +955,7 @@ public class EnveuVideoItemBean implements Serializable {
 
 
     public Drawable getVipImageDrawable() {
-        MvHubPlusApplication application = MvHubPlusApplication.getInstance();
+        PanteaoApplication application = PanteaoApplication.getInstance();
         try {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 return ContextCompat.getDrawable(application, R.drawable.vip_icon_120);
@@ -977,7 +970,7 @@ public class EnveuVideoItemBean implements Serializable {
     }
 
     public Drawable getNewSeriesImageDrawable() {
-        MvHubPlusApplication application = MvHubPlusApplication.getInstance();
+        PanteaoApplication application = PanteaoApplication.getInstance();
         try {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 return ContextCompat.getDrawable(application, R.drawable.series_icon_120);
@@ -992,7 +985,7 @@ public class EnveuVideoItemBean implements Serializable {
     }
 
     public Drawable getEpisodeImageDrawable() {
-        MvHubPlusApplication application = MvHubPlusApplication.getInstance();
+        PanteaoApplication application = PanteaoApplication.getInstance();
         try {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 return ContextCompat.getDrawable(application, R.drawable.episode_icon_120);
@@ -1007,7 +1000,7 @@ public class EnveuVideoItemBean implements Serializable {
     }
 
     public Drawable getNewMoviesDrawable() {
-        MvHubPlusApplication application = MvHubPlusApplication.getInstance();
+        PanteaoApplication application = PanteaoApplication.getInstance();
         try {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 return ContextCompat.getDrawable(application, R.drawable.new_movie_120);

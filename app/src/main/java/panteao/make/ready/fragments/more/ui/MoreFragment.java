@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mmtv.utils.helpers.downloads.DownloadHelper;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.homeactivity.viewmodel.HomeViewModel;
 import panteao.make.ready.activities.notification.ui.NotificationActivity;
@@ -153,9 +153,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(appSyncBroadcast, intentFilter);
         isloggedout = false;
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         startMoreFragment();
     }
@@ -309,32 +309,32 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 mListener.onLoginClicked();
         } else if (caption.equals(getString(R.string.term_condition))) {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-                AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
                 AppCommonMethod.trackFcmEvent("Terms and Conditons","", getContext(),0);
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
                 AppCommonMethod.trackFcmEvent("Terms and Conditons","", getContext(),0);
 
             }
             //  Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), SampleActivity.class).putExtra("type", "1").putExtra("url",getString(R.string.term_condition)));
-            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
+         //   Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
         } else if (caption.equals(getString(R.string.privacy_policy))) {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-                AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
                 AppCommonMethod.trackFcmEvent("Privacy Policy","", getContext(),0);
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+                AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
                 AppCommonMethod.trackFcmEvent("Privacy Policy","", getContext(),0);
 
             }
             //  Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
-            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
+        //    Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
         } else if (caption.equals(getString(R.string.my_watchlist))) {
 
             if (loginStatus) {
@@ -474,9 +474,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 modelCall();
                 Logger.w("currentLang-->>",strCurrentLanguage);
                 if (strCurrentLanguage.equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-                    AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+                    AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
                 } else if (strCurrentLanguage.equalsIgnoreCase("English")){
-                    AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+                    AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
                 }
 
                 //AppCommonMethod.updateLanguage(strCurrentLanguage, getActivity());
@@ -560,9 +560,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     @Override
     public void onFinishDialog() {
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         if (flagLogIn) {
             AppCommonMethod.guestTitle(getBaseActivity(),getBinding().userNameWords, getBinding().usernameTv, preference);

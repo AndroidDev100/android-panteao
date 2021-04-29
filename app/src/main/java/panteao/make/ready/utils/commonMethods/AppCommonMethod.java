@@ -38,7 +38,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -94,7 +94,6 @@ import java.util.concurrent.TimeUnit;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.LinkProperties;
-import panteao.make.ready.utils.helpers.downloads.room.DownloadedVideo;
 import retrofit2.Response;
 
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_ADD_TO_WATCHLIST;
@@ -310,7 +309,7 @@ public class AppCommonMethod {
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + title + " " + activity.getResources().getString(R.string.on_enveu) + "\n" + sharingURL);
                 Logger.e("LINK PROPS", new Gson().toJson(sharingIntent));
 
-                PackageManager pm = MvHubPlusApplication.getInstance().getPackageManager();
+                PackageManager pm = PanteaoApplication.getInstance().getPackageManager();
                 List<ResolveInfo> activityList = pm.queryIntentActivities(sharingIntent, 0);
                 for(final ResolveInfo app : activityList) {
                     Log.i("SharingType", "app.actinfo.name: " + app.activityInfo.name);

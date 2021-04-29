@@ -25,7 +25,7 @@ import panteao.make.ready.beanModel.userProfile.UserProfileResponse;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
 import panteao.make.ready.networking.intercepter.ErrorCodesIntercepter;
-import panteao.make.ready.MvHubPlusApplication;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -38,12 +38,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Objects;
 
-import panteao.make.ready.MvHubPlusApplication;
-import panteao.make.ready.beanModel.responseModels.LoginResponse.LoginResponseModel;
-import panteao.make.ready.beanModel.responseModels.RegisterSignUpModels.ResponseRegisteredSignup;
-import panteao.make.ready.beanModel.responseModels.SignUp.SignupResponseAccessToken;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,9 +56,9 @@ public class RegistrationLoginRepository {
             instance = new RegistrationLoginRepository();
         }
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
+            AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         return (instance);
     }
@@ -163,9 +157,9 @@ public class RegistrationLoginRepository {
                     SignupResponseAccessToken responseModel = new SignupResponseAccessToken();
                     responseModel.setResponseModel(cl);
                     if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                        responseModel.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.server_error));
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.server_error));
                     } else {
-                        responseModel.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.server_error));
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.server_error));
                     }
                     responseApi.postValue(responseModel);
                 }
@@ -283,7 +277,7 @@ public class RegistrationLoginRepository {
                             debugMessage = jObjError.getString("debugMessage");
                             int errorcode = jObjError.getInt("responseCode");
                             if (errorcode==4401){
-                                commonResponse.setDebugMessage(MvHubPlusApplication.getInstance().getString(R.string.user_does_not_exists));
+                                commonResponse.setDebugMessage(PanteaoApplication.getInstance().getString(R.string.user_does_not_exists));
                                 commonResponse.setCode(response.code());
                             }else {
                                 commonResponse.setDebugMessage(debugMessage);
@@ -357,9 +351,9 @@ public class RegistrationLoginRepository {
                             Logger.e("RegistrationLoginRepo", "" + e.toString());
                         }
                         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                            cl.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.username_must_be_loggedin));
+                            cl.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.username_must_be_loggedin));
                         } else {
-                            cl.setDebugMessage(MvHubPlusApplication.getInstance().getResources().getString(R.string.username_must_be_loggedin));
+                            cl.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.username_must_be_loggedin));
                         }
 
                         responseApi.postValue(cl);

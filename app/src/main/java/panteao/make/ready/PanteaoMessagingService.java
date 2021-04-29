@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
-public class MvHubPlusMessagingService extends FirebaseMessagingService {
+public class PanteaoMessagingService extends FirebaseMessagingService {
     String assetId,assetType;
     @Override
     public void onNewToken(String s) {
@@ -43,8 +43,8 @@ public class MvHubPlusMessagingService extends FirebaseMessagingService {
         Logger.e("TAG", "From: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
             JSONObject jsonData = new JSONObject(remoteMessage.getData());
-            Logger.w("FCM_Payload", new Gson().toJson(remoteMessage)+"");
-            Logger.w("FCM_Payload", jsonData+"");
+            Logger.e("FCM_Payload", new Gson().toJson(remoteMessage)+"");
+            Logger.e("FCM_Payload", jsonData+"");
             Logger.e("TAG", "Message data payload: " + remoteMessage.getData());
         }
         if (remoteMessage.getNotification() != null) {
@@ -56,13 +56,13 @@ public class MvHubPlusMessagingService extends FirebaseMessagingService {
 
             try {
                 JSONObject jsonData = new JSONObject(remoteMessage.getData());
-                Logger.w("FCM_Payload_final", jsonData+"");
+                Logger.e("FCM_Payload_final", jsonData+"");
                 if (jsonData.has("id")){
                     assetId=jsonData.getString("id");
                     if (jsonData.has("contentType")){
                         assetType=jsonData.getString("contentType");
                     }
-                    Logger.w("FCM_Payload_final", assetId+" "+assetType);
+                    Logger.e("FCM_Payload_final", assetId+" "+assetType);
                     KsPreferenceKeys.getInstance().setNotificationPayload(assetId,jsonData);
                 }
             }catch (Exception e){
