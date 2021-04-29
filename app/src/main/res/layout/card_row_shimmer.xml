@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:id="@+id/cv_tvod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:layout_margin="@dimen/NontonSize8">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- MOCK Layout (when you are still fetching data) -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/sflMockContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/NontonSize8"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <View
+                        android:id="@+id/header"
+                        android:layout_width="150dp"
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="@dimen/NontonSize30"
+                        android:background="?attr/list_shimmer"
+                        android:visibility="gone" />
+
+
+                    <View
+                        android:layout_width="150dp"
+                        android:layout_height="30dp"
+                        android:background="?attr/list_shimmer" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="16dp"
+                        android:background="?attr/list_shimmer" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="8dp"
+                        android:background="?attr/list_shimmer" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="8dp"
+                        android:background="?attr/list_shimmer" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</layout>

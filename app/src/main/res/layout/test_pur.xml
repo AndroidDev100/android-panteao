@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_theme_color"
+        android:orientation="vertical">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:background="@color/black_theme_color"
+            android:fillViewport="true"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/black_theme_color"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/player_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/NontonSize6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <ImageView
+                        android:id="@+id/iv_movie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/placeholder_landscape"
+                        android:contentDescription="TODO"
+                        android:foreground="@drawable/trending_gradient_shape"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/purchaseLeftMargin"
+                        android:layout_marginRight="@dimen/purchaseRigntMargin"
+                        android:layout_marginBottom="@dimen/NontonSize4"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_medium"
+                        android:maxLines="1"
+                        android:text="Title"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_medium_large"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_description"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/purchaseLeftMargin"
+                        android:layout_marginRight="@dimen/purchaseRigntMargin"
+                        android:layout_marginBottom="@dimen/NontonSize6"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="2"
+                        android:text="Description"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/buyVideo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/black_theme_color"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/NontonSize20"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="2"
+                        android:text="@string/purhcase_options"
+                        android:textColor="@color/blackColor"
+                        android:textSize="@dimen/purchaseOption" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_purchase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/NontonSize5"
+                        android:layout_marginTop="@dimen/NontonSize10"
+                        android:layout_marginRight="@dimen/NontonSize5"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:paddingBottom="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/NontonSize25"
+                            android:layout_marginTop="@dimen/NontonSize10"
+                            android:layout_marginRight="@dimen/NontonSize25"
+                            android:layout_marginBottom="@dimen/NontonSize6"
+                            app:cardCornerRadius="@dimen/NontonSize5">
+
+                            <Button
+                                android:id="@+id/btn_buy"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_regular"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:text="@string/buy_now"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_14sdp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="caption_margin">14dp</dimen>
+    <dimen name="caption_margin_landscape">120dp</dimen>
+    <dimen name="caption_margin_default">40dp</dimen>
+    <dimen name="player_padding">5dp</dimen>
+</resources>

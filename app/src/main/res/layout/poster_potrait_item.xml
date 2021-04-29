@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <panteao.make.ready.utils.thirdparty.RippleView
+        android:id="@+id/rippleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rv_centered="true">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_1sdp"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            style="@style/Custom.Widget.CardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/railLeftMargin"
+            android:layout_marginBottom="@dimen/railBottomMargin"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardPreventCornerOverlap="false">
+
+            <RelativeLayout
+                android:layout_width="@dimen/NontonSize120"
+                android:layout_height="@dimen/NontonSize180">
+
+                <ImageView
+                    android:id="@+id/itemImage"
+                    errorImage="@{@drawable/placeholder_potrait}"
+                    imageUrl="@{playlistItem.posterURL}"
+                    placeholder="@{@drawable/placeholder_potrait}"
+                    android:layout_width="@dimen/NontonSize120"
+                    android:layout_height="@dimen/NontonSize180"
+                    android:contentDescription="TODO"
+                    android:scaleType="fitXY" />
+
+                <FrameLayout
+                    android:id="@+id/flNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_marginBottom="-6dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:src="@{playlistItem.newSeriesImageDrawable, default=@drawable/series_icon_120}"
+                        tools:ignore="ContentDescription"/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/flNewMovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:src="@{playlistItem.newMoviesDrawable, default=@drawable/new_movie_120}"
+                        tools:ignore="ContentDescription"/>
+                </FrameLayout>
+
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="@dimen/NontonSize120"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/NontonSize180"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="1"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
+                        android:paddingTop="@dimen/NontonSize2"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:visibility="gone"
+                        android:textColor="?attr/watchlist_item_title_color"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="1"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:visibility="gone"
+                        android:textColor="?attr/watchlist_item_title_color"
+                        android:textSize="@dimen/_9sdp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/flExclusive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="-6dp"
+                android:layout_marginStart="-2dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/vip_badge_width"
+                    android:layout_height="@dimen/vip_badge_height"
+                    android:layout_gravity="center"
+                    android:src="@{playlistItem.vipImageDrawable, default=@drawable/vip_icon_120}"
+                    tools:ignore="ContentDescription" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/flEpisode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="end"
+                android:layout_marginTop="-1dp"
+                android:layout_marginEnd="-2dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/episode_badge_width"
+                    android:layout_height="@dimen/episode_badge_height"
+                    android:layout_gravity="center"
+                    android:src="@{playlistItem.episodeImageDrawable, default=@drawable/episode_icon_120}"
+                    tools:ignore="ContentDescription"/>
+            </FrameLayout>
+
+
+
+
+            <ImageView
+                android:id="@+id/ivContinuePlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="continue_watching_play_icon"
+                android:src="@drawable/continue_watching_play_icon"
+                android:visibility="gone" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/llContinueProgress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/continue_watching_progress_height"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/NontonSize4"
+            android:layout_marginTop="@dimen/NontonSize6"
+            android:layout_marginRight="@dimen/NontonSize4"
+            android:layout_marginBottom="@dimen/NontonSize6"
+            android:background="@drawable/rounded_button2"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/pbProcessing"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminateOnly="false"
+                android:progress="10"
+                android:progressDrawable="@drawable/progress_continue_watching" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    </panteao.make.ready.utils.thirdparty.RippleView>
+</layout>

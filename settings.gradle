@@ -1,0 +1,3 @@
+include ':app', ':sample', ':previewseekbar-exoplayer', ':previewseekbar', ':brightcovelibrary',':enveusdk'
+setBinding(new Binding([gradle: this]))
+

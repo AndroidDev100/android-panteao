@@ -1,0 +1,97 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="?attr/backgroundColor"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="1dp"
+        card_view:cardMaxElevation="1dp"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardUseCompatPadding="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:text="Alert"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="?attr/title_color"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:focusableInTouchMode="true"
+                />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="@string/something_went_wrong_at_our_end_please_try_later"
+                android:textSize="13sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="?attr/title_color"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:focusableInTouchMode="true"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:id="@+id/retryBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/moretitlecolor"
+                    android:text="@string/retry_dms"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/white"
+                    android:layout_height="match_parent"></View>
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/cancenBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/moretitlecolor"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</layout>

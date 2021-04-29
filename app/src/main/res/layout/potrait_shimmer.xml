@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_2sdp"
+        android:orientation="vertical">
+
+        <!-- MOCK Layout (when you are still fetching data) -->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/sf_shimmer1"
+            app:shimmer_tilt="0.0"
+            app:shimmer_direction="top_to_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/shimmerViewPotrait"
+                    android:layout_width="@dimen/NontonSize95"
+                    android:layout_height="@dimen/NontonSize168"
+                    android:background="?attr/list_shimmer"
+                    android:orientation="vertical" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    </LinearLayout>
+
+
+</layout>

@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+    <style name="BrightcoveControlBar" parent="BrightcoveControlBarDefault">
+        <item name="brightcove_picture_in_picture">true</item>
+    </style>
+    <style name="MyCustomCaptionSettingsTheme">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <!--buttons color-->
+        <item name="colorAccent">#006de4</item>
+        <!--title and message color-->
+        <item name="android:textColorPrimary">#B4FFFFFF</item>
+        <!--dialog background-->
+        <item name="android:windowBackground">@drawable/background_dialog</item>
+    </style>
+</resources>

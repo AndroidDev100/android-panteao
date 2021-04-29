@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"></include>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                android:text="@string/enter_coupon_code"
+                android:textColor="@color/white"
+                android:textSize="@dimen/TextSize12" />
+
+
+            <EditText
+                android:id="@+id/couponEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@null"
+                android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                android:hint="@string/coupon_code"
+                android:inputType="textEmailAddress|textNoSuggestions"
+                android:maxLength="16"
+                android:paddingTop="@dimen/NontonSize5"
+                android:paddingBottom="@dimen/NontonSize5"
+                android:textColor="?attr/app_edit_text_color"
+                android:textColorHint="?attr/new_password_text_and_hint_color"
+                android:textSize="@dimen/TextSize14" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="?attr/change_password_bottom_line_color" />
+
+
+
+            <LinearLayout
+                android:id="@+id/redeem_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/NontonSize45"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/NontonSize50"
+                android:background="@drawable/rounded_button"
+                android:gravity="center">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/NontonSize20"
+                    android:layout_height="@dimen/NontonSize20"
+                    android:layout_marginRight="@dimen/NontonSize5"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/input_icon"
+                    android:tint="#FFFFFF"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/NontonSize10"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:text="@string/redeem_coupon"
+                    android:textColor="@color/rounded_button_text_color"
+                    android:textSize="@dimen/TextSize12"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <panteao.make.ready.utils.CustomProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

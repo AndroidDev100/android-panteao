@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/expanded_controller_layout"
+        android:filterTouchesWhenObscured="true"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:id="@+id/posterImage"
+            android:scaleType="fitXY"
+            />
+        <ProgressBar
+            android:id="@+id/pBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/cancel"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:gravity="left|center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_icon_player"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/quality"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center">
+            <androidx.mediarouter.app.MediaRouteButton
+                android:id="@+id/media_route_button"
+                android:layout_width="@dimen/search_icon_width"
+                android:layout_height="@dimen/search_icon_width"
+                android:mediaRouteTypes="user"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_play_pause_toggle"
+            android:layout_width="28dp"
+            android:layout_height="32dp"
+            android:scaleType="fitCenter"
+            android:layout_centerInParent="true"
+            android:padding="0dp"
+            android:background="@drawable/pause"
+            tools:ignore="ContentDescription" />
+
+        <RelativeLayout
+            android:id="@+id/rl_down"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/_10sdp">
+
+            <com.google.android.exoplayer2.ui.DefaultTimeBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:progressBackgroundTint="@color/white"
+                android:progressTint="@color/blue"
+                android:theme="@style/MySeekBar"
+                android:thumbTint="@color/blue" />
+
+            <TextView
+                android:id="@+id/total_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/_28sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="12sp"
+                />
+
+            <TextView
+                android:id="@+id/current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="12sp"
+                />
+
+
+        </RelativeLayout>
+        <!--<fragment-->
+        <!--android:id="@+id/castMiniController"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:visibility="gone"-->
+        <!--class="com.google.android.gms.cast.framework.media.widget.MiniControllerFragment"/>-->
+    </RelativeLayout>
+</layout>

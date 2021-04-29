@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <panteao.make.ready.utils.thirdparty.RippleView
+        android:id="@+id/rippleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rv_centered="true">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2sdp"
+                android:orientation="vertical">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/item_image"
+                    errorImage="@{@drawable/placeholder_circle}"
+                    placeholder="@{@drawable/placeholder_circle}"
+                    type="@{playlistItem.imageType}"
+                    android:layout_width="@dimen/height_portrait_circle_small"
+                    android:layout_height="@dimen/height_portrait_circle_small"
+                    android:background="@drawable/placeholder_circle" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/titlecolor"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/ivContinuePlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="continue_watching_play_icon"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/continue_watching_play_icon" />
+
+                <FrameLayout
+                    android:id="@+id/flExclusive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/badge_background"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="3dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/exclusive"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/premiumSize" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/flNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/_6sdp"
+                    android:background="@drawable/badge_background"
+                    android:paddingLeft="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_2sdp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/new_badge"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/newSize" />
+                </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/flNewMovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_gravity="end|bottom"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:src="@{playlistItem.newMoviesDrawable, default=@drawable/new_movie_120}"
+                        />
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/llContinueProgress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/continue_watching_progress_height"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/NontonSize4"
+                android:layout_marginTop="@dimen/NontonSize6"
+                android:layout_marginRight="@dimen/NontonSize4"
+                android:layout_marginBottom="@dimen/NontonSize6"
+                android:background="@drawable/rounded_button2"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:id="@+id/pbProcessing"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminateOnly="false"
+                    android:progress="10"
+                    android:progressDrawable="@drawable/progress_continue_watching" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </panteao.make.ready.utils.thirdparty.RippleView>
+</layout>

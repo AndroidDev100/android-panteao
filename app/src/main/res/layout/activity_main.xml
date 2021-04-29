@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/blurred_background_image_view"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/navigation"
+                android:background="@color/theme_white" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/bottomNavigationBackground"
+                android:theme="@style/Widget.BottomNavigationView"
+                app:itemTextAppearanceActive="@font/sarabun_v7_thai_latin_regular"
+                app:itemIconTint="?attr/menuItemSelector"
+                app:itemTextColor="?attr/menuItemTextSelector"
+                app:labelVisibilityMode="unlabeled"
+                app:menu="@menu/navigation" />
+        </RelativeLayout>
+    </LinearLayout>
+    </FrameLayout>
+</layout>

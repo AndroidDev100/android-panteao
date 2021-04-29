@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/backgroundColor"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="?attr/backgroundColor"
+                android:padding="@dimen/rootPadding"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="@dimen/more_img_size"
+                    android:layout_height="@dimen/more_img_size"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/NontonSize10"
+                    android:background="@drawable/circular_drawable">
+
+                    <TextView
+                        android:id="@+id/user_name_words"
+                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/more_img_txt_size"
+                        android:text=""
+                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                        android:textColor="@color/rounded_button_text_color"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/NontonSize50"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/NontonSize5">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/NontonSize2"
+                            android:contentDescription="TODO"
+                            android:padding="@dimen/NontonSize4"
+                            android:visibility="gone"
+                            android:scaleType="centerInside"
+                            android:src="?attr/profile_icon_background" />
+
+
+                        <EditText
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                            android:hint="@string/full_name"
+                            android:imeOptions="actionDone"
+                            android:maxLength="40"
+                            android:singleLine="true"
+                            android:textColor="?attr/app_edit_text_color"
+                            android:textColorHint="?attr/new_password_text_and_hint_color"
+                            android:textSize="@dimen/TextSize14" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="?attr/change_password_bottom_line_color" />
+
+                    <TextView
+                        android:id="@+id/errorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_margin="@dimen/NontonSize5"
+                        android:textColor="@color/inspection_color"
+                        android:textSize="@dimen/TextSize12"
+                        android:visibility="invisible" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/NontonSize10"
+                        android:paddingBottom="@dimen/NontonSize5">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/NontonSize2"
+                            android:contentDescription="TODO"
+                            android:padding="@dimen/NontonSize4"
+                            android:visibility="gone"
+                            android:src="?attr/email_icon_background" />
+
+
+                        <TextView
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@null"
+                            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                            android:hint="@string/email"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
+                            android:textColor="?attr/app_edit_text_color"
+                            android:textColorHint="?attr/new_password_text_and_hint_color"
+                            android:textSize="@dimen/TextSize14" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:background="?attr/change_password_bottom_line_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/NontonSize50"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/llLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/NontonSize45"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/rounded_button"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/NontonSize10"
+                            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                            android:text="@string/save"
+                            android:textColor="@color/rounded_button_text_color"
+                            android:textSize="@dimen/TextSize12"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <panteao.make.ready.utils.CustomProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+</layout>

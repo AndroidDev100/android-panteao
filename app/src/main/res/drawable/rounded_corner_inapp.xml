@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:shape="rectangle">
+    <!-- you can use any color you want I used here gray color-->
+    <solid android:color="@color/transparent" />
+
+    <stroke
+        android:width="1.4dp"
+        android:color="@color/bottom_navigation_bg_dark" />
+</shape>

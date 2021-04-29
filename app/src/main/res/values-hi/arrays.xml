@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="more_with_login">
+        <item>अपना पासवर्ड बदलें</item>
+        <item>आपकी जानकारी</item>
+        <item>आपकी वॉचलिस्‍ट</item>
+        <item>देखे हुए वीडियो</item>
+        <item>सदस्यता और योजनाएँ</item>
+        <item>सेटिंग्स</item>
+        <item>नियम और शर्तें</item>
+        <item>गोपनीयता नीति</item>
+        <item>लॉग आउट</item>
+    </string-array>
+
+    <string-array name="more_with_login_download">
+        <item>Change Password</item>
+        <item>My Profile</item>
+        <item>My Watchlist</item>
+        <item>My Watch History</item>
+        <item>My Downloads</item>
+        <item>Membership and Plans</item>
+        <item>Redeem Coupon</item>
+        <item>Settings</item>
+        <item>Terms and Conditions</item>
+        <item>Privacy Policy</item>
+        <item>Logout</item>
+    </string-array>
+
+
+    <string-array name="more_with_login_fb">
+        <item>आपकी जानकारी</item>
+        <item>आपकी वॉचलिस्‍ट</item>
+        <item>देखे हुए वीडियो</item>
+        <item>सदस्यता और योजनाएँ</item>
+        <item>सेटिंग्स</item>
+        <item>नियम और शर्तें</item>
+        <item>गोपनीयता नीति</item>
+        <item>लॉग आउट</item>
+        <item>लॉग आउट</item>
+    </string-array>
+
+    <string-array name="more_with_verify">
+        <item>अपना पासवर्ड बदलें</item>
+        <item>Verify Account</item>
+        <item>आपकी जानकारी</item>
+        <item>आपकी वॉचलिस्‍ट</item>
+        <item>देखे हुए वीडियो</item>
+        <item>सदस्यता और योजनाएँ</item>
+        <item>सेटिंग्स</item>
+        <item>नियम और शर्तें</item>
+        <item>गोपनीयता नीति</item>
+        <item>लॉग आउट</item>
+    </string-array>
+
+    <string-array name="more_logout">
+        <item>अपना पासवर्ड बदलें</item>
+        <item>आपकी जानकारी</item>
+        <item>आपकी वॉचलिस्‍ट</item>
+        <item>देखे हुए वीडियो</item>
+        <item>सदस्यता और योजनाएँ</item>
+        <item>सेटिंग्स</item>
+        <item>नियम और शर्तें</item>
+        <item>गोपनीयता नीति</item>
+
+    </string-array>
+
+    <string-array name="more_logout_download">
+        <item>Change Password</item>
+        <item>My Profile</item>
+        <item>My Watchlist</item>
+        <item>My Watch History</item>
+        <item>My Downloads</item>
+        <item>Membership and Plans</item>
+        <item>Redeem Coupon</item>
+        <item>Settings</item>
+        <item>Terms and Conditions</item>
+        <item>Privacy Policy</item>
+    </string-array>
+
+    <string-array name="download_quality">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+        <item>Data Saver</item>
+        <item>Always ask</item>
+    </string-array>
+</resources>

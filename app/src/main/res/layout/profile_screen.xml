@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor">
+
+
+        <ScrollView
+            android:id="@+id/sv_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar" />
+
+                <LinearLayout
+                    android:id="@+id/parent_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/rootView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.core.widget.NestedScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/black_theme_color"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_20sdp"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <RelativeLayout
+                                            android:id="@+id/profileLayout"
+                                            android:layout_width="@dimen/profileLayoutHeight"
+                                            android:layout_height="@dimen/profileLayoutWidth"
+                                            android:layout_gravity="center_horizontal">
+
+                                            <de.hdodenhof.circleimageview.CircleImageView
+                                                android:id="@+id/ivProfilePic"
+                                                android:layout_width="@dimen/profilePicWidth"
+                                                android:layout_height="@dimen/profilePicHeight"
+                                                android:src="@drawable/default_profile_pic" />
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:background="@drawable/circle_drawable">
+
+                                                <ImageView
+                                                    android:id="@+id/btnPhotoId"
+                                                    android:layout_width="@dimen/cameraIconHeight"
+                                                    android:layout_height="@dimen/cameraIconHeight"
+                                                    android:contentDescription="TODO"
+                                                    android:padding="@dimen/cameraPaddingProfile"
+                                                    android:src="@drawable/camera_icon" />
+
+
+                                            </LinearLayout>
+
+
+                                        </RelativeLayout>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/bottom_navigation_bg_dark"
+                                        android:paddingTop="@dimen/_20sdp"
+                                        android:paddingBottom="@dimen/_20sdp">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/NontonSize15"
+                                            android:layout_marginRight="@dimen/_12sdp"
+                                            android:orientation="vertical">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@drawable/profile_icon"
+                                                    android:contentDescription="TODO" />
+
+                                                <EditText
+                                                    android:id="@+id/etProfileName"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginLeft="@dimen/NontonSize10"
+                                                    android:layout_weight="1"
+                                                    android:background="@null"
+                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:hint="@string/full_name"
+                                                    android:inputType="textEmailAddress"
+                                                    android:maxLength="40"
+                                                    android:singleLine="true"
+                                                    android:textColor="?attr/app_edit_text_color"
+                                                    android:textColorHint="@color/edit_text"
+                                                    android:textSize="@dimen/TextSize14" />
+
+                                                <FrameLayout
+                                                    android:id="@+id/editName"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content">
+
+                                                    <ImageView
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@drawable/edit_pencil"
+                                                        android:contentDescription="TODO"
+                                                        android:padding="@dimen/NontonSize8"
+                                                        android:scaleType="centerInside" />
+                                                </FrameLayout>
+
+                                            </LinearLayout>
+
+                                            <TextView
+                                                android:id="@+id/errorName"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/NontonSize3"
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:paddingLeft="@dimen/NontonSize30"
+                                                android:textColor="@color/inspection_color"
+                                                android:visibility="invisible" />
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="@dimen/_20sdp"
+                                                android:gravity="center"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@drawable/email_icon_profile"
+                                                    android:contentDescription="TODO" />
+
+
+                                                <EditText
+                                                    android:id="@+id/tvUserEmail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_gravity="left|center_vertical"
+                                                    android:layout_marginLeft="@dimen/NontonSize10"
+                                                    android:background="@null"
+                                                    android:enabled="false"
+                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:gravity="center_vertical"
+                                                    android:singleLine="true"
+                                                    android:textColor="@color/white"
+                                                    android:textSize="@dimen/TextSize14" />
+
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@drawable/calender_icon"
+                                                    android:contentDescription="TODO" />
+
+                                                <LinearLayout
+                                                    android:id="@+id/calender"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1">
+
+                                                    <EditText
+                                                        android:id="@+id/calendertxt"
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_gravity="center_vertical"
+                                                        android:layout_marginLeft="@dimen/NontonSize10"
+                                                        android:layout_weight="1"
+                                                        android:background="@null"
+                                                        android:enabled="false"
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        android:hint="DD/MM/YYYY"
+                                                        android:textColor="@color/white"
+                                                        android:textColorHint="@color/edit_text"
+                                                        android:textSize="@dimen/TextSize14" />
+
+                                                    <FrameLayout
+                                                        android:id="@+id/ivEditDOB"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content">
+
+                                                        <ImageView
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:background="@drawable/edit_pencil"
+                                                            android:contentDescription="TODO"
+                                                            android:padding="@dimen/NontonSize8"
+                                                            android:scaleType="centerInside" />
+                                                    </FrameLayout>
+                                                </LinearLayout>
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/_20sdp"
+                                                android:gravity="center"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@drawable/phone_icon"
+                                                    android:contentDescription="TODO" />
+
+
+                                                <EditText
+                                                    android:id="@+id/etProfileNumber"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_vertical"
+                                                    android:layout_marginLeft="@dimen/NontonSize10"
+                                                    android:layout_weight="1"
+                                                    android:background="@null"
+                                                    android:digits="0123456789"
+                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:hint="XXXXXXXXXX"
+                                                    android:inputType="phone"
+                                                    android:maxLength="10"
+                                                    android:paddingBottom="@dimen/_2sdp"
+                                                    android:singleLine="true"
+                                                    android:textColor="@color/white"
+                                                    android:textColorHint="@color/edit_text"
+                                                    android:textSize="@dimen/TextSize14" />
+
+                                                <FrameLayout
+                                                    android:id="@+id/editMobileNumber"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content">
+
+                                                    <ImageView
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:background="@drawable/edit_pencil"
+                                                        android:contentDescription="TODO"
+                                                        android:padding="@dimen/NontonSize8"
+                                                        android:scaleType="centerInside" />
+                                                </FrameLayout>
+
+
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/_20sdp"
+                                                android:gravity="center"
+                                                android:orientation="horizontal"
+                                                android:visibility="gone">
+
+                                                <ImageView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:background="@drawable/privacy_icon"
+                                                    android:contentDescription="TODO" />
+
+                                                <EditText
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginLeft="@dimen/_10sdp"
+                                                    android:layout_weight="1"
+                                                    android:background="@null"
+                                                    android:fontFamily="@font/roboto_regular"
+                                                    android:hint="***************"
+                                                    android:inputType="textPassword"
+                                                    android:singleLine="true"
+                                                    android:textColorHint="@color/edit_text"
+                                                    android:textSize="@dimen/TextSize14" />
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="right"
+                                                    android:text="@string/update"
+                                                    android:textColor="@color/update_title_color"
+                                                    android:textSize="@dimen/_12sdp" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="-5dp"
+                                                android:layout_marginTop="@dimen/_10sdp"
+                                                android:gravity="center_vertical"
+                                                android:orientation="horizontal">
+
+                                                <RadioGroup
+                                                    android:id="@+id/radioGroup1"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+
+                                                    <RadioButton
+                                                        android:id="@+id/rbMale"
+                                                        style="@style/ProfileRadioButton"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_alignLeft="@+id/radioGroup1"
+                                                        android:layout_gravity="left"
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        android:scaleX="0.8"
+                                                        android:scaleY="0.8"
+                                                        android:text="@string/male"
+                                                        android:textColor="@color/white"
+                                                        android:textSize="@dimen/_12sdp" />
+
+
+                                                    <RadioButton
+                                                        android:id="@+id/rbFemale"
+                                                        style="@style/ProfileRadioButton"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_below="@+id/radioGroup1"
+                                                        android:layout_alignLeft="@+id/radioGroup1"
+                                                        android:layout_marginLeft="@dimen/NontonSize15"
+                                                        android:fontFamily="@font/roboto_regular"
+                                                        android:scaleX="0.8"
+                                                        android:scaleY="0.8"
+                                                        android:text="@string/female"
+                                                        android:textColor="@color/white"
+                                                        android:textSize="@dimen/_12sdp" />
+
+
+                                                </RadioGroup>
+                                            </LinearLayout>
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_marginTop="@dimen/_15sdp"
+                                        android:layout_marginRight="@dimen/_12sdp"
+                                        android:layout_marginBottom="@dimen/_15sdp"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tvSave"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_30sdp"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:layout_marginBottom="@dimen/_10sdp"
+                                            android:background="@drawable/badge_background"
+                                            android:fontFamily="@font/roboto_regular"
+                                            android:gravity="center"
+                                            android:text="@string/save"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_12sdp" />
+
+
+                                        <LinearLayout
+                                            android:id="@+id/tvConnectFb"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:background="@drawable/rounded_button1"
+                                            android:gravity="center">
+
+                                            <androidx.appcompat.widget.AppCompatImageView
+                                                android:layout_width="@dimen/NontonSize20"
+                                                android:layout_height="@dimen/NontonSize20"
+                                                android:layout_marginRight="@dimen/NontonSize6"
+                                                android:contentDescription="TODO"
+                                                android:src="@drawable/facebook_icon"
+                                                android:tint="#FFFFFF" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="@dimen/_30sdp"
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:gravity="center"
+                                                android:text="@string/connct_facebbook"
+                                                android:textColor="@color/white"
+                                                android:textSize="@dimen/_12sdp" />
+
+                                        </LinearLayout>
+
+
+                                        <com.facebook.login.widget.LoginButton
+                                            android:id="@+id/fbButton"
+                                            android:layout_width="1dp"
+                                            android:layout_height="1dp"
+                                            android:layout_centerInParent="true"
+                                            android:layout_gravity="center|center_horizontal"
+                                            android:autofillHints="@null"
+                                            android:gravity="center"
+                                            android:inputType="textNoSuggestions"
+                                            android:padding="@dimen/_10sdp"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="invisible" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_30sdp"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:background="@drawable/rounded_button2"
+                                            android:fontFamily="@font/roboto_regular"
+                                            android:gravity="center"
+                                            android:text="@string/sign_out"
+                                            android:textColor="@color/edittextview"
+                                            android:textSize="@dimen/_12sdp"
+                                            android:visibility="gone" />
+
+
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </androidx.core.widget.NestedScrollView>
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/no_connection_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:visibility="gone">
+
+                            <include
+                                android:id="@+id/connection"
+                                layout="@layout/no_connection">
+
+                            </include>
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <panteao.make.ready.utils.CustomProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+
+    </FrameLayout>
+</layout>

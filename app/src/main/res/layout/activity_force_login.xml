@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/black_theme_color"
+        android:layout_height="match_parent">
+
+        <panteao.make.ready.utils.CustomProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/toolbar">
+
+                </include>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/home_icon"
+                            android:layout_width="@dimen/toolbar_logo_icon_width"
+                            android:layout_height="@dimen/toolbar_logo_icon_height"
+                            android:background="?attr/app_logo"
+                            android:contentDescription="TODO"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        android:text="@string/email_check_signup"
+                        android:textSize="@dimen/_12sdp" />
+
+
+                    <EditText
+                        android:id="@+id/etPasswordRecoveryEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_35sdp"
+                        android:background="@null"
+                        android:inputType="textEmailAddress"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                        android:hint="@string/email"
+                        android:lineHeight="@dimen/_30sdp"
+                        android:maxLength="30"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:textColor="?attr/app_edit_text_color"
+                        android:textColorHint="?attr/new_password_text_and_hint_color"
+                        android:textSize="@dimen/TextSize14"
+                        tools:targetApi="p" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@color/edittextview" />
+
+                    <TextView
+                        android:id="@+id/errorEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:textColor="@color/inspection_color"
+                        android:visibility="invisible" />
+
+
+                    <TextView
+                        android:id="@+id/tvSendEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/NontonSize45"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        android:background="@drawable/rounded_button"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                        android:gravity="center"
+                        android:lineHeight="@dimen/_35sdp"
+                        android:text="@string/submit"
+                        android:textColor="@color/rounded_button_text_color"
+                        android:textSize="@dimen/_14sdp" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</layout>

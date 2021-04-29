@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/NontonSize10">
+
+        <FrameLayout
+            android:id="@+id/searchItemImage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/NontonSize15"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.cardview.widget.CardView
+                style="@style/Custom.Widget.CardView"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/itemImage"
+                    android:layout_width="@dimen/list_pr_width"
+                    android:layout_height="@dimen/list_pr_height"
+                    android:contentDescription="TODO"
+                    android:scaleType="fitXY" />
+
+                <FrameLayout
+                    android:id="@+id/flExclusive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="-2dp"
+                    android:layout_marginTop="-2dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:layout_gravity="center"
+                        android:src="@{playlistItem.vipImageDrawable, default=@drawable/vip_icon_120}"
+                        tools:ignore="ContentDescription" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/flEpisode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="-1dp"
+                    android:layout_marginEnd="-2dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/episode_badge_width"
+                        android:layout_height="@dimen/episode_badge_height"
+                        android:layout_gravity="center"
+                        android:src="@{playlistItem.episodeImageDrawable, default=@drawable/episode_icon_120}"
+                        tools:ignore="ContentDescription"/>
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/flNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_gravity="end|bottom"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:src="@{playlistItem.newSeriesImageDrawable, default=@drawable/series_icon_120}"
+                        tools:ignore="ContentDescription"/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/flNewMovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="-2dp"
+                    android:layout_gravity="end|bottom"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/vip_badge_width"
+                        android:layout_height="@dimen/vip_badge_height"
+                        android:src="@{playlistItem.newMoviesDrawable, default=@drawable/new_movie_120}"
+                        tools:ignore="ContentDescription"/>
+                </FrameLayout>
+
+
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/NontonSize10"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/searchItemImage"
+            app:layout_constraintTop_toTopOf="@+id/searchItemImage">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/NontonSize10"
+                android:layout_weight="10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="?attr/pr_item_title_text_color_white"
+                    android:textSize="@dimen/itemRowItem" />
+
+                <TextView
+                    android:id="@+id/description_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/list_des_margin_top"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_light"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="?attr/pr_item_description_text_color_grey"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/tvGenre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_light"
+                    android:maxLines="1"
+                    android:text=""
+                    android:layout_marginTop="@dimen/list_genre_margin_top"
+                    android:visibility="visible"
+                    android:textColor="?attr/pr_item_description_text_color_grey"
+                    android:textSize="@dimen/font_xsmall" />
+
+
+            </LinearLayout>
+
+
+            <FrameLayout
+                android:id="@+id/flDeleteWatchlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/NontonSize10"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/_26sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:contentDescription="TODO"
+                    android:gravity="center"
+                    android:padding="@dimen/NontonSize5"
+                    android:src="?attr/watchlist_delete_icon" />
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/NontonSize10"
+            android:background="@color/home_screen_seperator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchItemImage" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

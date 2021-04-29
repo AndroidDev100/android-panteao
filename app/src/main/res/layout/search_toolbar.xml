@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/bottomNavigationBackground"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/NontonSize10"
+                    android:layout_marginRight="@dimen/NontonSize10"
+                    android:background="@drawable/ic_arrow_back_black_24dp"
+                    android:contentDescription="TODO"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_edit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_34sdp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/NontonSize10"
+                android:layout_toLeftOf="@+id/clear_text"
+                android:layout_toRightOf="@+id/back_button"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/search_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/search_icon_background" />
+
+                    <!--android:transitionName="imageMain"-->
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/search_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_4sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:background="@null"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="@string/search_mv_hub"
+                    android:imeOptions="actionDone"
+                    android:inputType="textNoSuggestions"
+                    android:singleLine="true"
+                    android:textColor="?attr/search_text_color"
+                    android:textColorHint="@color/search_hint_dark"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:textSize="@dimen/headingToolbar"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
+                    android:iconifiedByDefault="true"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:windowSoftInputMode="stateHidden"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:queryBackground="@null"
+                    app:queryHint="@string/search_mv_hub"
+                    app:searchHintIcon="@null"
+                    app:searchIcon="@null" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/cancel"
+                    android:textColor="?attr/cancel_text_color"
+                    android:textSize="@dimen/NontonSize14" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- footer-->
+        <View
+            android:id="@+id/search_toolbar_sperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shadow" />
+    </FrameLayout>
+</layout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/rail_top_margin"
+        android:layout_marginBottom="@dimen/rail_top_margin"
+        android:background="?android:selectableItemBackground"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titleHeading"
+            layout="@layout/heading_rails" />
+
+        <panteao.make.ready.utils.helpers.shimmer.ShimmerRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/recycler_view_list1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/header_left_margin"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingRight="@dimen/_9sdp"
+            app:shimmer_demo_angle="20"
+            app:shimmer_demo_layout="@layout/shimmer_item1"
+            app:shimmer_demo_layout_manager_type="linear_horizontal" />
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@color/home_screen_seperator"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</layout>

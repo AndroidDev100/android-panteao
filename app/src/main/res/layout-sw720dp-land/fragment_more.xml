@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/blurred_background_image_view"
+                android:clickable="true">
+
+                <panteao.make.ready.utils.CustomProgressBar
+                    android:id="@+id/progress_bar"
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:indeterminate="true"
+                    android:indeterminateTintMode="src_atop"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/backgroundColor"
+                    android:orientation="vertical">
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/profile_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:background="@drawable/profile_gradient"
+                                android:layout_height="@dimen/more_uper_profile_frame">
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:background="@color/black_theme_color"
+                                android:layout_marginTop="@dimen/more_uper_profile_frame"
+                                android:layout_height="wrap_content">
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/more_img_top"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/more_img_size"
+                                        android:layout_height="@dimen/more_img_size"
+                                        android:gravity="center"
+                                        android:background="@drawable/circle_yellow_drawable">
+
+                                        <TextView
+                                            android:id="@+id/user_name_words"
+                                            android:layout_width="wrap_content"
+                                            android:textSize="@dimen/more_img_txt_size"
+                                            android:text=""
+                                            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                            android:textColor="@color/more_text_color_dark"
+                                            android:layout_height="wrap_content" />
+
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/ivProfilePic"
+                                            android:visibility="gone"
+                                            android:layout_width="@dimen/_75sdp"
+                                            android:layout_height="@dimen/_75sdp"
+                                            android:src="@drawable/default_profile_pic"
+                                            app:civ_border_color="@color/material_grey_400"
+                                            app:civ_border_width="@dimen/NontonSize1" />
+
+                                    </LinearLayout>
+
+
+
+                                    <TextView
+                                        android:id="@+id/username_tv"
+                                        android:layout_width="wrap_content"
+                                        android:textSize="@dimen/moreItemTextSize"
+                                        android:textAllCaps="false"
+                                        android:text="Guest User"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:textColor="?attr/more_item_text_color"
+                                        android:layout_height="wrap_content" />
+
+                                    <Button
+                                        android:id="@+id/login_btn"
+                                        android:layout_width="@dimen/more_login_btn_width"
+                                        android:layout_height="@dimen/more_login_btn_height"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/rounded_yellow_button"
+                                        android:gravity="center"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:text="@string/login_txt"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/user_profile_name"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:visibility="visible"
+
+                                        />
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_more"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/NontonSize10"
+                            android:nestedScrollingEnabled="false"
+                            android:background="?attr/backgroundColor"
+                            android:overScrollMode="never"
+                            />
+
+
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/no_connection_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        >
+
+                        <include
+                            android:id="@+id/connection"
+                            layout="@layout/no_connection" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+</layout>

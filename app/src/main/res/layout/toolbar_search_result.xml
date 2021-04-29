@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="?attr/toolbar_background"
+            android:padding="@dimen/tsr_root_padding">
+
+
+            <FrameLayout
+                android:id="@+id/home_icon_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/tsrBackLeft"
+                    android:layout_marginRight="@dimen/tsrBackRight"
+                    android:background="?attr/toolbar_back_arrow"
+                    android:contentDescription="TODO" />
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/tvSearchResultHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/tsrTitleLeft"
+                android:layout_toRightOf="@+id/home_icon_back"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="?attr/toolbar_text_color"
+                android:textSize="@dimen/font_large" />
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_clear_black_24dp"
+                android:contentDescription="TODO"
+                android:tint="@color/white"
+                android:visibility="gone" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shadow"
+            />
+
+    </LinearLayout>
+</layout>

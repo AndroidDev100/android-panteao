@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor">
+
+        <panteao.make.ready.utils.CustomProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/search_layout">
+
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/search_toolbar" />
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/no_result"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/toolbarSearchLeft"
+                            android:layout_marginRight="@dimen/toolbarSearchRight"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginBottom="@dimen/_12sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/no_result"
+                            android:textAllCaps="false"
+                            android:layout_gravity="center"
+                            android:textColor="?attr/watchlist_item_title_color"
+                            android:textSize="@dimen/font_large"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/no_result1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/toolbarSearchLeft"
+                            android:layout_marginRight="@dimen/toolbarSearchRight"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="@string/no_result1"
+                            android:textAllCaps="false"
+                            android:textColor="?attr/episode_serial_number"
+                            android:textSize="@dimen/font_medium"
+                            android:visibility="visible" />
+                        <LinearLayout
+                            android:id="@+id/rootView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/popularSearchGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/toolbar_block"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvPopularSearch"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/NontonSize18"
+                                    android:layout_marginBottom="@dimen/NontonSize4"
+                                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                                    android:text="@string/popular_search"
+                                    android:textAllCaps="true"
+                                    android:textColor="?attr/watchlist_item_title_color"
+                                    android:textSize="@dimen/popularSearchSize" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/popularSearchRecycler"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:nestedScrollingEnabled="false"
+                                    android:overScrollMode="never">
+
+                                </androidx.recyclerview.widget.RecyclerView>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llRecentSearchLayout"
+                                android:layout_marginTop="@dimen/NontonSize8"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:nestedScrollingEnabled="false"
+                                android:orientation="vertical"
+                                android:overScrollMode="never"
+                                android:visibility="visible">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="visible">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="@dimen/NontonSize18"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                                        android:gravity="left"
+                                        android:text="@string/recent_searches"
+                                        android:textAllCaps="true"
+                                        android:textSize="@dimen/TextSize13"
+                                        android:textStyle="bold" />
+
+                                    <FrameLayout
+                                        android:id="@+id/delete_keywords"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true">
+
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="@dimen/_15sdp"
+                                            android:contentDescription="TODO"
+                                            android:background="@drawable/delete_icon" />
+
+                                    </FrameLayout>
+
+
+                                </RelativeLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recentSearchRecycler"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:nestedScrollingEnabled="false"
+                                    android:overScrollMode="never">
+
+                                </androidx.recyclerview.widget.RecyclerView>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llSearchResultLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/searchResultRecycler"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:overScrollMode="never" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/no_connection_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/connection"
+                    layout="@layout/no_connection" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

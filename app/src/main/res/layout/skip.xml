@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <panteao.make.ready.utils.CustomProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layer2"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="@dimen/rootMargin">
+
+            <TextView
+                android:id="@+id/tvSkipRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:padding="@dimen/DobPaddingBottom"
+                android:text="@string/skip"
+                android:textColor="@color/edittextview"
+                android:textSize="@dimen/NontonSize14" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/profileLayout"
+                    android:layout_width="@dimen/profileLayoutHeight"
+                    android:layout_height="@dimen/profileLayoutWidth"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/skipProfileMargin">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivProfilePic"
+                        android:layout_width="@dimen/profilePicWidth"
+                        android:layout_height="@dimen/profilePicHeight"
+                        android:src="@drawable/default_profile_pic" />
+
+                    <ImageView
+                        android:id="@+id/btnPhotoId"
+                        android:layout_width="@dimen/cameraIconHeight"
+                        android:layout_height="@dimen/cameraIconHeight"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:contentDescription="TODO"
+                        android:padding="@dimen/cameraPadding"
+                        android:src="@drawable/camera" />
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/edittext_bottom_line"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/skipMobileRootPadding">
+
+                    <ImageView
+                        android:layout_width="@dimen/NontonSize20"
+                        android:layout_height="@dimen/NontonSize20"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/calender_icon"
+                        android:contentDescription="TODO"
+                        android:tint="@color/blackColor" />
+
+
+                    <TextView
+                        android:id="@+id/tvDateOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="DD/MM/YYYY"
+                        android:textColor="@color/blackColor"
+                        android:textSize="@dimen/fullnameTextSize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/NontonSize25"
+                    android:layout_marginBottom="@dimen/skipMobileRootBottom"
+                    android:background="@drawable/edittext_bottom_line"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/skipMobileRootPadding">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/NontonSize20"
+                        android:layout_height="@dimen/NontonSize20"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@drawable/phone_icon"
+                        android:contentDescription="TODO" />
+
+
+                    <EditText
+                        android:id="@+id/etMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="XXXXXXXXXX"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:textColorHint="@color/edit_text"
+                        android:textSize="@dimen/fullnameTextSize" />
+
+
+                </LinearLayout>
+
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/NontonSize5"
+                    android:layout_marginBottom="@dimen/NontonSize20"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/DobPaddingTop"
+                    android:paddingBottom="@dimen/DobPaddingBottom">
+
+                    <RadioButton
+                        android:id="@+id/rbGenderMale"
+                        style="@style/ProfileRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:text="@string/male"
+                        android:textColor="@color/edittextview"
+                        android:textSize="@dimen/skipRadioTextSize" />
+
+
+                    <RadioButton
+                        android:id="@+id/rbGenderFemale"
+                        style="@style/ProfileRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/radioGroup1"
+                        android:layout_alignLeft="@+id/radioGroup1"
+                        android:layout_marginLeft="@dimen/NontonSize35"
+                        android:fontFamily="@font/roboto_regular"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:text="@string/female"
+                        android:textColor="@color/edittextview"
+                        android:textSize="@dimen/skipRadioTextSize" />
+
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/llSaveProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/skipSaveMargin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/NontonSize5"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="@string/save"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/skipSaveTextSize" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/no_connection_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/connection"
+                    layout="@layout/no_connection">
+
+                </include>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</layout>

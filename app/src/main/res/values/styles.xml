@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
+
+    </style>
+
+    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--  Customize your theme here.  -->
+
+        <item name="colorAccent">@color/white</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/bottom_navigation_bg_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorControlNormal">@color/themeColorDark</item>
+        <item name="colorPrimary">@color/themeColorDark</item>
+        <item name="colorControlActivated">@color/themeColorDark</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="progressTheme" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/moretitlecolor</item> <!-- Whatever color you want-->
+    </style>
+    <style name="AppAlertTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorHighlight">@color/white</item>
+        <item name="colorAccent">@color/moretitlecolor</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:colorBackground">@color/black_theme_color</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:textColorPrimary">#f3f3f3</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="MyMaterialTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/translucent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/moretitlecolor</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/moretitlecolor</item>
+    </style>
+
+    <style name="ProfileRadioButton" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="buttonTint">@drawable/my_compound_button_color_selector</item>
+    </style>
+
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.DeviceDefault.DatePicker">
+        <item name="android:headerBackground">@color/editHint</item>
+        <item name="android:minDate">01/01/2016</item>
+    </style>
+
+    <!-- Splash Screen theme. -->
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
+
+    <style name="MyMaterialTheme.Base.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--  Customize your theme here.  -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/themeLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorControlNormal">@color/themeColorDark</item>
+        <item name="colorPrimary">@color/themeColorDark</item>
+        <item name="colorControlActivated">@color/themeColorDark</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowDisablePreview">true</item>
+
+        <!--<item name="episode_item_back">@color/white</item>-->
+        <item name="splash_bg">@color/white</item>
+        <item name="list_shimmer">@color/shimmerLight</item>
+        <item name="title_color">@color/black</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="search_edt_backgroundColor">@color/search_grey</item>
+        <item name="header_text_color">@color/navy_blue</item>
+        <item name="more_text_color">@color/more_text_color_light</item>
+        <item name="circle_item_background_color">@color/white</item>
+        <item name="simmer_background">@color/less_white</item>
+        <item name="toolbar_background">@color/toolbar_bg_color_light</item>
+        <item name="search_icon_background">@drawable/search_navy_blue</item>
+        <item name="more_layout_background_color">@color/white</item>
+        <item name="more_recyclerview_background_color">@color/white</item>
+        <item name="more_item_text_color">@color/navy_blue</item>
+        <item name="more_item_bottom_line_color">@color/subtitlecolor</item>
+        <item name="toolbar_text_color">@color/navy_blue</item>
+        <item name="toolbar_back_arrow">@drawable/back_arrow_navy_blue</item>
+        <item name="new_password_text_and_hint_color">@color/navy_blue</item>
+        <item name="change_password_bakground_color">@color/white</item>
+        <item name="confirm_password_text_and_hint_color">@color/navy_blue</item>
+        <item name="change_password_bottom_line_color">@color/subtitlecolor</item>
+        <item name="password_toggle">@drawable/password_visibility_light</item>
+        <item name="bottomNavigationBackground">@color/bottom_navigation_bg_light</item>
+        <item name="app_edit_text_color">@color/white</item>
+        <item name="menuItemSelector">@drawable/menu_item_selector_light</item>
+        <item name="profile_background_color">@color/white</item>
+        <item name="profile_icon_background">@drawable/profile_icon_navy_blue</item>
+        <item name="email_icon_background">@drawable/email_icon_navy_blue</item>
+        <item name="watchlist_background">@color/white</item>
+        <item name="watchlist_item_title_color">@color/navy_blue</item>
+        <item name="watchlist_item_episode_color">@color/navy_blue</item>
+        <item name="watchlist_delete_icon">@drawable/delete_icon_navy_blue</item>
+        <item name="list_circle_item_title_color">@color/navy_blue</item>
+        <item name="list_circle_item_description">@color/navy_blue</item>
+        <item name="list_circle_item_genre">@color/navy_blue</item>
+        <item name="pr_item_title_text_color">@color/navy_blue</item>
+        <item name="pr_item_description_text_color">@color/navy_blue</item>
+        <item name="pr_item_genre_text_color">@color/navy_blue</item>
+        <item name="list_prtwo_item_title_color">@color/navy_blue</item>
+        <item name="list_prtwo_item_description_color">@color/navy_blue</item>
+        <item name="list_prtwo_genre_color">@color/navy_blue</item>
+        <item name="list_square_item_title_color">@color/navy_blue</item>
+        <item name="list_square_item_description_color">@color/navy_blue</item>
+        <item name="list_square_item_genre_color">@color/navy_blue</item>
+        <item name="membership_plan_background_color">@color/white</item>
+        <item name="login_background">@color/white</item>
+        <item name="lock_icon">@drawable/privacy_icon_navy_blue</item>
+        <item name="or_text_color">@color/navy_blue</item>
+        <item name="dont_have_an_account_text">@color/navy_blue</item>
+        <item name="sign_up_background_color">@color/white</item>
+        <item name="already_have_an_account_text">@color/navy_blue</item>
+        <item name="forgot_password_background">@color/white</item>
+        <item name="reset_password_text">@color/navy_blue</item>
+        <item name="search_no_result_found_text">@color/navy_blue</item>
+        <item name="search_background">@color/white</item>
+        <item name="search_toolbar_background">@color/white</item>
+        <item name="search_box_background">@drawable/search_header_drawable_white</item>
+        <item name="search_text_color">@color/navy_blue</item>
+        <item name="cancel_text_color">@color/navy_blue</item>
+        <item name="result_activity_background_color">@color/white</item>
+        <item name="row_search_title_color">@color/navy_blue</item>
+        <item name="recomended_rail_theme_color">@color/white</item>
+        <item name="detail_screen_background">@color/white</item>
+        <item name="movie_title_background_color">@color/navy_blue</item>
+        <item name="tag_color">@color/navy_blue</item>
+        <item name="expandable_text_color">@color/navy_blue</item>
+        <item name="cast_title_color">@color/navy_blue</item>
+        <item name="cast_text_color">@color/navy_blue</item>
+        <item name="more_less_text_color">@color/blue_color</item>
+        <item name="like_share_watchlist_background">@color/white</item>
+        <item name="watchlist_share_like_text_color">@color/navy_blue</item>
+        <item name="watchlist_icon_color">@drawable/add_to_watchlist_navy_blue</item>
+        <item name="like_icon">@drawable/like_icon_navy_blue</item>
+        <item name="share_icon">@drawable/share_navy_blue</item>
+        <item name="recommendation_rail_background_color">@color/white</item>
+        <item name="like_text_color">@color/navy_blue</item>
+        <item name="episode_screen_background">@color/white</item>
+        <item name="season_background_color">@color/white</item>
+        <item name="row_episode_background_color">@color/white</item>
+        <item name="episode_serial_number">@color/navy_blue</item>
+        <item name="setting_screen_background">@color/white</item>
+        <item name="language_icon">@drawable/language_icon_navy_blue</item>
+        <item name="change_language_text">@color/navy_blue</item>
+        <item name="language_text">@color/navy_blue</item>
+        <item name="tick_icon_language">@drawable/tick_arrow_navy_blue</item>
+        <item name="my_downloads_background">@color/white</item>
+        <item name="download_image">@drawable/ic_start_download_navy_blue</item>
+        <item name="pause_download">@drawable/pause_download_navy_blue</item>
+        <item name="download_item_background">@color/white</item>
+        <item name="download_tvtitle_color">@color/navy_blue</item>
+        <item name="download_description_text_color">@color/navy_blue</item>
+        <item name="no_download_video_background_color">@color/navy_blue</item>
+        <item name="app_logo">@drawable/panteao</item>
+
+        <!--<item name="tabSelector">@drawable/tab_selector_light</item>-->
+    </style>
+
+    <style name="MyMaterialTheme.Base.Dark" parent="Theme.AppCompat">
+        <!--  Customize your theme here.  -->
+        <item name="android:windowBackground">@color/theme_background_dark</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/themeLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowDisablePreview">true</item>
+
+        <!--<item name="download_circle_color">@color/otp_tint_color</item>-->
+        <!--<item name="episode_item_back">@color/episode_back_color</item>-->
+        <item name="splash_bg">@color/black</item>
+        <item name="list_shimmer">@color/shimmerDark</item>
+        <item name="title_color">@color/description_title_white</item>
+        <item name="search_edt_backgroundColor">@color/theme_background_dark</item>
+        <item name="backgroundColor">@color/theme_background_dark</item>
+        <item name="header_text_color">@color/description_title_white</item>
+        <item name="more_text_color">@color/more_text_color_dark</item>
+        <item name="circle_item_background_color">@color/black</item>
+        <item name="simmer_background">@color/shimmerDark</item>
+        <item name="search_icon_background">@drawable/search</item>
+        <item name="more_layout_background_color">@color/black_theme_color</item>
+        <item name="more_recyclerview_background_color">@color/black_theme_color</item>
+        <item name="more_item_text_color">@color/more_listtitle_color</item>
+        <item name="more_item_bottom_line_color">@color/search_toolbar_color</item>
+        <item name="toolbar_text_color">@color/white</item>
+        <item name="toolbar_back_arrow">@drawable/ic_arrow_back_black_24dp</item>
+        <item name="app_logo">@drawable/panteao</item>
+
+        <item name="new_password_text_and_hint_color">@color/login_edittxt_color</item>
+        <item name="change_password_bakground_color">@color/black_theme_color</item>
+        <item name="confirm_password_text_and_hint_color">@color/white</item>
+        <item name="change_password_bottom_line_color">@color/edit_text</item>
+        <item name="password_toggle">@drawable/password_visibility</item>
+        <item name="profile_background_color">@color/black_theme_color</item>
+        <item name="app_edit_text_color">@color/white</item>
+
+
+
+        <item name="bottomNavigationBackground">@color/bottom_navigation_bg_dark</item>
+        <item name="toolbar_background">@color/toolbar_bg_color_dark</item>
+
+
+        <item name="menuItemSelector">@drawable/menu_item_selector_dark</item>
+        <item name="menuItemTextSelector">@drawable/menu_item_text_selector_dark</item>
+        <item name="profile_icon_background">@drawable/profile_icon</item>
+        <item name="email_icon_background">@drawable/email_icon</item>
+        <item name="watchlist_background">@color/black_theme_color</item>
+        <item name="watchlist_item_title_color">@color/description_title_white</item>
+        <item name="watchlist_item_episode_color">@color/description_grey</item>
+        <item name="watchlist_delete_icon">@drawable/delete_comment_icon</item>
+        <item name="list_circle_item_title_color">@color/description_title_white</item>
+        <item name="list_circle_item_description">@color/description_grey</item>
+        <item name="list_circle_item_genre_grey">@color/description_grey</item>
+        <item name="list_circle_item_genre">@color/white</item>
+        <item name="pr_item_title_text_color">@color/white</item>
+        <item name="pr_item_title_text_color_white">@color/description_title_white</item>
+        <item name="pr_item_description_text_color">@color/white</item>
+        <item name="pr_item_description_text_color_grey">@color/description_grey</item>
+        <item name="pr_item_genre_text_color">@color/white</item>
+        <item name="list_prtwo_item_title_color">@color/description_title_white</item>
+        <item name="list_prtwo_item_description_color">@color/description_grey</item>
+        <item name="list_prtwo_genre_color">@color/description_grey</item>
+        <item name="list_square_item_title_color">@color/description_title_white</item>
+        <item name="list_square_item_description_color">@color/description_grey</item>
+        <item name="list_square_item_genre_color">@color/description_grey</item>
+        <item name="membership_plan_background_color">@color/black_theme_color</item>
+        <item name="login_background">@color/black_theme_color</item>
+        <item name="lock_icon">@drawable/privacy_icon</item>
+        <item name="or_text_color">@color/white</item>
+        <item name="dont_have_an_account_text">@color/white</item>
+        <item name="sign_up_background_color">@color/black_theme_color</item>
+        <item name="already_have_an_account_text">@color/white</item>
+        <item name="forgot_password_background">@color/black_theme_color</item>
+        <item name="reset_password_text">@color/white</item>
+        <item name="search_no_result_found_text">@color/popular_search_dark</item>
+        <item name="search_background">@color/black_theme_color</item>
+        <item name="search_toolbar_background">@color/bottom_navigation_bg_dark</item>
+        <item name="search_box_background">@drawable/search_header_drawable</item>
+        <item name="search_text_color">@color/white</item>
+        <item name="cancel_text_color">@color/grey_color_dark</item>
+        <item name="result_activity_background_color">@color/black_theme_color</item>
+        <item name="row_search_title_color">@color/description_title_white</item>
+        <item name="recomended_rail_theme_color">@color/black_theme_color</item>
+        <item name="detail_screen_background">@color/black_theme_color</item>
+        <item name="movie_title_background_color">@color/description_grey</item>
+        <item name="tag_color">@color/white</item>
+        <item name="expandable_text_color">@color/description_grey</item>
+        <item name="cast_title_color">@color/subtitlecolor</item>
+        <item name="cast_text_color">@color/subtitlecolor</item>
+        <item name="more_less_text_color">@color/more_text_color_dark</item>
+        <item name="like_share_watchlist_background">@color/black_theme_color</item>
+        <item name="watchlist_share_like_text_color">@color/subtitlecolor</item>
+        <item name="watchlist_icon_color">@drawable/add_to_watchlist</item>
+        <item name="like_icon">@drawable/like_icon</item>
+        <item name="share_icon">@drawable/share</item>
+        <item name="recommendation_rail_background_color">@color/black_theme_color</item>
+        <item name="like_text_color">@color/description_grey</item>
+        <item name="episode_screen_background">@color/black_theme_color</item>
+        <item name="season_background_color">@color/black_theme_color</item>
+        <item name="row_episode_background_color">@color/black_theme_color</item>
+        <item name="episode_serial_number">@color/duration_color</item>
+        <item name="setting_screen_background">@color/black_theme_color</item>
+        <item name="language_icon">@drawable/language_icon</item>
+        <item name="change_language_text">@color/white</item>
+        <item name="language_text">@color/white_semi_trans</item>
+        <item name="tick_icon_language">@drawable/tick_arrow</item>
+        <item name="my_downloads_background">@color/black_theme_color</item>
+        <item name="download_image">@drawable/ic_start_download</item>
+        <item name="pause_download">@drawable/pause_download</item>
+        <item name="download_item_background">@color/black_theme_color</item>
+        <item name="download_tvtitle_color">@color/white</item>
+        <item name="download_description_text_color">@color/white</item>
+        <item name="no_download_video_background_color">@color/white</item>
+
+
+        <!--<item name="tabSelector">@drawable/tab_selector_dark</item>-->
+    </style>
+
+
+
+
+    <color name="translucent">#32000000</color>
+
+    <style name="FullscreenTheme" parent="MyMaterialTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="SlidingDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/zoom_in</item>
+        <item name="android:windowExitAnimation">@anim/zoom_out</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:colorBackground">@color/alert_dialog_background</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="MySeekBar" parent="@style/Widget.AppCompat.SeekBar">
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorControlActivated">@color/blue</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
+        <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>
+        <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
+        <item name="castExpandedControllerToolbarStyle">
+            @style/ThemeOverlay.AppCompat.Dark.ActionBar
+        </item>
+    </style>
+
+    <style name="CustomCastIntroOverlay" parent="CastIntroOverlay">
+        <item name="castButtonTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Button
+        </item>
+        <item name="castTitleTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Title
+        </item>
+    </style>
+
+    <style name="TextAppearance.CustomCastIntroOverlay.Button" parent="android:style/TextAppearance">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="TextAppearance.CustomCastIntroOverlay.Title" parent="android:style/TextAppearance.Large">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="CustomCastMiniController" parent="CastMiniController">
+        <item name="castShowImageThumbnail">true</item>
+        <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
+    </style>
+
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+
+</resources>

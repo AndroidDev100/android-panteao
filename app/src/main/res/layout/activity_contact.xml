@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="?attr/backgroundColor"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"></include>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/NontonSize15"
+            android:paddingTop="@dimen/NontonSize15"
+            android:paddingLeft="@dimen/NontonSize10"
+            android:paddingRight="@dimen/NontonSize10"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/bank"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/NontonSize30"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:background="?attr/language_icon"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Bank Transfer"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textSize="@dimen/font_medium_large"
+                    android:paddingLeft="@dimen/NontonSize10"
+                    android:paddingRight="@dimen/NontonSize10"
+                    android:textColor="?attr/more_item_text_color"
+                    android:layout_gravity="center" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:background="?attr/language_icon"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Line"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textSize="@dimen/font_medium_large"
+                    android:paddingLeft="@dimen/NontonSize10"
+                    android:paddingRight="@dimen/NontonSize10"
+                    android:textColor="?attr/more_item_text_color"
+                    android:layout_gravity="center" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="?attr/more_item_bottom_line_color" />
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <FrameLayout
+            android:id="@+id/flUserComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/NontonSize5">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/close_comments"
+                    android:layout_width="@dimen/NontonSize30"
+                    android:layout_height="@dimen/NontonSize30"
+                    android:layout_gravity="right"
+                    android:src="@drawable/close_icon" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comment_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/NontonSize80" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/write_comment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/NontonSize60"
+                android:layout_gravity="bottom"
+                android:gravity="bottom">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="@dimen/NontonSize40"
+                    android:layout_height="@dimen/NontonSize40"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/NontonSize10"
+                    android:layout_marginBottom="@dimen/NontonSize5"
+                    android:src="@drawable/profile_dark"
+                    app:civ_border_color="@color/detail_selection_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/NontonSize20"
+                    android:layout_toRightOf="@+id/userImage"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="@string/add_comment"
+                        android:maxLines="1"
+                        android:textColor="@color/subtitlecolor"
+                        android:textColorHint="@color/subtitlecolor"
+                        android:textSize="@dimen/font_medium" />
+
+                    <View
+                        android:id="@+id/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/NontonSize1"
+                        android:layout_marginTop="@dimen/NontonSize8"
+                        android:background="@color/lightGreyColor"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/NontonSize3"
+                    android:layout_toLeftOf="@+id/tvPostComment"
+                    android:layout_toRightOf="@+id/userImage"
+                    android:textColorHint="@color/blackColor"
+                    android:visibility="gone"
+                    app:hintEnabled="false"
+                    app:hintTextAppearance="@style/TextInputLayout.HintText">
+
+
+                    <EditText
+                        android:id="@+id/evUserComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="@string/add_comment"
+                        android:inputType="textNoSuggestions|textVisiblePassword"
+                        android:overScrollMode="always"
+                        android:paddingBottom="@dimen/font_large"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:singleLine="true"
+                        android:textColor="@color/subtitlecolor"
+                        android:textSize="@dimen/TextSize12"
+                        app:theme="@style/TextInputLayout" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/tvPostComment"
+                    android:layout_width="@dimen/NontonSize20"
+                    android:layout_height="@dimen/NontonSize20"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/NontonSize20"
+                    android:layout_marginTop="@dimen/NontonSize5"
+                    android:layout_marginRight="@dimen/NontonSize10"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/ic_send"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </FrameLayout>
+    </RelativeLayout>
+</layout>

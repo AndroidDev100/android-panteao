@@ -1,0 +1,48 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!--QA ID-->
+    <string name="facebook_app_id">729810874460112</string>
+    <string name="branch_key">key_live_egG0oap83Po2jiMG3GGEXhmorrpmtOVA</string>
+    <string name="branch_key_test">key_test_pnO3bgp87Ma6jkQI9UUzZdjfqthasVGG</string>
+    <string name="playstore_base_24">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjMj0QYR08ay2Vh6qmNjHBNgU7DzX1Wsc6dDvk0bFfG9vOkzkEQMMeyPMi/TrvG3WdqTaTK6nmY5Gyfe25ya28CWTkiD/HDflaPR82FdUk6eYXnSnv4fALdhUL3Zb9lhNocaJJCDfrm47VDRpKIJS0Mpr2nXt3o0967zdM2UkikRWybJURcgRm/qWo9PgGRexSYRfAwtUFAiA1mgAowANQrks1mbuPGt0WFz1UiCeQVHhpyPGvJFGT4GViyuMKQwPLZBGKgrXiFtdK+660axSKRdD0Q4djt9ucdTVClW8ADthVuVCqCozXFW5sEjBlv70TP5mgj7CRdEECteJnH4WFQIDAQAB</string>
+    <string name="playstore_subscription_monthly">com.nonton.testing.monthly </string>
+    <string name="playstore_subscription_weekly">com.nonton.testing.weekly </string>
+    <string name="by_email">By Email</string>
+    <string name="by_line">By Line</string>
+
+    <string name="update_has_downloaded">An update has just been downloaded.</string>
+    <string name="restart">RESTART APP</string>
+
+    <string name="user_already_exists">User already has an account with this email or credential.​​</string>
+    <string name="password_cannot_be_blank">Password cannot be blank</string>
+    <string name="please_provide_valid_name">Please provide a valid name</string>
+    <string name="server_error">Something went wrong at our end. Please try again.</string>
+    <string name="either_user_email_not_found">Either user or email not found.</string>
+    <string name="user_inactive_kindly_contact_administrator">User is Inactive, kindly contact the administrator.</string>
+    <string name="fb_id_cannot_be_null_or_empty">Fb id cannot be null or empty.</string>
+
+    <string name="email_id_cannot_be_blank">Email id cannot be blank</string>
+    <string name="user_does_not_exists">User with this email id does not exist​</string>
+    <string name="user_deactivated">This user has been deactivated. Please contact support​</string>
+    <string name="user_can_not_login">User cannot login with this method​</string>
+    <string name="username_password_doest_match">Username or Password doesn\'t match​​</string>
+    ​
+    <string name="username_must_be_loggedin">User must be logged in​​</string>
+    <string name="user_not_found">User not found</string>
+    <string name="payment_error">There was an error processing your request, please try after some time. If additional support is required, please contact us at</string>
+    <string name="live_tag">Live</string>
+    <string name="skip_intro">Skip Intro</string>
+    <string name="streaming_settings">Streaming Settings</string>
+    <string name="auto">Auto</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="enter_coupon_code">Enter a coupon code</string>
+    <string name="coupon_code">Coupon Code</string>
+
+    <string name="waiting_for_wifi">waiting for wifi</string>
+    <string name="download_will_begin">Your download will begin once you are come on WiFi. Or you can change the setting below:</string>
+    <string name="download_over_wifi">Download over WiFi</string>
+    <string name="you_can_change">*You can chnage this from settings</string>
+
+</resources>

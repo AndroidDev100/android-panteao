@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+            android:text="@string/prime_memb_issue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium_large" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+            android:text="@string/contactus_description"
+            android:textColor="@color/edit_text"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+            android:text="@string/contactus_second_desc"
+            android:textColor="@color/edit_text"
+            android:textSize="@dimen/font_medium" />
+
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/NontonSize45"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+            android:gravity="center"
+            android:text="@string/by_email"
+            android:textColor="@color/rounded_button_text_color"
+            android:textSize="@dimen/font_medium"
+
+            />
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/NontonSize45"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+            android:gravity="center"
+            android:text="@string/by_line"
+            android:textColor="@color/rounded_button_text_color"
+            android:textSize="@dimen/font_medium"
+
+            />
+    </LinearLayout>
+</layout>

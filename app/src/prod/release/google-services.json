@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "607174406587",
+    "firebase_url": "https://mvhub-prod.firebaseio.com",
+    "project_id": "mvhub-prod",
+    "storage_bucket": "mvhub-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607174406587:android:0c44ca284ee577457b949e",
+        "android_client_info": {
+          "package_name": "panteao.make.ready"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607174406587-9ibcmqmsacgp00uh9pvlpv63lubs5jgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "panteao.make.ready",
+            "certificate_hash": "cfaf7ba76c17030caf7c18540c7d8efdbf3e2805"
+          }
+        },
+        {
+          "client_id": "607174406587-u6k8urb9tr03s86ssr0940g5gmgl242j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGny2mLmV86ZrcHrcBRv-0aMxlQctsYMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607174406587-u6k8urb9tr03s86ssr0940g5gmgl242j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "607174406587-up89om839k95917khr9dse3l9apn2qb6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "panteao.make.ready"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

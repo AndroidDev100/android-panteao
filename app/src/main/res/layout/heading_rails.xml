@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/header_top_margin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/header_left_margin"
+            android:layout_marginEnd="@dimen/header_right_margin"
+            android:layout_marginBottom="@dimen/header_bottom_margin"
+            android:orientation="horizontal"
+            android:padding="@dimen/header_padding"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/heading_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:text="ABCCCCC"
+                android:textColor="?header_text_color"
+                android:textSize="@dimen/railTitle"
+                app:layout_constraintEnd_toStartOf="@id/moreText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/moreText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto_regular"
+                android:maxLines="1"
+                android:text="@string/title_more"
+                android:textColor="?attr/more_text_color"
+                android:textSize="@dimen/_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="334dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/shimmer_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginLeft="@dimen/_9sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/simmer_background" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

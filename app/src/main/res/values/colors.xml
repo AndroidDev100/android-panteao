@@ -1,0 +1,131 @@
+<resources>
+    <color name="colorPrimary">#d8bc84</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#006de4</color>
+
+    <color name="titlecolor">#272727</color>
+
+
+    <color name="google_color">#D34836</color>
+    <color name="signup_title">#358F00</color>
+    <color name="disable_button_color">#F0EDEC</color>
+    <color name="comment_date_color">#72706F</color>
+    <color name="titleblackcolor">#282828</color>
+    <color name="no_connection_title">#575757</color>
+    <color name="update_title_color">#67af45</color>
+    <color name="profilegrey">#0c575757</color>
+    <color name="facebookcolor">#3b5998</color>
+
+    <color name="login_sign_up_tab">#162b2a2a</color>
+    <color name="lightgreencolor">#66af45</color>
+    <color name="edit_hint">#56454545</color>
+    <color name="more_text_underline">#32575757</color>
+    <color name="lightGreyColor">#f3f3f3</color>
+    <color name="lineGreyColor">#515151</color>
+    <color name="editHint">#95aeb3</color>
+    <color name="greyTextColor">#707070</color>
+    <color name="edittextview">#454545</color>
+    <color name="toast_back">#6F006DE4</color>
+    <color name="toast_text">#000000</color>
+    <color name="lightGreyProfile">#A2A2A2</color>
+    <color name="darkGreyProfile">#5B5A5A</color>
+    <color name="blackColor">#000000</color>
+    <color name="transBlackColor">#79000000</color>
+    <color name="transparentColor">#00000000</color>
+    <color name="white">#ffffff</color>
+    <color name="description_title_white">#fefefe</color>
+    <color name="description_grey">#929292</color>
+    <color name="less_white">#7de3e3e3</color>
+    <color name="navy_blue">#191925</color>
+    <color name="blue_color">#391F68</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="transparent_series">#99000003</color>
+
+    <color name="inspection_color">#F23338</color>
+    <color name="pos_req_color">#007386</color>
+    <color name="toolbarheadcolor">#282828</color>
+    <color name="colortransparent">#00000000</color>
+    <color name="material_grey_400">#bdbcbc</color>
+    <color name="alert_ok_cancel">#178D81</color>
+    <color name="watch_history">#dee1e5</color>
+    <color name="detail_selection_color">#393939</color>
+    <color name="desc_text_color">#2B2A2A</color>
+    <color name="icon_text_color">#4D4D4D</color>
+    <color name="continue_watching">#55aa29</color>
+
+
+    <color name="theme_screen_background">#393939</color>
+    <color name="theme_toolbar">#2B2A2A</color>
+    <color name="theme_text">#4D4D4D</color>
+    <color name="theme_heading">#55aa29</color>
+    <color name="theme_transparent">#00000000</color>
+    <color name="theme_error">#2B2A2A</color>
+    <color name="theme_title">#4D4D4D</color>
+    <color name="theme_app_base">#55aa29</color>
+    <color name="theme_premium">#55aa29</color>
+    <color name="theme_new_badge">#55aa29</color>
+    <color name="theme_subheading">#55aa29</color>
+    <color name="theme_description">#55aa29</color>
+    <color name="theme_hint">#55aa29</color>
+    <color name="theme_tint_icons">#55aa29</color>
+    <color name="theme_tint_navigation_icon">#ffffff</color>
+    <color name="theme_tint_more_fragment_icon">#ffffff</color>
+    <color name="theme_white">#ffffff</color>
+    <color name="theme_black">#000000</color>
+
+    <color name="black_theme_color">#000000</color>
+    <color name="bottom_nav_color_f">#757575</color>
+    <color name="bottom_nav_color_t">#ffffff</color>
+    <color name="title_header_color">#B4FFFFFF</color>
+
+    <color name="subtitlecolor">#a19e9e</color>
+    <color name="dialog_green_color">#006de4</color>
+
+    <color name="search_toolbar_color">#212121</color>
+    <color name="popular_search_color">#E50914</color>
+    <color name="search_grey">#adadad</color>
+    <color name="edit_text">#94FFFFFF</color>
+    <color name="home_screen_seperator">#12575757</color>
+    <color name="icons_color">#999999</color>
+    <color name="more_listtitle_color">#999999</color>
+    <color name="progress_bar_color">#006de4</color>
+    <color name="splash_bg_color">#1F1E2F</color>
+    <!--<color name="badge_background_color">#00BBF6</color>-->
+    <color name="badge_background_color">#E50914</color>
+    <color name="gray">#BDBEC2</color>
+
+    <color name="themeLight">#000000</color>
+    <color name="theme_background_dark">#000000</color>
+    <color name="more_icon_color">#1F1E2F</color>
+    <color name="more_item_line_color">#F5F4F2</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="more_text_color_dark">#E50914</color>
+    <color name="more_text_color_light">#391F68</color>
+    <color name="toolbar_bg_color_dark">#000000</color>
+    <color name="toolbar_bg_color_light">#ffffff</color>
+    <color name="bottom_navigation_bg_dark">#323232</color>
+    <color name="bottom_navigation_bg_light">#ffffff</color>
+    <color name="shimmerDark">#616167</color>
+    <color name="shimmerLight">#e9e9e9</color>
+    <color name="shimmer_color">#252d35</color>
+    <color name="grey_color_dark">#98989e</color>
+    <color name="popular_search_dark">#5b5f6c</color>
+    <color name="search_hint_dark">#98989e</color>
+    <color name="moretitlecolor">#E50914</color>
+    <color name="themeColorDark">#E50914</color>
+
+
+    <color name="rippelColor">#FFFFFF</color>
+
+    <color name="duration_color">#B3B3B3</color>
+    <color name="alert_dialog_background">#343434</color>
+    <color name="login_edittxt_color">#5C5F6C</color>
+    <color name="user_profile_name">#1d1d1d</color>
+    <color name="rounded_button_text_color">#1d1d1d</color>
+    <color name="cast_expanded_controller_live_indicator_color">@color/blue</color>
+    <color name="cast_seekbar_progress_thumb_color">@color/blue</color>
+    <color name="red">#FD3B31</color>
+    <color name="grey_season_bg">#9B9B9B</color>
+
+
+</resources>

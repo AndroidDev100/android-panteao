@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/season_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundColor"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/header_season"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/season_heading_margin_left"
+                android:layout_marginBottom="@dimen/_70sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingTop="@dimen/_26sdp"
+                android:paddingBottom="@dimen/_70sdp"
+                android:textColor="@color/moretitlecolor"
+                android:textSize="@dimen/coming_soon_text_size"
+                />
+
+            <LinearLayout
+                android:id="@+id/header_season"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true">
+
+                <TextView
+                    android:id="@+id/season_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/season_heading_margin_left"
+                    android:layout_marginTop="@dimen/NontonSize12"
+                    android:background="@drawable/season_header_bc"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_7sdp"
+                    android:text=""
+                    android:textColor="@color/more_text_color_dark"
+                    android:textSize="@dimen/detailHeadingSize" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/coming_soon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/header_season"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/season_heading_margin_left"
+                android:layout_marginBottom="@dimen/_70sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingTop="@dimen/_26sdp"
+                android:paddingBottom="@dimen/_70sdp"
+                android:text="@string/coming_soon"
+                android:textColor="@color/moretitlecolor"
+                android:textSize="@dimen/coming_soon_text_size"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/series_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header_season"
+                android:layout_marginTop="@dimen/season_heading_margin_left"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_below="@id/series_recycler_view"
+                android:layout_centerInParent="true"
+                android:theme="@style/progressTheme"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/seasonMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/series_recycler_view"
+                android:layout_marginTop="@dimen/NontonSize15"
+                android:background="@drawable/rounded_button"
+                android:gravity="center"
+               >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_7sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:text="@string/load_more_episodes"
+                    android:textColor="@color/rounded_button_text_color"
+                    android:textSize="@dimen/TextSize15"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/seriesShimmerRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/recycleview_margin_top"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+</layout>
