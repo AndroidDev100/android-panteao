@@ -654,7 +654,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                             finish();
                         } else {
                             dismissLoading(getBinding().progressBar);
-                            showDialog(MemberShipPlanActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.payment_error) + " " + "support@mvhub.com");
+                            showDialog(MemberShipPlanActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.payment_error) + " " + "support@panteao.com");
                         }
 
                     }
