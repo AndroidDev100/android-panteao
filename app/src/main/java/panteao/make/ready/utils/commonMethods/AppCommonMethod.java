@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -29,6 +30,9 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.mmtv.utils.helpers.downloads.DownloadHelper;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageType;
@@ -283,7 +287,7 @@ public class AppCommonMethod {
         return url;
     }
 
-    public static void openShareDialog(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
+/*    public static void openShareDialog(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
         mActivity = new WeakReference<>(activity);
         new ToastHandler(mActivity.get()).show("Loading...");
         BranchUniversalObject buo = new BranchUniversalObject()
@@ -322,7 +326,7 @@ public class AppCommonMethod {
                 Logger.e("BRANCH ERROR", error.getMessage());
             }
         });
-    }
+    }*/
 
     public static void copyShareURL(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
         mActivity = new WeakReference<>(activity);
@@ -1558,4 +1562,95 @@ public class AppCommonMethod {
         Log.w("expiryDate",date);
         return date;
     }
+
+    static Uri dynamicLinkUri;
+
+    public static void openShareDialog(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
+
+
+        try {
+            String uri = createURI(title,assetId,assetType ,imgUrl, activity);
+
+
+
+            Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    //.setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
+                    //.setLink(Uri.parse(uri))
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                            .build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
+                    .setSocialMetaTagParameters(
+                            new DynamicLink.SocialMetaTagParameters.Builder()
+                                    .setTitle(title)
+                                    .setDescription(seasonNumber)
+                                    .setImageUrl(Uri.parse(imgUrl))
+                                    .build())
+                    .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
+                    .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                            if (task.isSuccessful()) {
+
+                                dynamicLinkUri = task.getResult().getShortLink();
+                                Uri flowchartLink = task.getResult().getPreviewLink();
+                                Log.w("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                try {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (dynamicLinkUri != null) {
+                                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                sharingIntent.setType("text/plain");
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + title + " " + activity.getResources().getString(R.string.on_enveu) + "\n" + dynamicLinkUri.toString());
+                                                // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
+
+
+                                                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+
+                                            }
+
+                                        }
+                                    });
+                                } catch (Exception ignored) {
+
+                                }
+
+
+                            } else {
+                                // Log.w("dynamicUrl",dynamicLinkUri.toString());
+                            }
+                        }
+                    });
+
+            shortLinkTask.toString();
+
+        } catch (Exception ignored) {
+
+        }
+    }
+    private static String createURI(String title, int assetId, String assetType,String imgUrl, Activity activity) {
+        String uri = "";
+        try {
+            String assetId1 = assetId + "";
+            String assetType1 = assetType + "";
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId1)
+                    .appendQueryParameter("mediaType", assetType1)
+                    .appendQueryParameter("image", imgUrl)
+                    .appendQueryParameter("name", title)
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .build().toString();
+
+        } catch (Exception ignored) {
+            uri = "";
+        }
+
+        return uri;
+    }
+
 }

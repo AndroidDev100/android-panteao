@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.make.baseClient.BaseClient;
 import com.make.baseClient.BaseConfiguration;
 import com.make.baseClient.BaseDeviceType;
@@ -435,7 +440,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         //Branch.sessionBuilder(this).withCallback(branchReferralInitListener).withData(getIntent() != null ? getIntent().getData() : null).init();
     }
 
-    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
+/*    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
         @Override
         public void onInitFinished(@Nullable JSONObject referringParams, @Nullable BranchError error) {
             if (error == null) {
@@ -475,7 +480,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 Log.i("returnedObject er", error.getMessage());
             }
         }
-    };
+    };*/
 
     private void redirectToHome() {
         boolean updateValue = getForceUpdateValue(null, 2);
@@ -710,8 +715,53 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 viaIntent = true;
             }
         } else {
-            Branch.getInstance().reInitSession(this, branchReferralInitListener);
+           // Branch.getInstance().reInitSession(this, branchReferralInitListener);
+            setBranchInIt();
         }
+    }
+
+    private void setBranchInIt() {
+
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+            @Override
+            public void onSuccess(@NonNull PendingDynamicLinkData pendingDynamicLinkData) {
+                try {
+                    if (pendingDynamicLinkData != null) {
+                        Log.w("deepLink","in2"+pendingDynamicLinkData.getLink());
+                        Uri deepLink = pendingDynamicLinkData.getLink();
+                        Log.w("deepLink","in2"+pendingDynamicLinkData.getLink()+" "+deepLink.getQuery());
+                        if (deepLink!=null){
+                            if (deepLink.getQuery()!=null && deepLink.getQuery().contains("link=")){
+                                String arr[]=deepLink.getQuery().toString().split("link=");
+                                String url=arr[1];
+                                Log.w("deepLink","first"+url);
+                                Uri newU=Uri.parse(url);
+                                Log.w("deepLink","second"+newU.toString());
+                                Log.w("deepLink","third"+newU.getQueryParameter("id"));
+                                Log.w("deepLink","in2---"+newU.getQueryParameter("mediaType"));
+                                Log.w("deepLink","in2---"+newU.getQueryParameter("subMediaType"));
+                                redirectToHome();
+
+                            }}
+
+                    }
+                }catch (Exception e){
+                    Logger.e("Catch", String.valueOf(e));
+                }
+
+
+
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+
     }
 
     @Override

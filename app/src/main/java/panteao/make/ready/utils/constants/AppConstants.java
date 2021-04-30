@@ -295,5 +295,12 @@ public interface AppConstants {
     String MAIN_MORE="Main - More";
 
 
+// FireBaseLinks
+String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
+    String FIREBASE_DPLNK_PREFIX = "https://panteaoandroid.page.link/";
+   String FIREBASE_IOS_PACKAGE = "com.panteaoproductions.mobile.dev";
+  String FIREBASE_ANDROID_PACKAGE = "panteao.make.ready.dev";
+
+
 
 }

@@ -119,9 +119,34 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/fcm_host"
+                    android:pathPrefix="@string/fcm_prefix"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/fcm_prefix_link"
+                    android:scheme="http" />
+                <data
+                    android:host="@string/fcm_host_link"
+                    android:scheme="https" />
+            </intent-filter>
+
             <!-- Branch App Links (optional) -->
 
-            <intent-filter android:autoVerify="true">
+         <!--   <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -130,18 +155,18 @@
                 <data
                     android:host="www.panteao.com"
                     android:scheme="https" />
-                <!-- <data -->
-                <!-- android:host="www.watcho.com" -->
-                <!-- android:scheme="https" /> -->
+                &lt;!&ndash; <data &ndash;&gt;
+                &lt;!&ndash; android:host="www.watcho.com" &ndash;&gt;
+                &lt;!&ndash; android:scheme="https" /> &ndash;&gt;
 
                 <data
                     android:host="@string/branch_host"
                     android:scheme="https" />
-                <!-- <data -->
-                <!-- android:host="lets.watcho.com" -->
-                <!-- android:scheme="https" /> -->
+                &lt;!&ndash; <data &ndash;&gt;
+                &lt;!&ndash; android:host="lets.watcho.com" &ndash;&gt;
+                &lt;!&ndash; android:scheme="https" /> &ndash;&gt;
 
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <meta-data
