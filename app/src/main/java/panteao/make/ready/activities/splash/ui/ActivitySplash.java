@@ -1,3 +1,4 @@
+
 package panteao.make.ready.activities.splash.ui;
 
 import android.app.Activity;
@@ -108,6 +109,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     private Animation zoomInAnimation;
     private Animation rotateAnimation;
     private Animation translateAnimation;
+    JSONObject deepLinkObject=null;
 
     @Override
     public ActivitySplashBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -153,6 +155,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
         Logger.e("IntentData", new Gson().toJson(this.getIntent().getData()));
         printHashKey();
+
     }
 
     private void printHashKey() {
@@ -440,7 +443,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         //Branch.sessionBuilder(this).withCallback(branchReferralInitListener).withData(getIntent() != null ? getIntent().getData() : null).init();
     }
 
-/*    private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
+/*   private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
         @Override
         public void onInitFinished(@Nullable JSONObject referringParams, @Nullable BranchError error) {
             if (error == null) {
@@ -567,7 +570,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
 
-    private void redirections(JSONObject jsonObject) {
+    private void  redirections(JSONObject jsonObject) {
         try {
             callConfig(jsonObject, null);
         } catch (Exception e) {
@@ -715,7 +718,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 viaIntent = true;
             }
         } else {
-           // Branch.getInstance().reInitSession(this, branchReferralInitListener);
+         //   Branch.getInstance().reInitSession(this, branchReferralInitListener);
             setBranchInIt();
         }
     }
@@ -727,22 +730,69 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             public void onSuccess(@NonNull PendingDynamicLinkData pendingDynamicLinkData) {
                 try {
                     if (pendingDynamicLinkData != null) {
-                        Log.w("deepLink","in2"+pendingDynamicLinkData.getLink());
                         Uri deepLink = pendingDynamicLinkData.getLink();
-                        Log.w("deepLink","in2"+pendingDynamicLinkData.getLink()+" "+deepLink.getQuery());
-                        if (deepLink!=null){
-                            if (deepLink.getQuery()!=null && deepLink.getQuery().contains("link=")){
-                                String arr[]=deepLink.getQuery().toString().split("link=");
-                                String url=arr[1];
-                                Log.w("deepLink","first"+url);
-                                Uri newU=Uri.parse(url);
-                                Log.w("deepLink","second"+newU.toString());
-                                Log.w("deepLink","third"+newU.getQueryParameter("id"));
-                                Log.w("deepLink","in2---"+newU.getQueryParameter("mediaType"));
-                                Log.w("deepLink","in2---"+newU.getQueryParameter("subMediaType"));
-                                redirectToHome();
+                        Log.e("deepLink","in2"+pendingDynamicLinkData.getLink()+" "+deepLink.getQuery());
 
-                            }}
+                        if (deepLink!=null){
+
+                            Uri uri = Uri.parse(String.valueOf(deepLink));
+                            String id = null;
+                            String mediaType = null;
+                            try {
+                                 id = uri.getQueryParameter("id");
+                                 mediaType = uri.getQueryParameter("mediaType");
+                                 Log.w("programeID",id);
+                                 Log.w("programeMediaType",mediaType);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (!mediaType.equalsIgnoreCase("") && !id.equalsIgnoreCase("")) {
+                                //Logger.e("ASSET TYPE", String.valueOf(viaIntent));
+                                KsPreferenceKeys.getInstance().setAppPrefJumpTo(mediaType);
+                                KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
+                                KsPreferenceKeys.getInstance().setAppPrefJumpBackId(Integer.parseInt(id));
+                                deepLinkObject=AppCommonMethod.createDynamicLinkObject(id,mediaType);
+                                redirections(deepLinkObject);
+                                Log.w("redirectionss", "redirections");
+
+                            } else {
+                                redirectToHome();
+                            }
+
+
+
+
+
+                              /*  Logger.e("BranchCall", String.valueOf(referringParams));
+                                int assestId = 0;
+                                String contentType = "";
+                                if (referringParams.has("id") && referringParams.has("contentType")) {
+                                    try {
+                                        assestId = Integer.parseInt(referringParams.getString("id"));
+                                        contentType = referringParams.getString("contentType");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (!contentType.equalsIgnoreCase("") && assestId > 0) {
+                                        Logger.e("ASSET TYPE", String.valueOf(viaIntent));
+                                        KsPreferenceKeys.getInstance().setAppPrefJumpTo(contentType);
+                                        KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
+                                        KsPreferenceKeys.getInstance().setAppPrefJumpBackId(assestId);
+                                        redirections(referringParams);
+                                        Log.w("redirectionss", "redirections");
+
+                                    } else {
+                                        redirectToHome();
+                                    }
+
+                                } else {
+                                    redirectToHome();
+                                }*/
+                           // http://www.panteao.com/?id=32308&mediaType=SERIES&image=https:
+                            // cf-images.ap-southeast-1.prod.boltdns.net/v1/static/5854923532001/
+                            // f875275a-1a20-4022-98df-9e6562f7994d/e84c09fb-10a7-497a-9bc1-307ea942bcef/1280x720/match/image.jpg&name=Criminal+Justice&apn=panteao.make.ready.dev
+
+                        }
 
                     }
                 }catch (Exception e){

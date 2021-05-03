@@ -301,6 +301,10 @@ String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
    String FIREBASE_IOS_PACKAGE = "com.panteaoproductions.mobile.dev";
   String FIREBASE_ANDROID_PACKAGE = "panteao.make.ready.dev";
 
+    String WIDTH = "/width/";
+    String HEIGHT = "/height/";
+    String QUALITY_IMAGE = "/quality/100";
+
 
 
 }

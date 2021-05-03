@@ -157,6 +157,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
         }
 
+
         if (getActivity() != null && preference == null)
             preference = KsPreferenceKeys.getInstance();
         bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);

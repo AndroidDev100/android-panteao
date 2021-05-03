@@ -329,7 +329,74 @@ public class AppCommonMethod {
     }*/
 
     public static void copyShareURL(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
-        mActivity = new WeakReference<>(activity);
+        try {
+            //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
+            //  Log.e("FinalUrl-->>in", imageURL);
+            Log.e("ImageUrl-->>in", imgUrl);
+            String uri = createURI(title,assetId,assetType ,imgUrl, activity);
+
+
+
+            Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    //.setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setLink(Uri.parse(uri))
+                    .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
+                    //.setLink(Uri.parse(uri))
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                            .build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
+                    .setSocialMetaTagParameters(
+                            new DynamicLink.SocialMetaTagParameters.Builder()
+                                    .setTitle(title)
+                                    .setDescription(seasonNumber)
+                                    .setImageUrl(Uri.parse(imgUrl))
+                                    .build())
+                    .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
+                    .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                            if (task.isSuccessful()) {
+
+                                dynamicLinkUri = task.getResult().getShortLink();
+                                Uri flowchartLink = task.getResult().getPreviewLink();
+                                Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                // Log.e("flowchartLink", String.valueOf(flowchartLink));
+                                try {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (dynamicLinkUri != null) {
+                                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                sharingIntent.setType("text/plain");
+                                                sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + title + " " + activity.getResources().getString(R.string.on_enveu) + "\n" + dynamicLinkUri.toString());
+                                                // sharingIntent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.checkout) + " " + asset.getName() + " " + activity.getResources().getString(R.string.on_Dialog) + "\n" + "https://stagingsott.page.link/?link="+dynamicLinkUri.toString()+"&apn=com.astro.stagingsott");
+
+
+                                                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
+
+                                            }
+
+                                        }
+                                    });
+                                } catch (Exception ignored) {
+
+                                }
+
+
+                            } else {
+                                // Log.w("dynamicUrl",dynamicLinkUri.toString());
+                            }
+                        }
+                    });
+
+            shortLinkTask.toString();
+
+        } catch (Exception ignored) {
+
+        }
+/*        mActivity = new WeakReference<>(activity);
         // new ToastHandler(mActivity.get()).show("Loading...");
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setTitle(title)
@@ -359,17 +426,17 @@ public class AppCommonMethod {
                     clipboard.setPrimaryClip(clip);
                     new ToastHandler(mActivity.get()).show("Copied");
                 }
-              /*  Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+              *//*  Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + title + " " + mActivity.get().getResources().getString(R.string.on_enveu) + "\n" + sharingURL);
                 activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
-*/
+*//*
                 Logger.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
             } else {
                 Logger.e("BRANCH ERROR", error.getMessage());
             }
-        });
+        });*/
     }
 
 
@@ -1470,6 +1537,20 @@ public class AppCommonMethod {
         return jsonObject;
     }
 
+    ///// Create dynamic link object
+
+    public static JSONObject createDynamicLinkObject(String id, String mediaType) {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("contentType",mediaType);
+            jsonObject.put("id",id);
+        }catch (Exception ignored){
+
+        }
+
+        return jsonObject;
+    }
+
     public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
         try {
             if (baseCategory!=null){
@@ -1569,6 +1650,9 @@ public class AppCommonMethod {
 
 
         try {
+            //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
+          //  Log.e("FinalUrl-->>in", imageURL);
+            Log.e("ImageUrl-->>in", imgUrl);
             String uri = createURI(title,assetId,assetType ,imgUrl, activity);
 
 
@@ -1597,7 +1681,8 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                Log.w("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                               // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
                                         @Override
@@ -1632,7 +1717,7 @@ public class AppCommonMethod {
 
         }
     }
-    private static String createURI(String title, int assetId, String assetType,String imgUrl, Activity activity) {
+    private static String createURI(String title, int assetId, String assetType,String imgUrl1, Activity activity) {
         String uri = "";
         try {
             String assetId1 = assetId + "";
@@ -1641,7 +1726,7 @@ public class AppCommonMethod {
                     .buildUpon()
                     .appendQueryParameter("id", assetId1)
                     .appendQueryParameter("mediaType", assetType1)
-                    .appendQueryParameter("image", imgUrl)
+                    .appendQueryParameter("image", imgUrl1)
                     .appendQueryParameter("name", title)
                     .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
                     .build().toString();
