@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mmtv.utils.helpers.downloads.DownloadHelper;
+//import panteao.make.ready.utils.helpers.downloads.DownloadHelper;
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.homeactivity.viewmodel.HomeViewModel;
@@ -176,7 +176,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     String[] label2;
     String[] label3;
-    DownloadHelper downloadHelper;
+//    DownloadHelper downloadHelper;
     private void modelCall() {
 
         viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(HomeViewModel.class);
@@ -224,7 +224,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }
 
         if (getActivity()!=null){
-            downloadHelper = new DownloadHelper(getActivity());
+//            downloadHelper = new DownloadHelper(getActivity());
         }
 
 
@@ -491,9 +491,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 });
 
                 try {
-                    if (downloadHelper!=null && getActivity()!=null){
-                        downloadHelper.deleteAllVideos(getActivity());
-                    }
+//                    if (downloadHelper!=null && getActivity()!=null){
+//                        downloadHelper.deleteAllVideos(getActivity());
+//                    }
                 }catch (Exception ignored){
 
                 }

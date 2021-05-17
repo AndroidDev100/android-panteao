@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.exoplayer2.util.Log;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -25,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+
 import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.search.adapter.CategoriedSearchAdapter;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
@@ -188,7 +188,6 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         model = new ArrayList<>();
         callShimmer(getBinding().searchResultRecycler);
         setRecyclerProperties(getBinding().searchResultRecycler);
-        Log.d("Searchterm",searchKeyword);
          AppCommonMethod.trackFcmCustomEvent(ActivitySearch.this, AppConstants.SEARCH,"","","",0," ",0,"",0,0,searchKeyword,"","","");
 
         getBinding().rootView.setVisibility(View.GONE);
@@ -421,7 +420,6 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     @Override
     public void onEnveuItemClicked(EnveuVideoItemBean itemValue) {
-        Log.d("rowItem","searchitem");
         AppCommonMethod.trackFcmEvent("Content Screen","", getApplicationContext(),0);
 
 

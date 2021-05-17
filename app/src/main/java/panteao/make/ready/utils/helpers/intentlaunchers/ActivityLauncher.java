@@ -9,7 +9,6 @@ import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.downloads.MyDownloads;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
@@ -35,28 +34,6 @@ import panteao.make.ready.activities.search.ui.ActivitySearch;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import com.google.gson.Gson;
-
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
-import panteao.make.ready.activities.listing.listui.ListActivity;
-import panteao.make.ready.activities.listing.ui.GridActivity;
-import panteao.make.ready.activities.notification.ui.NotificationActivity;
-import panteao.make.ready.activities.profile.ui.ProfileActivity;
-import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
-import panteao.make.ready.activities.search.ui.ActivityResults;
-import panteao.make.ready.activities.search.ui.ActivitySearch;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.activities.usermanagment.ui.ChangePasswordActivity;
-import panteao.make.ready.activities.usermanagment.ui.ForceLoginFbActivity;
-import panteao.make.ready.activities.usermanagment.ui.ForgotPasswordActivity;
-import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
-import panteao.make.ready.activities.usermanagment.ui.SignUpActivity;
-import panteao.make.ready.activities.usermanagment.ui.SkipActivity;
-import panteao.make.ready.activities.watchList.ui.WatchListActivity;
-import panteao.make.ready.beanModel.responseModels.SignUp.DataModel;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -351,6 +328,6 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
     public void launchMyDownloads(){
-        this.activity.startActivity(new Intent(this.activity, MyDownloads.class));
+//        this.activity.startActivity(new Intent(this.activity, MyDownloads.class));
     }
 }

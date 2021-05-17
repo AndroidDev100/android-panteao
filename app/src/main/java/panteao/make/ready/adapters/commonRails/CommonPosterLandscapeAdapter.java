@@ -12,12 +12,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
+
+import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.PosterLandscapeItemBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -31,16 +32,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
-import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPosterLandscapeAdapter.SingleItemRowHolder> {
 

@@ -19,12 +19,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import org.json.JSONException;
 
 import io.branch.referral.Branch;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.utils.MediaTypeConstants;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class DeepLinkActivity extends AppCompatActivity {
 

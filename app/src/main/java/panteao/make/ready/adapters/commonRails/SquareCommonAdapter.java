@@ -12,12 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.databinding.SquareItemBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -29,15 +29,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 
 public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapter.SingleItemRowHolder> {

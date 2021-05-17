@@ -33,7 +33,6 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
@@ -501,10 +500,10 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
     @Override
     protected void onStart() {
         super.onStart();
-        if(DetailActivity.isBackStacklost){
+//        if(DetailActivity.isBackStacklost){
             /*getApplicationContext().startActivity(new Intent(this, getClass())
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));*/
-        }
+//        }
     }
 
     /* Displays the snackbar notification and call to action. */

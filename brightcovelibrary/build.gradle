@@ -49,16 +49,16 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    api "com.brightcove.player:exoplayer2:6.16.0"
-    api "com.brightcove.player:android-appcompat-plugin:6.16.0"
+//    api "com.brightcove.player:exoplayer2:6.16.0"
+//    api "com.brightcove.player:android-appcompat-plugin:6.16.0"
     implementation "com.brightcove.player:android-ima-plugin:6.16.0"
     implementation 'com.google.ads.interactivemedia.v3:interactivemedia:3.11.2'
     implementation "com.brightcove.player:android-cast-plugin:6.16.0"
-    //s
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'androidx.core:core-ktx:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
+//    implementation 'com.kaltura.player:tvplayer:4.14.0'
 
 }

@@ -17,9 +17,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.gson.JsonObject;
-import com.brightcove.player.model.Video;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.article.ArticleActivity;
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -28,8 +29,6 @@ import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.DetailWatchlistLikeShareViewBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -48,12 +47,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import io.reactivex.annotations.NonNull;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.enums.DownloadStatus;
-import panteao.make.ready.utils.MediaTypeConstants;
 
 public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlistLikeShareViewBinding> implements AlertDialogFragment.AlertDialogListener, View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -75,7 +68,6 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     /**
      * The policy key for the video cloud account.
      */
-    private Video video;
     private String seriesId;
 
 
@@ -275,11 +267,11 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ActivityTrackers.getInstance().setLauncherActivity("SeriesDetailActivity");
             ((SeriesDetailActivity) context).openLogin();
         } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+//            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
             ActivityTrackers.getInstance().setLauncherActivity("EpisodeActivity");
         } else if (context instanceof DetailActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-            ((DetailActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+//            ((DetailActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
         }
     }
 
@@ -309,7 +301,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     private void hitApiRemoveList() {
-        bookmarkingViewModel.hitRemoveWatchlist(token, assestId).observe(this, responseEmpty -> {
+        bookmarkingViewModel.hitRemoveWatchlist(token, assestId).observe(getActivity(), responseEmpty -> {
             getBinding().wProgressBar.setVisibility(View.GONE);
             getBinding().addIcon.setVisibility(View.VISIBLE);
             if (Objects.requireNonNull(responseEmpty).isStatus()) {
@@ -363,7 +355,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
 
     public void hitApiAddLike(int from) {
-        bookmarkingViewModel.hitApiAddLike(token, assestId).observe(this, responseEmpty -> {
+        bookmarkingViewModel.hitApiAddLike(token, assestId).observe(getActivity(), responseEmpty -> {
             getBinding().lProgressBar.setVisibility(View.GONE);
             getBinding().likeIcon.setVisibility(View.VISIBLE);
             if (Objects.requireNonNull(responseEmpty).isStatus()) {
@@ -391,7 +383,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public void hitApiRemoveLike() {
 
-        bookmarkingViewModel.hitApiDeleteLike(token, assestId).observe(this, responseEmpty -> {
+        bookmarkingViewModel.hitApiDeleteLike(token, assestId).observe(getActivity(), responseEmpty -> {
             getBinding().lProgressBar.setVisibility(View.GONE);
             getBinding().likeIcon.setVisibility(View.VISIBLE);
             if (Objects.requireNonNull(responseEmpty).isStatus()) {
@@ -417,7 +409,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             JsonObject requestParam = new JsonObject();
             requestParam.addProperty(AppConstants.API_PARAM_LIKE_ID, assestId);
             requestParam.addProperty(AppConstants.API_PARAM_LIKE_TYPE, MediaTypeConstants.getInstance().getSeries());
-            bookmarkingViewModel.hitApiIsLike(token, assestId).observe(this, responseEmpty -> {
+            bookmarkingViewModel.hitApiIsLike(token, assestId).observe(getActivity(), responseEmpty -> {
 
                 if (Objects.requireNonNull(responseEmpty).isStatus()) {
                     if (StringUtils.isNullOrEmptyOrZero(responseEmpty.getData().getId())) {
@@ -691,10 +683,10 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ((SeriesDetailActivity) context).stopShimmer();
             ((SeriesDetailActivity) context).dismissLoading(((SeriesDetailActivity) context).getBinding().progressBar);
         } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity)
-                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
-            ((EpisodeActivity) context).isRailData = true;
-            ((EpisodeActivity) context).stopShimmercheck();
+//            ((EpisodeActivity)
+//                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
+//            ((EpisodeActivity) context).isRailData = true;
+//            ((EpisodeActivity) context).stopShimmercheck();
         }
     }
 
@@ -714,7 +706,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     private void logoutCall() {
-        if (CheckInternetConnection.isOnline(Objects.requireNonNull(getActivity()))) {
+        if (CheckInternetConnection.isOnline(requireActivity())) {
             clearCredientials(preference);
             hitApiLogout(getBaseActivity(), preference.getAppPrefAccessToken());
         } else {

@@ -10,10 +10,13 @@ import androidx.multidex.BuildConfig;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.kaltura.playkit.player.PKHttpClientManager;
+import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.make.baseClient.BaseDeviceType;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.dependencies.DaggerEnveuComponent;
 import panteao.make.ready.dependencies.EnveuComponent;
 import panteao.make.ready.dependencies.modules.UserPreferencesModule;
@@ -96,6 +99,18 @@ public class PanteaoApplication extends MultiDexApplication {
                 .getInstance()
                 .put("my_engine_id", flutterEngine);*/
 
+        KalturaOvpPlayer.initialize(this, KalturaPlayerActivity.Companion.getPARTNER_ID(), KalturaPlayerActivity.Companion.getSERVER_URL());
+        doConnectionsWarmup();
+    }
+
+    private void doConnectionsWarmup() {
+        PKHttpClientManager.setHttpProvider("okhttp");
+        PKHttpClientManager.warmUp(
+                "https://rest-us.ott.kaltura.com/crossdomain.xml",
+                "http://cdnapi.kaltura.com/alive.html",
+                "https://cdnapisec.kaltura.com/favicon.ico",
+                "https://cfvod.kaltura.com/favicon.ico"
+        );
     }
 
     private void firebaseCrashlyticSetup() {

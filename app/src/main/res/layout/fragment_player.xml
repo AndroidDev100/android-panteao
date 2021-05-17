@@ -22,18 +22,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/player_view"
-                keep_content_on_player_reset="true"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:keepScreenOn="true"
-                android:visibility="visible"
-                app:controller_layout_id="@layout/exo_playback_control_view"
-                app:fastforward_increment="10000"
-                app:resize_mode="fill"
-                app:rewind_increment="10000"
-                app:surface_type="surface_view" />
+<!--            <com.google.android.exoplayer2.ui.SimpleExoPlayerView-->
+<!--                android:id="@+id/player_view"-->
+<!--                keep_content_on_player_reset="true"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:keepScreenOn="true"-->
+<!--                android:visibility="visible"-->
+<!--                app:controller_layout_id="@layout/exo_playback_control_view"-->
+<!--                app:fastforward_increment="10000"-->
+<!--                app:resize_mode="fill"-->
+<!--                app:rewind_increment="10000"-->
+<!--                app:surface_type="surface_view" />-->
 
 
             <RelativeLayout

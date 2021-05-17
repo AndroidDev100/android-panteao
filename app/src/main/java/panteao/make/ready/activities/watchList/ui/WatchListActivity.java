@@ -20,13 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.make.bookmarking.bean.BookmarkingResponse;
 import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.watchList.adapter.WatchHistoryAdapter;
 import panteao.make.ready.activities.watchList.adapter.WatchListAdapter;
 import panteao.make.ready.activities.watchList.viewModel.WatchListViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.listing.listadapter.ListAdapter;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -56,9 +56,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import panteao.make.ready.adapters.CommonShimmerAdapter;
-import panteao.make.ready.baseModels.BaseBindingActivity;
 
 
 public class WatchListActivity extends BaseBindingActivity<WatchListActivityBinding> implements WatchListAdapter.WatchListAdaperListener, WatchHistoryAdapter.WatchHistoryAdaperListener, WatchListAdapter.DeleteWatchList, AlertDialogFragment.AlertDialogListener, ItemClickListener, View.OnClickListener {

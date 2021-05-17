@@ -286,7 +286,7 @@
         <item name="setting_screen_background">@color/black_theme_color</item>
         <item name="language_icon">@drawable/language_icon</item>
         <item name="change_language_text">@color/white</item>
-        <item name="language_text">@color/white_semi_trans</item>
+        <item name="language_text">@color/white</item>
         <item name="tick_icon_language">@drawable/tick_arrow</item>
         <item name="my_downloads_background">@color/black_theme_color</item>
         <item name="download_image">@drawable/ic_start_download</item>
@@ -333,22 +333,22 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
-    <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
-        <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>
-        <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
-        <item name="castExpandedControllerToolbarStyle">
-            @style/ThemeOverlay.AppCompat.Dark.ActionBar
-        </item>
-    </style>
+<!--    <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">-->
+<!--        <item name="colorPrimaryDark">@color/black</item>-->
+<!--        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>-->
+<!--        <item name="castIntroOverlayStyle">@style/CustomCastIntroOverlay</item>-->
+<!--        <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>-->
+<!--        <item name="castExpandedControllerToolbarStyle">-->
+<!--            @style/ThemeOverlay.AppCompat.Dark.ActionBar-->
+<!--        </item>-->
+<!--    </style>-->
 
-    <style name="CustomCastIntroOverlay" parent="CastIntroOverlay">
-        <item name="castButtonTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Button
-        </item>
-        <item name="castTitleTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Title
-        </item>
-    </style>
+<!--    <style name="CustomCastIntroOverlay" parent="CastIntroOverlay">-->
+<!--        <item name="castButtonTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Button-->
+<!--        </item>-->
+<!--        <item name="castTitleTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Title-->
+<!--        </item>-->
+<!--    </style>-->
 
     <style name="TextAppearance.CustomCastIntroOverlay.Button" parent="android:style/TextAppearance">
         <item name="android:textColor">#FFFFFF</item>
@@ -358,11 +358,11 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="CustomCastMiniController" parent="CastMiniController">
-        <item name="castShowImageThumbnail">true</item>
-        <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-        <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
-    </style>
+<!--    <style name="CustomCastMiniController" parent="CastMiniController">-->
+<!--        <item name="castShowImageThumbnail">true</item>-->
+<!--        <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>-->
+<!--        <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>-->
+<!--    </style>-->
 
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>

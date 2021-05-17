@@ -126,6 +126,9 @@
     <color name="cast_seekbar_progress_thumb_color">@color/blue</color>
     <color name="red">#FD3B31</color>
     <color name="grey_season_bg">#9B9B9B</color>
-
+    <color name="black">#000000</color>
+    <color name="blue">#2b71e2</color>
+    <color name="theme_background">#1a1a1a</color>
+    <color name="bmc_seekbar_played">@color/blue</color>
 
 </resources>

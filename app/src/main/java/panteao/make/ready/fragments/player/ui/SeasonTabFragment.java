@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.beanModel.selectedSeason.SelectedSeasonModel;
@@ -37,11 +37,6 @@ import panteao.make.ready.utils.helpers.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import panteao.make.ready.activities.series.adapter.SeasonAdapter;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.utils.MediaTypeConstants;
 
 
 public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutBinding> implements SeasonAdapter.EpisodeItemClick {
@@ -175,7 +170,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
             if (context instanceof SeriesDetailActivity) {
                 ((SeriesDetailActivity) context).showSeasonList(seasonList, selectedSeason + 1);
             } else if (context instanceof EpisodeActivity) {
-                ((EpisodeActivity) context).showSeasonList(seasonList, selectedSeason + 1);
+//                ((EpisodeActivity) context).showSeasonList(seasonList, selectedSeason + 1);
             }
         });
 
@@ -192,12 +187,12 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                 ((SeriesDetailActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
             }
         } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity) context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
-            ((EpisodeActivity) context).isSeasonData = true;
-            ((EpisodeActivity) context).stopShimmercheck();
-            if (seasonAdapter != null) {
-                ((EpisodeActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
-            }
+//            ((EpisodeActivity) context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
+//            ((EpisodeActivity) context).isSeasonData = true;
+//            ((EpisodeActivity) context).stopShimmercheck();
+//            if (seasonAdapter != null) {
+//                ((EpisodeActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
+//            }
         }
     }
 
@@ -256,7 +251,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                 }
 
                                 if (context instanceof EpisodeActivity) {
-                                    ((EpisodeActivity) context).episodesList(allEpiosdes);
+//                                    ((EpisodeActivity) context).episodesList(allEpiosdes);
                                 }
                             }
                         }
@@ -354,7 +349,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                     seasonAdapter.notifyDataSetChanged();
                 }
                 if (context instanceof EpisodeActivity) {
-                    ((EpisodeActivity) context).episodesList(seasonEpisodes);
+//                    ((EpisodeActivity) context).episodesList(seasonEpisodes);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);

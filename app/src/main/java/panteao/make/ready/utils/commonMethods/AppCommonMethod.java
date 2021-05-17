@@ -6,8 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -33,7 +31,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
-import com.mmtv.utils.helpers.downloads.DownloadHelper;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageType;
 import com.make.enums.RailCardType;
@@ -42,7 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import panteao.make.ready.PanteaoApplication;
+
 import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -67,9 +64,7 @@ import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
-import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
-import panteao.make.ready.utils.helpers.downloads.room.DownloadedVideo;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.utils.recoSense.RecoSenceManager;
@@ -80,7 +75,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -1602,25 +1596,6 @@ public class AppCommonMethod {
         }
         return minutes;
     }
-
-    @NotNull
-    public static ArrayList<DownloadedVideo> removeDownloadedSeries(@NotNull ArrayList<DownloadedVideo> downloadVideos, DownloadHelper downloadHelper) {
-        ArrayList<DownloadedVideo> downloadedVideos=new ArrayList<>();
-        downloadedVideos.addAll(downloadVideos);
-        for (int i= 0 ;i< downloadVideos.size();i++){
-            if (downloadVideos.get(i).getDownloadType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) || downloadVideos.get(i).getDownloadType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
-                Logger.e("AppCommon", downloadVideos.get(i).getDownloadType()+"  "+Integer.parseInt(downloadVideos.get(i).getEpisodeCount()));
-                if (Integer.parseInt(downloadVideos.get(i).getEpisodeCount())>0){
-
-                }else {
-                    downloadedVideos.remove(i);
-                    downloadHelper.deleteVideo(downloadVideos.get(i).getVideoId());
-                }
-            }
-        }
-        return downloadedVideos;
-    }
-
 
     public static double getPlanExpiry(DataItem dataItem) {
         double expiry=0;

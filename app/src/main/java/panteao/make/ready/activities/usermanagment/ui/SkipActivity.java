@@ -26,11 +26,12 @@ import androidx.lifecycle.ViewModelProviders;
 //import com.amazonaws.services.s3.AmazonS3;
 //import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
@@ -60,7 +61,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.util.Objects;
 
-import panteao.make.ready.baseModels.BaseBindingActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 

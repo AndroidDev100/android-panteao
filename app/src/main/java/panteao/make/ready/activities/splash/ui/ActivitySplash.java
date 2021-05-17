@@ -23,9 +23,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.Observer;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,10 +40,10 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.gson.Gson;
-import com.mmtv.utils.helpers.downloads.DownloadHelper;
-
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.article.ArticleActivity;
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;
@@ -55,8 +53,6 @@ import panteao.make.ready.dependencies.providers.DTGPrefrencesProvider;
 import panteao.make.ready.BuildConfig;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
 import panteao.make.ready.callbacks.commonCallbacks.VersionValidator;
@@ -74,20 +70,15 @@ import panteao.make.ready.utils.helpers.AnalyticsController;
 import panteao.make.ready.utils.helpers.ForceUpdateHandler;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
-import panteao.make.ready.utils.helpers.downloads.room.DownloadModel;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
-
-import io.branch.referral.Branch;
-import io.branch.referral.BranchError;
 
 public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -123,7 +114,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         if (TextUtils.isEmpty(KsPreferenceKeys.getInstance().getQualityName())) {
-            KsPreferenceKeys.getInstance().setQualityName(getApplicationContext().getResources().getString(com.make.brightcovelibrary.R.string.auto));
+            KsPreferenceKeys.getInstance().setQualityName(getApplicationContext().getResources().getString(R.string.auto));
             KsPreferenceKeys.getInstance().setQualityPosition(0);
         }
         if ((!KsPreferenceKeys.getInstance().getAppPrefUserId().equalsIgnoreCase("")) && (KsPreferenceKeys.getInstance().getAppPrefUserId() != null)) {
@@ -145,8 +136,8 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
         dtgPrefrencesProvider.saveExpiryDays(3);
-        DownloadHelper downloadHelper = new DownloadHelper(this);
-        downloadHelper.deleteAllExpiredVideos();
+//        DownloadHelper downloadHelper = new DownloadHelper(this);
+//        downloadHelper.deleteAllExpiredVideos();
 
         notificationCheck();
 
@@ -664,17 +655,17 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             connectionValidation(false);
             try {
 
-                DownloadHelper downloadHelper = new DownloadHelper(ActivitySplash.this);
-                downloadHelper.getAllVideosFromDatabase().observe(ActivitySplash.this, new Observer<DownloadModel>() {
-                    @Override
-                    public void onChanged(DownloadModel downloadModel) {
-                        if (downloadModel.getDownloadVideos().size()>0){
-                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
-                        }else {
-                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
-                        }
-                    }
-                });
+//                DownloadHelper downloadHelper = new DownloadHelper(ActivitySplash.this);
+//                downloadHelper.getAllVideosFromDatabase().observe(ActivitySplash.this, new Observer<DownloadModel>() {
+//                    @Override
+//                    public void onChanged(DownloadModel downloadModel) {
+//                        if (downloadModel.getDownloadVideos().size()>0){
+//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
+//                        }else {
+//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
+//                        }
+//                    }
+//                });
             }catch (Exception ignored){
                 getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
             }

@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.util.Log;
 import panteao.make.ready.R;
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.popularSearch.ItemsItem;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.search.adapter.RowSearchAdapter;
 import panteao.make.ready.adapters.CommonShimmerAdapter;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -37,14 +36,6 @@ import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
-import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.adapters.CommonShimmerAdapter;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.utils.MediaTypeConstants;
-
 
 public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> implements CommonSearchAdapter.CommonSearchListener, RowSearchAdapter.RowSearchListener {
 
@@ -327,7 +318,6 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
 
     @Override
     public void onRowItemClicked(EnveuVideoItemBean itemValue) {
-        Log.d("rowItem","searchitem");
 //        AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, "Main - Home", itemValue.getAssetType(), itemValue.getId()+"", itemValue.getName() + "", 0, itemValue.getTitle(),0, itemValue.getSeriesId() + "", 0, 0, "", "");
 
         try {

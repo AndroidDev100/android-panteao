@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import panteao.make.ready.activities.detail.adapter.AllCommentAdapter;
+import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.beanModel.allComments.ItemsItem;
 import panteao.make.ready.databinding.FragmentCommentLayoutBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -34,9 +35,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import panteao.make.ready.activities.detail.adapter.AllCommentAdapter;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.baseModels.BaseBindingFragment;
 
 public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutBinding> implements AllCommentAdapter.AllComentClickListener, AlertDialogFragment.AlertDialogListener {
 
@@ -106,9 +104,9 @@ public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutB
             if (getActivity() instanceof SeriesDetailActivity) {
                 ((SeriesDetailActivity) getActivity()).removeCommentFragment();
             } else if (getActivity() instanceof EpisodeActivity) {
-                ((EpisodeActivity) getActivity()).removeCommentFragment();
+//                ((EpisodeActivity) getActivity()).removeCommentFragment();
             } else if (getActivity() instanceof DetailActivity) {
-                ((DetailActivity) getActivity()).removeCommentFragment();
+//                ((DetailActivity) getActivity()).removeCommentFragment();
             }
 
         });

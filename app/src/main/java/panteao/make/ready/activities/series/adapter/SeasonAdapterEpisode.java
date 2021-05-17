@@ -22,8 +22,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
-
 public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpisode.SeasonViewHolder> {
 
 
