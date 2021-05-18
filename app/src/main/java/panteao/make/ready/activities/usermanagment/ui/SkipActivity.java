@@ -366,7 +366,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
 
     public void setLoginUserData(String json, String id) {
         preference.setAppPrefProfile(json);
-        preference.setAppPrefLoginStatus(AppConstants.UserStatus.Login.toString());
+        preference.setAppPrefLoginStatus(true);
         preference.setAppPrefLoginType(AppConstants.UserLoginType.Manual.toString());
         preference.setAppPrefUserId(id);
     }
@@ -416,7 +416,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
             preference.setAppPrefLoginType(AppConstants.UserLoginType.Manual.toString());
             preference.setAppPrefUserId(dataResponseRegister.getId());
             preference.setAppPrefProfile(stringJson);
-            preference.setAppPrefLoginStatus(AppConstants.UserStatus.Login.toString());
+            preference.setAppPrefLoginStatus(true);
             setLoginUserData(stringJson, dataResponseRegister.getId());
 
             if (isForceSkip) {
@@ -486,7 +486,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
                     KsPreferenceKeys sharedPrefHelper = KsPreferenceKeys.getInstance();
                     Gson gson = new Gson();
                     String json = gson.toJson(cl);
-                    sharedPrefHelper.setAppPrefLoginStatus(AppConstants.UserStatus.Logout.toString());
+                    sharedPrefHelper.setAppPrefLoginStatus(false);
                     sharedPrefHelper.setAppPrefAccessToken("");
 
                     sharedPrefHelper.setAppPrefConfigResponse(json);
@@ -498,7 +498,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
                     sharedPrefHelper.setAppPrefConfigVersion(String.valueOf(response.body().getData().getConfigVersion()));
                     sharedPrefHelper.setAppPrefServerBaseUrl(response.body().getData().getServerBaseURL());
 
-                    preference.setAppPrefLoginStatus(AppConstants.UserStatus.Logout.toString());
+                    preference.setAppPrefLoginStatus(false);
                     //  Toast.makeText(getApplicationContext(), getResources().getString(R.string.you_are_logged_out), Toast.LENGTH_LONG).show();
                     if (logoutBackpress) {
                         logoutBackpress = false;

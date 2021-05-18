@@ -333,9 +333,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         if (preference == null)
             preference = KsPreferenceKeys.getInstance();
 
-        String isLogin = preference.getAppPrefLoginStatus();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
-        }
+
     }
 
     @Override

@@ -81,7 +81,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     boolean isHomeDirect = false;
     private android.content.res.Resources res;
     private KsPreferenceKeys preference;
-    private String isLogin;
+    private boolean isLogin;
     private List<String> mListVerify;
     private List<String> mListLogin;
     private AppSyncBroadcast appSyncBroadcast;
@@ -134,7 +134,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         super.onStart();
         if (preference != null) {
             isLogin = preference.getAppPrefLoginStatus();
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 getBinding().userNameWords.setText(AppCommonMethod.getUserName(preference.getAppPrefUserName()));
                 getBinding().usernameTv.setText(preference.getAppPrefUserName());
             }
@@ -207,7 +207,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             String tempResponse = preference.getAppPrefUser();
             if (!StringUtils.isNullOrEmptyOrZero(tempResponse)) {
                 setVerify(getActivity());
@@ -281,7 +281,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     @Override
     public void onClick(@NotNull String caption) {
-        boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+        boolean loginStatus = preference.getAppPrefLoginStatus();
         String isFacebook = preference.getAppPrefLoginType();
         if (caption.equals(getString(R.string.profile))) {
             if (loginStatus)
@@ -521,7 +521,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                     AppCommonMethod.urlPoints = /*AppConstants.PROFILE_URL +*/ response.body().getData().getImageTransformationEndpoint();
 
                     ksPreferenceKeys.setAppPrefLastConfigHit(String.valueOf(System.currentTimeMillis()));
-                    ksPreferenceKeys.setAppPrefLoginStatus(AppConstants.UserStatus.Logout.toString());
+                    ksPreferenceKeys.setAppPrefLoginStatus(false);
                     ksPreferenceKeys.setAppPrefAccessToken("");
                     ksPreferenceKeys.setAppPrefConfigResponse(json);
                     ksPreferenceKeys.setAppPrefVideoUrl(response.body().getData().getCloudFrontVideoEndpoint());
@@ -551,7 +551,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     public void updateAppSync(Context context) {
         isLogin = preference.getAppPrefLoginStatus();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             setVerify(context);
         }
 

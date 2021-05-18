@@ -154,7 +154,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             preference = KsPreferenceKeys.getInstance();
         bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
 
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             token = preference.getAppPrefAccessToken();
         } else {
             resetLike();
@@ -278,8 +278,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     public void watchListClick() {
         getBinding().watchList.setOnClickListener(v -> {
             if (getBinding().wProgressBar.getVisibility() != View.VISIBLE) {
-                String isLogin = preference.getAppPrefLoginStatus();
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (preference.getAppPrefLoginStatus()) {
                     setWatchListForAsset(1);
 
                 } else {
@@ -339,7 +338,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             }
             mLastClickTime = SystemClock.elapsedRealtime();
 
-            if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (preference.getAppPrefLoginStatus()) {
                 getBinding().lProgressBar.setVisibility(View.VISIBLE);
                 getBinding().likeIcon.setVisibility(View.GONE);
                 if (likeCounter == 0)
@@ -405,7 +404,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
 
     public void hitApiIsLike() {
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             JsonObject requestParam = new JsonObject();
             requestParam.addProperty(AppConstants.API_PARAM_LIKE_ID, assestId);
             requestParam.addProperty(AppConstants.API_PARAM_LIKE_TYPE, MediaTypeConstants.getInstance().getSeries());
@@ -433,7 +432,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
 
     public void hitApiIsWatchList() {
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             bookmarkingViewModel.hitApiIsWatchList(token, assestId).observe(getActivity(), responseEmpty -> {
 
                 if (Objects.requireNonNull(responseEmpty).isStatus()) {
@@ -550,7 +549,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }*/
 
     public boolean isLogin() {
-        loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+        loginStatus = preference.getAppPrefLoginStatus();
         return loginStatus;
     }
 

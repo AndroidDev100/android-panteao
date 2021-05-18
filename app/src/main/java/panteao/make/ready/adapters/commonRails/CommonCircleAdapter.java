@@ -45,7 +45,7 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
     private long mLastClickTime = 0;
     private ArrayList<CommonContinueRail> continuelist;
     private boolean isContinueList;
-    private String isLogin;
+    private boolean isLogin;
     private KsPreferenceKeys preference;
     private int itemWidth;
     private int itemHeight;
@@ -172,7 +172,7 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
             }
         } else if (continuelist.size() > 0) {
 
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 holder.circularItemBinding.llContinueProgress.setVisibility(View.VISIBLE);
                 holder.circularItemBinding.ivContinuePlay.setVisibility(View.VISIBLE);
                 holder.circularItemBinding.flNew.setVisibility(View.GONE);
@@ -186,7 +186,7 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
                         .loadImageTo(holder.circularItemBinding.itemImage, AppCommonMethod.getImageUrl(AppConstants.VOD, "CIRCLE") + continuelist.get(i).getUserAssetDetail().getPortraitImage());
 
                 holder.circularItemBinding.itemImage.setOnClickListener(v -> {
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (continuelist.size() > 0 && (continuelist.get(i).getUserAssetDetail().getAssetType()) != null) {
                             /*if (continuelist.get(i).getUserAssetDetail().getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
                                 AppCommonMethod.launchDetailScreen(mContext,0l, MediaTypeConstants.getInstance().getEpisode(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());

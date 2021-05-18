@@ -14,7 +14,7 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
-import panteao.make.ready.beanModel.responseModels.LoginResponse.Data;
+import panteao.make.ready.beanModel.responseModels.LoginResponse.UserData;
 import panteao.make.ready.databinding.ActivityForceLoginBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -32,8 +32,6 @@ import com.google.gson.Gson;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.Objects;
-
-import panteao.make.ready.baseModels.BaseBindingActivity;
 
 public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLoginBinding> implements AlertDialogFragment.AlertDialogListener {
     private RegistrationLoginViewModel viewModel;
@@ -132,7 +130,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
     }
 
     public void saveUserDetails(String response, int userID, boolean isManual) {
-        Data fbLoginData = new Gson().fromJson(response, Data.class);
+        UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
         if (isManual)
@@ -140,7 +138,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
         else
             preference.setAppPrefLoginType(AppConstants.UserLoginType.FbLogin.toString());
         preference.setAppPrefProfile(stringJson);
-        preference.setAppPrefLoginStatus(AppConstants.UserStatus.Login.toString());
+        preference.setAppPrefLoginStatus(true);
         preference.setAppPrefUserId(String.valueOf(fbLoginData.getId()));
         preference.setAppPrefUserName(String.valueOf(fbLoginData.getName()));
         preference.setAppPrefUserEmail(String.valueOf(fbLoginData.getEmail()));

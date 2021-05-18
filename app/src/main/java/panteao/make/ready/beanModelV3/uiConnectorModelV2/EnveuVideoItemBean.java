@@ -74,6 +74,7 @@ public class EnveuVideoItemBean implements Serializable {
     private String isVIP;
     private String VastTag;
     private String islivedrm="false";
+    public boolean isContinueWatching = false;
 
     public String getIslivedrm() {
         return islivedrm;
@@ -81,6 +82,22 @@ public class EnveuVideoItemBean implements Serializable {
 
     public void setIslivedrm(String islivedrm) {
         this.islivedrm = islivedrm;
+    }
+
+    public void setSeasons(ArrayList seasons) {
+        this.seasons = seasons;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public boolean isContinueWatching() {
+        return isContinueWatching;
+    }
+
+    public void setContinueWatching(boolean continueWatching) {
+        isContinueWatching = continueWatching;
     }
 
     public EnveuVideoItemBean() {
@@ -734,6 +751,19 @@ public class EnveuVideoItemBean implements Serializable {
 
     public List<String> getAssetCast() {
         return assetCast;
+    }
+    public String getAllAssetCast() {
+        StringBuilder castString = new StringBuilder();
+        if (assetCast != null && assetCast.size() > 0) {
+            for (int i = 0; i < assetCast.size(); i++) {
+                if (i == 0 || i == assetCast.size() - 1) {
+                    castString.append(assetCast.get(i));
+                } else {
+                    castString.append(assetCast.get(i) + ",");
+                }
+            }
+        }
+        return castString.toString();
     }
 
     public void setAssetCast(List<String> assetCast) {

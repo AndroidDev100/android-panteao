@@ -131,7 +131,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private String vastUrl = "";
     private String token;
     private ResponseDetailPlayer response;
-    private String isLogin;
+    private boolean isLogin;
     private boolean loadingComment = true;
     private boolean isHitPlayerApi = false;
     private int playerApiCount = 0;
@@ -181,7 +181,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
         //basic settings and do not require internet
         preference = KsPreferenceKeys.getInstance();
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
         AppCommonMethod.isPurchase = false;
@@ -458,7 +458,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         }
 
         if (!isLoggedIn) {
-            if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (preference.getAppPrefLoginStatus()) {
                 isLoggedIn = true;
                 AppCommonMethod.isPurchase = false;
                 seriesId = AppCommonMethod.seriesId;
@@ -626,7 +626,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             //showDialog(DetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
@@ -689,7 +689,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         token = preference.getAppPrefAccessToken();
 
 
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
                 userName = signInResponseModel.getName();
@@ -747,7 +747,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 getBinding().backButton.setVisibility(View.VISIBLE);
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (isLogin) {
                     hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
                 } else {
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
@@ -758,7 +758,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                     isLogin = preference.getAppPrefLoginStatus();
 
 
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (!preference.getEntitlementStatus()) {
                             GetPlansLayer.getInstance().getEntitlementStatus(preference, token, new EntitlementStatus() {
                                 @Override
@@ -1041,7 +1041,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     public void logoutUser() {
         isloggedout = false;
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             if (CheckInternetConnection.isOnline(Objects.requireNonNull(DetailActivity.this))) {
                 clearCredientials(preference);
                 hitApiLogout(DetailActivity.this, preference.getAppPrefAccessToken());
@@ -1072,7 +1072,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             new ToastHandler(DetailActivity.this).show(DetailActivity.this.getResources().getString(R.string.can_not_play_error));
         }
         getBinding().setResponseApi(responseDetailPlayer);
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             addToWatchHistory();
         }
     }
@@ -1086,7 +1086,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         getBinding().llParent.setVisibility(View.GONE);
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
         getBinding().connection.btnMyDownloads.setOnClickListener(view -> {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+            boolean loginStatus = preference.getAppPrefLoginStatus();
             if (loginStatus)
                 new ActivityLauncher(this).launchMyDownloads();
             else
@@ -1458,7 +1458,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
 //    @Override
 //    public void onBookmarkCall(int currentPosition) {
-//        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+//        if (isLogin) {
 //            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
 //        }
 //    }
@@ -1466,7 +1466,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
 //    @Override
 //    public void onBookmarkFinish() {
-//        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+//        if (isLogin) {
 //            bookmarkingViewModel.finishBookmark(token, assestId);
 //        }
 //    }
@@ -1506,7 +1506,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
    /* @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
         if (source instanceof UserInteractionFragment) {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+            boolean loginStatus = preference.getAppPrefLoginStatus();
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
@@ -1537,7 +1537,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
         if (source instanceof UserInteractionFragment) {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+            boolean loginStatus = preference.getAppPrefLoginStatus();
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:background="@drawable/selector_button">
+
+        <ImageView
+            android:id="@+id/btnSelected"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/cancel_btn_selector"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:focusable="true"
+            android:padding="2dp"
+            android:src="@drawable/ic_check_black_24dp"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/episode_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="#AD000000"
+            android:ellipsize="end"
+            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</layout>

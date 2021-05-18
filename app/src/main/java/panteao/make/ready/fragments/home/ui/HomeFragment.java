@@ -12,5 +12,4 @@ public class HomeFragment extends TabsBaseFragment<HomeFragmentViewModel> {
         super.onCreate(savedInstanceState);
         setViewModel(HomeFragmentViewModel.class);
     }
-
 }

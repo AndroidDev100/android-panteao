@@ -39,7 +39,7 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
     private long mLastClickTime = 0;
     private ArrayList<CommonContinueRail> continuelist;
     private KsPreferenceKeys preference;
-    private String isLogin;
+    private boolean isLogin;
     private boolean isContinueList;
     private int itemWidth;
     private int itemHeight;
@@ -165,7 +165,7 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
                 }
             }
         } else if (continuelist.size() > 0) {
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 holder.squareItemBinding.llContinueProgress.setVisibility(View.VISIBLE);
                 holder.squareItemBinding.ivContinuePlay.setVisibility(View.VISIBLE);
                 holder.squareItemBinding.flNew.setVisibility(View.GONE);
@@ -178,7 +178,7 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
                 ImageHelper.getInstance(mContext)
                         .loadImageTo(holder.squareItemBinding.itemImage, AppCommonMethod.getImageUrl(AppConstants.VOD, "SQUARE") + continuelist.get(i).getUserAssetDetail().getPortraitImage());
                 holder.squareItemBinding.itemImage.setOnClickListener(v -> {
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (continuelist.size() > 0 && (continuelist.get(i).getUserAssetDetail().getAssetType()) != null) {
                             /*if (continuelist.get(i).getUserAssetDetail().getAssetType().equalsIgnoreCase("EPISODE")) {
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Episode, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());

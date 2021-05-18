@@ -32,7 +32,7 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
     private int itemWidth;
     private int itemHeight;
     private ArrayList<CommonContinueRail> continuelist;
-    private String isLogin;
+    private boolean isLogin;
     private KsPreferenceKeys preference;
 
     public CommonPosterPotraitContinue(Activity context, String contentType, ArrayList<CommonContinueRail> continuelist) {
@@ -72,7 +72,7 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
         holder.itemBinding.llContinueProgress.setVisibility(View.GONE);
         holder.itemBinding.ivContinuePlay.setVisibility(View.GONE);
         if (continuelist.size() > 0) {
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 holder.itemBinding.llContinueProgress.setVisibility(View.VISIBLE);
                 holder.itemBinding.ivContinuePlay.setVisibility(View.VISIBLE);
                 holder.itemBinding.flNew.setVisibility(View.GONE);
@@ -88,7 +88,7 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
 
 
                 holder.itemBinding.itemImage.setOnClickListener(v -> {
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (continuelist.size() > 0 && (continuelist.get(i).getUserAssetDetail().getAssetType()) != null) {
                             /*if (continuelist.get(i).getUserAssetDetail().getAssetType().equalsIgnoreCase("EPISODE")) {
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Episode, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());

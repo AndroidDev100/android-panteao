@@ -88,7 +88,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     private String token;
     private int watchListCounter = 0;
     private int likeCounter = 0;
-    private String isLogin;
+    private boolean isLogin;
     private int shimmerCounter = 0;
     RailInjectionHelper railInjectionHelper;
     EnveuVideoItemBean seriesDetailBean;
@@ -256,7 +256,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         isLogin = preference.getAppPrefLoginStatus();
         token = preference.getAppPrefAccessToken();
         viewModel = ViewModelProviders.of(this).get(SeriesViewModel.class);
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
                 {
@@ -320,7 +320,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                         if (response.getErrorModel().getErrorCode() != 0) {
                             if (response.getErrorModel().getErrorCode() == AppConstants.RESPONSE_CODE_LOGOUT) {
-                                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                                if (isLogin) {
                                     hitApiLogout();
                                 }
                                 // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
@@ -379,7 +379,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             //downloadHelper.findVideo(seriesDetailBean.getBrightcoveVideoId());
         } else {
             if (enveuCommonResponse.getEnveuVideoItemBeans().get(0).getResponseCode() == AppConstants.RESPONSE_CODE_LOGOUT) {
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (isLogin) {
                     hitApiLogout();
                 }
                 // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
@@ -597,8 +597,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             count = 0;
 
             getBinding().interactionSection.llLike.setOnClickListener(view -> {
-                String isLogin = preference.getAppPrefLoginStatus();
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (preference.getAppPrefLoginStatus()) {
                     showLoading(getBinding().progressBar, true);
 
                     if (likeCounter == 0)
@@ -611,8 +610,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             });
 
             getBinding().interactionSection.watchList.setOnClickListener(view -> {
-                String isLogin = preference.getAppPrefLoginStatus();
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (preference.getAppPrefLoginStatus()) {
                     if (watchListCounter == 0) {
                         hitApiAddWatchList();
                     }
@@ -682,7 +680,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 resetWatchList();
                 if (responseContentInWatchlist.getResponseCode() == 401) {
                     isloggedout = true;
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         hitApiLogout();
                     }
                     //   showDialog(SeriesDetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
@@ -721,7 +719,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             } else {
                 if (responseContentInWatchlist.getResponseCode() == 401) {
                     isloggedout = true;
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         hitApiLogout();
                     }
                     // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
@@ -815,7 +813,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             } else {
                 if (responseWatchList.getResponseCode() == 401) {
                     isloggedout = true;
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         hitApiLogout();
                     }
                     //   showDialog(SeriesDetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
@@ -841,7 +839,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             } else {
                 if (responseWatchList.getResponseCode() == 401) {
                     isloggedout = true;
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         hitApiLogout();
                     }
                     //  showDialog(SeriesDetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
@@ -899,7 +897,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             } else {
                 if (responseContentInWatchlist.getResponseCode() == 401) {
                     isloggedout = true;
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         hitApiLogout();
                     }
                     //    showDialog(SeriesDetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
@@ -985,7 +983,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     @Override
     public void onFinishDialog() {
         isloggedout = false;
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             hitApiLogout();
         }
         finish();
@@ -994,7 +992,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     public void hitApiLogout() {
         isloggedout = false;
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             hitApiLogout(SeriesDetailActivity.this, preference.getAppPrefAccessToken());
         }
     }
@@ -1045,7 +1043,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
         try {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+            boolean loginStatus = preference.getAppPrefLoginStatus();
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {

@@ -514,7 +514,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
     public void updateList(){
-        if (preference!=null && !preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference!=null && !preference.getAppPrefLoginStatus()) {
            for (int i=0;i<railCommonDataList.size();i++){
                if (railCommonDataList.get(i).isContinueWatching()){
                    railCommonDataList.remove(i);

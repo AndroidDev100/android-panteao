@@ -3,7 +3,7 @@ package panteao.make.ready.beanModel.responseModels.LoginResponse;
 public class LoginResponseModel {
 
     //@SerializedName("data")
-    private Data data;
+    private UserData data;
 
     //@SerializedName("responseCode")
     private int responseCode;
@@ -26,11 +26,11 @@ public class LoginResponseModel {
         this.debugMessage = debugMessage;
     }
 
-    public Data getData() {
+    public UserData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(UserData data) {
         this.data = data;
     }
 

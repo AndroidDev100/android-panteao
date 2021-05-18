@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="panteao.make.ready" >
+    package="panteao.make.ready">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,14 +13,29 @@
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
 
     <application
         android:name=".PanteaoApplication"
         android:allowBackup="false"
+        android:banner="@drawable/ic_banner"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -30,14 +45,14 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="allowBackup" >
-        <activity android:name=".activities.KalturaPlayerActivity" >
+        tools:replace="allowBackup">
+        <activity android:name=".activities.KalturaPlayerActivity">
 
         </activity>
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.detail.ui.EpisodeActivity" />
         <activity android:name=".activities.detail.ui.DetailActivity" />
-        <activity android:name=".activities.splash.ui.SplashNewActivity" >
+        <activity android:name=".activities.splash.ui.SplashNewActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -70,7 +85,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
@@ -84,10 +99,9 @@
         <activity
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
-            android:theme="@style/SplashTheme" >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -98,7 +112,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-            <intent-filter android:autoVerify="true" >
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -133,7 +147,7 @@
                     android:pathPrefix="@string/fcm_prefix"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter android:autoVerify="true" >
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -174,7 +188,22 @@
             </intent-filter>
             -->
         </activity>
-
+        <activity
+            android:name=".activities.splash.ui.TVSplashActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.homeactivity.ui.TVHomeActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme">
+        </activity>
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="@string/branch_key" />
@@ -215,7 +244,7 @@
             android:value="ca-app-pub-3940256099942544~3347511713" /> <!-- Branch install referrer tracking -->
         <receiver
             android:name="io.branch.referral.InstallListener"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -275,7 +304,7 @@
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -307,7 +336,7 @@
 
         <service
             android:name=".PanteaoMessagingService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

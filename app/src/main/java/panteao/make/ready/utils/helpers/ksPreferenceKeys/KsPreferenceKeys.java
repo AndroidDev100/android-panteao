@@ -23,6 +23,7 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public static final String ENTITLEMENT_STATUS = "entitlement_status";
     public static final String AUTO_ROTATE = "auto_rotate";
     public static final String AUTO_DURATION = "auto_rotate_duration";
+    public static final String VIDEO_QUALITY = "video_quality";
 
 
     private static final String DOWNLOADED_ITEM_DELETED = "download_item_deleted";
@@ -54,6 +55,13 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public void setAppLanguage(String AppLanguage) {
         setString(APP_LANGUAGE, AppLanguage);
     }
+    public int getVideoQuality() {
+        return getInt(VIDEO_QUALITY, 0);
+    }
+
+    public void setVideoQuality(String AppLanguage) {
+        setString(VIDEO_QUALITY, AppLanguage);
+    }
 
     public String getAppPrefLastConfigHit() {
         return getString(AppConstants.APP_PREF_LAST_CONFIG_HIT, "0");
@@ -71,12 +79,12 @@ public class KsPreferenceKeys extends SharedPrefHelper {
         setString(AppConstants.APP_PREF_LOGIN_TYPE, LoginType);
     }
 
-    public String getAppPrefLoginStatus() {
-        return getString(AppConstants.APP_PREF_LOGIN_STATUS, "");
+    public boolean getAppPrefLoginStatus() {
+        return getBoolean(AppConstants.APP_PREF_LOGIN_STATUS, false);
     }
 
-    public void setAppPrefLoginStatus(String LoginStatus) {
-        setString(AppConstants.APP_PREF_LOGIN_STATUS, LoginStatus);
+    public void setAppPrefLoginStatus(boolean LoginStatus) {
+        setBoolean(AppConstants.APP_PREF_LOGIN_STATUS, LoginStatus);
     }
 
     public String getAppPrefConfigResponse() {

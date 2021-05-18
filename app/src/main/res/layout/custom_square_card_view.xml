@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="panteao.make.ready.utils.MediaTypeConstants" />
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_field"
+        android:layout_width="140dp"
+        android:layout_height="140dp">
+
+        <ImageView
+            android:id="@+id/imgViewCard"
+            errorImage="@{@drawable/placeholder_square}"
+            imageUrl="@{playlistItem.posterURL}"
+            placeholder="@{@drawable/placeholder_square}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgViewCard" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@{playlistItem.vipImageDrawable}"
+            android:visibility='@{playlistItem.isVIP.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) ? playlistItem.newSeriesImageDrawable : playlistItem.newMoviesDrawable}'
+            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) ? playlistItem.episodeImageDrawable:null}'
+            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintDimensionRatio="H,120:24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

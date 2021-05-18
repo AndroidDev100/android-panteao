@@ -32,7 +32,7 @@ public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpis
     private int episodeId;
     private boolean isBuyNow;
     private KsPreferenceKeys preference;
-    private String isLogin;
+    private boolean isLogin;
 
     public SeasonAdapterEpisode(Context context, List<ItemsItem> model, int id, int episodeId, SeasonAdapterEpisode.EpisodeItemClick listner) {
         this.context = context;
@@ -71,7 +71,7 @@ public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpis
         holder.itemBinding.description.setText(model.get(position).getDescription());
 
 
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
 
             double d1 = (double) model.get(position).getContinueDuration();
             long x1 = (long) d1; // x = 1234

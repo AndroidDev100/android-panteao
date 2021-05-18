@@ -93,7 +93,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
         });
 
         try {
-            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())){
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 getBinding().downloadLayout.setVisibility(View.VISIBLE);
             }else {
                 getBinding().downloadLayout.setVisibility(View.GONE);

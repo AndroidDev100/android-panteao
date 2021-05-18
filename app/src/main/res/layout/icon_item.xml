@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><!--  Single List Item Design -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="menuModel"
+            type="panteao.make.ready.beanModel.model.MenuModel" />
+        <variable
+            name="isFirst"
+            type="Boolean" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/label"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:src="@{menuModel.menuIcon}"
+            android:textSize="12sp"
+            android:tint="@color/greyTextColor" />
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="24dp"
+            android:layout_height="2dp"
+            android:layout_below="@id/label"
+            android:layout_centerHorizontal="true"
+            android:background="@color/moretitlecolor"
+            android:visibility="invisible" />
+    </RelativeLayout>
+</layout>

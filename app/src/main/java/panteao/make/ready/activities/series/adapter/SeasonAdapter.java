@@ -40,7 +40,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     private EpisodeItemClick listner;
     private int id;
     private KsPreferenceKeys preference;
-    private String isLogin;
+    private boolean isLogin;
     private int currentAssetId;
 //    private DownloadHelper downloadHelper;
     private HashMap indexMap = new HashMap<String, Integer>();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/splashRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_screen">
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/pp_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/buildNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <include-->
+<!--            android:id="@+id/no_connection_layout"-->
+<!--            layout="@layout/no_connection"-->
+<!--            android:visibility="gone" />-->
+
+        <TextView
+            android:id="@+id/buildNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/moretitlecolor"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </ProgressBar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -40,7 +40,7 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Si
     private final List<ItemsItem> list;
     private final KsPreferenceKeys preference;
     private final AllComentClickListener listener;
-    private String isLogin;
+    private boolean isLogin;
     private ItemsItem itemsItem;
 
     public AllCommentAdapter(Context context, List<ItemsItem> list, AllComentClickListener listener) {
@@ -125,7 +125,7 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Si
 
         viewHolder.itemBinding.clRoot.setOnLongClickListener(v -> {
 
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 if (Integer.valueOf(signInResponseModel.getId()) == list.get(position).getUserId()) {
                     confirmDelete(list.get(position));
                 } else {

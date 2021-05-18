@@ -42,7 +42,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
     private int itemWidth;
     private int itemHeight;
     private ArrayList<CommonContinueRail> continuelist;
-    private String isLogin;
+    private boolean isLogin;
     private KsPreferenceKeys preference;
     private ItemClickListener listener;
     BaseCategory baseCategory;
@@ -197,7 +197,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
 
             });
         } else if (continuelist.size() > 0) {
-            if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (isLogin) {
                 holder.itemBinding.llContinueProgress.setVisibility(View.VISIBLE);
                 holder.itemBinding.ivContinuePlay.setVisibility(View.VISIBLE);
                 holder.itemBinding.flNew.setVisibility(View.GONE);
@@ -213,7 +213,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
 
 
                 holder.itemBinding.itemImage.setOnClickListener(v -> {
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (continuelist.size() > 0 && (continuelist.get(i).getUserAssetDetail().getAssetType()) != null) {
                            /* if (continuelist.get(i).getUserAssetDetail().getAssetType().equalsIgnoreCase("EPISODE")) {
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Episode, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());

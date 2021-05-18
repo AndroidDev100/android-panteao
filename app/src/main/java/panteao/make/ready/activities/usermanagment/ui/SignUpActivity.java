@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
-import panteao.make.ready.beanModel.responseModels.LoginResponse.Data;
+import panteao.make.ready.beanModel.responseModels.LoginResponse.UserData;
 import panteao.make.ready.databinding.SignupActivityBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -35,10 +35,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.tarcker.EventConstant;
-import panteao.make.ready.tarcker.FCMEvents;
 
 public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> implements AlertDialogFragment.AlertDialogListener {
 
@@ -259,7 +255,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
     }
 
     public void saveUserDetails(String response, int userID, boolean isManual) {
-        Data fbLoginData = new Gson().fromJson(response, Data.class);
+        UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
         Log.d("responsefb",stringJson);
@@ -269,7 +265,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
         else
             preference.setAppPrefLoginType(AppConstants.UserLoginType.FbLogin.toString());
         preference.setAppPrefProfile(stringJson);
-        preference.setAppPrefLoginStatus(AppConstants.UserStatus.Login.toString());
+        preference.setAppPrefLoginStatus(true);
         preference.setAppPrefUserId(String.valueOf(fbLoginData.getId()));
         preference.setAppPrefUserName(String.valueOf(fbLoginData.getName()));
         preference.setAppPrefUserEmail(String.valueOf(fbLoginData.getEmail()));

@@ -43,7 +43,7 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
     private int itemWidth;
     private int itemHeight;
     private ArrayList<CommonContinueRail> continuelist;
-    private String isLogin;
+    private boolean isLogin;
     private KsPreferenceKeys preference;
     BaseCategory baseCategory;
     public CommonPosterLandscapeAdapter(Activity context, List<EnveuVideoItemBean> itemsList, List<ItemsItem> itemsItems, String contentType, ArrayList<CommonContinueRail> continuelist, BaseCategory baseCat) {

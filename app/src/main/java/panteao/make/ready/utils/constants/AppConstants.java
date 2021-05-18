@@ -222,11 +222,6 @@ public interface AppConstants {
         GoogleLogin
     }
 
-    enum UserStatus {
-        Login,
-        Logout
-    }
-
     enum ContentType {
         VIDEO,
         MOVIE,

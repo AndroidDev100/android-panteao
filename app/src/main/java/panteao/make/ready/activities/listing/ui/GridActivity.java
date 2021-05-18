@@ -269,8 +269,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         if (flag == 0) {
             if (baseCategory.getReferenceName() != null && (baseCategory.getReferenceName().equalsIgnoreCase(AppConstants.ContentType.CONTINUE_WATCHING.name()) || baseCategory.getReferenceName().equalsIgnoreCase("special_playlist"))) {
                 KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
-                String isLogin = preference.getAppPrefLoginStatus();
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (preference.getAppPrefLoginStatus()) {
                     String token = preference.getAppPrefAccessToken();
                     BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
                     bookmarkingViewModel.getContinueWatchingData(token, counter, AppConstants.PAGE_SIZE).observe(this, getContinueWatchingBean -> {

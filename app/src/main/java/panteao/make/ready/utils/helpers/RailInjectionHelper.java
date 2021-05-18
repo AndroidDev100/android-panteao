@@ -190,8 +190,7 @@ public class RailInjectionHelper extends AndroidViewModel {
     private void injectWatchlistRail(Activity activity, int contentSize, BaseCategory screenWidget, CommonApiCallBack commonApiCallBack) {
         if (preference == null)
             preference = KsPreferenceKeys.getInstance();
-        String isLogin = preference.getAppPrefLoginStatus();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             String token = preference.getAppPrefAccessToken();
             BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of((FragmentActivity) activity).get(BookmarkingViewModel.class);
             bookmarkingViewModel.getMywatchListData(token, 0, contentSize).observe((LifecycleOwner) activity, getContinueWatchingBean -> {
@@ -258,8 +257,7 @@ public class RailInjectionHelper extends AndroidViewModel {
     private void injectContinueWatchingRail(Activity activity, int contentSize, BaseCategory screenWidget, CommonApiCallBack commonApiCallBack) {
         if (preference == null)
             preference = KsPreferenceKeys.getInstance();
-        String isLogin = preference.getAppPrefLoginStatus();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             String token = preference.getAppPrefAccessToken();
             BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of((FragmentActivity) activity).get(BookmarkingViewModel.class);
             bookmarkingViewModel.getContinueWatchingData(token, 0, contentSize).observe((LifecycleOwner) activity, getContinueWatchingBean -> {

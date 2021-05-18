@@ -115,7 +115,7 @@ public class PanteaoApplication extends MultiDexApplication {
 
     private void firebaseCrashlyticSetup() {
 
-        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
             String userId = KsPreferenceKeys.getInstance().getAppPrefUserId();
             FirebaseCrashlytics.getInstance().setUserId(userId);
         }

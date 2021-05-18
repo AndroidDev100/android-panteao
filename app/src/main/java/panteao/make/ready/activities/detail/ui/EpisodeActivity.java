@@ -138,7 +138,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private String vastUrl = "";
     private String token;
     private ResponseDetailPlayer response;
-    private String isLogin;
+    private boolean isLogin;
     private String bannerImage = "";
     private AllCommentAdapter commentAdapter;
     private String profilePicKey;
@@ -239,7 +239,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
 
         preference = KsPreferenceKeys.getInstance();
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
         viewModel = ViewModelProviders.of(EpisodeActivity.this).get(DetailViewModel.class);
@@ -620,7 +620,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
 
         if (!isLoggedIn) {
-            if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (preference.getAppPrefLoginStatus()) {
                 isLoggedIn = true;
                 AppCommonMethod.isPurchase = false;
                 seriesId = AppCommonMethod.seriesId;
@@ -765,7 +765,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     public void comingSoon() {
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
@@ -830,7 +830,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         showLoading(getBinding().progressBar, false);
 
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
                 userName = signInResponseModel.getName();
@@ -845,7 +845,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         if (!isHitPlayerApi) {
             getEpisodeDetails();
-           /* if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+           /* if (isLogin) {
                 hitApiWatchHistory();
 
             }*/
@@ -902,7 +902,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (videoDetails.isPremium()) {
             isPremium=true;
             try {
-                if (!isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (!isLogin) {
                     if (fromBingWatch){
                         showPremiumPopup();
                     }
@@ -921,7 +921,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
                 isLogin = preference.getAppPrefLoginStatus();
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (isLogin) {
                     if (!preference.getEntitlementStatus()) {
                         GetPlansLayer.getInstance().getEntitlementStatus(preference, token, new EntitlementStatus() {
                             @Override
@@ -1215,7 +1215,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     public void logoutUser() {
         isloggedout = false;
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             if (CheckInternetConnection.isOnline(Objects.requireNonNull(EpisodeActivity.this))) {
                 clearCredientials(preference);
                 hitApiLogout(EpisodeActivity.this, preference.getAppPrefAccessToken());
@@ -1253,7 +1253,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
         getBinding().setResponseApi(responseDetailPlayer);
         setExpandable();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString()))
+        if (isLogin)
             addToWatchHistory();
     }
 
@@ -1819,7 +1819,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //
 //    @Override
 //    public void onBookmarkCall(int currentPosition) {
-//        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+//        if (isLogin) {
 //            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
 //            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
 //        }
@@ -1827,7 +1827,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //
 //    @Override
 //    public void onBookmarkFinish() {
-//        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+//        if (isLogin) {
 //            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
 //            bookmarkingViewModel.finishBookmark(token, assestId);
 //        }
@@ -1926,7 +1926,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
    /* @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
-        boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+        boolean loginStatus = preference.getAppPrefLoginStatus();
         if (!loginStatus)
             new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
         else {
@@ -1987,7 +1987,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
         try {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
+            boolean loginStatus = preference.getAppPrefLoginStatus();
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
@@ -2011,11 +2011,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                             //Log.w("downloadClick",videoQuality+ " "+videoDetails.getEpisodeNo());
                             if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
                                 if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
-                                    //userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+                                    //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), 1, String.valueOf(videoDetails.getEpisodeNo()));
 
                                 }else {
-                                    //userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+                                    //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()));
 
                                 }
@@ -2028,7 +2028,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //                                if (videoQuality != 4) {
 //                                    if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
 //                                        if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
-//                                            //userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+//                                            //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                            if (seasonTabFragment!=null){
 //                                                seasonTabFragment.updateStatus();
 //                                            }
@@ -2038,7 +2038,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //                                            if (seasonTabFragment!=null){
 //                                                seasonTabFragment.updateStatus();
 //                                            }
-//                                            // userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+//                                            // userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                            downloadHelper.startEpisodeDownload(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()), videoQuality);
 //
 //                                        }
@@ -2047,11 +2047,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //                                } else {
 //                                    if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
 //                                        if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
-//                                            // userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+//                                            // userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                            selectDownloadVideoQuality(video, String.valueOf(videoDetails.getBrightcoveVideoId()), 1, position.toString());
 //
 //                                        }else {
-//                                            // userInteractionFragment.setDownloadStatus(me.vipa.app.enums.DownloadStatus.REQUESTED);
+//                                            // userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                            selectDownloadVideoQuality(video, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), position.toString());
 //
 //                                        }

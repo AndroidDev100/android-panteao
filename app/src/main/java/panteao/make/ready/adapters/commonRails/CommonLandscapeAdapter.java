@@ -33,7 +33,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
     private final List<ContentsItem> itemsList;
     private final Activity mContext;
     private KsPreferenceKeys preference;
-    private String isLogin;
+    private boolean isLogin;
     private ArrayList<CommonContinueRail> continuelist;
     private long mLastClickTime = 0;
     private int itemWidth;

@@ -35,7 +35,7 @@ import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
-import panteao.make.ready.beanModel.responseModels.LoginResponse.Data;
+import panteao.make.ready.beanModel.responseModels.LoginResponse.UserData;
 import panteao.make.ready.beanModel.responseModels.LoginResponse.LoginResponseModel;
 import panteao.make.ready.databinding.ActivityMainBinding;
 import panteao.make.ready.databinding.LoginBinding;
@@ -83,11 +83,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.tarcker.EventConstant;
-import panteao.make.ready.tarcker.EventEnum;
-import panteao.make.ready.tarcker.FCMEvents;
-
 
 public class LoginActivity extends BaseBindingActivity<LoginBinding> implements AlertDialogFragment.AlertDialogListener {
     private final List<String> permissionNeeds = Arrays.asList("email", "public_profile");
@@ -108,7 +103,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     //   private AmazonS3 s3;
     private int counter = 0;
     private AsyncTask mMyTask;
-    private Data modelLogin;
+    private UserData modelLogin;
 
     public static String getFileNameFromUrl(String url) {
         Logger.e("", "ProfilePic Name" + url.substring(url.lastIndexOf('/') + 1).split("\\?")[0].split("#")[0]);
@@ -137,7 +132,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         isFbLoginClick = false;
         getBinding().llFooter.setVisibility(View.VISIBLE);
         dismissLoading(getBinding().progressBar);
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             onBackPressed();
         }
     }
@@ -454,7 +449,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     public void saveUserDetails(String response, int userID, boolean isManual) {
-        Data fbLoginData = new Gson().fromJson(response, Data.class);
+        UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
         Log.d("responsefb",stringJson);
@@ -465,7 +460,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         else
             preference.setAppPrefLoginType(AppConstants.UserLoginType.FbLogin.toString());
         preference.setAppPrefProfile(stringJson);
-        preference.setAppPrefLoginStatus(AppConstants.UserStatus.Login.toString());
+        preference.setAppPrefLoginStatus(true);
         preference.setAppPrefUserId(String.valueOf(fbLoginData.getId()));
         Log.d("fbuserid",preference.getAppPrefUserId());
         preference.setAppPrefUserName(String.valueOf(fbLoginData.getName()));

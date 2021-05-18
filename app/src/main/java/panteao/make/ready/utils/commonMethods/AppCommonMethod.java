@@ -94,6 +94,7 @@ import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.LinkProperties;
 import retrofit2.Response;
 
+import static android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_ADD_TO_WATCHLIST;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_COMPLETED;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_EXIT;
@@ -112,7 +113,8 @@ import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_SIGN_U
 
 @SuppressWarnings({"IntegerDivisionInFloatingPointContext", "StatementWithEmptyBody"})
 public class AppCommonMethod {
-
+    public static int ScreenWidth = 0;
+    public static int ScreenHeight = 0;
     public static final List<CommonRailData> adsRail = new ArrayList<>();
     public static final int multiRequestLimit = 5;
     public static final RequestOptions options = new RequestOptions()
@@ -327,8 +329,7 @@ public class AppCommonMethod {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
             //  Log.e("FinalUrl-->>in", imageURL);
             Log.e("ImageUrl-->>in", imgUrl);
-            String uri = createURI(title,assetId,assetType ,imgUrl, activity);
-
+            String uri = createURI(title, assetId, assetType, imgUrl, activity);
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -611,9 +612,9 @@ public class AppCommonMethod {
         long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
         long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
 
-        Log.w("episodeTiming",minute+" "+second);
+        Log.w("episodeTiming", minute + " " + second);
 
-        Log.w("episodeTiming",String.format("%02d", minute));
+        Log.w("episodeTiming", String.format("%02d", minute));
 
         String strHour = String.format("%02d", hours);
         String strSecond = String.format("%02d", second);
@@ -724,11 +725,11 @@ public class AppCommonMethod {
         PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
         StringBuilder stringBuilder = new StringBuilder("");
         String urlImage = oldUrl.trim();
-        String one=SDKConfig.getInstance().getWebPUrl();
-        String two=imageSize+"/"+SDKConfig.WEBP_QUALITY;
+        String one = SDKConfig.getInstance().getWebPUrl();
+        String two = imageSize + "/" + SDKConfig.WEBP_QUALITY;
         stringBuilder.append(one).append(two).append(urlImage);
-        PrintLogging.printLog("", "ImageUrld-->>" +one+"  "+two+" "+urlImage);
-        PrintLogging.printLog("", "-->>StringBilder" +stringBuilder.toString());
+        PrintLogging.printLog("", "ImageUrld-->>" + one + "  " + two + " " + urlImage);
+        PrintLogging.printLog("", "-->>StringBilder" + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -1006,125 +1007,111 @@ public class AppCommonMethod {
 
     }
 
-    public static void trackFcmCustomEvent(Context activity, String eventType, String content_type, String  category_id, String category_name, int row_index, String content_title, int display_index, String content_id, long content_played, long content_duration, String search_term, String video_quality,String userId,String username) {
+    public static void trackFcmCustomEvent(Context activity, String eventType, String content_type, String category_id, String category_name, int row_index, String content_title, int display_index, String content_id, long content_played, long content_duration, String search_term, String video_quality, String userId, String username) {
         try {
             final JsonObject requestParam = new JsonObject();
             if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.GALLERY_SELECT)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
-                requestParam.addProperty(EventConstant.CategoryId,category_id);
-                requestParam.addProperty(EventConstant.CategoryName,category_name);
-                requestParam.addProperty(EventConstant.RowIndex,row_index);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
+                requestParam.addProperty(EventConstant.CategoryId, category_id);
+                requestParam.addProperty(EventConstant.CategoryName, category_name);
+                requestParam.addProperty(EventConstant.RowIndex, row_index);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_GALLERY_SELECT, requestParam);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_SELECT)){
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_SELECT)) {
                 requestParam.addProperty(EventConstant.DisplayIndex, display_index);
                 requestParam.addProperty(EventConstant.ContentId, content_id);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.RowIndex,row_index);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
-                requestParam.addProperty(EventConstant.CategoryId,category_id);
+                requestParam.addProperty(EventConstant.RowIndex, row_index);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
+                requestParam.addProperty(EventConstant.CategoryId, category_id);
                 requestParam.addProperty(EventConstant.CategoryName, category_name);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_SELECT, requestParam);
 
 
-
             } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_PLAY)) {
-                requestParam.addProperty(EventConstant.ContentPlayed,content_played);
-                requestParam.addProperty(EventConstant.ContentDuration,content_duration);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+                requestParam.addProperty(EventConstant.ContentPlayed, content_played);
+                requestParam.addProperty(EventConstant.ContentDuration, content_duration);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_PLAY, requestParam);
 
 
             } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_COMPLETED)) {
-                requestParam.addProperty(EventConstant.ContentPlayed,content_played);
-                requestParam.addProperty(EventConstant.ContentDuration,content_duration);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+                requestParam.addProperty(EventConstant.ContentPlayed, content_played);
+                requestParam.addProperty(EventConstant.ContentDuration, content_duration);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_COMPLETED, requestParam);
 
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_EXIT)) {
-                requestParam.addProperty(EventConstant.ContentPlayed,content_played);
-                requestParam.addProperty(EventConstant.ContentDuration,content_duration);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_EXIT)) {
+                requestParam.addProperty(EventConstant.ContentPlayed, content_played);
+                requestParam.addProperty(EventConstant.ContentDuration, content_duration);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_EXIT, requestParam);
 
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SHARE_CONTENT)) {
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SHARE_CONTENT)) {
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SHARE_CONTENT, requestParam);
 
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.ADD_TO_WATCHLIST)) {
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.ADD_TO_WATCHLIST)) {
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_ADD_TO_WATCHLIST, requestParam);
 
 
-
-
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.REMOVE_WATCHLIST)) {
-                requestParam.addProperty(EventConstant.ContentId,content_id);
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.REMOVE_WATCHLIST)) {
+                requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.ContentTitle,content_title);
-                requestParam.addProperty(EventConstant.Content_Type,content_type);
+                requestParam.addProperty(EventConstant.ContentTitle, content_title);
+                requestParam.addProperty(EventConstant.Content_Type, content_type);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_REMOVE_WATCHLIST, requestParam);
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SEARCH)) {
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SEARCH)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.SearchTerm,search_term);
+                requestParam.addProperty(EventConstant.SearchTerm, search_term);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SEARCH, requestParam);
 
 
-
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_IN_SUCCESS)) {
-                requestParam.addProperty(EventConstant.UserID,userId);
-                requestParam.addProperty(EventConstant.Username,username);
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_IN_SUCCESS)) {
+                requestParam.addProperty(EventConstant.UserID, userId);
+                requestParam.addProperty(EventConstant.Username, username);
 
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_IN_SUCCESS, requestParam);
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_UP_SUCCESS)) {
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_UP_SUCCESS)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.UserID,userId);
-                requestParam.addProperty(EventConstant.Username,username);
+                requestParam.addProperty(EventConstant.UserID, userId);
+                requestParam.addProperty(EventConstant.Username, username);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_UP_SUCCESS, requestParam);
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.LOGOUT)) {
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.LOGOUT)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_LOGOUT, requestParam);
 
-            }
-            else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SETTINGS_VIDEO_QUALITY)) {
+            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SETTINGS_VIDEO_QUALITY)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                requestParam.addProperty(EventConstant.VideoQuality,video_quality);
+                requestParam.addProperty(EventConstant.VideoQuality, video_quality);
                 FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SETTINGS_VIDEO_QUALITY, requestParam);
 
 
-
-            }else {
+            } else {
                 requestParam.addProperty(EventConstant.ContentType, "");
             }
 
@@ -1133,6 +1120,7 @@ public class AppCommonMethod {
         }
 
     }
+
     public static void customTabWidth(TabLayout tabLayout) {
         LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(0));
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
@@ -1199,7 +1187,7 @@ public class AppCommonMethod {
     }
 
     public static void updateLanguage(String language, Context context) {
-        Logger.w("selectedLang--in",language);
+        Logger.w("selectedLang--in", language);
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
@@ -1213,14 +1201,14 @@ public class AppCommonMethod {
 
     public static void resetLanguage(String language, Context context) {
         try {
-            Logger.w("selectedLang--in",language);
+            Logger.w("selectedLang--in", language);
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
             context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -1318,7 +1306,7 @@ public class AppCommonMethod {
 
     public static void callSocialAction(KsPreferenceKeys preference, UserInteractionFragment userInteractionFragment) {
         try {
-            if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (preference.getAppPrefLoginStatus()) {
                 if (userInteractionFragment != null) {
                     if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.LIKE)) {
                         userInteractionFragment.setToken(preference.getAppPrefAccessToken());
@@ -1336,7 +1324,7 @@ public class AppCommonMethod {
         }
     }
 
-    public static void guestTitle(Context context,TextView userNameWords, TextView usernameTv, KsPreferenceKeys preference) {
+    public static void guestTitle(Context context, TextView userNameWords, TextView usernameTv, KsPreferenceKeys preference) {
         if (preference != null) {
             userNameWords.setText(AppCommonMethod.getUserName(context.getResources().getString(R.string.guest_user)));
             usernameTv.setText(context.getResources().getString(R.string.guest_user));
@@ -1411,7 +1399,7 @@ public class AppCommonMethod {
 
         System.out.println(dateFormat.format(currentDatePlusOne));
 
-      //  Log.d("DTGLogs", "expiryDays-->>" + dateFormat.format(currentDatePlusOne));
+        //  Log.d("DTGLogs", "expiryDays-->>" + dateFormat.format(currentDatePlusOne));
         return dateFormat.format(currentDatePlusOne);
     }
 
@@ -1433,7 +1421,7 @@ public class AppCommonMethod {
                 //Log.d("DTGLogs", "DBdayDifference-->>if" + date1 + "  " + date2);
                 diff = -1;
             } else {
-               // Log.d("DTGLogs", "DBdayDifference-->>else" + date1 + "  " + date2);
+                // Log.d("DTGLogs", "DBdayDifference-->>else" + date1 + "  " + date2);
                 diff = 1;
             }
 
@@ -1479,52 +1467,52 @@ public class AppCommonMethod {
 
     }
 
-    public static void handleTags(String isVIPTag, String isNewS, FrameLayout isVIP, FrameLayout newSeries,FrameLayout newEpisode,FrameLayout newMovie,String assetType) {
-       try {
-           if (isVIPTag.equalsIgnoreCase("true")){
-               isVIP.setVisibility(View.VISIBLE);
-           }else {
-               isVIP.setVisibility(View.GONE);
-           }
-           if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())){
-               if (isNewS.equalsIgnoreCase("true")){
-                   newSeries.setVisibility(View.VISIBLE);
-               }else {
-                   newSeries.setVisibility(View.GONE);
-               }
-           }else {
-               newSeries.setVisibility(View.GONE);
-           }
+    public static void handleTags(String isVIPTag, String isNewS, FrameLayout isVIP, FrameLayout newSeries, FrameLayout newEpisode, FrameLayout newMovie, String assetType) {
+        try {
+            if (isVIPTag.equalsIgnoreCase("true")) {
+                isVIP.setVisibility(View.VISIBLE);
+            } else {
+                isVIP.setVisibility(View.GONE);
+            }
+            if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                if (isNewS.equalsIgnoreCase("true")) {
+                    newSeries.setVisibility(View.VISIBLE);
+                } else {
+                    newSeries.setVisibility(View.GONE);
+                }
+            } else {
+                newSeries.setVisibility(View.GONE);
+            }
 
-           if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())){
-               if (isNewS.equalsIgnoreCase("true")){
-                   newMovie.setVisibility(View.VISIBLE);
-               }else {
-                   newMovie.setVisibility(View.GONE);
-               }
-           }else {
-               newMovie.setVisibility(View.GONE);
-           }
-           if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
-               if (isNewS.equalsIgnoreCase("true")){
-                   newEpisode.setVisibility(View.VISIBLE);
-               }else {
-                   newEpisode.setVisibility(View.GONE);
-               }
-           }else {
-               newEpisode.setVisibility(View.GONE);
-           }
-       }catch (Exception ignored){
+            if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
+                if (isNewS.equalsIgnoreCase("true")) {
+                    newMovie.setVisibility(View.VISIBLE);
+                } else {
+                    newMovie.setVisibility(View.GONE);
+                }
+            } else {
+                newMovie.setVisibility(View.GONE);
+            }
+            if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
+                if (isNewS.equalsIgnoreCase("true")) {
+                    newEpisode.setVisibility(View.VISIBLE);
+                } else {
+                    newEpisode.setVisibility(View.GONE);
+                }
+            } else {
+                newEpisode.setVisibility(View.GONE);
+            }
+        } catch (Exception ignored) {
 
-       }
+        }
     }
 
     public static JSONObject createNotificationObject(String notid, String assetType) {
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("contentType",assetType);
-            jsonObject.put("id",notid);
-        }catch (Exception ignored){
+            jsonObject.put("contentType", assetType);
+            jsonObject.put("id", notid);
+        } catch (Exception ignored) {
 
         }
 
@@ -1534,11 +1522,11 @@ public class AppCommonMethod {
     ///// Create dynamic link object
 
     public static JSONObject createDynamicLinkObject(String id, String mediaType) {
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("contentType",mediaType);
-            jsonObject.put("id",id);
-        }catch (Exception ignored){
+            jsonObject.put("contentType", mediaType);
+            jsonObject.put("id", id);
+        } catch (Exception ignored) {
 
         }
 
@@ -1547,20 +1535,20 @@ public class AppCommonMethod {
 
     public static void handleTitleDesc(RelativeLayout titleLayout, TextView tvTitle, TextView tvDescription, BaseCategory baseCategory) {
         try {
-            if (baseCategory!=null){
-                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())){
+            if (baseCategory != null) {
+                if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_ONLY.name())) {
                     titleLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     //titleLayout.setVisibility(View.VISIBLE);
-                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())){
+                    if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE.name())) {
                         titleLayout.setVisibility(View.VISIBLE);
                         tvTitle.setVisibility(View.VISIBLE);
-                    }else {
-                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())){
+                    } else {
+                        if (baseCategory.getRailCardType().equalsIgnoreCase(RailCardType.IMAGE_TITLE_DESC.name())) {
                             titleLayout.setVisibility(View.VISIBLE);
                             tvTitle.setVisibility(View.VISIBLE);
                             tvDescription.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             titleLayout.setVisibility(View.GONE);
                             tvTitle.setVisibility(View.GONE);
                             tvDescription.setVisibility(View.GONE);
@@ -1570,7 +1558,7 @@ public class AppCommonMethod {
                 }
 
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
             titleLayout.setVisibility(View.GONE);
             tvTitle.setVisibility(View.GONE);
             tvDescription.setVisibility(View.GONE);
@@ -1578,7 +1566,7 @@ public class AppCommonMethod {
     }
 
     public static String calculateTimeinMinutes(long milliseconds) {
-        String minutes="";
+        String minutes = "";
         try {
             if (milliseconds % 1000 > 0) {
                 milliseconds = milliseconds + (milliseconds % 1000);
@@ -1588,34 +1576,34 @@ public class AppCommonMethod {
             long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
             long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
 
-            Log.w("episodeTiming",minute+"   ---   "+milliseconds);
-            minutes=String.format("%02d", minute);
+            Log.w("episodeTiming", minute + "   ---   " + milliseconds);
+            minutes = String.format("%02d", minute);
 
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
         return minutes;
     }
 
     public static double getPlanExpiry(DataItem dataItem) {
-        double expiry=0;
+        double expiry = 0;
         try {
-            if (dataItem!=null && dataItem.getExpiryDate()!=null){
-                expiry=(double)dataItem.getExpiryDate();
+            if (dataItem != null && dataItem.getExpiryDate() != null) {
+                expiry = (double) dataItem.getExpiryDate();
             }
-        }catch (Exception ignored){
-            expiry=0;
+        } catch (Exception ignored) {
+            expiry = 0;
         }
 
         return expiry;
     }
 
     public static String getDateFromTimeStamp(double expiryDate) {
-        String date="";
+        String date = "";
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         date = formatter.format(new Date((long) expiryDate));
-        Log.w("expiryDate",date);
+        Log.w("expiryDate", date);
         return date;
     }
 
@@ -1626,10 +1614,9 @@ public class AppCommonMethod {
 
         try {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
-          //  Log.e("FinalUrl-->>in", imageURL);
+            //  Log.e("FinalUrl-->>in", imageURL);
             Log.e("ImageUrl-->>in", imgUrl);
-            String uri = createURI(title,assetId,assetType ,imgUrl, activity);
-
+            String uri = createURI(title, assetId, assetType, imgUrl, activity);
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -1657,7 +1644,7 @@ public class AppCommonMethod {
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
                                 Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
-                               // Log.e("flowchartLink", String.valueOf(flowchartLink));
+                                // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
                                         @Override
@@ -1692,7 +1679,8 @@ public class AppCommonMethod {
 
         }
     }
-    private static String createURI(String title, int assetId, String assetType,String imgUrl1, Activity activity) {
+
+    private static String createURI(String title, int assetId, String assetType, String imgUrl1, Activity activity) {
         String uri = "";
         try {
             String assetId1 = assetId + "";
@@ -1713,4 +1701,13 @@ public class AppCommonMethod {
         return uri;
     }
 
+    public static boolean isTV(Context context) {
+        Configuration config = context.getResources().getConfiguration();
+        return config.uiMode == UI_MODE_TYPE_TELEVISION;
+    }
+
+    public static float dptoPx(Context context, int i) {
+        return i * (((float) context.getResources().getDisplayMetrics().densityDpi) / DisplayMetrics.DENSITY_DEFAULT);
+
+    }
 }

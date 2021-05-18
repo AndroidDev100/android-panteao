@@ -194,7 +194,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
                     KsPreferenceKeys ksPreferenceKeys = KsPreferenceKeys.getInstance();
 
                     ksPreferenceKeys.setAppPrefLastConfigHit(String.valueOf(System.currentTimeMillis()));
-                    ksPreferenceKeys.setAppPrefLoginStatus(AppConstants.UserStatus.Logout.toString());
+                    ksPreferenceKeys.setAppPrefLoginStatus(false);
                     ksPreferenceKeys.setAppPrefAccessToken("");
                     ksPreferenceKeys.setAppPrefConfigResponse(json);
                     ksPreferenceKeys.setAppPrefVideoUrl(response.body().getData().getCloudFrontVideoEndpoint());
