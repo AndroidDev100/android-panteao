@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import androidx.core.app.ActivityOptionsCompat;
 
 import panteao.make.ready.activities.search.ui.ActivitySearch;
+import panteao.make.ready.databinding.ActivityDetailBinding;
+import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.databinding.ActivityHelpBinding;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
@@ -36,7 +38,7 @@ public class ToolBarHandler {
         this.activity = context;
     }
 
-    public void setAction(final DetailScreenBinding binding) {
+    public void setAction(final ActivityDetailBinding binding) {
         binding.lessButton.setOnClickListener(view -> {
             Logger.i("click", "less");
             //  binding.lessText.setText("Less");
@@ -50,7 +52,7 @@ public class ToolBarHandler {
         });
     }
 
-    public void setEpisodeAction(final EpisodeScreenBinding binding) {
+    public void setEpisodeAction(final ActivityEpisodeBinding binding) {
         binding.lessButton.setOnClickListener(view -> {
             Logger.i("click", "less");
             //  binding.lessText.setText("Less");

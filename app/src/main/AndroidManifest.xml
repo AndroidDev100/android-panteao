@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="panteao.make.ready">
+    package="panteao.make.ready" >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,8 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="allowBackup">
-        <activity android:name=".activities.KalturaPlayerActivity">
+        tools:replace="allowBackup" >
+        <activity android:name=".activities.KalturaPlayerActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +41,7 @@
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.detail.ui.EpisodeActivity" />
         <activity android:name=".activities.detail.ui.DetailActivity" />
-        <activity android:name=".activities.splash.ui.SplashNewActivity">
+        <activity android:name=".activities.splash.ui.SplashNewActivity" >
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -74,7 +74,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
@@ -88,29 +88,34 @@
         <activity
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
-            android:theme="@style/SplashTheme">
-
+            android:theme="@style/SplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <data android:scheme="mvhubplus" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-
-            <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true" >
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="0j4bs.app.link" />
-                <!-- example-alternate domain is required for App Links when the Journeys/Web SDK and Deepviews are used inside your website.  -->
-                <data android:scheme="https" android:host="0j4bs-alternate.app.link" />
-            </intent-filter>
 
+                <data
+                    android:host="0j4bs.app.link"
+                    android:scheme="https" />
+                <!-- example-alternate domain is required for App Links when the Journeys/Web SDK and Deepviews are used inside your website. -->
+                <data
+                    android:host="0j4bs-alternate.app.link"
+                    android:scheme="https" />
+            </intent-filter>
             <intent-filter>
                 <data
                     android:host="open"
@@ -132,7 +137,7 @@
                     android:pathPrefix="@string/fcm_prefix"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true" >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -214,7 +219,7 @@
             android:value="ca-app-pub-3940256099942544~3347511713" /> <!-- Branch install referrer tracking -->
         <receiver
             android:name="io.branch.referral.InstallListener"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -274,7 +279,7 @@
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -306,7 +311,7 @@
 
         <service
             android:name=".PanteaoMessagingService"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -363,23 +368,20 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="com.brightcove.cast.DefaultOptionsProvider" />
-
-<!--        <activity-->
-<!--            android:name="com.brightcove.cast.DefaultExpandedControllerActivity"-->
-<!--            android:label="@string/app_name"-->
-<!--            android:launchMode="singleTask"-->
-<!--            android:parentActivityName=".activities.homeactivity.ui.HomeActivity"-->
-<!--            android:screenOrientation="landscape"-->
-<!--            android:theme="@style/Theme.BrightcoveCast">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
-<!--        <meta-data-->
-<!--            android:name="com.brightcove.cast.DefaultOptionsProvider.EXPANDED_CONTROLLER_ACTIVITY_CLASS_NAME"-->
-<!--            android:value=".activities.chromecast.ExpandedControlsActivity" />-->
+            android:value="com.brightcove.cast.DefaultOptionsProvider" /> <!-- <activity -->
+        <!-- android:name="com.brightcove.cast.DefaultExpandedControllerActivity" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:launchMode="singleTask" -->
+        <!-- android:parentActivityName=".activities.homeactivity.ui.HomeActivity" -->
+        <!-- android:screenOrientation="landscape" -->
+        <!-- android:theme="@style/Theme.BrightcoveCast"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- <meta-data -->
+        <!-- android:name="com.brightcove.cast.DefaultOptionsProvider.EXPANDED_CONTROLLER_ACTIVITY_CLASS_NAME" -->
+        <!-- android:value=".activities.chromecast.ExpandedControlsActivity" /> -->
         <meta-data
             android:name="com.brightcove.cast.DefaultOptionsProvider.NOTIFICATION_TARGET_ACTIVITY_CLASS_NAME"
             android:value="com.brightcove.cast.DefaultExpandedControllerActivity" />

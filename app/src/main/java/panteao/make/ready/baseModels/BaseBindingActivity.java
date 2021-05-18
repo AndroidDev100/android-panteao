@@ -2,7 +2,6 @@ package panteao.make.ready.baseModels;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
@@ -10,7 +9,7 @@ import androidx.mediarouter.app.MediaRouteButton;
 
 //import com.google.android.gms.cast.framework.CastButtonFactory;
 import panteao.make.ready.R;
-import panteao.make.ready.SDKConfig;
+import panteao.make.ready.databinding.EpisodeScreenBinding;
 
 public abstract class BaseBindingActivity<B extends ViewDataBinding> extends BaseActivity {
 
@@ -64,6 +63,7 @@ public abstract class BaseBindingActivity<B extends ViewDataBinding> extends Bas
     public B getBinding() {
         return mBinding;
     }
+
 
 
     private B setupBinding(@NonNull LayoutInflater inflater) {

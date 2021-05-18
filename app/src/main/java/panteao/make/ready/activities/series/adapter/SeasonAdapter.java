@@ -128,14 +128,14 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         if (videoItemBeans.get(position).getEpisodeNo() != null && videoItemBeans.get(position).getEpisodeNo() instanceof String && !((String) videoItemBeans.get(position).getEpisodeNo()).equalsIgnoreCase("")) {
             String episodeNum =  (String) videoItemBeans.get(position).getEpisodeNo();
             int eNum = Integer.parseInt(episodeNum);
-//            holder.itemBinding.titleWithSerialNo.setText(eNum + ". " + videoItemBeans.get(position).getTitle());
+            holder.itemBinding.titleWithSerialNo.setText(eNum + ". " + videoItemBeans.get(position).getTitle());
         } else {
-//            holder.itemBinding.titleWithSerialNo.setText(videoItemBeans.get(position).getTitle());
+            holder.itemBinding.titleWithSerialNo.setText(videoItemBeans.get(position).getTitle());
 
         }
-//        ImageHelper.getInstance(context).loadListImage(holder.itemBinding.episodeImage, videoItemBeans.get(position).getPosterURL());
+        ImageHelper.getInstance(context).loadListImage(holder.itemBinding.episodeImage, videoItemBeans.get(position).getPosterURL());
 
-//        holder.itemBinding.description.setText(videoItemBeans.get(position).getDescription());
+        holder.itemBinding.description.setText(videoItemBeans.get(position).getDescription());
 
         try {
             if (!StringUtils.isNullOrEmpty(String.valueOf(videoItemBeans.get(position).getDuration()))) {
@@ -146,11 +146,11 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 String minutes=AppCommonMethod.calculateTimeinMinutes((x));
                 if (!minutes.equalsIgnoreCase("")){
                     minutes=minutes+" "+context.getResources().getString(R.string.minutes);
-//                    holder.itemBinding.duration.setText(minutes);
+                    holder.itemBinding.duration.setText(minutes);
                 }
 
             } else {
-//                holder.itemBinding.duration.setText("00:00");
+                holder.itemBinding.duration.setText("00:00");
             }
         }catch (Exception ignored){
 
@@ -158,11 +158,11 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
 
         if (videoItemBeans.get(position).getId() == currentAssetId) {
-//            holder.itemBinding.nowPlaying.setVisibility(View.VISIBLE);
-//            holder.itemBinding.playIcon.setVisibility(View.GONE);
+            holder.itemBinding.nowPlaying.setVisibility(View.VISIBLE);
+            holder.itemBinding.playIcon.setVisibility(View.GONE);
         } else {
-//            holder.itemBinding.playIcon.setVisibility(View.VISIBLE);
-//            holder.itemBinding.nowPlaying.setVisibility(View.GONE);
+            holder.itemBinding.playIcon.setVisibility(View.VISIBLE);
+            holder.itemBinding.nowPlaying.setVisibility(View.GONE);
 
         }
 //        holder.itemBinding.episodeImage.setOnClickListener(new View.OnClickListener() {
@@ -174,42 +174,42 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 //                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
 //            }
 //        });
-//
-//        holder.itemBinding.mainLay.setOnClickListener(view -> {
-//            PrintLogging.printLog("", "positionIs" + videoItemBeans.get(position));
-//            id = videoItemBeans.get(position).getId();
-//            notifyDataSetChanged();
-//        });
-//
-//        holder.itemBinding.downloadVideo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                clickBinding=holder.itemBinding;
-//                onDownloadClickInteraction.onDownloadClicked(videoItemBeans.get(position).getBrightcoveVideoId(), videoItemBeans.get(position).getEpisodeNo(), this);
-//            }
-//        });
-//        holder.itemBinding.videoDownloaded.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                deleteDownloadedVideo(v, videoItemBeans.get(position), position);
-//            }
-//        });
-//        holder.itemBinding.videoDownloading.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onDownloadClickInteraction.onProgressbarClicked(v, this, videoItemBeans.get(position).getBrightcoveVideoId());
-//
-//
-//            }
-//        });
-//        holder.itemBinding.pauseDownload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                onDownloadClickInteraction.onPauseClicked(videoItemBeans.get(position).getBrightcoveVideoId(), this);
-//
-//            }
-//        });
+
+        holder.itemBinding.mainLay.setOnClickListener(view -> {
+            PrintLogging.printLog("", "positionIs" + videoItemBeans.get(position));
+            id = videoItemBeans.get(position).getId();
+            notifyDataSetChanged();
+        });
+
+        holder.itemBinding.downloadVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickBinding=holder.itemBinding;
+                onDownloadClickInteraction.onDownloadClicked(videoItemBeans.get(position).getBrightcoveVideoId(), videoItemBeans.get(position).getEpisodeNo(), this);
+            }
+        });
+        holder.itemBinding.videoDownloaded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDownloadedVideo(v, videoItemBeans.get(position), position);
+            }
+        });
+        holder.itemBinding.videoDownloading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDownloadClickInteraction.onProgressbarClicked(v, this, videoItemBeans.get(position).getBrightcoveVideoId());
+
+
+            }
+        });
+        holder.itemBinding.pauseDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                onDownloadClickInteraction.onPauseClicked(videoItemBeans.get(position).getBrightcoveVideoId(), this);
+
+            }
+        });
     }
 
     public void holdHolder() {
