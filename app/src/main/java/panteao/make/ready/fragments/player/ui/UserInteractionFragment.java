@@ -683,10 +683,10 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ((SeriesDetailActivity) context).stopShimmer();
             ((SeriesDetailActivity) context).dismissLoading(((SeriesDetailActivity) context).getBinding().progressBar);
         } else if (context instanceof EpisodeActivity) {
-//            ((EpisodeActivity)
-//                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
-//            ((EpisodeActivity) context).isRailData = true;
-//            ((EpisodeActivity) context).stopShimmercheck();
+            ((EpisodeActivity)
+                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
+            ((EpisodeActivity) context).isRailData = true;
+            ((EpisodeActivity) context).stopShimmercheck();
         }
     }
 

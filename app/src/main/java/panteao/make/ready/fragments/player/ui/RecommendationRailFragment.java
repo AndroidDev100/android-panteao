@@ -148,7 +148,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         if (context instanceof SeriesDetailActivity) {
             ((SeriesDetailActivity) context).removeTab(1);
         } else if (context instanceof EpisodeActivity) {
-//            ((EpisodeActivity) context).removeTab(1);
+            ((EpisodeActivity) context).removeTab(1);
         }
 
     }
@@ -159,10 +159,10 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
             ((SeriesDetailActivity) context).stopShimmer();
             ((SeriesDetailActivity) context).dismissLoading(((SeriesDetailActivity) context).getBinding().progressBar);
         } else if (context instanceof EpisodeActivity) {
-//            ((EpisodeActivity)
-//                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
-//            ((EpisodeActivity) context).isRailData = true;
-//            ((EpisodeActivity) context).stopShimmercheck();
+            ((EpisodeActivity)
+                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
+            ((EpisodeActivity) context).isRailData = true;
+            ((EpisodeActivity) context).stopShimmercheck();
 
 
         }
