@@ -31,6 +31,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.kaltura.playkit.providers.ovp.OVPMediaAsset;
+import com.kaltura.tvplayer.KalturaOvpPlayer;
+import com.kaltura.tvplayer.OVPMediaOptions;
+import com.kaltura.tvplayer.PlayerInitOptions;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageType;
 import com.make.enums.RailCardType;
@@ -40,6 +44,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.detail.ui.DetailActivity;
 import panteao.make.ready.activities.detail.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -932,7 +937,7 @@ public class AppCommonMethod {
             } else {
                 new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie()) || screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow()) || screenType.toUpperCase().equalsIgnoreCase("Movie")) {
             if (SDKConfig.getInstance().getMovieDetailId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
@@ -1709,5 +1714,25 @@ public class AppCommonMethod {
     public static float dptoPx(Context context, int i) {
         return i * (((float) context.getResources().getDisplayMetrics().densityDpi) / DisplayMetrics.DENSITY_DEFAULT);
 
+    }
+
+    public static KalturaOvpPlayer loadPlayer(Context context, FrameLayout view) {
+        PlayerInitOptions playerInitOptions = new PlayerInitOptions(KalturaPlayerActivity.Companion.getPARTNER_ID());
+        playerInitOptions.setAutoPlay(true);
+        KalturaOvpPlayer player = KalturaOvpPlayer.create(context, playerInitOptions);
+
+        player.setPlayerView(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        view.addView(player.getPlayerView());
+        return player;
+    }
+
+    public static OVPMediaOptions buildOvpMediaOptions(String entryId, long StartPosition) {
+        OVPMediaAsset ovpMediaAsset = new OVPMediaAsset();
+        ovpMediaAsset.setEntryId(entryId);
+        ovpMediaAsset.setKs(null);
+        ovpMediaAsset.setRedirectFromEntryId(true);
+        OVPMediaOptions ovpMediaOptions = new OVPMediaOptions(ovpMediaAsset);
+        ovpMediaOptions.startPosition = StartPosition;
+        return ovpMediaOptions;
     }
 }

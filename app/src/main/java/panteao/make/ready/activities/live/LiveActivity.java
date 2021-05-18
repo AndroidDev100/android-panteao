@@ -115,7 +115,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     private String vastUrl = "";
     private String token;
     private ResponseDetailPlayer response;
-    private String isLogin;
+    private boolean isLogin;
     private boolean loadingComment = true;
     private boolean isHitPlayerApi = false;
     private int playerApiCount = 0;
@@ -166,7 +166,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
         //basic settings and do not require internet
         preference = KsPreferenceKeys.getInstance();
-        if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
         AppCommonMethod.isPurchase = false;
@@ -390,7 +390,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         }
 
         if (!isLoggedIn) {
-            if (preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+            if (preference.getAppPrefLoginStatus()) {
                 isLoggedIn = true;
                 AppCommonMethod.isPurchase = false;
                 seriesId = AppCommonMethod.seriesId;
@@ -552,7 +552,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             //showDialog(DetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
@@ -612,7 +612,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         token = preference.getAppPrefAccessToken();
 
 
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
                 userName = signInResponseModel.getName();
@@ -674,7 +674,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 getBinding().backButton.setVisibility(View.VISIBLE);
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
-                if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                if (isLogin) {
                     hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
                 } else {
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
@@ -685,7 +685,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                     isLogin = preference.getAppPrefLoginStatus();
 
 
-                    if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+                    if (isLogin) {
                         if (!preference.getEntitlementStatus()) {
                             GetPlansLayer.getInstance().getEntitlementStatus(preference, token, new EntitlementStatus() {
                                 @Override
@@ -893,7 +893,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     public void logoutUser() {
         isloggedout = false;
-        if (isLogin.equalsIgnoreCase(AppConstants.UserStatus.Login.toString())) {
+        if (isLogin) {
             if (CheckInternetConnection.isOnline(Objects.requireNonNull(LiveActivity.this))) {
                 clearCredientials(preference);
                 hitApiLogout(LiveActivity.this, preference.getAppPrefAccessToken());
@@ -949,8 +949,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         getBinding().llParent.setVisibility(View.GONE);
         getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
         getBinding().connection.btnMyDownloads.setOnClickListener(view -> {
-            boolean loginStatus = preference.getAppPrefLoginStatus().equalsIgnoreCase(AppConstants.UserStatus.Login.toString());
-            if (loginStatus)
+            if (preference.getAppPrefLoginStatus())
                 new ActivityLauncher(this).launchMyDownloads();
             else
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);

@@ -36,6 +36,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.kaltura.netkit.utils.ErrorElement;
+import com.kaltura.playkit.PKEvent;
+import com.kaltura.playkit.PKMediaEntry;
+import com.kaltura.playkit.PlayerEvent;
+import com.kaltura.playkit.PlayerState;
+import com.kaltura.tvplayer.KalturaOvpPlayer;
+import com.kaltura.tvplayer.KalturaPlayer;
+import com.kaltura.tvplayer.OVPMediaOptions;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
 
@@ -51,6 +59,7 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
+import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.detail.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
@@ -104,7 +113,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener,PKEvent.Listener<PlayerEvent.StateChanged> {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -149,6 +158,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     public static boolean isBackStacklost = false;
     private boolean isOfflineAvailable = false;
     private boolean isCastConnected = false;
+    private KalturaOvpPlayer player;
+
     @Override
     public ActivityDetailBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
         return ActivityDetailBinding.inflate(inflater);
@@ -164,6 +175,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setFullScreen();
+        player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
+        player.addListener(this, PlayerEvent.stateChanged,this);
         getWindow().setBackgroundDrawableResource(R.color.black);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
@@ -262,12 +275,12 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (isPremium){
+                    if (isPremium) {
                         showPremiumPopup();
                     }
                 }
             }, 1000);
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -359,7 +372,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
         try {
 //            downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -705,6 +718,23 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         }
         //postCommentClick();
         BuyNowClick();
+        startPlayer();
+    }
+
+    private void startPlayer() {
+        player.stop();
+        getBinding().playerRoot.setVisibility(View.GONE);
+        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
+        player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
+            @Override
+            public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
+                if (loadError != null) {
+                    Toast.makeText(DetailActivity.this, loadError.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
+                }
+            }
+        });
     }
 
     public void getAssetDetails() {
@@ -739,7 +769,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             ImageHelper.getInstance(DetailActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {
-                isPremium=true;
+                isPremium = true;
                 ImageHelper.getInstance(DetailActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
                 getBinding().tvPurchased.setVisibility(View.GONE);
                 getBinding().tvPremium.setVisibility(View.GONE);
@@ -747,6 +777,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 getBinding().backButton.setVisibility(View.VISIBLE);
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
+
                 if (isLogin) {
                     hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
                 } else {
@@ -800,7 +831,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             responseEntitlementModel = responseEntitlement;
             if (responseEntitlement.getStatus()) {
                 if (responseEntitlement.getData().getEntitled()) {
-                    isPremium=false;
+                    isPremium = false;
                     getBinding().tvBuyNow.setVisibility(View.GONE);
                     if (responseEntitlement.getData() != null) {
                         updateBuyNowText(responseEntitlement, 1);
@@ -815,8 +846,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                         @Override
                         public void run() {
                             try {
-                                isPremium=true;
-                            }catch (Exception ignored){
+                                isPremium = true;
+                            } catch (Exception ignored) {
 
                             }
                         }
@@ -879,17 +910,18 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         });
     }
 
-    boolean isPremium=false;
+    boolean isPremium = false;
+
     private void showPremiumPopup() {
         try {
-            isPremium=true;
+            isPremium = true;
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.resetLanguage("th", DetailActivity.this);
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", DetailActivity.this);
             }
             showDialog("", getResources().getString(R.string.premium_popup_message));
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -1190,6 +1222,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         } catch (Exception e) {
 
         }
+        if(player != null)
+        player.stop();
     }
 
     @Override
@@ -1208,8 +1242,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void onFinishDialog() {
         Logger.w("onfinishdialog", "episode");
-        if (isPremium){
-            isPremium=false;
+        if (isPremium) {
+            isPremium = false;
             return;
         }
         if (isloggedout)
@@ -1396,7 +1430,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
 //
 
-//    @Override @Override
+    //    @Override @Override
 ////    public void onFragmentInteraction(Uri uri) {
 ////
 //    }
@@ -1609,7 +1643,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 //                    downloadHelper.cancelVideo(downloadAbleVideo.getId());
                     break;
                 case R.id.pause_download:
-                    Log.w("pauseVideo","pop");
+                    Log.w("pauseVideo", "pop");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                    downloadHelper.pauseVideo(downloadAbleVideo.getId());
                     break;
@@ -1635,11 +1669,11 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     @Override
     public void onPauseClicked(String videoId, Object source) {
-        Log.w("pauseClicked","in2");
+        Log.w("pauseClicked", "in2");
         if (NetworkConnectivity.isOnline(this)) {
             if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                 if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                    Log.w("pauseClicked","in3");
+                    Log.w("pauseClicked", "in3");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                    downloadHelper.resumeDownload(downloadAbleVideo.getId());
                 } else {
@@ -1647,10 +1681,10 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                 }
             } else {
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                Log.w("pauseClicked","in4");
+                Log.w("pauseClicked", "in4");
 //                downloadHelper.resumeDownload(downloadAbleVideo.getId());
             }
-        }else {
+        } else {
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
         }
 
@@ -1833,5 +1867,16 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         super.onCreateOptionsMenu(menu);
 //        GoogleCastComponent.setUpMediaRouteButton(this, menu);
         return true;
+    }
+
+    @Override
+    public void onEvent(PlayerEvent.StateChanged event) {
+        if(event.newState == PlayerState.READY){
+            getBinding().pBar.setVisibility(View.GONE);
+        }else if(event.newState == PlayerState.BUFFERING){
+            getBinding().pBar.setVisibility(View.VISIBLE);
+        }else if(event.newState == PlayerState.LOADING){
+            getBinding().playerRoot.setVisibility(View.GONE);
+        }
     }
 }

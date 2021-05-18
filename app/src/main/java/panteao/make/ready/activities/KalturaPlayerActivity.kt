@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.kaltura.playkit.PKLog
 import com.kaltura.playkit.PlayerEvent
@@ -18,11 +20,10 @@ import com.kaltura.tvplayer.PlayerInitOptions
 import kotlinx.android.synthetic.main.activity_kaltura_player.*
 import panteao.make.ready.R
 
-class KalturaPlayerActivity : AppCompatActivity() {
+class KalturaPlayerActivity : FragmentActivity() {
     private val log = PKLog.get("MainActivity")
     private val START_POSITION = 0L // position for start playback in msec.
     private var player: KalturaPlayer? = null
-    private val ENTRY_ID = "1_7pg14mbg "
     private var isFullScreen: Boolean = false
     private var playerState: PlayerState? = null
 
@@ -130,7 +131,7 @@ class KalturaPlayerActivity : AppCompatActivity() {
         val ovpMediaOptions = buildOvpMediaOptions()
         player?.loadMedia(ovpMediaOptions) { entry, loadError ->
             if (loadError != null) {
-                Snackbar.make(findViewById(android.R.id.content), loadError.message, Snackbar.LENGTH_LONG).show()
+                Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
             } else {
                 log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
             }
@@ -153,5 +154,6 @@ class KalturaPlayerActivity : AppCompatActivity() {
     companion object {
         val PARTNER_ID = 3181353
         val SERVER_URL = "https://cdnapisec.kaltura.com"
+        val ENTRY_ID = "1_7pg14mbg"
     }
 }

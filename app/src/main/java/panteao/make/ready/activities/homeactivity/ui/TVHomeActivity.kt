@@ -10,14 +10,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.kaltura.playkit.PKLog
+import com.kaltura.playkit.PlayerEvent
+import com.kaltura.playkit.PlayerState
+import com.kaltura.playkit.providers.ovp.OVPMediaAsset
+import com.kaltura.tvplayer.KalturaOvpPlayer
+import com.kaltura.tvplayer.KalturaPlayer
+import com.kaltura.tvplayer.OVPMediaOptions
+import com.kaltura.tvplayer.PlayerInitOptions
 import com.make.constants.Constants
 import com.make.enums.ImageType
+import kotlinx.android.synthetic.main.activity_kaltura_player.*
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
+import panteao.make.ready.activities.KalturaPlayerActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
@@ -36,6 +49,13 @@ import panteao.make.ready.utils.helpers.NetworkConnectivity
 import java.util.*
 
 class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), ChangableUi, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, View.OnClickListener, DataLoadingListener, OnTabBaseFragmentListener {
+    private val log = PKLog.get("MainActivity")
+    private val START_POSITION = 0L // position for start playback in msec.
+    private var player: KalturaPlayer? = null
+    private val ENTRY_ID = "1_7pg14mbg "
+    private var isFullScreen: Boolean = false
+    private var playerState: PlayerState? = null
+
     private var firstTime: Boolean = true
     private var currentCardPosition: Int = -1
     private var prevPosition: Int = 1
@@ -61,7 +81,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
             0,
             R.drawable.ic_exit
     )
-
+    private val mHandler = Handler(Looper.getMainLooper())
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityTvMainBinding {
         return ActivityTvMainBinding.inflate(inflater)
     }
@@ -99,8 +119,8 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         super.onCreate(savedInstanceState)
         connectionObserver()
         uichanged(1)
+        player = AppCommonMethod.loadPlayer(this,binding?.playerRoot)
     }
-
     override fun onBackPressed() {
         if (!Constants.DRAWER_OPEN) {
             openDrawer()
@@ -208,6 +228,8 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         binding?.menuItems?.requestFocus()
         binding?.menuItems?.getChildAt(selectedPostion)
                 ?.findViewById<View>(R.id.underline)?.visibility = View.INVISIBLE
+        player?.stop()
+        binding?.playerRoot?.visibility = View.GONE
     }
 
     private fun closeDrawer() {
@@ -340,6 +362,20 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 
     override fun onCardSelected(position: Int) {
         currentCardPosition = position
+        mHandler.removeCallbacksAndMessages(null)
+        player?.stop()
+        binding?.playerRoot?.visibility = View.GONE
+        mHandler.postDelayed({
+            val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(ENTRY_ID,0L)
+            binding?.playerRoot?.visibility = View.VISIBLE
+            player?.loadMedia(ovpMediaOptions) { entry, loadError ->
+                if (loadError != null) {
+                    Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
+                } else {
+                    log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
+                }
+            }
+        }, 5000)
     }
 
     override fun showNoDataFoundView(show: Boolean, msg: String) {
@@ -364,5 +400,10 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    companion object {
+        val PARTNER_ID = 3181353
+        val SERVER_URL = "https://cdnapisec.kaltura.com"
     }
 }
