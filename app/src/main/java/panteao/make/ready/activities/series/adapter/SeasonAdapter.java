@@ -165,15 +165,15 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             holder.itemBinding.nowPlaying.setVisibility(View.GONE);
 
         }
-//        holder.itemBinding.episodeImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (videoItemBeans.get(position).getId() == currentAssetId) {
-//                    return;
-//                }
-//                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
-//            }
-//        });
+        holder.itemBinding.episodeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoItemBeans.get(position).getId() == currentAssetId) {
+                    return;
+                }
+                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
+            }
+        });
 
         holder.itemBinding.mainLay.setOnClickListener(view -> {
             PrintLogging.printLog("", "positionIs" + videoItemBeans.get(position));

@@ -806,10 +806,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
         loadingComment = true;
         commentCounter = 0;
-//        getBinding().tvBuyNow.setVisibility(View.GONE);
+        getBinding().tvBuyNow.setVisibility(View.GONE);
         postCommentClick();
-//        getBinding().tvPurchased.setVisibility(View.GONE);
-//        getBinding().tvPremium.setVisibility(View.GONE);
+        getBinding().tvPurchased.setVisibility(View.GONE);
+        getBinding().tvPremium.setVisibility(View.GONE);
         getBinding().setDuration("");
         getBinding().setCasttext("");
         getBinding().setCrewtext("");
