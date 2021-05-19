@@ -113,7 +113,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener,PKEvent.Listener<PlayerEvent.StateChanged>{
+public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PKEvent.Listener<PlayerEvent.StateChanged> {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -176,8 +176,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         super.onCreate(savedInstanceState);
 //        setFullScreen();
         player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
-        player.addListener(this, PlayerEvent.stateChanged,this);
-        player.addListener(this, PlayerEvent.ended,this);
+        player.addListener(this, PlayerEvent.stateChanged, this);
+        player.addListener(this, PlayerEvent.ended, this);
         getWindow().setBackgroundDrawableResource(R.color.black);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
@@ -724,7 +724,6 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     private void startPlayer() {
         player.stop();
-        getBinding().playerRoot.setVisibility(View.GONE);
         OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
         player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
             @Override
@@ -1223,8 +1222,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         } catch (Exception e) {
 
         }
-        if(player != null)
-        player.stop();
+        if (player != null)
+            player.stop();
     }
 
     @Override
@@ -1872,12 +1871,13 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
-        if(event.newState == PlayerState.READY){
+        if (event.newState == PlayerState.READY) {
+            getBinding().playerImage.setVisibility(View.GONE);
             getBinding().pBar.setVisibility(View.GONE);
-        }else if(event.newState == PlayerState.BUFFERING){
+        } else if (event.newState == PlayerState.BUFFERING) {
             getBinding().pBar.setVisibility(View.VISIBLE);
-        }else if(event.newState == PlayerState.LOADING){
+        } else if (event.newState == PlayerState.LOADING) {
         }
-        Logger.e("PLAYER_STATE","State changed from " + event.oldState + " to " + event.newState);
+        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
     }
 }
