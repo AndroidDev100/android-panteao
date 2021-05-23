@@ -286,36 +286,6 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         }
 
     }
-
-   /* public void playPlayerWhenShimmer() {
-        getBinding().pBar.setVisibility(View.VISIBLE);
-        viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
-            @Override
-            public void onChanged(GetBookmarkResponse getBookmarkResponse) {
-                getBinding().backButton.setVisibility(View.GONE);
-                long bookmarkPosition = 0l;
-                if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
-                    bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
-                }
-                transaction = getSupportFragmentManager().beginTransaction();
-                playerFragment = new BrightcovePlayerFragment();
-                Bundle args = new Bundle();
-                args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, String.valueOf(brightCoveVideoId));
-                args.putLong(AppConstants.BOOKMARK_POSITION, bookmarkPosition);
-                args.putString("selected_track",KsPreferenceKeys.getInstance().getQualityName());
-
-                if (videoDetails.isPremium() && videoDetails.getThumbnailImage() != null) {
-                    args.putString(AppConstants.BUNDLE_BANNER_IMAGE, videoDetails.getThumbnailImage());
-                }
-                playerFragment.setArguments(args);
-                transaction.replace(R.id.player_frame, playerFragment);
-                transaction.commit();
-                getBinding().pBar.setVisibility(View.GONE);
-
-            }
-        });
-    }*/
-
     public void playPlayerWhenShimmer() {
         getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
