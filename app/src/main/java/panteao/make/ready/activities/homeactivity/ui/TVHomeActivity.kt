@@ -2,6 +2,7 @@ package panteao.make.ready.activities.homeactivity.ui
 
 import android.annotation.SuppressLint
 import android.app.ActionBar
+import android.media.Image
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,7 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.ViewUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
@@ -119,8 +121,9 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         super.onCreate(savedInstanceState)
         connectionObserver()
         uichanged(1)
-        player = AppCommonMethod.loadPlayer(this,binding?.playerRoot)
+        player = AppCommonMethod.loadPlayer(this, binding?.playerRoot)
     }
+
     override fun onBackPressed() {
         if (!Constants.DRAWER_OPEN) {
             openDrawer()
@@ -335,12 +338,11 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     }
 
     override fun onDataLoading(item: EnveuVideoItemBean, setAsset: Boolean) {
-        Logger.e("DataLoading", Gson().toJson(item))
-        if (item.imageType.equals(ImageType.LDS) || item.imageType.equals(ImageType.LDS2)) {
-            ImageHelper.getInstance(this).loadImageTo(binding?.imageView4, item.posterURL)
-        } else {
-            ImageHelper.getInstance(this).loadImageTo(binding?.imageView4, item.thumbnailImage)
-        }
+        if (item.imageType == ImageType.LDS.name || item.imageType == ImageType.LDS2.name)
+            ImageHelper.getInstance(this).tabsloadImage(binding?.imageView4, item.posterURL,getDrawable(R.drawable.placeholder_landscape))
+        else
+            ImageHelper.getInstance(this).tabsloadImage(binding?.imageView4, item.thumbnailImage,getDrawable(R.drawable.placeholder_landscape))
+
         binding?.content = item
         if (item.assetCast == null || item.assetGenres == null) {
             binding?.lnCastHeadline?.visibility = View.GONE
@@ -366,7 +368,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         player?.stop()
         binding?.playerRoot?.visibility = View.GONE
         mHandler.postDelayed({
-            val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(ENTRY_ID,0L)
+            val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(ENTRY_ID, 0L)
             binding?.playerRoot?.visibility = View.VISIBLE
             player?.loadMedia(ovpMediaOptions) { entry, loadError ->
                 if (loadError != null) {

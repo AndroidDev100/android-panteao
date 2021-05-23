@@ -323,105 +323,69 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
-            context?.let {
-                if (contentItem.assetType.equals(
-                                panteao.make.ready.utils.MediaTypeConstants.getInstance().series,
-                                true
-                        )
-                ) {
-                    AppCommonMethod.launchDetailScreen(
-                            it,
-                            0L,
-                            AppConstants.Series,
-                            contentItem.id,
-                            "",
-                            false
-                    )
-                } else if (contentItem.assetType.equals(
-                                MediaTypeConstants.getInstance().live,
-                                true
-                        )
-                ) {
-//                    loadLivePlayer(contentItem)
-//                    railInjectionHelper.getAssetDetails(contentItem.id.toString())
+            Logger.e("CLICKED_ITEM",Gson().toJson(contentItem))
+//            context?.let {
+//                if (contentItem.assetType.equals(MediaTypeConstants.getInstance().series, true)
+//                ) {
+//
+//                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().live, true)
+//                ) {
+//
+//                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().episode, true)
+//                ) {
+//                    railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
 //                            .observe(this, Observer {
-//                                if (it != null && it.getEnveuVideoItemBeans()!!.size > 0) {
-//                                    if (it.getEnveuVideoItemBeans()!!
+//                                if (it != null && it.baseCategoriesList!!.size > 0) {
+//                                    if (it.baseCategoriesList!!
 //                                                    .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
 //                                    ) {
-//                                        var videoDetail = it.getEnveuVideoItemBeans()!!.get(0)
-//                                        AppCommonMethod.loadPlayer(
-//                                                videoDetail,
-//                                                mActivity,
-//                                                ArrayList(),
-//                                                videoDetail.seriesId!!.toInt()
-//                                        )
+//                                        var videoDetail = it.baseCategoriesList!!.get(0)
+//
 //                                    }
 //                                }
 //                            })
-                } else if (contentItem.assetType.equals(
-                                panteao.make.ready.utils.MediaTypeConstants.getInstance().episode,
-                                true
-                        )
-                ) {
-                    railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
-                            .observe(this, Observer {
-                                if (it != null && it.baseCategoriesList!!.size > 0) {
-                                    if (it.baseCategoriesList!!
-                                                    .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
-                                    ) {
-                                        var videoDetail = it.baseCategoriesList!!.get(0)
-//                                        AppCommonMethod.loadPlayer(
-//                                                videoDetail,
-//                                                mActivity,
-//                                                ArrayList(),
-//                                                videoDetail.seriesId!!.toInt()
+//                } else {
+//                    if (contentItem.assetType != null) {
+//                        if (contentItem.season == null || contentItem.series == null) {
+//                            contentItem.assetType?.let { assetType ->
+//                                AppCommonMethod.launchDetailScreen(
+//                                        it,
+//                                        0L,
+//                                        assetType,
+//                                        contentItem.id,
+//                                        " ",
+//                                        contentItem.isPremium
+//                                )
+//                            }
+//                        } else {
+//                            contentItem.assetType?.let { assetType ->
+//                                contentItem.series?.let { series ->
+//                                    contentItem.season?.let { season ->
+//                                        AppCommonMethod.launchDetailScreen(
+//                                                it,
+//                                                0L,
+//                                                assetType,
+//                                                contentItem.id,
+//                                                series,
+//                                                contentItem.isPremium
 //                                        )
-                                    }
-                                }
-                            })
-                } else {
-                    if (contentItem.assetType != null) {
-                        if (contentItem.season == null || contentItem.series == null) {
-                            contentItem.assetType?.let { assetType ->
-                                AppCommonMethod.launchDetailScreen(
-                                        it,
-                                        0L,
-                                        assetType,
-                                        contentItem.id,
-                                        " ",
-                                        contentItem.isPremium
-                                )
-                            }
-                        } else {
-                            contentItem.assetType?.let { assetType ->
-                                contentItem.series?.let { series ->
-                                    contentItem.season?.let { season ->
-                                        AppCommonMethod.launchDetailScreen(
-                                                it,
-                                                0L,
-                                                assetType,
-                                                contentItem.id,
-                                                series,
-                                                contentItem.isPremium
-                                        )
-                                    }
-                                }
-                            }
-
-                        }
-                    } else {
-                        AppCommonMethod.launchDetailScreen(
-                                it,
-                                0L,
-                                AppConstants.Video,
-                                contentItem.id,
-                                "0",
-                                contentItem.isPremium
-                        )
-                    }
-                }
-            }
+//                                    }
+//                                }
+//                            }
+//
+//                        }
+//                    } else {
+//                        AppCommonMethod.launchDetailScreen(
+//                                it,
+//                                0L,
+//                                AppConstants.Video,
+//                                contentItem.id,
+//                                "0",
+//                                contentItem.isPremium
+//                        )
+//                    }
+//                }
+//            }
         }
     }
 
