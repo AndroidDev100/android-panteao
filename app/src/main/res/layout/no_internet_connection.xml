@@ -62,8 +62,9 @@
             android:fontFamily="@font/sarabun_v7_thai_latin_medium"
             android:paddingStart="60dp"
             android:paddingEnd="60dp"
-            android:text="@string/network_settings"
             android:textColor="@drawable/text_color_selecter" />
+
+        <!--            android:text="@string/network_settings"-->
     </LinearLayout>
 
 </layout>
