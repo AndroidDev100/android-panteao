@@ -388,6 +388,11 @@
     <dimen name="_57dp">57dp</dimen>
     <dimen name="_16dp">16sp</dimen>
     <dimen name="fullscreen_margin_bottom">20dp</dimen>
+    <dimen name="player_forward_margin_right">180dp</dimen>
+    <dimen name="player_backward_margin_left">180dp</dimen>
+    <dimen name="upload_edit_text_margin_left">10dp</dimen>
+    <dimen name="extra_large_text_view_size_title">18sp</dimen>
+    <dimen name="seek_bar_margin_start">38dp</dimen>
 
     <declare-styleable name="CircularProgressBar">
         <attr format="integer" name="progress"/>

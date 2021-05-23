@@ -374,29 +374,10 @@
     <string name="create_free_account">create free account</string>
     <string name="heading3">Create a Free account with Panteao &amp; watch free Pantrao\n videos &amp; receive updates on new video content.</string>
     <string name="signIn">sign in</string>
-    <string name="title_exit">Exit</string>
-    <string name="network_settings">Open Network Settings</string>
-    <string name="title_search">Search</string>
-    <string name="title_coming_soon">Instructors</string>
-    <string name="title_top_its">Watchlist</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">Loading</string>
     <string name="no_data_found">No Data Found</string>
-    <string name="title_screen_1">Home</string>
-    <string name="title_screen_2">Instructors</string>
-    <string name="title_screen_3">Watchlist</string>
-    <string name="title_screen_4">Help</string>
-    <string-array name="menu_titles_with_login">
-        <item>""</item>
-        <item>""</item>
-        <item>""</item>
-        <item>@string/title_search</item>
-        <item>@string/title_screen_1</item>
-        <item>@string/title_screen_2</item>
-        <item>@string/title_screen_3</item>
-        <item>@string/title_screen_4</item>
-        <item>@string/my_profile</item>
-        <item>@string/setting_title</item>
-        <item>""</item>
-        <item>@string/title_exit</item>
-    </string-array>
+
 
 </resources>

@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "730654520816",
-    "project_id": "panteao-10932",
-    "storage_bucket": "panteao-10932.appspot.com"
+    "project_number": "357990100610",
+    "project_id": "panteao-dev",
+    "storage_bucket": "panteao-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:730654520816:android:897b81c09477c722f59935",
+        "mobilesdk_app_id": "1:357990100610:android:9162f2ed56f5a8c482ce9b",
         "android_client_info": {
           "package_name": "panteao.make.ready.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "730654520816-bnhnjif470n2o5mmdhiqgftc5m19sf3f.apps.googleusercontent.com",
+          "client_id": "357990100610-lb9e2mcrm5610blkdpa5avu4jfp7ij9s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDjKhfB7hZUVGh_1Ras-uqUynyGQ-7Mifw"
+          "current_key": "AIzaSyCrFtzsCMwKLKWJME2TeSi4ehEv0Sy88Fk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "730654520816-bnhnjif470n2o5mmdhiqgftc5m19sf3f.apps.googleusercontent.com",
+              "client_id": "357990100610-lb9e2mcrm5610blkdpa5avu4jfp7ij9s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "357990100610-elgnnh3fmccqhsn96uvgus1as9k3oj7i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.panteaoproductions.mobile.dev",
+                "app_store_id": "962194608"
+              }
             }
           ]
         }

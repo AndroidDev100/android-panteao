@@ -1,0 +1,252 @@
+package panteao.make.ready.fragments.player.ui;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+
+import org.jetbrains.annotations.NotNull;
+
+import panteao.make.ready.R;
+import panteao.make.ready.baseModels.BaseBindingFragment;
+import panteao.make.ready.databinding.FragmentPlayerControlsBinding;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import com.kaltura.playkit.PKLog;
+import com.kaltura.playkit.Player;
+import com.kaltura.playkit.PlayerState;
+import com.kaltura.playkit.ads.AdController;
+import com.kaltura.playkit.utils.Consts;
+
+import java.util.Formatter;
+import java.util.Locale;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PlayerControlsFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class PlayerControlsFragment extends Fragment  {
+
+    private static final PKLog log = PKLog.get("PlaybackControlsView");
+    private static final int PROGRESS_BAR_MAX = 100;
+
+    private Player player;
+    private PlayerState playerState;
+
+    private Formatter formatter;
+    private StringBuilder formatBuilder;
+    private PlayerCallbacks playerCallbacks;
+    private SeekBar seekBar;
+    private ImageButton btnPlay, btnPause, btnForward, btnRewind, btnback;
+
+    private boolean dragging = false;
+
+
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public PlayerControlsFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment PlayerControlsFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static PlayerControlsFragment newInstance(String param1, String param2) {
+        PlayerControlsFragment fragment = new PlayerControlsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_player_controls, container, false);
+
+
+        findId(view);
+        performClick();
+
+        return view;
+    }
+    private void performClick() {
+
+        //Play pause control for player
+       btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.playPause();
+                }
+            }
+        });
+
+
+
+        //Seek player for 10 seconds from currentPosition
+        btnForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.Forward();
+                }
+            }
+        });
+        //Rewind player for 10 seconds from currentPosition
+        btnRewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.Rewind();
+                }
+            }
+        });
+
+        //Back button click
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.finishPlayer();
+                }
+                playerCallbacks.checkOrientation(btnback);
+            }
+        });
+
+
+
+        //Replay video event
+//        replay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (playerCallbacks != null) {
+//                    replay.setVisibility(View.GONE);
+//                    seekBar.setPosition(0);
+//                    playerCallbacks.replay();
+//                }
+//            }
+//        });
+
+        //Seekbar callbacks
+//        seekBar.addListener(new TimeBar.OnScrubListener() {
+//            @Override
+//            public void onScrubStart(TimeBar timeBar, long position) {
+//
+//            }
+//
+//            @Override
+//            public void onScrubMove(TimeBar timeBar, long position) {
+//                currentPosition.setText(Utils.stringForTime(position));
+//                hideSkipIntro();
+//            }
+//
+//            @Override
+//            public void onScrubStop(TimeBar timeBar, long position, boolean canceled) {
+//                if (playerCallbacks != null) {
+//                    seekBar.setPosition(position);
+//                    playerCallbacks.SeekbarLastPosition(position);
+//                }
+//            }
+//        });
+    }
+    private void ShowAndHideView() {
+        try {
+
+            Animation animationFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
+            Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+
+            animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    if (playerCallbacks != null)
+                        playerCallbacks.showPlayerController(true);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if (playerCallbacks != null)
+                        playerCallbacks.showPlayerController(false);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void findId(View view) {
+        btnPause=view.findViewById(R.id.pause);
+        btnForward=view.findViewById(R.id.forward);
+        btnRewind=view.findViewById(R.id.rew);
+        btnback=view.findViewById(R.id.back_arrow);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+
+}
