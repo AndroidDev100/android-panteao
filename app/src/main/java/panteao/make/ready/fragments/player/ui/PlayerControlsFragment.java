@@ -2,34 +2,36 @@ package panteao.make.ready.fragments.player.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.jetbrains.annotations.NotNull;
 
 import panteao.make.ready.R;
 import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.databinding.FragmentPlayerControlsBinding;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerState;
 import com.kaltura.playkit.ads.AdController;
 import com.kaltura.playkit.utils.Consts;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -38,19 +40,22 @@ import java.util.Locale;
  * Use the {@link PlayerControlsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlayerControlsFragment extends Fragment  {
+public class PlayerControlsFragment extends Fragment {
 
-    private static final PKLog log = PKLog.get("PlaybackControlsView");
-    private static final int PROGRESS_BAR_MAX = 100;
 
-    private Player player;
-    private PlayerState playerState;
+    private Runnable viewHideShowRunnable;
+    private Handler viewHideShowTimeHandler;
+    private boolean timer = true;
 
     private Formatter formatter;
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
     private SeekBar seekBar;
-    private ImageButton btnPlay, btnPause, btnForward, btnRewind, btnback;
+    private ImageView btnPlay;
+    private ImageView btnPause;
+    private ImageView btnForward;
+    private ImageView btnRewind;
+    private ImageView btnback;
 
     private boolean dragging = false;
 
@@ -94,6 +99,7 @@ public class PlayerControlsFragment extends Fragment  {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -102,24 +108,33 @@ public class PlayerControlsFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_player_controls, container, false);
 
-
         findId(view);
         performClick();
 
         return view;
     }
+
+
+
     private void performClick() {
 
         //Play pause control for player
-       btnPause.setOnClickListener(new View.OnClickListener() {
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (playerCallbacks != null) {
-                    playerCallbacks.playPause();
-                }
+
+                    if (playerCallbacks != null) {
+                        playerCallbacks.playPause(btnPause);
+                        Log.d("mmmmm", "btnpause");
+
+                    } else {
+                        Log.d("mmmmm", "btnpauseelse");
+
+                    }
+
             }
         });
-
 
 
         //Seek player for 10 seconds from currentPosition
@@ -142,15 +157,15 @@ public class PlayerControlsFragment extends Fragment  {
         });
 
         //Back button click
-        btnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (playerCallbacks != null) {
-                    playerCallbacks.finishPlayer();
-                }
-                playerCallbacks.checkOrientation(btnback);
-            }
-        });
+//        btnback.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (playerCallbacks != null) {
+//                    playerCallbacks.finishPlayer();
+//                }
+//                playerCallbacks.checkOrientation(btnback);
+//            }
+//        });
 
 
 
@@ -187,6 +202,21 @@ public class PlayerControlsFragment extends Fragment  {
 //                }
 //            }
 //        });
+    }
+    private void callHandler() {
+        Log.w("conditionCheck-->>","in");
+        timer = true;
+        viewHideShowRunnable = () -> ShowAndHideView();
+
+        viewHideShowTimeHandler = new Handler();
+        viewHideShowTimeHandler.postDelayed(viewHideShowRunnable, 3000);
+    }
+    private void callAnimation() {
+
+        if (timer) {
+            viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
+        }
+        ShowAndHideView();
     }
     private void ShowAndHideView() {
         try {
@@ -235,18 +265,22 @@ public class PlayerControlsFragment extends Fragment  {
     }
 
     private void findId(View view) {
-        btnPause=view.findViewById(R.id.pause);
-        btnForward=view.findViewById(R.id.forward);
-        btnRewind=view.findViewById(R.id.rew);
-        btnback=view.findViewById(R.id.back_arrow);
+        btnPause=(ImageView)view.findViewById(R.id.pause);
+        btnForward=(ImageView)view.findViewById(R.id.forward);
+        btnRewind=(ImageView)view.findViewById(R.id.rew);
+        btnback=(ImageView)view.findViewById(R.id.back_arrow);
 
     }
+
+//
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof PlayerCallbacks)
+           playerCallbacks = (PlayerCallbacks) getActivity();
+        btnPause.setVisibility(View.VISIBLE);
+        btnPause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
 
     }
-
-
 }

@@ -88,4 +88,5 @@
         <item>Data Saver</item>
         <item>Always ask</item>
     </string-array>
+    <string-array name="menu_titles_with_login">menu</string-array>
 </resources>

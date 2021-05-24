@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,6 +87,8 @@ import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
+import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
+import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -113,7 +116,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PKEvent.Listener<PlayerEvent.StateChanged> {
+public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PKEvent.Listener<PlayerEvent.StateChanged>, PlayerCallbacks {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -150,6 +153,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private FragmentTransaction transaction;
     private String sharingUrl;
     private String detailType;
+    private PlayerControlsFragment playerControlsFragment;
     private AlertDialogSingleButtonFragment errorDialog;
     private boolean errorDialogShown = false;
     private BookmarkingViewModel bookmarkingViewModel;
@@ -182,6 +186,13 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        playerControlsFragment = new PlayerControlsFragment();
+        transaction.replace(R.id.player_root, playerControlsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;
         int orientation = this.getResources().getConfiguration().orientation;
@@ -1879,5 +1890,80 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         } else if (event.newState == PlayerState.LOADING) {
         }
         Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
+    }
+
+    @Override
+    public void playPause(ImageView id) {
+
+        if (player != null) {
+            if (player.isPlaying()) {
+                id.setBackgroundResource(R.color.transparent);
+                id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+
+                player.pause();
+                Log.d("chgytfgh","pause");
+
+            } else {
+                id.setBackgroundResource(R.color.transparent);
+
+                id.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+
+                player.play();
+
+                Log.d("chgytfgh","play");
+            }
+
+        }
+    }
+
+    @Override
+    public void Forward() {
+        if (player != null) {
+            player.seekTo(player.getCurrentPosition() + 10000);
+//            if (playerControlsFragment != null) {
+//                playerControlsFragment.sendPlayerCurrentPosition(baseVideoView.getCurrentPosition());
+//            }
+        }
+
+    }
+
+    @Override
+    public void Rewind() {
+        if (player != null) {
+           player.seekTo(player.getCurrentPosition() - 10000);
+//            if (playerControlsFragment != null) {
+//                playerControlsFragment.sendPlayerCurrentPosition(baseVideoView.getCurrentPosition());
+//            }
+        }
+    }
+
+    @Override
+    public void finishPlayer() {
+
+    }
+
+    @Override
+    public void checkOrientation(ImageView id) {
+
+    }
+
+    @Override
+    public void replay() {
+
+    }
+
+    @Override
+    public void showPlayerController(boolean isVisible) {
+
+    }
+
+    @Override
+    public void changeBitRateRequest(String title, int position) {
+
+    }
+
+    @Override
+    public void bitRateRequest() {
+
     }
 }

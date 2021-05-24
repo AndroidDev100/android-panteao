@@ -6,23 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/transparent"
         >
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="7dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/backArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="backarrow"
-                android:padding="4dp"
-                android:src="@drawable/videobackicon" />
-        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,22 +20,22 @@
 
 
 
-            <ImageButton android:id="@+id/rew"
-                android:layout_height="match_parent"
+            <ImageView android:id="@+id/rew"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/backward_icon"
               />
 
-            <ImageButton android:id="@+id/pause"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:src="@drawable/pause"/>
+            <ImageView android:id="@+id/pause"
+                android:layout_height="43dp"
+                android:layout_width="43dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:visibility="gone"
+/>
 
-
-            <ImageButton android:id="@+id/forward"
-                android:layout_height="match_parent"
+            <ImageView android:id="@+id/forward"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/forward_icon"/>
 
