@@ -6,6 +6,7 @@ import com.make.enums.ImageType;
 import com.make.enums.LandingPageType;
 import com.make.enums.Layouts;
 import com.make.enums.WidgetImageType;
+
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
 import panteao.make.ready.beanModelV3.playListModelV2.ItemsItem;
 import panteao.make.ready.beanModelV3.playListModelV2.PlayListDetailsResponse;
@@ -17,7 +18,9 @@ import panteao.make.ready.layersV2.VideoDetailLayer;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
+
 import com.google.gson.Gson;
+
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 import java.util.ArrayList;
@@ -52,8 +55,8 @@ public class RailCommonData {
     private int totalCount = 0;
     private String assetType;
     private boolean isSeries = false;
-    private boolean isContinueWatching=false;
-    private boolean isAd=false;
+    private boolean isContinueWatching = false;
+    private boolean isAd = false;
 
     // for playlist constructor
     public RailCommonData(PlayListDetailsResponse playListDetailsResponse, BaseCategory screenWidget, boolean type) {
@@ -70,7 +73,7 @@ public class RailCommonData {
     }
 
     // for episode listing constructor
-    public RailCommonData(PlayListDetailsResponse playListDetailsResponse){
+    public RailCommonData(PlayListDetailsResponse playListDetailsResponse) {
         setEpisodesList(playListDetailsResponse.getItems(), ImageType.LDS.name());
         isSeries = false;
     }
@@ -110,7 +113,7 @@ public class RailCommonData {
                 public void onSuccess(Object item) {
                     if (item instanceof EnveuVideoDetails) {
                         EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) item;
-                        AppCommonMethod.createManualHeroItem(enveuVideoItemBean,enveuVideoDetails);
+                        AppCommonMethod.createManualHeroItem(enveuVideoItemBean, enveuVideoDetails);
                     }
                     enveuVideoItemBeans.add(enveuVideoItemBean);
                     commonApiCallBack.onSuccess(RailCommonData.this);
@@ -141,7 +144,7 @@ public class RailCommonData {
             public void onSuccess(Object item) {
                 if (item instanceof EnveuVideoDetails) {
                     EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) item;
-                    AppCommonMethod.createAssetHeroItem(enveuVideoItemBean,enveuVideoDetails,screenWidget);
+                    AppCommonMethod.createAssetHeroItem(enveuVideoItemBean, enveuVideoDetails, screenWidget);
                     enveuVideoItemBeans.add(enveuVideoItemBean);
                     railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
                     commonApiCallBack.onSuccess(railCommonData);
@@ -162,30 +165,25 @@ public class RailCommonData {
     }
 
     private void setBrighcoveVideos(List<ItemsItem> videos, String imageType) {
-        Logger.e("RailCommonData---->>", "" + imageType);
         if (videos != null && videos.size() > 0) {
             final RailCommonData railCommonData = this;
-            for (int i=0;i<videos.size();i++){
-                VideosItem videoItem= videos.get(i).getContent();
+            for (int i = 0; i < videos.size(); i++) {
+                VideosItem videoItem = videos.get(i).getContent();
                 Gson gson = new Gson();
                 String tmp = gson.toJson(videoItem);
-                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem,videos.get(i).getContentOrder(),imageType);
-                if (videoItem!=null){
-                    if (videoItem.getSeasonNumber()!=null && !videoItem.getSeasonNumber().equalsIgnoreCase("")){
-                        int seasonNumber=Integer.parseInt(videoItem.getSeasonNumber());
+                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
+                if (videoItem != null) {
+                    if (videoItem.getSeasonNumber() != null && !videoItem.getSeasonNumber().equalsIgnoreCase("")) {
+                        int seasonNumber = Integer.parseInt(videoItem.getSeasonNumber());
                         railCommonData.setSeasonNumber(seasonNumber);
                     }
 
-                    if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString()))
-                    {
-                        Logger.e("Screen WidgetType ",screenWidget.getWidgetImageType());
-                        String imageUrl=ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
+                    if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
                         enveuVideoItemBean.setPosterURL(imageUrl);
                         enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem));
-                    }
-                    else{
-                        String imageUrl=ImageLayer.getInstance().getPosterImageUrl(videoItem);
-                        Logger.e("FinalImageUrl",imageUrl);
+                    } else {
+                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem);
                         enveuVideoItemBean.setPosterURL(imageUrl);
                         enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
                     }
@@ -194,9 +192,9 @@ public class RailCommonData {
 
             }
 
-            if (enveuVideoItemBeans!=null && enveuVideoItemBeans.size()>0){
-                Collections.sort(enveuVideoItemBeans, new Comparator<EnveuVideoItemBean>(){
-                    public int compare(EnveuVideoItemBean o1, EnveuVideoItemBean o2){
+            if (enveuVideoItemBeans != null && enveuVideoItemBeans.size() > 0) {
+                Collections.sort(enveuVideoItemBeans, new Comparator<EnveuVideoItemBean>() {
+                    public int compare(EnveuVideoItemBean o1, EnveuVideoItemBean o2) {
                         return Integer.compare(o1.getContentOrder(), o2.getContentOrder());
                     }
                 });
@@ -207,27 +205,25 @@ public class RailCommonData {
     private void setEpisodesList(List<ItemsItem> videos, String imageType) {
         if (videos != null && videos.size() > 0) {
             final RailCommonData railCommonData = this;
-            for (int i=0;i<videos.size();i++){
-                VideosItem videoItem= videos.get(i).getContent();
+            for (int i = 0; i < videos.size(); i++) {
+                VideosItem videoItem = videos.get(i).getContent();
                 Gson gson = new Gson();
                 String tmp = gson.toJson(videoItem);
-                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem,videos.get(i).getContentOrder(),imageType);
-                if (videoItem!=null){
-                    if (videoItem.getSeasonNumber()!=null && !videoItem.getSeasonNumber().equalsIgnoreCase("")){
-                        int seasonNumber=Integer.parseInt(videoItem.getSeasonNumber());
+                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
+                if (videoItem != null) {
+                    if (videoItem.getSeasonNumber() != null && !videoItem.getSeasonNumber().equalsIgnoreCase("")) {
+                        int seasonNumber = Integer.parseInt(videoItem.getSeasonNumber());
                         railCommonData.setSeasonNumber(seasonNumber);
                     }
                     enveuVideoItemBean.setVodCount(videos.size());
-                    if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString()))
-                    {
-                        Logger.e("Screen WidgetType ",screenWidget.getWidgetImageType());
-                        String imageUrl=ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
+                    if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+                        Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
+                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
                         enveuVideoItemBean.setPosterURL(imageUrl);
                         enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem));
 
-                    }
-                    else{
-                        String imageUrl=ImageLayer.getInstance().getPosterImageUrl(videoItem);
+                    } else {
+                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem);
                         enveuVideoItemBean.setPosterURL(imageUrl);
                         enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
                     }
@@ -239,18 +235,18 @@ public class RailCommonData {
             }
 
             try {
-                if (enveuVideoItemBeans!=null && enveuVideoItemBeans.size()>0){
-                    Collections.sort(enveuVideoItemBeans, new Comparator<EnveuVideoItemBean>(){
-                        public int compare(EnveuVideoItemBean o1, EnveuVideoItemBean o2){
-                            if (o1.getEpisodeNo()!=null && o1.getEpisodeNo() instanceof Double){
+                if (enveuVideoItemBeans != null && enveuVideoItemBeans.size() > 0) {
+                    Collections.sort(enveuVideoItemBeans, new Comparator<EnveuVideoItemBean>() {
+                        public int compare(EnveuVideoItemBean o1, EnveuVideoItemBean o2) {
+                            if (o1.getEpisodeNo() != null && o1.getEpisodeNo() instanceof Double) {
                                 return Double.compare((Double) o1.getEpisodeNo(), (Double) o2.getEpisodeNo());
-                            }else {
+                            } else {
                                 return 0;
                             }
                         }
                     });
                 }
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -268,7 +264,7 @@ public class RailCommonData {
             if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                 enveuVideoItemBean.setPosterURL(seriesItem.getThumbnailImage());
                 enveuVideoItemBean.setThumbnailImage(seriesItem.getPosterImage());
-            }else {
+            } else {
                 enveuVideoItemBean.setPosterURL(seriesItem.getPosterImage());
                 enveuVideoItemBean.setThumbnailImage(seriesItem.getPosterImage());
             }
@@ -319,14 +315,13 @@ public class RailCommonData {
 
         } else if (layoutType.equalsIgnoreCase(Layouts.MRC.name())) {
             railType = AppConstants.ADS_MREC;
-        }
-        else if (layoutType.equalsIgnoreCase(Layouts.CUS.name())) {
+        } else if (layoutType.equalsIgnoreCase(Layouts.CUS.name())) {
             railType = AppConstants.ADS_CUS;
         }
     }
 
     public void setContinueWatchingData(BaseCategory screenWidget, ArrayList<DataItem> enveuVideoDetails, CommonApiCallBack commonApiCallBack) {
-       // this.identifier = screenWidget.getReferenceName();
+        // this.identifier = screenWidget.getReferenceName();
         this.displayName = (String) screenWidget.getName();
         this.screenWidget = screenWidget;
         final RailCommonData railCommonData = this;
@@ -336,16 +331,14 @@ public class RailCommonData {
                 String tmp = gson.toJson(enveuVideoDetails1);
                 EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1);
 
-                if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString()))
-                {
-                    Logger.e("Screen WidgetType ",screenWidget.getWidgetImageType());
-                    String imageUrl=ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
+                if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+                    Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
+                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
                     enveuVideoItemBean.setPosterURL(imageUrl);
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1));
 
-                }
-                else{
-                    String imageUrl=ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
+                } else {
+                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
                     enveuVideoItemBean.setPosterURL(imageUrl);
                     enveuVideoItemBean.setPosterURL(screenWidget.getImageURL());
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1));
@@ -362,6 +355,7 @@ public class RailCommonData {
         }
 
     }
+
     public void setWatchHistoryData(ArrayList<DataItem> enveuVideoDetails, CommonApiCallBack commonApiCallBack) {
 
         if (enveuVideoDetails != null && enveuVideoDetails.size() > 0) {
@@ -370,15 +364,14 @@ public class RailCommonData {
                 String tmp = gson.toJson(enveuVideoDetails1);
                 EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1);
 
-                if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())){
-                    Logger.e("Screen WidgetType ",screenWidget.getWidgetImageType());
-                    String imageUrl=ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
+                if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+                    Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
+                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
                     enveuVideoItemBean.setPosterURL(imageUrl);
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1));
 
-                }
-                else{
-                    String imageUrl=ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
+                } else {
+                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
                     enveuVideoItemBean.setPosterURL(imageUrl);
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1));
                 }
