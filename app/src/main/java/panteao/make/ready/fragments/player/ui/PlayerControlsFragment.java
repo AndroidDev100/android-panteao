@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ public class PlayerControlsFragment extends Fragment {
     private ImageView btnForward;
     private ImageView btnRewind;
     private ImageView btnback;
+    private RelativeLayout relativeLayout;
 
     private boolean dragging = false;
 
@@ -114,10 +116,29 @@ public class PlayerControlsFragment extends Fragment {
         return view;
     }
 
+    public void startHandler() {
+        callHandler();
+
+    }
 
 
     private void performClick() {
+         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
 
+//                if (!mFlag)
+//                    return false;
+//                if (replay.getVisibility() == View.VISIBLE) {
+//                    childControl.setVisibility(View.GONE);
+//                } else {
+                  ShowAndHideView();
+//                }
+
+                return false;
+            }
+        });
         //Play pause control for player
 
         btnPause.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +224,9 @@ public class PlayerControlsFragment extends Fragment {
 //            }
 //        });
     }
+
+
+
     private void callHandler() {
         Log.w("conditionCheck-->>","in");
         timer = true;
@@ -269,10 +293,10 @@ public class PlayerControlsFragment extends Fragment {
         btnForward=(ImageView)view.findViewById(R.id.forward);
         btnRewind=(ImageView)view.findViewById(R.id.rew);
         btnback=(ImageView)view.findViewById(R.id.back_arrow);
+       relativeLayout=(RelativeLayout)view.findViewById(R.id.control_layout);
 
     }
 
-//
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
