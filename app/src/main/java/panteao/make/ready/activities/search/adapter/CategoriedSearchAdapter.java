@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.callbacks.commonCallbacks.SearchClickCallbacks;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.R;
@@ -53,20 +54,28 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context),
                 R.layout.row_search_category, parent, false);
-        Logger.e("ViewType", String.valueOf(viewType));
-        if (viewType == 0) {
-            return new ShowTypeViewHolder(binding);
-        } else if (viewType == 1) {
-            return new EpisodeTypeViewHolder(binding);
-        } else if (viewType == 2) {
-            return new MovieTypeViewHolder(binding);
-        } else if (viewType == 3) {
-            return new SeriesTypeViewHolder(binding);
-        } else if (viewType == 4) {
-            return new LiveTypeViewHolder(binding);
-        } else {
-            return new ArticleTypeViewHolder(binding);
-        }
+//        if (viewType == 0) {
+//            return new ShowTypeViewHolder(binding);
+//        } else if (viewType == 1) {
+//            return new EpisodeTypeViewHolder(binding);
+//        } else if (viewType == 2) {
+//            return new MovieTypeViewHolder(binding);
+//        } else if (viewType == 3) {
+//            return new SeriesTypeViewHolder(binding);
+//        } else if (viewType == 4) {
+//            return new LiveTypeViewHolder(binding);
+//        } else if (viewType == 5) {
+//            return new LiveTypeViewHolder(binding);
+//        } else if (viewType == 6) {
+//            return new LiveTypeViewHolder(binding);
+//        } else if (viewType == 7) {
+//            return new LiveTypeViewHolder(binding);
+//        } else if (viewType == 8) {
+//            return new LiveTypeViewHolder(binding);
+//        } else {
+//            return new ArticleTypeViewHolder(binding);
+//        }
+        return new MovieTypeViewHolder(binding);
 
     }
 
@@ -76,129 +85,165 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         final int position = pos;
         final List<EnveuVideoItemBean> singleSectionItems = list.get(position).getEnveuVideoItemBeans();
         RowSearchAdapter itemListDataAdapter1 = new RowSearchAdapter(context, singleSectionItems, true, this);
-        if (viewHolder instanceof MovieTypeViewHolder) {
-            //try {
-            setRecyclerProperties(((MovieTypeViewHolder) viewHolder).binding.recyclerView);
-            ((MovieTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-            if (list.get(position).getTotalCount() == 1)
-                ((MovieTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_movies) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-            else
-                ((MovieTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_movies) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+        MovieTypeViewHolder movieTypeViewHolder = (MovieTypeViewHolder) viewHolder;
+        setRecyclerProperties(movieTypeViewHolder.binding.recyclerView);
+        movieTypeViewHolder.binding.recyclerView.setAdapter(itemListDataAdapter1);
+        String header = "";
+        switch (getItemViewType(pos)) {
+            case 0:
+                header = context.getString(R.string.heading_shows);
+                break;
+            case 1:
+                header = context.getString(R.string.heading_episodes);
+                break;
+            case 2:
+                header = context.getString(R.string.heading_movies);
+                break;
+            case 3:
+                header = context.getString(R.string.heading_series);
+                break;
+            case 4:
+                header = context.getString(R.string.heading_live);
+                break;
+            case 5:
+                header = MediaTypeConstants.getInstance().getInstructor();
+                break;
+            case 6:
+                header = MediaTypeConstants.getInstance().getChapter();
+                break;
+            case 7:
+                header = MediaTypeConstants.getInstance().getTrailor();
+                break;
+            case 8:
+                header=MediaTypeConstants.getInstance().getTutorial();
+                break;
 
-            if (list.get(position).getTotalCount() < 5) {
-                ((MovieTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-            }
-            ((MovieTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-           /* } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter",""+e.toString());
-            }
-*/
-
-        } else if (viewHolder instanceof EpisodeTypeViewHolder) {
-            try {
-                setRecyclerProperties(((EpisodeTypeViewHolder) viewHolder).binding.recyclerView);
-                ((EpisodeTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-
-                if (list.get(position).getTotalCount() == 1)
-                    ((EpisodeTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_episodes) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-                else
-                    ((EpisodeTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_episodes) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
-
-                if (list.get(position).getTotalCount() < 5) {
-                    ((EpisodeTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-                }
-
-
-                ((EpisodeTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-
-            } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter", "" + e.toString());
-            }
-        } else if (viewHolder instanceof ShowTypeViewHolder) {
-            try {
-                setRecyclerProperties(((ShowTypeViewHolder) viewHolder).binding.recyclerView);
-                ((ShowTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-
-                if (list.get(position).getTotalCount() == 1)
-                    ((ShowTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_shows) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-                else
-                    ((ShowTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_shows) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
-
-                if (list.get(position).getTotalCount() < 5) {
-                    ((ShowTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-                }
-                // ((ShowTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-
-            } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter", "" + e.toString());
-            }
-        } else if (viewHolder instanceof SeriesTypeViewHolder) {
-            try {
-                setRecyclerProperties(((SeriesTypeViewHolder) viewHolder).binding.recyclerView);
-                ((SeriesTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-
-
-                if (list.get(position).getTotalCount() == 1)
-                    ((SeriesTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_series) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-                else
-                    ((SeriesTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_series) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
-
-
-                if (list.get(position).getTotalCount() < 5) {
-                    ((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-                }
-
-                ((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-
-            } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter", "" + e.toString());
-            }
-        } else if (viewHolder instanceof LiveTypeViewHolder) {
-            try {
-                setRecyclerProperties(((LiveTypeViewHolder) viewHolder).binding.recyclerView);
-                ((LiveTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-
-
-                if (list.get(position).getTotalCount() == 1)
-                    ((LiveTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_live) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-                else
-                    ((LiveTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_live) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
-
-
-                if (list.get(position).getTotalCount() < 5) {
-                    ((LiveTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-                }
-
-                ((LiveTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-
-            } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter", "" + e.toString());
-            }
-        } else if (viewHolder instanceof ArticleTypeViewHolder) {
-            try {
-                setRecyclerProperties(((ArticleTypeViewHolder) viewHolder).binding.recyclerView);
-                ((ArticleTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
-
-
-                if (list.get(position).getTotalCount() == 1)
-                    ((ArticleTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getResources().getString(R.string.article) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
-                else
-                    ((ArticleTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getResources().getString(R.string.article) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
-
-
-                if (list.get(position).getTotalCount() < 5) {
-                    ((ArticleTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
-                }
-
-                ((ArticleTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
-
-            } catch (ClassCastException e) {
-                Logger.e("CatedSearchAdapter", "" + e.toString());
-            }
         }
+        if (list.get(position).getTotalCount() == 1)
+            movieTypeViewHolder.binding.tvTitle.setText(header + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+        else
+            movieTypeViewHolder.binding.tvTitle.setText(header + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+
+        if (list.get(position).getTotalCount() < 5) {
+            movieTypeViewHolder.binding.showAllSearch.setVisibility(View.GONE);
+        }
+        movieTypeViewHolder.binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+
+//        if (viewHolder instanceof MovieTypeViewHolder) {
+//            ((MovieTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//            if (list.get(position).getTotalCount() == 1)
+//                ((MovieTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_movies) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//            else
+//                ((MovieTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_movies) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//            if (list.get(position).getTotalCount() < 5) {
+//                ((MovieTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//            }
+//            ((MovieTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//        } else if (viewHolder instanceof EpisodeTypeViewHolder) {
+//            try {
+//                setRecyclerProperties(((EpisodeTypeViewHolder) viewHolder).binding.recyclerView);
+//                ((EpisodeTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//
+//                if (list.get(position).getTotalCount() == 1)
+//                    ((EpisodeTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_episodes) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//                else
+//                    ((EpisodeTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_episodes) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//                if (list.get(position).getTotalCount() < 5) {
+//                    ((EpisodeTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//                }
+//
+//
+//                ((EpisodeTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//
+//            } catch (ClassCastException e) {
+//                Logger.e("CatedSearchAdapter", "" + e.toString());
+//            }
+//        } else if (viewHolder instanceof ShowTypeViewHolder) {
+//            try {
+//                setRecyclerProperties(((ShowTypeViewHolder) viewHolder).binding.recyclerView);
+//                ((ShowTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//
+//                if (list.get(position).getTotalCount() == 1)
+//                    ((ShowTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_shows) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//                else
+//                    ((ShowTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_shows) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//                if (list.get(position).getTotalCount() < 5) {
+//                    ((ShowTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//                }
+//                // ((ShowTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//
+//            } catch (ClassCastException e) {
+//                Logger.e("CatedSearchAdapter", "" + e.toString());
+//            }
+//        } else if (viewHolder instanceof SeriesTypeViewHolder) {
+//            try {
+//                setRecyclerProperties(((SeriesTypeViewHolder) viewHolder).binding.recyclerView);
+//                ((SeriesTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//
+//
+//                if (list.get(position).getTotalCount() == 1)
+//                    ((SeriesTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_series) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//                else
+//                    ((SeriesTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_series) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//
+//                if (list.get(position).getTotalCount() < 5) {
+//                    ((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//                }
+//
+//                ((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//
+//            } catch (ClassCastException e) {
+//                Logger.e("CatedSearchAdapter", "" + e.toString());
+//            }
+//        } else if (viewHolder instanceof LiveTypeViewHolder) {
+//            try {
+//                setRecyclerProperties(((LiveTypeViewHolder) viewHolder).binding.recyclerView);
+//                ((LiveTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//
+//                if (list.get(position).getTotalCount() == 1)
+//                    ((LiveTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_live) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//                else
+//                    ((LiveTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getString(R.string.heading_live) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//
+//                if (list.get(position).getTotalCount() < 5) {
+//                    ((LiveTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//                }
+//
+//                ((LiveTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//
+//            } catch (ClassCastException e) {
+//                Logger.e("CatedSearchAdapter", "" + e.toString());
+//            }
+//        } else if (viewHolder instanceof ArticleTypeViewHolder) {
+//            try {
+//                setRecyclerProperties(((ArticleTypeViewHolder) viewHolder).binding.recyclerView);
+//                ((ArticleTypeViewHolder) viewHolder).binding.recyclerView.setAdapter(itemListDataAdapter1);
+//
+//
+//                if (list.get(position).getTotalCount() == 1)
+//                    ((ArticleTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getResources().getString(R.string.article) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.result_caps));
+//                else
+//                    ((ArticleTypeViewHolder) viewHolder).binding.tvTitle.setText(context.getResources().getString(R.string.article) + " - " + list.get(position).getTotalCount() + " " + context.getResources().getString(R.string.results_caps));
+//
+//
+//                if (list.get(position).getTotalCount() < 5) {
+//                    ((ArticleTypeViewHolder) viewHolder).binding.showAllSearch.setVisibility(View.GONE);
+//                }
+//
+//                ((ArticleTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//                //((SeriesTypeViewHolder) viewHolder).binding.showAllSearch.setOnClickListener(view -> callResultActivity(list.get(position)));
+//
+//            } catch (ClassCastException e) {
+//                Logger.e("CatedSearchAdapter", "" + e.toString());
+//            }
+//        }
 
 
     }
@@ -295,8 +340,8 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onRowItemClicked(EnveuVideoItemBean itemValue) {
-        Log.d("categoryAdpater","itemClick");
-        AppCommonMethod.trackFcmEvent("Content Screen","", context,0);
+        Log.d("categoryAdpater", "itemClick");
+        AppCommonMethod.trackFcmEvent("Content Screen", "", context, 0);
 //        AppCommonMethod.trackFcmCustomEvent(context, AppConstants.CONTENT_SELECT,itemValue.getAssetType(), itemValue.getSeriesId(), itemValue.getName() + "", 0, itemValue.getTitle(),0, itemValue.getId() + "", 0, 0, "", "");
 
 

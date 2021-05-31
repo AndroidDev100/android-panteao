@@ -85,103 +85,9 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
             viewHolder.itemBinding.setPlaylistItem(list.get(position));
         }
         try {
-
-            if (list.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
-            } else if (list.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
-                viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-            } else if (list.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
-                viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-            } else if (list.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
-                setSeasonEpisodeValue(list.get(position), viewHolder.itemBinding.tvEpisode);
-            } else if (list.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
-                viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-            } else if (list.get(position).getAssetType().equalsIgnoreCase(AppConstants.Season)) {
-                if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                    ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
-                }
+            if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
+                ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
             }
-
-/*
-            switch (list.get(position).getAssetType()) {
-                case AppConstants.Show:
-                    //ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, list.get(position).getPosterURL());
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-                    //setImage(list.get(position).getLandscapeImage(), AppConstants.VIDEO_IMAGE_BASE_KEY, viewHolder.itemBinding.itemImage);
-                    // viewHolder.itemBinding.tvEpisode.setText(list.get(position).getGenreSearchDTOList().get(0).getGenreName() + " | " + AppCommonMethod.calculateTime(list.get(position).getDuration()));
-                    break;
-                case AppConstants.Movie:
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-                    // ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, list.get(position).getPosterURL());
-                    //viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)) + " | " + AppCommonMethod.calculateTime(45116));
-                    viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-                    break;
-                case AppConstants.Episode:
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-                    //ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, list.get(position).getPosterURL());
-                    viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-                    // viewHolder.itemBinding.tvEpisode.setText(list.get(position).getGenreSearchDTOList().get(0).getGenreName() + " | " + AppCommonMethod.calculateTime(list.get(position).getDuration()));
-                    break;
-                case AppConstants.Series:
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-                    setSeasonEpisodeValue(list.get(position),viewHolder.itemBinding.tvEpisode);
-
-                    // PrintLogging.printLog("","valuessForSeries"+list.get(position).getSeason().toString());
-                    // ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, list.get(position).getPosterURL());
-               */
-/* if (list.get(position).getSeason() == 0)
-                    viewHolder.itemBinding.tvEpisode.setText(list.get(position).getEpisodesCount() + " " + context.getResources().getString(R.string.episodes));
-                else
-                    viewHolder.itemBinding.tvEpisode.setText(list.get(position).getSeasonCount() + " " + context.getResources().getString(R.string.seasons));
-*//*
-
-                    break;
-                case AppConstants.Season:
-
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-
-                    break;
-
-                case AppConstants.Article:
-
-                    if (list.get(position).getPosterURL()!=null && !list.get(position).getPosterURL().equalsIgnoreCase("")){
-                        ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(),context));
-                    }
-
-                    viewHolder.itemBinding.tvEpisode.setText(AppCommonMethod.getGenre(list.get(position)));
-
-                    break;
-
-                default:
-                    break;
-            }
-*/
-
-
         } catch (Exception ignored) {
 
         }
@@ -213,32 +119,6 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
             }
         }
     }
-
-
-    public void setImage(String imageKey, String imageUrl, ImageView view) {
-        try {
-
-            String url1 = preference.getAppPrefCfep();
-            if (StringUtils.isNullOrEmpty(url1)) {
-                url1 = AppCommonMethod.urlPoints;
-                preference.setAppPrefCfep(url1);
-            }
-            String tranform = "/fit-in/160x90/filters:quality(100):max_bytes(400)";
-
-            StringBuilder stringBuilder = new StringBuilder(url1 + tranform + imageUrl + imageKey);
-            Logger.e("", "imageURL" + stringBuilder.toString());
-            Glide.with(context)
-                    .asBitmap()
-                    .load(stringBuilder.toString())
-                    .apply(AppCommonMethod.optionsSearch)
-                    .into(view);
-        } catch (Exception e) {
-            Logger.e("", "" + e.toString());
-        }
-
-    }
-
-
     @Override
     public int getItemCount() {
        /* if (isLimit)

@@ -220,13 +220,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                                         temp.setLayoutType(3);
                                     } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                                         temp.setLayoutType(4);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
                                         temp.setLayoutType(5);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
                                         temp.setLayoutType(6);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())) {
                                         temp.setLayoutType(7);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
                                         temp.setLayoutType(8);
                                     }
                                     temp.setSearchKey(searchKeyword);

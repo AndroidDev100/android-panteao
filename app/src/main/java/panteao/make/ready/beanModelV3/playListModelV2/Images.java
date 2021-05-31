@@ -19,16 +19,28 @@ public class Images {
     @Expose
     private PosterEn posterEn;
 
+    @SerializedName("3840x2160")
+    @Expose
+    private ThumbnailEn hdBanner;
+
+    @SerializedName("1920x1080")
+    @Expose
+    private Thumbnail banner;
+
+    @SerializedName("167x243")
+    @Expose
+    private Poster newPoster;
+
     public ThumbnailEn getThumbnailEn() {
-        return thumbnailEn;
+        return hdBanner;
     }
 
     public void setThumbnailEn(ThumbnailEn thumbnailEn) {
         this.thumbnailEn = thumbnailEn;
     }
 
-    public Thumbnail getThumbnail() {
-        return thumbnail;
+    public ThumbnailEn getThumbnail() {
+        return hdBanner;
     }
 
     public void setThumbnail(Thumbnail thumbnail) {
@@ -36,15 +48,15 @@ public class Images {
     }
 
     public Poster getPoster() {
-        return poster;
+        return newPoster;
     }
 
     public void setPoster(Poster poster) {
         this.poster = poster;
     }
 
-    public PosterEn getPosterEn() {
-        return posterEn;
+    public Poster getPosterEn() {
+        return newPoster;
     }
 
     public void setPosterEn(PosterEn posterEn) {
