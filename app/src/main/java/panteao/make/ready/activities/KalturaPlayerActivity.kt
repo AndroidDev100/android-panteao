@@ -73,9 +73,9 @@ class KalturaPlayerActivity : FragmentActivity() {
 
     private fun addPlayerStateListener() {
         player!!.addListener(this, PlayerEvent.stateChanged) { event ->
-            log.d("State changed from " + event.oldState + " to " + event.newState)
             playerState = event.newState
         }
+
     }
 
     /**

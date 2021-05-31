@@ -1,3 +1,3 @@
-include ':app', ':sample', ':previewseekbar-exoplayer', ':previewseekbar', ':brightcovelibrary',':enveusdk'
+include ':app', ':sample', ':previewseekbar-exoplayer', ':previewseekbar', ':enveusdk'
 setBinding(new Binding([gradle: this]))
 

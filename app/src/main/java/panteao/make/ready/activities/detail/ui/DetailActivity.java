@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -178,10 +179,16 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setFullScreen();
         player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
         player.addListener(this, PlayerEvent.stateChanged, this);
-        player.addListener(this, PlayerEvent.ended, this);
+        player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+
+            }
+        });
+
+
         getWindow().setBackgroundDrawableResource(R.color.black);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
@@ -1882,12 +1889,16 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
-        if (event.newState == PlayerState.READY) {
-            getBinding().playerImage.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.GONE);
-        } else if (event.newState == PlayerState.BUFFERING) {
-            getBinding().pBar.setVisibility(View.VISIBLE);
-        } else if (event.newState == PlayerState.LOADING) {
+        if (event.eventType() == PlayerEvent.playing) {
+
+        } else {
+            if (event.newState == PlayerState.READY) {
+                getBinding().playerImage.setVisibility(View.GONE);
+                getBinding().pBar.setVisibility(View.GONE);
+            } else if (event.newState == PlayerState.BUFFERING) {
+                getBinding().pBar.setVisibility(View.VISIBLE);
+            } else if (event.newState == PlayerState.LOADING) {
+            }
         }
         Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
     }
@@ -1901,7 +1912,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                 id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
 
                 player.pause();
-                Log.d("chgytfgh","pause");
+                Log.d("chgytfgh", "pause");
 
             } else {
                 id.setBackgroundResource(R.color.transparent);
@@ -1910,7 +1921,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
                 player.play();
 
-                Log.d("chgytfgh","play");
+                Log.d("chgytfgh", "play");
             }
 
         }
@@ -1930,7 +1941,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void Rewind() {
         if (player != null) {
-           player.seekTo(player.getCurrentPosition() - 10000);
+            player.seekTo(player.getCurrentPosition() - 10000);
 //            if (playerControlsFragment != null) {
 //                playerControlsFragment.sendPlayerCurrentPosition(baseVideoView.getCurrentPosition());
 //            }
