@@ -83,14 +83,14 @@ public class SDKConfig {
     }
 
     public String getSecondTabId() {
-        return AppCommonMethod.getHomeTabId(configBean,"LIVETV");
+        return AppCommonMethod.getHomeTabId(configBean,"SKILLSET");
 
     }
     public String getThirdTabId() {
-        return AppCommonMethod.getHomeTabId(configBean,"FREE");
+        return AppCommonMethod.getHomeTabId(configBean,"INSTRUCTOR");
     }
     public String getFourthTabId() {
-        return AppCommonMethod.getHomeTabId(configBean,"PREMIUM");
+        return AppCommonMethod.getHomeTabId(configBean,"FREE");
     }
 
     public String getMovieDetailId() {
@@ -98,17 +98,28 @@ public class SDKConfig {
     }
 
     public String getShowDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean,"SHOW");
+        return AppCommonMethod.getHomeTabId(configBean,"SHOW DETAIL");
     }
 
     public String getEpisodeDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean,"EPISODE");
+        return AppCommonMethod.getHomeTabId(configBean,"EPISODE DETAIL");
     }
 
     public String getSeriesDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean,"SERIES");
+        return AppCommonMethod.getHomeTabId(configBean,"SERIES DETAIL");
     }
-
+    public String getTutorialDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"TUTORIAL DETAIL");
+    }
+    public String getChapterDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"CHAPTER DETAIL");
+    }
+    public String getTrailerDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"TRAILER DETAIL");
+    }
+    public String getInstructorDetaildId() {
+        return AppCommonMethod.getHomeTabId(configBean,"INSTRUCTOR DETAIL");
+    }
     public String getLiveDetailId() {
         return AppCommonMethod.getHomeTabId(configBean,"LIVE");
     }

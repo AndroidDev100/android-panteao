@@ -13,7 +13,7 @@
         android:id="@+id/navigation_sinetron"
         android:enabled="true"
         android:icon="@drawable/ic_live_tv"
-        android:title="@string/title_live_tv"
+        android:title="@string/title_skill_set"
         app:showAsAction="always|withText" />
 
 
@@ -21,14 +21,14 @@
         android:id="@+id/navigation_premium"
         android:enabled="true"
         android:icon="@drawable/ic_movie"
-        android:title="@string/title_free"
+        android:title="@string/title_instructor"
         app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigation_originals"
         android:enabled="true"
         android:icon="@drawable/ic_star"
-        android:title="@string/title_premium"
+        android:title="@string/title_free"
         app:showAsAction="always|withText" />
 
     <item

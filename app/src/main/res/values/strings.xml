@@ -236,9 +236,9 @@
 
 
     <string name="title_home">Home</string>
-    <string name="title_free">Coming soon</string>
-    <string name="title_premium">Top hits</string>
-    <string name="title_live_tv">Live TV</string>
+    <string name="title_skill_set">Skillset</string>
+    <string name="title_instructor">Instructor</string>
+    <string name="title_free">Free</string>
     <string name="title_more1">More</string>
     <string name="delete_from_watchhistory">Video removed from Watch History</string>
     <string name="delete_from_watchhistory_error">Video can not be removed  from Watch History</string>
