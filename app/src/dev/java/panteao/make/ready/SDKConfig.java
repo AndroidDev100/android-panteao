@@ -23,10 +23,12 @@ public class SDKConfig {
     }
 
     /*qa keys*/
+//    public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
     public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
-    public static String API_KEY_MOB = "l7GGWenzuVaFOswyer1N18955ESe6QxP5gkEcJNl";
-    public static String API_KEY_TAB = "NgKwLghXix48zMZanMtfm8pLh0428feFZbnwvlV4";
-    public static int CONFIG_VERSION = 2;
+
+    public static String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
+    public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";
+    public static int CONFIG_VERSION = 1;
     public static String ApplicationStatus = "disconnected";
     public static String TERMCONDITION = "https://www.mvhub.com/term.php";
     public static String PRIVACYPOLICY = "https://www.mvhub.com/privacy.php";
