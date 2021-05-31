@@ -21,6 +21,18 @@ public class MediaTypes {
     @SerializedName("episode")
     @Expose
     private String episode;
+    @SerializedName("tutorial")
+    @Expose
+    private String tutorial;
+    @SerializedName("chapter")
+    @Expose
+    private String chapter;
+    @SerializedName("trailer")
+    @Expose
+    private String trailer;
+    @SerializedName("instructor")
+    @Expose
+    private String instructor;
 
     public String getMovie() {
         return movie;
@@ -60,6 +72,38 @@ public class MediaTypes {
 
     public void setEpisode(String episode) {
         this.episode = episode;
+    }
+
+    public String getTutorial() {
+        return tutorial;
+    }
+
+    public void setTutorial(String tutorial) {
+        this.tutorial = tutorial;
+    }
+
+    public String getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(String chapter) {
+        this.chapter = chapter;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
     }
 
 }

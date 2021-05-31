@@ -37,6 +37,22 @@ public class MediaTypeConstants {
         return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getLive();
     }
 
+    public String getTutorial() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getTutorial();
+    }
+
+    public String getChapter() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getChapter();
+    }
+
+    public String getTrailor() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getTrailer();
+    }
+
+    public String getInstructor() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getInstructor();
+    }
+
     public static String getVIDEO() {
         return VIDEO;
     }
