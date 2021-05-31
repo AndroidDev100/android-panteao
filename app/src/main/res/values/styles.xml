@@ -256,7 +256,7 @@
         <item name="already_have_an_account_text">@color/white</item>
         <item name="forgot_password_background">@color/black_theme_color</item>
         <item name="reset_password_text">@color/white</item>
-        <item name="search_no_result_found_text">@color/popular_search_dark</item>
+        <item name="search_no_result_found_text">@color/search_hint_dark</item>
         <item name="search_background">@color/black_theme_color</item>
         <item name="search_toolbar_background">@color/bottom_navigation_bg_dark</item>
         <item name="search_box_background">@drawable/search_header_drawable</item>

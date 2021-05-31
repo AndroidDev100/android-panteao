@@ -1,5 +1,5 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Panteao</string>
+<resources >
+    <string name="app_name">Make Ready TV</string>
     <string name="retry">Try Again</string>
     <string name="no_connection">No internet connection found.</string>
     <string name="check_connection_text">Check your connection.</string>
@@ -7,7 +7,7 @@
     <string name="checkout">Checkout</string>
     <string name="by_email">By Email</string>
     <string name="by_line">By Line</string>
-    <string name="email">Email</string>
+    <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="guest_user">Guest User</string>
     <string name="in_case_of_any">In case of any issues</string>
@@ -18,7 +18,7 @@
     <string name="redeem_code_expired">Redeem code is expired</string>
     <string name="please_try">Please try again or contact support</string>
     <string name="cannot_find_any_subs">cannot find any subscription or subscription cannot contain price</string>
-    <string name="on_enveu">on Panteao!</string>
+    <string name="on_enveu">on Make Ready TV!</string>
     <string name="full_name">Name</string>
     <string name="buy_for">Subscribe now for next</string>
     <string name="rent_for">Rent for</string>
@@ -49,7 +49,7 @@
     <string name="no_config_found">No config found for this payment provider</string>
     <string name="order_not_found">Order not found</string>
     <string name="order_completed_or_failed">This order has already been completed or failed. Please create a new order</string>
-    <string name="sign_in_with_enveu">Sign in with Panteao</string>
+    <string name="sign_in_with_enveu">Sign in with Make Ready TV</string>
     <string name="facebook">Facebook</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="google">Google +</string>
@@ -124,7 +124,7 @@
     <string name="image_upload_fail">Image upload failed</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="search_mv_hub">Search Panteao (min 3 char)</string>
+    <string name="search_mv_hub">Search (min 3 char)</string>
     <string name="show_all_results">Show All</string>
     <string name="series">Series</string>
     <string name="article">Article</string>
@@ -136,10 +136,10 @@
     <!--Banner_Test-->
 
 
-    <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
-    <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
-    <string name="error_querying_decoders">Unable to query device decoders</string>
-    <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>
+<!--    <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
+<!--    <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
+<!--    <string name="error_querying_decoders">Unable to query device decoders</string>-->
+<!--    <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>-->
     <string name="less">LESS</string>
     <string name="more">MORE</string>
     <string name="share">Share</string>
@@ -153,7 +153,7 @@
     <string name="exclusive">Premium</string>
     <string name="splash_screen">Splash screen</string>
     <string name="new_version_available">New version available</string>
-    <string name="please_update_your_app">We have a new version available. Kindly update to enjoy Panteao.</string>
+    <string name="please_update_your_app">We have a new version available. Kindly update to enjoy Make Ready TV.</string>
     <string name="result_caps">RESULT</string>
     <string name="results_caps">RESULTS</string>
 
@@ -193,8 +193,8 @@
     <string name="you_are_logged_out">You are logged out</string>
     <string name="redeemed_success">Redeemed successfully.</string>
     <string name="error">Error</string>
-    <string name="prime_memb_issue">Panteao Membership Issue</string>
-    <string name="contactus_description">If you are prompted to subscribe, but have another account which is subscribed to Panteao, please log in using that account.</string>
+    <string name="prime_memb_issue">Make Ready TV Membership Issue</string>
+    <string name="contactus_description">If you are prompted to subscribe, but have another account which is subscribed to Make Ready TV, please log in using that account.</string>
     <string name="contactus_second_desc">Still need help? How would you like to contact us?</string>
     <string name="forgot_pwd">Forgot Password</string>
     <string name="delete_comment">Delete Comment</string>
@@ -347,7 +347,7 @@
     <string name="quarterly">Quarterly Pack</string>
     <string name="half_yearly">Half Yearly Pack</string>
     <string name="annual">Annual Pack</string>
-    <string name="purchase_title">Access to premium content is just a click away. Select the package best suited for you to access this content and many more titles brought to you by Panteao exclusively on Panteao</string>
+    <string name="purchase_title">Access to premium content is just a click away. Select the package best suited for you to access this content and many more titles brought to you by Make Ready TV exclusively on Make Ready TV</string>
 
 
     <string name="Downloading">Downloading</string>
@@ -370,9 +370,9 @@
 
     <string name="heading1">Firearms Training from Top Instructors.Watch\nFree Content or Subscribe and Watch All of Our\nVideos.</string>
     <string name="subscribe_now">Subscribe now</string>
-    <string name="heading2">Subscribe and have access to all the Panteao videos with new content being added every month.</string>
+    <string name="heading2">Subscribe and have access to all the Make Ready TV videos with new content being added every month.</string>
     <string name="create_free_account">create free account</string>
-    <string name="heading3">Create a Free account with Panteao &amp; watch free Pantrao\n videos &amp; receive updates on new video content.</string>
+    <string name="heading3">Create a Free account with Make Ready TV &amp; watch free Make Ready TV\n videos &amp; receive updates on new video content.</string>
     <string name="signIn">sign in</string>
     <string name="title_exit">Exit</string>
     <string name="network_settings">Open Network Settings</string>

@@ -493,9 +493,11 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_watchlist));
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_history))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_history));
-                } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_downloads))) {
+                }
+                else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_downloads))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_downloads));
-                } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.sign_out))) {
+                }
+                else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.sign_out))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.sign_out));
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.membership_plan))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.membership_plan));

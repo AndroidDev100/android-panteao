@@ -463,9 +463,10 @@
 
                                     <ImageView
                                         android:id="@+id/iv_movie"
-                                        android:layout_width="@dimen/_120sdp"
-                                        android:layout_height="@dimen/_90sdp"
-                                        android:background="@drawable/panteao_splash"
+                                        android:layout_width="@dimen/_80sdp"
+                                        android:layout_height="@dimen/_80sdp"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/makereadytv_logo"
                                         android:contentDescription="TODO"
                                         />
 

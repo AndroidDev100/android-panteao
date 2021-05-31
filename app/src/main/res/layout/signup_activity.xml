@@ -71,7 +71,7 @@
                                 android:layout_height="@dimen/_61sdp"
                                 android:contentDescription="TODO"
                                 android:layout_gravity="center"
-                                android:src="@drawable/panteao"
+                                android:src="@drawable/makereadytv_logo"
                                  />
 
                             <LinearLayout
@@ -272,8 +272,8 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
 
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="@dimen/_60sdp"
+                                    android:layout_height="@dimen/_61sdp"
                                     android:layout_marginRight="@dimen/NontonSize5"
                                     android:contentDescription="TODO"
                                     android:scaleType="fitXY"
