@@ -60,7 +60,7 @@ public class AppConfig {
     private List<String> supportedCurrencies = null;
     @SerializedName("popularSearchId")
     @Expose
-    private Long popularSearchId;
+    private String popularSearchId;
     @SerializedName("primaryLanguage")
     @Expose
     private String primaryLanguage;
@@ -123,11 +123,11 @@ public class AppConfig {
         this.searchBaseUrl = searchBaseUrl;
     }
 
-    public Long getPopularSearchId() {
+    public String getPopularSearchId() {
         return popularSearchId;
     }
 
-    public void setPopularSearchId(Long popularSearchId) {
+    public void setPopularSearchId(String popularSearchId) {
         this.popularSearchId = popularSearchId;
     }
 

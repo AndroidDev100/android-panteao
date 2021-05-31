@@ -22,7 +22,7 @@ public class LanguageLayer {
 
     public static String getCurrentLanguageCode() {
         String languageCode="";
-        Logger.w("languageValues",SDKConfig.getInstance().getThaiLangCode());
+        //Logger.w("languageValues",SDKConfig.getInstance().getThaiLangCode());
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
             languageCode= SDKConfig.getInstance().getThaiLangCode();
         }else {

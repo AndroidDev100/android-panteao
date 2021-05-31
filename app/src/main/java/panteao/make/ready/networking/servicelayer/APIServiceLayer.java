@@ -10,6 +10,7 @@ import com.make.bookmarking.bean.continuewatching.ContinueWatchingBookmark;
 import com.make.callBacks.EnveuCallBacks;
 import com.make.watchHistory.beans.ItemsItem;
 import com.google.gson.Gson;
+
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.continueWatching.ContinueWatchingModel;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
@@ -402,13 +403,32 @@ public class APIServiceLayer {
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<List<ResponseSearch>> combined = Observable.zip(call, call1, call2, call3, call4, (list, list1, list2, list3, list4) -> {
+                Observable<ResponseSearch> call5 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getInstructor(), size, page, languageCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
+
+                Observable<ResponseSearch> call6 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getChapter(), size, page, languageCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
+
+                Observable<ResponseSearch> call7 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getTrailor(), size, page, languageCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
+
+                Observable<ResponseSearch> call8 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getTutorial(), size, page, languageCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
+                Observable<List<ResponseSearch>> combined = Observable.zip(call, call1, call2, call3, call4, call5, call6, call7, call8, (list, list1, list2, list3, list4, list5, list6, list7, list8) -> {
                     List<ResponseSearch> mlist = new ArrayList<>();
                     mlist.add(list);
                     mlist.add(list1);
                     mlist.add(list2);
                     mlist.add(list3);
                     mlist.add(list4);
+                    mlist.add(list5);
+                    mlist.add(list6);
+                    mlist.add(list7);
+                    mlist.add(list8);
                     return mlist;
                 }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
                 combined.subscribe(new Observer<List<ResponseSearch>>() {

@@ -110,7 +110,7 @@ public class SDKConfig {
     }
 
     public String getPopularSearchId() {
-        return configBean == null ? "" : configBean.getData().getAppConfig().getPopularSearchId().toString();
+        return configBean == null ? "" : configBean.getData().getAppConfig().getPopularSearchId();
     }
 
     public String getThaiLangCode() {
