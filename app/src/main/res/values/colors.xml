@@ -83,6 +83,7 @@
 
     <color name="search_toolbar_color">#212121</color>
     <color name="popular_search_color">#E50914</color>
+<!--    <color name="search_grey">#adadad</color>-->
     <color name="search_grey">#adadad</color>
     <color name="edit_text">#94FFFFFF</color>
     <color name="home_screen_seperator">#12575757</color>
@@ -101,7 +102,8 @@
     <color name="black_overlay">#66000000</color>
     <color name="more_text_color_dark">#E50914</color>
     <color name="more_text_color_light">#391F68</color>
-    <color name="toolbar_bg_color_dark">#000000</color>
+<!--    <color name="toolbar_bg_color_dark">#000000</color>-->
+        <color name="toolbar_bg_color_dark">#A90000</color>
     <color name="toolbar_bg_color_light">#ffffff</color>
     <color name="bottom_navigation_bg_dark">#323232</color>
     <color name="bottom_navigation_bg_light">#ffffff</color>
@@ -121,7 +123,9 @@
     <color name="alert_dialog_background">#343434</color>
     <color name="login_edittxt_color">#5C5F6C</color>
     <color name="user_profile_name">#1d1d1d</color>
-    <color name="rounded_button_text_color">#1d1d1d</color>
+<!--    <color name="rounded_button_text_color">#1d1d1d</color>-->
+        <color name="rounded_button_text_color">#ffffff</color>
+
     <color name="cast_expanded_controller_live_indicator_color">@color/blue</color>
     <color name="cast_seekbar_progress_thumb_color">@color/blue</color>
     <color name="red">#FD3B31</color>

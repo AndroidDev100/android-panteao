@@ -356,12 +356,14 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
             else
                 mListener.onLoginClicked();
-        } else if (caption.equals(getString(R.string.my_downloads))) {
+        }
+        else if (caption.equals(getString(R.string.my_downloads))) {
             if (loginStatus)
                 new ActivityLauncher(getActivity()).launchMyDownloads();
             else
                 mListener.onLoginClicked();
-        } else if (caption.equals(Objects.requireNonNull(getActivity()).getResources().getString(R.string.sign_out))) {
+        }
+        else if (caption.equals(Objects.requireNonNull(getActivity()).getResources().getString(R.string.sign_out))) {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
 
                 return;

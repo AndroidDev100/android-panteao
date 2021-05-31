@@ -83,11 +83,10 @@
 
                 <ImageView
                     android:id="@+id/home_icon"
-                    android:layout_marginLeft="@dimen/toolbarHomeLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_toRightOf="@+id/back_layout"
-                    android:background="@drawable/make_ready_logo"
+                    android:background="@drawable/makereadytv_logo"
                     android:contentDescription="TODO" />
 
 

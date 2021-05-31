@@ -96,7 +96,9 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 getBinding().downloadLayout.setVisibility(View.VISIBLE);
             }else {
-                getBinding().downloadLayout.setVisibility(View.GONE);
+//                getBinding().downloadLayout.setVisibility(View.GONE);
+                getBinding().downloadLayout.setVisibility(View.VISIBLE);
+
             }
         }catch (Exception ignored){
 

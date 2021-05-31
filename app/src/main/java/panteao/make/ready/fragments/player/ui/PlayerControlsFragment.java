@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,9 +27,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.kaltura.android.exoplayer2.ui.DefaultTimeBar;
+import com.kaltura.android.exoplayer2.ui.TimeBar;
+import com.kaltura.android.exoplayer2.util.Util;
 import com.kaltura.playkit.PKLog;
 import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerState;
+import com.kaltura.playkit.Utils;
 import com.kaltura.playkit.ads.AdController;
 import com.kaltura.playkit.utils.Consts;
 
@@ -46,18 +51,25 @@ public class PlayerControlsFragment extends Fragment {
 
     private Runnable viewHideShowRunnable;
     private Handler viewHideShowTimeHandler;
-    private boolean timer = true;
+    private boolean timer = true ;
+    private boolean mFlag = false;
 
     private Formatter formatter;
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
-    private SeekBar seekBar;
     private ImageView btnPlay;
+    public TextView currentPosition;
+    private TextView totalDuration;
     private ImageView btnPause;
     private ImageView btnForward;
     private ImageView btnRewind;
     private ImageView btnback;
+    private DefaultTimeBar seekBar;
+    private long playbackDuration, playbackCurrentPosition;
+
     private RelativeLayout relativeLayout;
+    private LinearLayout seekbarLayout;
+    private LinearLayout childControls;
 
     private boolean dragging = false;
 
@@ -71,6 +83,7 @@ public class PlayerControlsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private boolean isPipEnabled = false;
 
     public PlayerControlsFragment() {
         // Required empty public constructor
@@ -116,129 +129,73 @@ public class PlayerControlsFragment extends Fragment {
         return view;
     }
 
+
+    public static String stringForTime(long timeMs) {
+        StringBuilder formatBuilder = new StringBuilder();
+        Formatter formatter = new Formatter(formatBuilder, Locale.getDefault());
+
+        long totalSeconds = (timeMs + 500) / 1000;
+        long seconds = totalSeconds % 60;
+        long minutes = (totalSeconds / 60) % 60;
+        long hours = totalSeconds / 3600;
+        formatBuilder.setLength(0);
+        return hours > 0 ? formatter.format("%d:%02d:%02d", hours, minutes, seconds).toString()
+                : formatter.format("%02d:%02d", minutes, seconds).toString();
+    }
+
+   public void setCurrentPosition(int currentposition, int duration) {
+        seekBar.setDuration(duration);
+        currentPosition.setText(stringForTime(currentposition));
+        totalDuration.setText(stringForTime(duration));
+        updateSeekbar(currentposition);
+        playbackCurrentPosition = currentposition;
+//        controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
+    }
+
+    private void updateSeekbar(int currentposition) {
+        seekBar.setPosition(currentposition);
+    }
+
+    //    private void updateSeekbar(long currentposition) {
+//
+//        seekBar.setPosition(stringForTime(currentposition));
+//
+//    }
+   public void sendPlayerCurrentPosition(int playerCurrentPosition) {
+        seekBar.setPosition(playerCurrentPosition);
+        if (playerCurrentPosition > playbackDuration) {
+            currentPosition.setText(stringForTime(playbackDuration));
+//////            if (videoType.equalsIgnoreCase("1")) {
+//////                hideControlsForLive();
+////            } else {
+//                forward.setVisibility(View.GONE);
+//                rewind.setVisibility(View.VISIBLE);
+//            }
+        } else if (playerCurrentPosition <= 0) {
+            currentPosition.setText(stringForTime(0));
+//            if (videoType.equalsIgnoreCase("1")) {
+//                hideControlsForLive();
+//            } else {
+//                rewind.setVisibility(View.GONE);
+//                forward.setVisibility(View.VISIBLE);
+//            }
+        } else {
+            currentPosition.setText(stringForTime(playerCurrentPosition));
+        }
+
+
+    }
     public void startHandler() {
         callHandler();
 
     }
 
-
-    private void performClick() {
-         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
-
-//                if (!mFlag)
-//                    return false;
-//                if (replay.getVisibility() == View.VISIBLE) {
-//                    childControl.setVisibility(View.GONE);
-//                } else {
-                  ShowAndHideView();
-//                }
-
-                return false;
-            }
-        });
-        //Play pause control for player
-
-        btnPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    if (playerCallbacks != null) {
-                        playerCallbacks.playPause(btnPause);
-                        Log.d("mmmmm", "btnpause");
-
-                    } else {
-                        Log.d("mmmmm", "btnpauseelse");
-
-                    }
-
-            }
-        });
-
-
-        //Seek player for 10 seconds from currentPosition
-        btnForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (playerCallbacks != null) {
-                    playerCallbacks.Forward();
-                }
-            }
-        });
-        //Rewind player for 10 seconds from currentPosition
-        btnRewind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (playerCallbacks != null) {
-                    playerCallbacks.Rewind();
-                }
-            }
-        });
-
-        //Back button click
-//        btnback.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (playerCallbacks != null) {
-//                    playerCallbacks.finishPlayer();
-//                }
-//                playerCallbacks.checkOrientation(btnback);
-//            }
-//        });
-
-
-
-        //Replay video event
-//        replay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (playerCallbacks != null) {
-//                    replay.setVisibility(View.GONE);
-//                    seekBar.setPosition(0);
-//                    playerCallbacks.replay();
-//                }
-//            }
-//        });
-
-        //Seekbar callbacks
-//        seekBar.addListener(new TimeBar.OnScrubListener() {
-//            @Override
-//            public void onScrubStart(TimeBar timeBar, long position) {
-//
-//            }
-//
-//            @Override
-//            public void onScrubMove(TimeBar timeBar, long position) {
-//                currentPosition.setText(Utils.stringForTime(position));
-//                hideSkipIntro();
-//            }
-//
-//            @Override
-//            public void onScrubStop(TimeBar timeBar, long position, boolean canceled) {
-//                if (playerCallbacks != null) {
-//                    seekBar.setPosition(position);
-//                    playerCallbacks.SeekbarLastPosition(position);
-//                }
-//            }
-//        });
-    }
-
-
-
-    private void callHandler() {
-        Log.w("conditionCheck-->>","in");
-        timer = true;
-        viewHideShowRunnable = () -> ShowAndHideView();
-
-        viewHideShowTimeHandler = new Handler();
-        viewHideShowTimeHandler.postDelayed(viewHideShowRunnable, 3000);
-    }
-    private void callAnimation() {
+    public void callAnimation() {
 
         if (timer) {
-            viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
+//            if (viewHideShowTimeHandler != null) {
+                viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
+//            }
         }
         ShowAndHideView();
     }
@@ -283,17 +240,181 @@ public class PlayerControlsFragment extends Fragment {
                 }
             });
 
+                if (relativeLayout.getVisibility() == View.VISIBLE) {
+                    relativeLayout.startAnimation(animationFadeOut);
+//                    backArrow.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.GONE);
+
+
+                    timer = true;
+
+
+                } else {
+
+                    Log.w("IMATAG", "handler");
+                    relativeLayout.setVisibility(View.VISIBLE);
+//                    backArrow.setVisibility(View.VISIBLE);
+//                    if (videoType.equalsIgnoreCase("1")) {
+//                        hideControlsForLive();
+//                    } else {
+//
+//                    }
+                   relativeLayout.startAnimation(animationFadeIn);
+
+                    callHandler();
+                }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void callHandler() {
+        Log.w("conditionCheck-->>","in");
+        timer = true;
+        viewHideShowRunnable = () -> ShowAndHideView();
+
+        viewHideShowTimeHandler = new Handler();
+        viewHideShowTimeHandler.postDelayed(viewHideShowRunnable, 3000);
+    }
+    public void sendTapCallBack(boolean b) {
+        mFlag = b;
+    }
+    private void performClick() {
+
+
+        seekBar.addListener(new TimeBar.OnScrubListener() {
+            @Override
+            public void onScrubStart(TimeBar timeBar, long position) {
+
+            }
+
+            @Override
+            public void onScrubMove(TimeBar timeBar, long position) {
+                currentPosition.setText(stringForTime(position));
+            }
+
+            @Override
+            public void onScrubStop(TimeBar timeBar, long position, boolean canceled) {
+                if (playerCallbacks != null) {
+                    seekBar.setPosition(position);
+                    playerCallbacks.SeekbarLastPosition(position);
+                }
+            }
+        });
+
+        //Play pause control for player
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    if (playerCallbacks != null) {
+                        playerCallbacks.playPause(btnPause);
+                        Log.d("mmmmm", "btnpause");
+
+                    } else {
+                        Log.d("mmmmm", "btnpauseelse");
+
+                    }
+
+            }
+        });
+
+
+        //Seek player for 10 seconds from currentPosition
+        btnForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.Forward();
+                }
+            }
+        });
+        //Rewind player for 10 seconds from currentPosition
+        btnRewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.Rewind();
+                }
+            }
+        });
+        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
+
+                if (!mFlag)
+                    return false;
+//                if (replay.getVisibility() == View.VISIBLE) {
+//                    childControl.setVisibility(View.GONE);
+//                } else {
+                    callAnimation();
+//                }
+
+                return false;
+            }
+        });
+        //Back button click
+//        btnback.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (playerCallbacks != null) {
+//                    playerCallbacks.finishPlayer();
+//                }
+//                playerCallbacks.checkOrientation(btnback);
+//            }
+//        });
+
+
+
+        //Replay video event
+//        replay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (playerCallbacks != null) {
+//                    replay.setVisibility(View.GONE);
+//                    seekBar.setPosition(0);
+//                    playerCallbacks.replay();
+//                }
+//            }
+//        });
+
+
+    }
+
+    public void showControls() {
+        Log.w("IMATAG", "showControls");
+        childControls.setVisibility(View.VISIBLE);
+        seekbarLayout.setVisibility(View.VISIBLE);
+
+    }
+//
+    public void hideControls() {
+        Log.w("IMATAG", "hideControls");
+        childControls.setVisibility(View.GONE);
+        seekbarLayout.setVisibility(View.GONE);
+    }
+
+
+
+
 
     private void findId(View view) {
         btnPause=(ImageView)view.findViewById(R.id.pause);
         btnForward=(ImageView)view.findViewById(R.id.forward);
         btnRewind=(ImageView)view.findViewById(R.id.rew);
         btnback=(ImageView)view.findViewById(R.id.back_arrow);
-       relativeLayout=(RelativeLayout)view.findViewById(R.id.control_layout);
+       relativeLayout=view.findViewById(R.id.control_layout);
+       seekBar= view.findViewById(R.id.exo_progress);
+       currentPosition=view.findViewById(R.id.exo_position);
+       totalDuration=view.findViewById(R.id.exo_duration);
+       seekbarLayout=view.findViewById(R.id.seekbar_ll);
+       childControls=view.findViewById(R.id.childControls);
+//        hideControls();
 
     }
 
@@ -305,6 +426,10 @@ public class PlayerControlsFragment extends Fragment {
            playerCallbacks = (PlayerCallbacks) getActivity();
         btnPause.setVisibility(View.VISIBLE);
         btnPause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+        seekBar.setEnabled(true);
+
 
     }
+
+
 }

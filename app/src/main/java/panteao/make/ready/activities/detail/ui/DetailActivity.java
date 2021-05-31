@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.DisplayCutout;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -150,6 +151,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private int playerApiCount = 0;
     private long brightCoveVideoId;
     private String tabId;
+    private final Handler mHandler = new Handler();
+    private Runnable mRunnable;
     private RailInjectionHelper railInjectionHelper;
     private FragmentTransaction transaction;
     private String sharingUrl;
@@ -164,6 +167,17 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private boolean isOfflineAvailable = false;
     private boolean isCastConnected = false;
     private KalturaOvpPlayer player;
+    private final Runnable updateTimeTask = new Runnable() {
+        public void run() {
+//            Log.d("ndhfdm", "playing");
+            Log.d("ndhfdm", player.getCurrentPosition()+"");
+            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
+//            seekBar1.setProgress(((int) player.getCurrentPosition()));
+//            seekBar1.setMax(((int) player.getDuration()));
+            mHandler.postDelayed(this, 100);
+
+        }
+    };
 
     @Override
     public ActivityDetailBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
@@ -181,12 +195,43 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         super.onCreate(savedInstanceState);
         player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
         player.addListener(this, PlayerEvent.stateChanged, this);
+        player.addListener(this, PlayerEvent.ended, this);
         player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
+                Log.d("ndhfdm", "playing");
+                mHandler.postDelayed(updateTimeTask, 100);
+                if (playerControlsFragment != null) {
+                    playerControlsFragment.sendTapCallBack(true);
+                        playerControlsFragment.startHandler();
+
+                }
 
             }
         });
+         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+                if (playerControlsFragment != null) {
+                    Log.d("ndhfdm", "playing");
+                    player.stop();
+                    if (mHandler != null && updateTimeTask != null)
+                        onBackPressed();
+                        mHandler.removeCallbacks(updateTimeTask);
+                }
+            }
+        });
+ player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+                if (playerControlsFragment != null) {
+
+                    Log.d("ndhfdm", "playing");
+
+                }
+            }
+        });
+
 
 
         getWindow().setBackgroundDrawableResource(R.color.black);
@@ -304,36 +349,6 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         }
 
     }
-
-   /* public void playPlayerWhenShimmer() {
-        getBinding().pBar.setVisibility(View.VISIBLE);
-        viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
-            @Override
-            public void onChanged(GetBookmarkResponse getBookmarkResponse) {
-                getBinding().backButton.setVisibility(View.GONE);
-                long bookmarkPosition = 0l;
-                if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
-                    bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
-                }
-                transaction = getSupportFragmentManager().beginTransaction();
-                playerFragment = new BrightcovePlayerFragment();
-                Bundle args = new Bundle();
-                args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, String.valueOf(brightCoveVideoId));
-                args.putLong(AppConstants.BOOKMARK_POSITION, bookmarkPosition);
-                args.putString("selected_track",KsPreferenceKeys.getInstance().getQualityName());
-
-                if (videoDetails.isPremium() && videoDetails.getThumbnailImage() != null) {
-                    args.putString(AppConstants.BUNDLE_BANNER_IMAGE, videoDetails.getThumbnailImage());
-                }
-                playerFragment.setArguments(args);
-                transaction.replace(R.id.player_frame, playerFragment);
-                transaction.commit();
-                getBinding().pBar.setVisibility(View.GONE);
-
-            }
-        });
-    }*/
-
     public void playPlayerWhenShimmer() {
         getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
@@ -647,6 +662,18 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        getBinding().playerRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(playerControlsFragment != null){
+                    playerControlsFragment.sendTapCallBack(true);
+                     playerControlsFragment.callAnimation();
+                    Log.d("bnjm","visible");
+//
+                }
             }
         });
 
@@ -1469,6 +1496,11 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 //        }
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
     boolean isPlayerError = false;
 
 //    @Override
@@ -1889,16 +1921,12 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
-        if (event.eventType() == PlayerEvent.playing) {
-
-        } else {
-            if (event.newState == PlayerState.READY) {
-                getBinding().playerImage.setVisibility(View.GONE);
-                getBinding().pBar.setVisibility(View.GONE);
-            } else if (event.newState == PlayerState.BUFFERING) {
-                getBinding().pBar.setVisibility(View.VISIBLE);
-            } else if (event.newState == PlayerState.LOADING) {
-            }
+         if (event.newState == PlayerState.READY) {
+            getBinding().playerImage.setVisibility(View.GONE);
+            getBinding().pBar.setVisibility(View.GONE);
+        } else if (event.newState == PlayerState.BUFFERING) {
+            getBinding().pBar.setVisibility(View.VISIBLE);
+        } else if (event.newState == PlayerState.LOADING) {
         }
         Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
     }
@@ -1912,7 +1940,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
                 id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
 
                 player.pause();
-                Log.d("chgytfgh", "pause");
+//                playerControlsFragment.showControls();
+                Log.d("chgytfgh","pause");
 
             } else {
                 id.setBackgroundResource(R.color.transparent);
@@ -1921,7 +1950,7 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
 
                 player.play();
 
-                Log.d("chgytfgh", "play");
+                Log.d("chgytfgh","play");
             }
 
         }
@@ -1931,9 +1960,9 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     public void Forward() {
         if (player != null) {
             player.seekTo(player.getCurrentPosition() + 10000);
-//            if (playerControlsFragment != null) {
-//                playerControlsFragment.sendPlayerCurrentPosition(baseVideoView.getCurrentPosition());
-//            }
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
+            }
         }
 
     }
@@ -1941,10 +1970,10 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void Rewind() {
         if (player != null) {
-            player.seekTo(player.getCurrentPosition() - 10000);
-//            if (playerControlsFragment != null) {
-//                playerControlsFragment.sendPlayerCurrentPosition(baseVideoView.getCurrentPosition());
-//            }
+           player.seekTo(player.getCurrentPosition() - 10000);
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
+            }
         }
     }
 
@@ -1961,6 +1990,12 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void replay() {
 
+    }
+    @Override
+    public void SeekbarLastPosition(long position) {
+        if (player != null) {
+           player.seekTo((int) position);
+        }
     }
 
     @Override

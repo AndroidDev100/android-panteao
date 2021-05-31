@@ -29,15 +29,15 @@
                     android:layout_height="@dimen/more_img_size"
                     android:gravity="center"
                     android:layout_marginTop="@dimen/NontonSize10"
-                    android:background="@drawable/circular_drawable">
+                    android:background="@drawable/circle_yellow_drawable">
 
                     <TextView
                         android:id="@+id/user_name_words"
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/more_img_txt_size"
                         android:text=""
-                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
-                        android:textColor="@color/rounded_button_text_color"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                        android:textColor="@color/more_text_color_dark"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
