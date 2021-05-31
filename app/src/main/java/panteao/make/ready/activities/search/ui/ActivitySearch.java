@@ -220,6 +220,14 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                                         temp.setLayoutType(3);
                                     } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                                         temp.setLayoutType(4);
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                        temp.setLayoutType(5);
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                        temp.setLayoutType(6);
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                        temp.setLayoutType(7);
+                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
+                                        temp.setLayoutType(8);
                                     }
                                     temp.setSearchKey(searchKeyword);
                                     temp.setTotalCount(data.get(i).getPageTotal());
