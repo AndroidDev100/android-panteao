@@ -350,6 +350,8 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }
                 transaction = getSupportFragmentManager().beginTransaction();
+
+
 //                playerFragment = new BrightcovePlayerFragment();
                 if (isOfflineAvailable) {
 //                    long bookmarkPosition2 = bookmarkPosition;
