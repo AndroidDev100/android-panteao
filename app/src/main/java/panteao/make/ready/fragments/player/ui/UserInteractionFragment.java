@@ -19,8 +19,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.gson.JsonObject;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.article.ArticleActivity;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -227,7 +227,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             title = seriesDetailBean.getTitle();
             assetType = MediaTypeConstants.getInstance().getEpisode();
 
-        } else if (context instanceof DetailActivity) {
+        } else if (context instanceof InstructorActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
@@ -269,7 +269,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         } else if (context instanceof EpisodeActivity) {
 //            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
             ActivityTrackers.getInstance().setLauncherActivity("EpisodeActivity");
-        } else if (context instanceof DetailActivity) {
+        } else if (context instanceof InstructorActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
 //            ((DetailActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
         }
@@ -503,7 +503,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             title = seriesDetailBean.getTitle();
             assetType = MediaTypeConstants.getInstance().getEpisode();
 
-        } else if (context instanceof DetailActivity) {
+        } else if (context instanceof InstructorActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();

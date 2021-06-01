@@ -323,6 +323,7 @@
     <string name="payment_error">There was an error processing your request, please try after some time. If additional support is required, please contact us at</string>
     <string name="delete">Delete</string>
     <string name="heading_movies">Movies</string>
+    <string name="heading_instructor">Instructor</string>
     <string name="heading_series">Series</string>
     <string name="heading_live">Live</string>
     <string name="heading_shows">Shows</string>

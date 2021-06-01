@@ -7,8 +7,8 @@ import android.os.Bundle;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.activities.article.ArticleActivity;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
@@ -105,7 +105,7 @@ public class ActivityLauncher {
     }
 
 
-    public void detailScreen(Activity source, Class<DetailActivity> destination, int id, String duration, boolean isPremium) {
+    public void detailScreen(Activity source, Class<InstructorActivity> destination, int id, String duration, boolean isPremium) {
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
         args.putInt(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, id);
@@ -150,7 +150,7 @@ public class ActivityLauncher {
 
 
 
-    public void detailScreenBrightCove(Activity source, Class<DetailActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
+    public void detailScreenBrightCove(Activity source, Class<InstructorActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
         args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
@@ -179,6 +179,33 @@ public class ActivityLauncher {
 
 
     }
+
+    public void tutorialScreenBrightcove(Activity source, Class<EpisodeActivity> destination, Long videoId, int id, String duration, boolean isPremium) {
+        KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
+
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
+        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+        args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
+
+        if (StringUtils.isNullOrEmpty(duration))
+            args.putString(AppConstants.BUNDLE_DURATION, "0");
+        else
+            args.putString(AppConstants.BUNDLE_DURATION, duration);
+        Intent intent = new Intent(source, destination);
+        intent.putExtra(AppConstants.BUNDLE_ASSET_BUNDLE, args);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        preference.setAppPrefAssetId(0);
+
+        if (ADHelper.getInstance(activity).getPipAct()!=null){
+            ADHelper.getInstance(activity).getPipAct().moveTaskToBack(false);
+            ADHelper.getInstance(activity).getPipAct().finish();
+            //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+
+        activity.startActivity(intent);
+    }
+
 
     public void liveScreenBrightCove(Activity source, Class<LiveActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
         Bundle args = new Bundle();

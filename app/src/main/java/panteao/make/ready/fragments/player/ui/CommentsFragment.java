@@ -6,9 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import panteao.make.ready.activities.detail.adapter.AllCommentAdapter;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.adapter.AllCommentAdapter;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 
@@ -105,7 +105,7 @@ public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutB
                 ((SeriesDetailActivity) getActivity()).removeCommentFragment();
             } else if (getActivity() instanceof EpisodeActivity) {
 //                ((EpisodeActivity) getActivity()).removeCommentFragment();
-            } else if (getActivity() instanceof DetailActivity) {
+            } else if (getActivity() instanceof InstructorActivity) {
 //                ((DetailActivity) getActivity()).removeCommentFragment();
             }
 

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.R;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -174,6 +174,9 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())){
             getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_movies));
         }
+        else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())){
+            getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_instructor));
+        }
         else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())){
             getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_shows));
         }
@@ -310,7 +313,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            new ActivityLauncher(ActivityResults.this).detailScreen(ActivityResults.this, DetailActivity.class, itemValue.getId(), "0", false);
+            new ActivityLauncher(ActivityResults.this).detailScreen(ActivityResults.this, InstructorActivity.class, itemValue.getId(), "0", false);
 
 
         }
