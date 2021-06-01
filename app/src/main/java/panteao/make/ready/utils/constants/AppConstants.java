@@ -300,6 +300,7 @@ String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
     String HEIGHT = "/height/";
     String QUALITY_IMAGE = "/quality/100";
 
+    String TAB_ID = "tabId";
 
 
 }

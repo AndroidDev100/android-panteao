@@ -32,6 +32,7 @@ import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
 import panteao.make.ready.utils.MediaTypeConstants
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
+import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -70,7 +71,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     private var isCrousal: Boolean = false
     private var counterValueApiFail = 0
     private var mIsLoading: Boolean = true
-    private lateinit var railInjectionHelper :RailInjectionHelper
+    private lateinit var railInjectionHelper: RailInjectionHelper
     private var mOnFragmentListener: OnTabBaseFragmentListener? = null
 
 
@@ -132,6 +133,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             railInjectionHelper.getScreenWidgets(fragmentActivity, it, object :
                     CommonApiCallBack {
                 override fun onSuccess(item: Any?) {
+                    Logger.e("ASSET_DETAILS", Gson().toJson(item))
                     if (item is RailCommonData) {
                         if (item.screenWidget?.layout!!.equals(Layouts.HRO.name, true)) {
                             val enveuVideoItemBeanList =
@@ -142,12 +144,10 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                                 enveuVideoItemBean.id =
                                         item.screenWidget?.landingPageAssetId!!.toInt()
                             }
-//                            enveuVideoItemBean.thumbnailURL =
-//                                   ImageLayer.getInstance()
-//                                            .getThumbNailImageUrl(item)
                             enveuVideoItemBean.assetType = item.assetType
+                            enveuVideoItemBean.thumbnailImage=item.enveuVideoItemBeans[0].thumbnailImage
                             enveuVideoItemBeanList.add(enveuVideoItemBean)
-                            item.setEnveuVideoItemBeans(enveuVideoItemBeanList)
+                            item.enveuVideoItemBeans = enveuVideoItemBeanList
                         }
                         setRows(
                                 item.enveuVideoItemBeans!!,
@@ -276,6 +276,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                 changeUi.uichanged(0)
             }
             if (row.headerItem?.contentDescription == "HERO") {
+                Logger.e("ASSET_DETAILS", Gson().toJson(item))
                 changeUi.uichanged(3)
             }
             if ((cardRowAdapterSelected.indexOf(item) == cardRowAdapterSelected.size() - 1) && (cardRowAdapterSelected.size() % AppConstants.PAGE_SIZE == 0)) {
@@ -323,7 +324,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
-            Logger.e("CLICKED_ITEM",Gson().toJson(contentItem))
+            Logger.e("CLICKED_ITEM", Gson().toJson(contentItem))
 //            context?.let {
 //                if (contentItem.assetType.equals(MediaTypeConstants.getInstance().series, true)
 //                ) {

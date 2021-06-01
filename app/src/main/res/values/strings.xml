@@ -387,15 +387,15 @@
     <string-array name="menu_titles_with_login">
         <item>""</item>
         <item>""</item>
-        <item>""</item>
         <item>@string/title_search</item>
-        <item>@string/title_screen_1</item>
-        <item>@string/title_screen_2</item>
+        <item>@string/title_home</item>
+        <item>@string/title_skill_set</item>
+        <item>@string/title_instructor</item>
+        <item>@string/title_free</item>
         <item>@string/title_screen_3</item>
         <item>@string/title_screen_4</item>
         <item>@string/my_profile</item>
         <item>@string/setting_title</item>
-        <item>""</item>
         <item>@string/title_exit</item>
     </string-array>
 

@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.leanback.widget.BaseCardView
+import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.databinding.CustomLandscapeHeroViewBinding
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
+import panteao.make.ready.utils.cropImage.helpers.Logger
 
 
 @SuppressLint("ViewConstructor")
@@ -56,6 +58,7 @@ open class HeroCardView : BaseCardView {
     }
 
     fun setRailCommonDataModel(enveuVideoItemBean: panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean) {
+      Logger.e("ASSET_DETAILS",Gson().toJson(enveuVideoItemBean))
         customLandscapeHeroViewBinding?.playlistItem = enveuVideoItemBean
     }
 

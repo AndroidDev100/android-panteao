@@ -19,12 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:padding="2dp"
-            android:src="@drawable/make_ready_logo"
+            android:src="@drawable/makereadytv_logo"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/label_text"
-            android:layout_width="32dp"
+            android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"

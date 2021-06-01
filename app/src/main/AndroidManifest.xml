@@ -52,16 +52,6 @@
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.detail.ui.EpisodeActivity" />
         <activity android:name=".activities.detail.ui.DetailActivity" />
-        <activity android:name=".activities.splash.ui.SplashNewActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-
-        </activity>
         <activity android:name=".activities.ContactActivity" />
         <activity android:name=".activities.downloads.DownloadedEpisodesActivity" />
         <activity
