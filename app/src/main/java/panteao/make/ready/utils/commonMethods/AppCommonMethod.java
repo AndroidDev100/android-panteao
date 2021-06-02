@@ -49,6 +49,8 @@ import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseActivity;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
@@ -944,12 +946,15 @@ public class AppCommonMethod {
                 new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
         }
-        else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || screenType.toUpperCase().equalsIgnoreCase("TUTORIAL")) {
+        else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
-                new ActivityLauncher((BaseActivity) context).tutorialScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
+                new ActivityLauncher((BaseActivity) context).chapterScreenBrightcove((BaseActivity) context, ChapterActivity.class, videoId, id, duration, isPremium);
             }
+        }
+        else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+            new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
         }
        // RecoSenceManager.getInstance().sendClickEvent(screenType, id);
 

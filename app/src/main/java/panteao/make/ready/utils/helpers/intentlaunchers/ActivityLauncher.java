@@ -18,6 +18,8 @@ import panteao.make.ready.activities.profile.ui.ProfileActivity;
 import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
 import panteao.make.ready.activities.search.ui.ActivityResults;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.activities.usermanagment.ui.ChangePasswordActivity;
 import panteao.make.ready.activities.usermanagment.ui.ForceLoginFbActivity;
 import panteao.make.ready.activities.usermanagment.ui.ForgotPasswordActivity;
@@ -180,7 +182,7 @@ public class ActivityLauncher {
 
     }
 
-    public void tutorialScreenBrightcove(Activity source, Class<EpisodeActivity> destination, Long videoId, int id, String duration, boolean isPremium) {
+    public void chapterScreenBrightcove(Activity source, Class<ChapterActivity> destination, Long videoId, int id, String duration, boolean isPremium) {
         KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
 
         Bundle args = new Bundle();
@@ -344,6 +346,14 @@ public class ActivityLauncher {
         intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
     }
+
+    public void tutorialDetailScreen(Activity source, Class<TutorialActivity> destination, int seriesId) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("seriesId", seriesId);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(intent);
+    }
+
 
     public void watchHistory(Activity source, Class<WatchListActivity> destination, String type, boolean isWatchHistory) {
         Bundle args = new Bundle();

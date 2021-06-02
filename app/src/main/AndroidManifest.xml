@@ -51,6 +51,9 @@
         </activity>
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.instructor.ui.EpisodeActivity" />
+        <activity android:name=".activities.tutorial.ui.ChapterActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:screenOrientation="locked" />
         <activity android:name=".activities.tutorial.ui.TutorialActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:screenOrientation="locked" />
