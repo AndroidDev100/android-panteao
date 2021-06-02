@@ -232,9 +232,6 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                                     temp.setSearchKey(searchKeyword);
                                     temp.setTotalCount(data.get(i).getPageTotal());
                                     model.add(temp);
-//                                    Log.d("Searchterm",temp.getSearchKey());
-//                                    AppCommonMethod.trackFcmCustomEvent(ActivitySearch.this, AppConstants.SEARCH,"Search","","","",0," ",0,"",0,0,temp.getSearchKey(),"");
-
                                 }
 
                             }

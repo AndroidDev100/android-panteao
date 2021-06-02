@@ -34,6 +34,8 @@ import kotlinx.android.synthetic.main.activity_kaltura_player.*
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.activities.KalturaPlayerActivity
+import panteao.make.ready.activities.search.ui.ActivitySearch
+import panteao.make.ready.activities.search.ui.TVSearchActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
@@ -335,16 +337,18 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 ?.findViewById<View>(R.id.underline)?.visibility =
                 View.VISIBLE
     }
+
     private fun onLoaded(fragment: Fragment) {
         Handler().postDelayed({
             fragment.view?.requestFocus()
         }, 10)
     }
+
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
             2 -> {
-//                val searchActivity = Intent(this@TVHomeActivity, NewSearchActivity::class.java)
-//                startActivity(searchActivity)
+                val searchActivity = Intent(this@TVHomeActivity, TVSearchActivity::class.java)
+                startActivity(searchActivity)
             }
             3 -> {
                 drawerSelected(position)

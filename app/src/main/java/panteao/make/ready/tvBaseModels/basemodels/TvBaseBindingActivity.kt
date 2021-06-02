@@ -8,7 +8,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
 abstract class TvBaseBindingActivity<B : ViewDataBinding> : TVBaseActivity() {
 
-    var binding: B? = null
+   lateinit var binding: B
         private set
 
     abstract fun inflateBindingLayout(inflater: LayoutInflater): B

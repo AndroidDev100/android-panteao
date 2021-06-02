@@ -1,5 +1,7 @@
 package panteao.make.ready.utils.constants;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface AppConstants {
     String MY_MVHUB_ENCRYPTION_KEY="MYMVHUB$KEY";
     String ENVEU_CONFIG = "enveuConfig";
@@ -215,6 +217,7 @@ public interface AppConstants {
     int PAGE_SIZE = 20;
     String BUNDLE_ASSET_TYPE = "assetType";
     String BUNDLE_CURRENT_ASSET_ID = "currentAssetId";
+     String TAG_NO_INTERNET_FRAGMENT="NO_INTERNET_CONNECTION";
 
     enum UserLoginType {
         Manual,
@@ -288,7 +291,9 @@ public interface AppConstants {
     String MAIN_COMINGSOON="Main – Coming Soon";
     String MAIN_LIVETV="Main – Live TV";
     String MAIN_MORE="Main - More";
-
+    String POPULAR_SEARCH = "PopularSearch";
+    String KEYWORD_SEARCH = "KeywordSearch";
+    String SEARCH_STRING_KEY = "SearchStringKey";
 
 // FireBaseLinks
 String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
