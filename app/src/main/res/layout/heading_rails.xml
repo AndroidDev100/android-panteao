@@ -25,7 +25,7 @@
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:text="ABCCCCC"
+                android:text=""
                 android:textColor="?header_text_color"
                 android:textSize="@dimen/railTitle"
                 app:layout_constraintEnd_toStartOf="@id/moreText"

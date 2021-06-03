@@ -13,6 +13,9 @@ data class Playlist(
         @field:SerializedName("brightcovePlaylistId")
         val brightcovePlaylistId: String? = null,
 
+        @field:SerializedName("kEntryId")
+        val kEntryId: String? = null,
+
         @field:SerializedName("predefPlaylistType")
         val predefPlaylistType: String? = null,
 

@@ -30,7 +30,7 @@ class ModelGenerator{
 
             when(BaseConfiguration.instance.clients.getGateway()){
                 BaseGateway.ENVEU.name -> {
-                    cat.contentID=i?.item?.playlist?.brightcovePlaylistId
+                    cat.contentID=i?.item?.playlist?.kEntryId
                     cat.widgetImageType=i?.widgetImageType;
                 }
 

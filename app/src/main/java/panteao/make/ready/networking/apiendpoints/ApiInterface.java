@@ -145,7 +145,7 @@ public interface ApiInterface {
 
     //V2 changes applied in below APIs-->> Versioning moved to endpoints
     @GET("v3/playlist")
-    Call<EnveuCommonResponse> getPlaylistDetailsById(@Query("playlistId") String playListId, @Query("locale") String locale, @Query("page") int pageNumber, @Query("size") int pageSize);
+    Call<EnveuCommonResponse> getPlaylistDetailsById(@Query("kPlaylistId") String playListId, @Query("locale") String locale, @Query("page") int pageNumber, @Query("size") int pageSize);
 
     //V2 PI for getting asset details
     @GET("v3/content")
