@@ -38,7 +38,6 @@ class TvMenuAdapter(private val dataSet: ArrayList<MenuModel>, internal var mCon
             menuModelBinding.labelText.setImageDrawable(mContext.resources.getDrawable(R.drawable.makereadytv_logo))
             val params = menuModelBinding.labelText.layoutParams
             params.width = ViewGroup.LayoutParams.MATCH_PARENT
-//            params.width = AppCommonMethod.dptoPx(mContext, 150).roundToInt()
             params.height = AppCommonMethod.dptoPx(mContext, 40).roundToInt()
             menuModelBinding.labelText.layoutParams = params
             menuModelBinding.labelText.setBackgroundColor(mContext.resources.getColor(R.color.popular_search_color))
@@ -47,13 +46,6 @@ class TvMenuAdapter(private val dataSet: ArrayList<MenuModel>, internal var mCon
             menuModelBinding.labelText.setImageDrawable(menuModel.menuIcon)
             menuModelBinding.label.text = menuModel.menuName
         }
-//        if (position == dataSet.size - 2) {
-//            menuModelBinding.menuParent.setPaddingRelative(
-//                    0, AppCommonMethod.dptoPx(mContext, 10).roundToInt(),
-//                    0, 0
-//
-//            )
-//        }
         if (convertView == null) {
             convertView = menuModelBinding.root
         } else {

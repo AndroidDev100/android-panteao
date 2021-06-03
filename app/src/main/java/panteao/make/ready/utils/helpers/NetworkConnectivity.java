@@ -14,7 +14,7 @@ public class NetworkConnectivity {
     /**
      * Called for checking Internet connection
      */
-    public static boolean isOnline(Activity activity) {
+    public static boolean isOnline(Context activity) {
 
         ConnectivityManager cm = (ConnectivityManager) activity
                 .getSystemService(Context.CONNECTIVITY_SERVICE);

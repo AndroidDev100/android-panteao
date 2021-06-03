@@ -46,9 +46,8 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.KalturaPlayerActivity">
-
-        </activity>
+        <activity android:name=".activities.search.ui.TVSearchActivity"></activity>
+        <activity android:name=".activities.KalturaPlayerActivity"></activity>
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.instructor.ui.EpisodeActivity" />
         <activity android:name=".activities.tutorial.ui.ChapterActivity"
@@ -108,6 +107,7 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -201,6 +201,7 @@
             tools:replace="android:theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
@@ -208,8 +209,8 @@
             android:name=".activities.homeactivity.ui.TVHomeActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
-            tools:replace="android:theme">
-        </activity>
+            tools:replace="android:theme"></activity>
+
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="@string/branch_key" />

@@ -1,4 +1,4 @@
-<resources >
+<resources>
     <string name="app_name">Make Ready TV</string>
     <string name="retry">Try Again</string>
     <string name="no_connection">No internet connection found.</string>
@@ -136,10 +136,10 @@
     <!--Banner_Test-->
 
 
-<!--    <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
-<!--    <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
-<!--    <string name="error_querying_decoders">Unable to query device decoders</string>-->
-<!--    <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>-->
+    <!--    <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
+    <!--    <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>-->
+    <!--    <string name="error_querying_decoders">Unable to query device decoders</string>-->
+    <!--    <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>-->
     <string name="less">LESS</string>
     <string name="more">MORE</string>
     <string name="share">Share</string>
@@ -385,6 +385,7 @@
     <string name="title_screen_2">Instructors</string>
     <string name="title_screen_3">Watchlist</string>
     <string name="title_screen_4">Help</string>
+    <string name="clear_searches">Clear Recent Search</string>
     <string-array name="menu_titles_with_login">
         <item>""</item>
         <item>""</item>
@@ -393,7 +394,6 @@
         <item>@string/title_skill_set</item>
         <item>@string/title_instructor</item>
         <item>@string/title_free</item>
-        <item>@string/title_screen_3</item>
         <item>@string/title_screen_4</item>
         <item>@string/my_profile</item>
         <item>@string/setting_title</item>

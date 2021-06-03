@@ -456,6 +456,7 @@ public class APIServiceLayer {
                                             String tmp = gson.toJson(videoItem);
                                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
                                             enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem));
+                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
                                             enveuVideoItemBeans.add(enveuVideoItemBean);
                                         }
                                         railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
