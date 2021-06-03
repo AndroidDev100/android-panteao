@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
-import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.search.adapter.CategoriedSearchAdapter;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.adapter.RecentListAdapter;
@@ -476,7 +476,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             mLastClickTime = SystemClock.elapsedRealtime();
 
             if (NetworkConnectivity.isOnline(ActivitySearch.this)) {
-                new ActivityLauncher(ActivitySearch.this).detailScreen(ActivitySearch.this, DetailActivity.class, itemValue.getId(), "0", false);
+                new ActivityLauncher(ActivitySearch.this).detailScreen(ActivitySearch.this, InstructorActivity.class, itemValue.getId(), "0", false);
             } else
                 new ToastHandler(ActivitySearch.this).show(ActivitySearch.this.getResources().getString(R.string.no_internet_connection));
         }

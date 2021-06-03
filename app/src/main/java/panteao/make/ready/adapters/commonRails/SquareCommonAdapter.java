@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
@@ -123,11 +123,11 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
                                 if (itemsList.get(i).getAssetType().equalsIgnoreCase("EPISODE")) {
                                     new ActivityLauncher(mContext).episodeScreen(mContext, EpisodeActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
                                 } else {
-                                    new ActivityLauncher(mContext).detailScreen(mContext, DetailActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
+                                    new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
                                 }
                             }
                         } catch (Exception e) {
-                            new ActivityLauncher(mContext).detailScreen(mContext, DetailActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
+                            new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
                         }
 
                     });

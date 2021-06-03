@@ -74,6 +74,7 @@ public class EnveuVideoItemBean implements Serializable {
     private String isVIP;
     private String VastTag;
     private String islivedrm="false";
+    private String kEntryId="";
     public boolean isContinueWatching = false;
 
     public String getIslivedrm() {
@@ -107,6 +108,7 @@ public class EnveuVideoItemBean implements Serializable {
     public EnveuVideoItemBean(EnveuVideoDetailsBean details) {
         try {
             this.title = details.getData().getTitle() == null ? "" : details.getData().getTitle();
+            this.kEntryId = details.getData().getTitle() == null ? "" : details.getData().getkEntryId();
             this.description = details.getData().getDescription() == null ? "" : details.getData().getDescription().trim();
             this.assetGenres = details.getData().getGenres() == null ? new ArrayList<>() : details.getData().getGenres();
             this.assetCast = details.getData().getCast() == null ? new ArrayList<>() : details.getData().getCast();
@@ -731,6 +733,14 @@ public class EnveuVideoItemBean implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getkEntryId() {
+        return kEntryId;
+    }
+
+    public void setkEntryId(String kEntryId) {
+        this.kEntryId = kEntryId;
     }
 
     public Object getSvod() {

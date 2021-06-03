@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
@@ -191,7 +191,7 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
                     if (sItem.getVideoType().equalsIgnoreCase("EPISODE")) {
                         new ActivityLauncher(mContext).episodeScreen(mContext, EpisodeActivity.class, sItem.getId(), "", sItem.isPremium());
                     } else {
-                        new ActivityLauncher(mContext).detailScreen(mContext, DetailActivity.class, sItem.getId(), "", sItem.isPremium());
+                        new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, sItem.getId(), "", sItem.isPremium());
                     }
                 }
 

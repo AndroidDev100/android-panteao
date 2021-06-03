@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.make.bookmarking.bean.BookmarkingResponse;
 import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.watchList.adapter.WatchHistoryAdapter;
 import panteao.make.ready.activities.watchList.adapter.WatchListAdapter;
 import panteao.make.ready.activities.watchList.viewModel.WatchListViewModel;
@@ -291,12 +291,12 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         mLastClickTime = SystemClock.elapsedRealtime();
         try {
             if (itemValue.getVideoType().equalsIgnoreCase("SERIES")) {
-                new ActivityLauncher(this).detailScreen(this, DetailActivity.class, itemValue.getId(), "0", false);
+                new ActivityLauncher(this).detailScreen(this, InstructorActivity.class, itemValue.getId(), "0", false);
 
             } else if (itemValue.getVideoType().equalsIgnoreCase("EPISODE")) {
                 new ActivityLauncher(this).episodeScreen(this, EpisodeActivity.class, itemValue.getId(), "0", false);
             } else {
-                new ActivityLauncher(this).detailScreen(this, DetailActivity.class, itemValue.getId(), "0", false);
+                new ActivityLauncher(this).detailScreen(this, InstructorActivity.class, itemValue.getId(), "0", false);
             }
         } catch (Exception e) {
 
@@ -320,7 +320,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
             if (itemValue.getAssetType().equalsIgnoreCase("EPISODE")) {
                 new ActivityLauncher(this).episodeScreen(this, EpisodeActivity.class, itemValue.getContentId(), "0", false);
             } else {
-                new ActivityLauncher(this).detailScreen(this, DetailActivity.class, itemValue.getContentId(), "0", false);
+                new ActivityLauncher(this).detailScreen(this, InstructorActivity.class, itemValue.getContentId(), "0", false);
             }
         }
 

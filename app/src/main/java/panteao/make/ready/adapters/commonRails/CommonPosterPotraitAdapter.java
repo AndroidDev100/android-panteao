@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 
-import panteao.make.ready.activities.detail.ui.DetailActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
@@ -190,7 +190,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
                     if (sItem.getVideoType().equalsIgnoreCase("EPISODE")) {
                   //      new ActivityLauncher(mContext).episodeScreen(mContext, EpisodeActivity.class, sItem.getId(), "", sItem.isPremium());
                     } else {
-                        new ActivityLauncher(mContext).detailScreen(mContext, DetailActivity.class, sItem.getId(), "", sItem.isPremium());
+                        new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, sItem.getId(), "", sItem.isPremium());
                     }
                 }
                 //  new ActivityLauncher(mContext).detailScreen(mContext, DetailActivity.class, sItem.getId(), "", sItem.isPremium());

@@ -18,7 +18,7 @@ import com.make.enums.Layouts;
 import com.make.enums.ListingLayoutType;
 import com.make.enums.PDFTarget;
 
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
 import panteao.make.ready.activities.privacypolicy.ui.WebViewActivity;
