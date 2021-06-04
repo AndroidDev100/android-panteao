@@ -19,15 +19,15 @@ public class Images {
     @Expose
     private PosterEn posterEn;
 
-    @SerializedName("3840x2160")
+    @SerializedName("1920x1080")
     @Expose
     private ThumbnailEn hdBanner;
 
-    @SerializedName("1920x1080")
+    @SerializedName("3840x1260")
     @Expose
     private Thumbnail banner;
 
-    @SerializedName("167x243")
+    @SerializedName("1280x720")
     @Expose
     private Poster newPoster;
 

@@ -286,7 +286,6 @@ public class APIServiceLayer {
                 } else {
                     RailCommonData railCommonData = new RailCommonData();
                     railCommonData.setStatus(false);
-                    Logger.e("APIRESPONSEERROR", response.message());
                     railCommonDataMutableLiveData.postValue(railCommonData);
                 }
             }
@@ -455,8 +454,8 @@ public class APIServiceLayer {
                                             Gson gson = new Gson();
                                             String tmp = gson.toJson(videoItem);
                                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
-                                            enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem));
-                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
+                                            enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem,railCommonData.getScreenWidget().getWidgetImageType()));
+                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem,railCommonData.getScreenWidget().getWidgetImageType()));
                                             enveuVideoItemBeans.add(enveuVideoItemBean);
                                         }
                                         railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
@@ -531,7 +530,7 @@ public class APIServiceLayer {
                                 enveuVideoItemBeans = new ArrayList<>();
                                 for (panteao.make.ready.beanModelV3.searchV2.ItemsItem videoItem : itemsItem) {
                                     EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
-                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem));
+                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem,railCommonData.getScreenWidget().getWidgetImageType()));
                                     if (type.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) && videoItem.getSeasons() != null)
                                         enveuVideoItemBean.setSeasonCount(videoItem.getSeasons().size());
 

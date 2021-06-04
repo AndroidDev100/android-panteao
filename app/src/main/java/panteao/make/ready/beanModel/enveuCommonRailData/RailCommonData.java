@@ -63,7 +63,7 @@ public class RailCommonData {
         this.screenWidget = screenWidget;
         /*type = false calling for home playlist data -->> type = true calling from more listing*/
         if (!type) {
-            setBrighcoveVideos(playListDetailsResponse.getItems(), screenWidget.getContentImageType());
+            setBrighcoveVideos(playListDetailsResponse.getItems(), screenWidget.getWidgetImageType());
             isSeries = false;
             setRailType(screenWidget.getLayout(), screenWidget.getContentImageType());
         } else {
@@ -177,15 +177,14 @@ public class RailCommonData {
                         int seasonNumber = Integer.parseInt(videoItem.getSeasonNumber());
                         railCommonData.setSeasonNumber(seasonNumber);
                     }
-
                     if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
-                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
+                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem,screenWidget.getWidgetImageType());
                         enveuVideoItemBean.setPosterURL(imageUrl);
-                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem));
+                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem,screenWidget.getWidgetImageType()));
                     } else {
-                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem);
+                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem,imageType);
                         enveuVideoItemBean.setPosterURL(imageUrl);
-                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
+                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem,imageType));
                     }
                     enveuVideoItemBeans.add(enveuVideoItemBean);
                 }
@@ -218,14 +217,14 @@ public class RailCommonData {
                     enveuVideoItemBean.setVodCount(videos.size());
                     if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                         Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
-                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem);
+                        String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem,screenWidget.getWidgetImageType());
                         enveuVideoItemBean.setPosterURL(imageUrl);
-                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem));
+                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem,screenWidget.getWidgetImageType()));
 
                     } else {
-                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem);
+                        String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem,screenWidget.getWidgetImageType());
                         enveuVideoItemBean.setPosterURL(imageUrl);
-                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
+                        enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem,screenWidget.getWidgetImageType()));
                     }
 
 
@@ -329,19 +328,19 @@ public class RailCommonData {
             for (DataItem enveuVideoDetails1 : enveuVideoDetails) {
                 Gson gson = new Gson();
                 String tmp = gson.toJson(enveuVideoDetails1);
-                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1);
+                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1,screenWidget.getWidgetImageType());
 
                 if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                     Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
-                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
+                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType());
                     enveuVideoItemBean.setPosterURL(imageUrl);
-                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1));
+                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
 
                 } else {
-                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
+                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType());
                     enveuVideoItemBean.setPosterURL(imageUrl);
                     enveuVideoItemBean.setPosterURL(screenWidget.getImageURL());
-                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1));
+                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
 
                 }
 
@@ -362,18 +361,18 @@ public class RailCommonData {
             for (DataItem enveuVideoDetails1 : enveuVideoDetails) {
                 Gson gson = new Gson();
                 String tmp = gson.toJson(enveuVideoDetails1);
-                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1);
+                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1,screenWidget.getWidgetImageType());
 
                 if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                     Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
-                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1);
+                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType());
                     enveuVideoItemBean.setPosterURL(imageUrl);
-                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1));
+                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
 
                 } else {
-                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1);
+                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType());
                     enveuVideoItemBean.setPosterURL(imageUrl);
-                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1));
+                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
                 }
                 enveuVideoItemBeans.add(enveuVideoItemBean);
             }

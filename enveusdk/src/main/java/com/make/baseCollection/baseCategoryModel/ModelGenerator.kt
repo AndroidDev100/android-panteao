@@ -36,7 +36,7 @@ class ModelGenerator{
 
                 BaseGateway.KALTURA.name -> {
                     cat.contentID=i?.item?.playlist?.kalturaChannelId
-                    cat.widgetImageType=i?.widgetImageType;
+                    cat.widgetImageType=i?.kalturaOttImageType;
                 }
             }
             cat.layout=i?.layout

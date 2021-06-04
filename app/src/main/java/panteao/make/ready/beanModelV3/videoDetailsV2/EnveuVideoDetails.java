@@ -3,11 +3,14 @@ package panteao.make.ready.beanModelV3.videoDetailsV2;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import panteao.make.ready.beanModelV3.playListModelV2.Images;
 
+import java.util.HashMap;
 import java.util.List;
 
 import panteao.make.ready.beanModelV3.playListModelV2.Images;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 
 public class EnveuVideoDetails {
 
@@ -49,7 +52,7 @@ public class EnveuVideoDetails {
     private String brightcoveContentId;
     @SerializedName("images")
     @Expose
-    private Images images;
+    private HashMap<String, Thumbnail> images;
     @SerializedName("longDescription")
     @Expose
     private Object longDescription;
@@ -213,11 +216,11 @@ public class EnveuVideoDetails {
         this.brightcoveContentId = brightcoveContentId;
     }
 
-    public Images getImages() {
+    public HashMap<String, Thumbnail> getImages() {
         return images;
     }
 
-    public void setImages(Images images) {
+    public void setImages(HashMap<String, Thumbnail> images) {
         this.images = images;
     }
 

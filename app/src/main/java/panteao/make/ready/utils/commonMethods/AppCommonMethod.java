@@ -945,18 +945,16 @@ public class AppCommonMethod {
             } else {
                 new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
-        }
-        else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
                 new ActivityLauncher((BaseActivity) context).chapterScreenBrightcove((BaseActivity) context, ChapterActivity.class, videoId, id, duration, isPremium);
             }
-        }
-        else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
             new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
         }
-       // RecoSenceManager.getInstance().sendClickEvent(screenType, id);
+        // RecoSenceManager.getInstance().sendClickEvent(screenType, id);
 
 /*
         switch (screenType.toUpperCase()) {
@@ -1268,20 +1266,20 @@ public class AppCommonMethod {
     public static void createAssetHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails, BaseCategory screenWidget) {
         enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
 
-        if (screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
-            Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
-            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getThumbnail() != null && enveuVideoDetails.getImages().getThumbnail().getSources() != null
-                    && enveuVideoDetails.getImages().getThumbnail().getSources().size() > 0) {
-                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getThumbnail().getSources().get(0).getSrc());
-            }
-        }
-        // enveuVideoItemBean.setPosterURL(enveuVideoDetails.getThumbnailImage());
-        else {
-            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getPoster() != null && enveuVideoDetails.getImages().getPoster().getSources() != null
-                    && enveuVideoDetails.getImages().getPoster().getSources().size() > 0) {
-                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getPoster().getSources().get(0).getSrc());
-            }
-        }
+//        if (screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+//            Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
+//            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getThumbnail() != null && enveuVideoDetails.getImages().getThumbnail().getSources() != null
+//                    && enveuVideoDetails.getImages().getThumbnail().getSources().size() > 0) {
+//                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getThumbnail().getSources().get(0).getSrc());
+//            }
+//        }
+//        // enveuVideoItemBean.setPosterURL(enveuVideoDetails.getThumbnailImage());
+//        else {
+//            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getPoster() != null && enveuVideoDetails.getImages().getPoster().getSources() != null
+//                    && enveuVideoDetails.getImages().getPoster().getSources().size() > 0) {
+//                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getPoster().getSources().get(0).getSrc());
+//            }
+//        }
         // enveuVideoItemBean.setPosterURL(enveuVideoDetails.getPosterImage());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
@@ -1313,7 +1311,7 @@ public class AppCommonMethod {
             EnveuVideoDetailsBean enveuVideoDetailsBean = new EnveuVideoDetailsBean();
             EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) response.body().getData();
             enveuVideoDetailsBean.setData(enveuVideoDetails);
-            EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetailsBean);
+            EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetailsBean, railCommonData.getScreenWidget().getWidgetImageType());
             railCommonData.setEnveuVideoItemBeans(new ArrayList<>());
             railCommonData.getEnveuVideoItemBeans().add(enveuVideoItemBean);
         } catch (Exception ignored) {

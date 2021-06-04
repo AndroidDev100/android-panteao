@@ -2,7 +2,7 @@
 <resources>
 
     <style name="MyMaterialTheme" parent="@style/Theme.Leanback">
-        <item name="browseRowsMarginTop">30dp</item>
+        <item name="browseRowsMarginTop">0dp</item>
         <item name="browseRowsMarginStart">70dp</item>
         <item name="browsePaddingTop">0dp</item>
         <item name="browsePaddingEnd">70dp</item>

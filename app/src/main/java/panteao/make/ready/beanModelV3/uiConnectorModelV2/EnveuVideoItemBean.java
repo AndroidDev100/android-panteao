@@ -73,8 +73,8 @@ public class EnveuVideoItemBean implements Serializable {
     private String isNewS;
     private String isVIP;
     private String VastTag;
-    private String islivedrm="false";
-    private String kEntryId="";
+    private String islivedrm = "false";
+    private String kEntryId = "";
     public boolean isContinueWatching = false;
 
     public String getIslivedrm() {
@@ -105,7 +105,7 @@ public class EnveuVideoItemBean implements Serializable {
     }
 
     //description page - single asset parsing
-    public EnveuVideoItemBean(EnveuVideoDetailsBean details) {
+    public EnveuVideoItemBean(EnveuVideoDetailsBean details,String imageType) {
         try {
             this.title = details.getData().getTitle() == null ? "" : details.getData().getTitle();
             this.kEntryId = details.getData().getTitle() == null ? "" : details.getData().getkEntryId();
@@ -113,52 +113,31 @@ public class EnveuVideoItemBean implements Serializable {
             this.assetGenres = details.getData().getGenres() == null ? new ArrayList<>() : details.getData().getGenres();
             this.assetCast = details.getData().getCast() == null ? new ArrayList<>() : details.getData().getCast();
 
-            //this.svod = details.getData().getSvod() == null ? "" : details.getData().getSvod();
             this.contentProvider = details.getData().getContentProvider() == null ? "" : details.getData().getContentProvider();
             this.premium = details.getData().getPremium();
-           /* if (details.getData().getImages()!=null && details.getData().getImages().getPoster()!=null && details.getData().getImages().getPoster().getSources()!=null
-                    && details.getData().getImages().getPoster().getSources().size()>0){
-                this.posterURL = details.getData().getImages().getPoster().getSources().get(0).getSrc();
-            }*/
-            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details.getData());
-
-            //this.price = details.getData().getPrice() == null ? "" : details.getData().getPrice();
+            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details.getData(),imageType);
 
             this.season = "";
             if (details.getData().getLinkedContent() != null) {
                 this.seriesId = String.valueOf(details.getData().getLinkedContent().getId());
             }
-            /*if (details.getData().getLinkedContent()!=null){
-                Object linkedContent = details.getData().getLinkedContent();
-                LinkedTreeMap<Object, Object> content = (LinkedTreeMap) linkedContent;
-                if (content.containsKey("id")){
-                    this.series = content.get("id").toString();
-                }else {
-                    this.series = "";
-                }
-            }else {
-                this.series = "";
-            }*/
             this.sku = details.getData().getSku() == null ? "" : details.getData().getSku();
             this.id = details.getData().getId();
             this.isNew = false;
-            //this.tvod = details.getData().getTvod() == null ? "" : details.getData().getTvod();
             this.episodeNo = details.getData().getEpisodeNumber() == null ? "" : details.getData().getEpisodeNumber();
             this.assetType = details.getData().getContentType() == null ? "" : details.getData().getContentType();
             this.brightcoveVideoId = details.getData().getBrightcoveContentId() == null ? "" : details.getData().getBrightcoveContentId();
             this.series = String.valueOf(details.getData().getId());
-            ;
             this.status = details.getData().getStatus() == null ? "" : details.getData().getStatus();
-
 
             Object customeFiled = details.getData().getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
 
-            if (t.containsKey(CustomeFields.WIDEVINE_LICENCE)){
+            if (t.containsKey(CustomeFields.WIDEVINE_LICENCE)) {
                 String widevineLicence = t.get((CustomeFields.WIDEVINE_LICENCE)).toString();
                 this.widevineLicence = widevineLicence;
             }
-            if (t.containsKey(CustomeFields.ISLIVEDRM)){
+            if (t.containsKey(CustomeFields.ISLIVEDRM)) {
                 String isLiveDrm = t.get((CustomeFields.ISLIVEDRM)).toString();
                 this.islivedrm = isLiveDrm;
             }
@@ -227,30 +206,22 @@ public class EnveuVideoItemBean implements Serializable {
     //for asset details.......
     public EnveuVideoItemBean(VideosItem details, int contentOrder, String imageType) {
 
-            try {
+        try {
 
-                this.title = details.getTitle() == null ? "" : details.getTitle();
-                this.description = details.getDescription() == null ? "" : details.getDescription().trim();
-                this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
-                this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
-          //  this.svod = details.getSvod() == null ? "" : details.getSvod();
+            this.title = details.getTitle() == null ? "" : details.getTitle();
+            this.description = details.getDescription() == null ? "" : details.getDescription().trim();
+            this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
+            this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
             this.contentProvider = details.getContentProvider() == null ? "" : details.getContentProvider();
             this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
             this.premium = details.getPremium();
 
-                this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details);
-               /* if (details.getImages()!=null && details.getImages().getPoster()!=null && details.getImages().getPoster().getSources()!=null
-                        && details.getImages().getPoster().getSources().size()>0){
-                     details.getImages().getPoster().getSources().get(0).getSrc();
-                }*/
-           // this.posterURL = details.getImages()== null ? "" : details.getImages().getPoster().getSources().toString();
-          //  this.price = details.getPrice() == null ? "" : details.getPrice();
+            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details,imageType);
             this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
             this.season = "";
             this.id = details.getId();
             this.sku = details.getSku() == null ? "" : details.getSku();
             this.isNew = false;
-          //  this.tvod = details.getTvod() == null ? "" : details.getTvod();
             this.episodeNo = details.getEpisodeNumber() == null ? "" : details.getEpisodeNumber();
             this.assetType = details.getContentType() == null ? "" : details.getContentType();
             this.brightcoveVideoId = details.getBrightcoveContentId() == null ? "" : details.getBrightcoveContentId();
@@ -269,73 +240,73 @@ public class EnveuVideoItemBean implements Serializable {
 
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
 
-                if (t.containsKey(CustomeFields.parentalRating)){
+                if (t.containsKey(CustomeFields.parentalRating)) {
                     String parentalRating = t.get((CustomeFields.parentalRating)).toString();
                     this.parentalRating = parentalRating;
-                }else {
-                    if (t.containsKey(CustomeFields.rating)){
+                } else {
+                    if (t.containsKey(CustomeFields.rating)) {
                         String parentalRating = t.get((CustomeFields.rating)).toString();
                         this.parentalRating = parentalRating;
                     }
                 }
 
-                if (t.containsKey(CustomeFields.Country)){
+                if (t.containsKey(CustomeFields.Country)) {
                     String country = t.get((CustomeFields.Country)).toString();
                     this.country = country;
                 }
 
-                if (t.containsKey(CustomeFields.company)){
+                if (t.containsKey(CustomeFields.company)) {
                     String company = t.get((CustomeFields.company)).toString();
                     this.company = company;
                 }
 
-                if (t.containsKey(CustomeFields.year)){
+                if (t.containsKey(CustomeFields.year)) {
                     String year = t.get((CustomeFields.year)).toString();
                     this.year = year;
                 }
 
-                if (t.containsKey(CustomeFields.VastTag)){
+                if (t.containsKey(CustomeFields.VastTag)) {
                     String year = t.get((CustomeFields.VastTag)).toString();
                     this.VastTag = year;
                 }
 
-            }else {
+            } else {
 
-                if (t.containsKey(CustomeFields.rating)){
+                if (t.containsKey(CustomeFields.rating)) {
                     String parentalRating = t.get((CustomeFields.rating)).toString();
                     this.parentalRating = parentalRating;
                 }
 
-                if (t.containsKey(CustomeFields.Country)){
+                if (t.containsKey(CustomeFields.Country)) {
                     String country = t.get((CustomeFields.Country)).toString();
                     this.country = country;
                 }
 
-                if (t.containsKey(CustomeFields.company)){
+                if (t.containsKey(CustomeFields.company)) {
                     String company = t.get((CustomeFields.company)).toString();
                     this.company = company;
                 }
 
-                if (t.containsKey(CustomeFields.year)){
+                if (t.containsKey(CustomeFields.year)) {
                     String year = t.get((CustomeFields.year)).toString();
                     this.year = year;
                 }
 
-                if (t.containsKey(CustomeFields.VastTag)){
+                if (t.containsKey(CustomeFields.VastTag)) {
                     String year = t.get((CustomeFields.VastTag)).toString();
                     this.VastTag = year;
                 }
             }
 
-        if (t.containsKey(CustomeFields.IsVip)){
-            String vip = t.get((CustomeFields.IsVip)).toString();
-            this.isVIP = vip;
-        }
+            if (t.containsKey(CustomeFields.IsVip)) {
+                String vip = t.get((CustomeFields.IsVip)).toString();
+                this.isVIP = vip;
+            }
 
-        if (t.containsKey(CustomeFields.IsNew)){
-            String isNew = t.get((CustomeFields.IsNew)).toString();
-            this.isNewS = isNew;
-        }
+            if (t.containsKey(CustomeFields.IsNew)) {
+                String isNew = t.get((CustomeFields.IsNew)).toString();
+                this.isNewS = isNew;
+            }
 
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
@@ -349,142 +320,126 @@ public class EnveuVideoItemBean implements Serializable {
 
             this.duration = (long) details.getDuration();
 
-            }catch (Exception e){
+        } catch (Exception e) {
 
-            }
+        }
     }
 
     //for continue watching.......
-    public EnveuVideoItemBean(DataItem details) {
+    public EnveuVideoItemBean(DataItem details,String imageType) {
 
-            try {
+        try {
+            this.title = details.getTitle() == null ? "" : details.getTitle();
+            this.description = details.getDescription() == null ? "" : details.getDescription().trim();
+            this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
+            this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
+            this.contentProvider = details.getContentProvider() == null ? "" : details.getContentProvider();
+            this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
+            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details,imageType);
+            this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
+            this.season = "";
+            this.id = details.getId();
+            this.sku = details.getSku() == null ? "" : details.getSku();
+            this.isNew = false;
+            this.episodeNo = details.getEpisodeNumber() == null ? "" : details.getEpisodeNumber();
+            this.assetType = details.getContentType() == null ? "" : details.getContentType();
+            this.brightcoveVideoId = details.getBrightcoveContentId() == null ? "" : details.getBrightcoveContentId();
+            this.series = "";
+            this.status = details.getStatus() == null ? "" : details.getStatus();
+            if (details.getPosition() != null) {
+                this.videoPosition = details.getPosition();
+            }
 
-                    //  this.svod = details.getSvod() == null ? "" : details.getSvod();
-                    this.title = details.getTitle() == null ? "" : details.getTitle();
-                    this.description = details.getDescription() == null ? "" : details.getDescription().trim();
-                    this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
-                    this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
+            this.contentOrder = contentOrder;
+            if (imageType != null) {
+                this.imageType = imageType;
+            } else {
+                this.imageType = "";
+            }
 
-                    this.contentProvider = details.getContentProvider() == null ? "" : details.getContentProvider();
-                    this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
-                    //  this.premium = details.isPremium();
+            Object customeFiled = details.getCustomFields();
+            LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
 
-                    this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details);
-               /* if (details.getImages()!=null && details.getImages().getPoster()!=null && details.getImages().getPoster().getSources()!=null
-                        && details.getImages().getPoster().getSources().size()>0){
-                     details.getImages().getPoster().getSources().get(0).getSrc();
-                }*/
-                    // this.posterURL = details.getImages()== null ? "" : details.getImages().getPoster().getSources().toString();
-                    //  this.price = details.getPrice() == null ? "" : details.getPrice();
-                    this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
-                    this.season = "";
-                    this.id = details.getId();
-                    this.sku = details.getSku() == null ? "" : details.getSku();
-                    this.isNew = false;
-                    //  this.tvod = details.getTvod() == null ? "" : details.getTvod();
-                    this.episodeNo = details.getEpisodeNumber() == null ? "" : details.getEpisodeNumber();
-                    this.assetType = details.getContentType() == null ? "" : details.getContentType();
-                    this.brightcoveVideoId = details.getBrightcoveContentId() == null ? "" : details.getBrightcoveContentId();
-                    this.series = "";
-                    this.status = details.getStatus() == null ? "" : details.getStatus();
-                    if (details.getPosition()!=null){
-                    this.videoPosition = details.getPosition();
+
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+
+
+                if (t.containsKey(CustomeFields.parentalRating)) {
+                    String parentalRating = t.get((CustomeFields.parentalRating)).toString();
+                    this.parentalRating = parentalRating;
+                } else {
+                    if (t.containsKey(CustomeFields.rating)) {
+                        String parentalRating = t.get((CustomeFields.rating)).toString();
+                        this.parentalRating = parentalRating;
                     }
+                }
 
-                    this.contentOrder = contentOrder;
-                    if (imageType != null) {
-                        this.imageType = imageType;
-                    } else {
-                        this.imageType = "";
-                    }
+                if (t.containsKey(CustomeFields.Country)) {
+                    String country = t.get((CustomeFields.Country)).toString();
+                    this.country = country;
+                }
 
-                    Object customeFiled = details.getCustomFields();
-                    LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
+                if (t.containsKey(CustomeFields.company)) {
+                    String company = t.get((CustomeFields.company)).toString();
+                    this.company = company;
+                }
 
+                if (t.containsKey(CustomeFields.year)) {
+                    String year = t.get((CustomeFields.year)).toString();
+                    this.year = year;
+                }
 
-                    if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                if (t.containsKey(CustomeFields.VastTag)) {
+                    String year = t.get((CustomeFields.VastTag)).toString();
+                    this.VastTag = year;
+                }
 
+            } else {
 
-                        if (t.containsKey(CustomeFields.parentalRating)) {
-                            String parentalRating = t.get((CustomeFields.parentalRating)).toString();
-                            this.parentalRating = parentalRating;
-                        } else {
-                            if (t.containsKey(CustomeFields.rating)) {
-                                String parentalRating = t.get((CustomeFields.rating)).toString();
-                                this.parentalRating = parentalRating;
-                            }
-                        }
+                if (t.containsKey(CustomeFields.rating)) {
+                    String parentalRating = t.get((CustomeFields.rating)).toString();
+                    this.parentalRating = parentalRating;
+                }
 
-                        if (t.containsKey(CustomeFields.Country)) {
-                            String country = t.get((CustomeFields.Country)).toString();
-                            this.country = country;
-                        }
+                if (t.containsKey(CustomeFields.Country)) {
+                    String country = t.get((CustomeFields.Country)).toString();
+                    this.country = country;
+                }
 
-                        if (t.containsKey(CustomeFields.company)) {
-                            String company = t.get((CustomeFields.company)).toString();
-                            this.company = company;
-                        }
+                if (t.containsKey(CustomeFields.company)) {
+                    String company = t.get((CustomeFields.company)).toString();
+                    this.company = company;
+                }
 
-                        if (t.containsKey(CustomeFields.year)) {
-                            String year = t.get((CustomeFields.year)).toString();
-                            this.year = year;
-                        }
+                if (t.containsKey(CustomeFields.year)) {
+                    String year = t.get((CustomeFields.year)).toString();
+                    this.year = year;
+                }
 
-                        if (t.containsKey(CustomeFields.VastTag)) {
-                            String year = t.get((CustomeFields.VastTag)).toString();
-                            this.VastTag = year;
-                        }
+                if (t.containsKey(CustomeFields.VastTag)) {
+                    String year = t.get((CustomeFields.VastTag)).toString();
+                    this.VastTag = year;
+                }
 
-                    } else {
+            }
 
-                        if (t.containsKey(CustomeFields.rating)) {
-                            String parentalRating = t.get((CustomeFields.rating)).toString();
-                            this.parentalRating = parentalRating;
-                        }
+            if (t.containsKey(CustomeFields.IsVip)) {
+                String vip = t.get((CustomeFields.IsVip)).toString();
+                this.isVIP = vip;
+            }
 
-                        if (t.containsKey(CustomeFields.Country)) {
-                            String country = t.get((CustomeFields.Country)).toString();
-                            this.country = country;
-                        }
+            if (t.containsKey(CustomeFields.IsNew)) {
+                String isNew = t.get((CustomeFields.IsNew)).toString();
+                this.isNewS = isNew;
+            }
+            this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
-                        if (t.containsKey(CustomeFields.company)) {
-                            String company = t.get((CustomeFields.company)).toString();
-                            this.company = company;
-                        }
-
-                        if (t.containsKey(CustomeFields.year)) {
-                            String year = t.get((CustomeFields.year)).toString();
-                            this.year = year;
-                        }
-
-                        if (t.containsKey(CustomeFields.VastTag)) {
-                            String year = t.get((CustomeFields.VastTag)).toString();
-                            this.VastTag = year;
-                        }
-
-                    }
-
-                    if (t.containsKey(CustomeFields.IsVip)) {
-                        String vip = t.get((CustomeFields.IsVip)).toString();
-                        this.isVIP = vip;
-                    }
-
-                    if (t.containsKey(CustomeFields.IsNew)) {
-                        String isNew = t.get((CustomeFields.IsNew)).toString();
-                        this.isNewS = isNew;
-                    }
-
-                    //meditype tyep - 1 --->>> series ----isnew-true----new series ---episode- new episode --- movie-new movie
-                    //
-                    this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
-
-                    //series realated data
-                    if (details.getSeasons() != null) {
-                        ArrayList arrayList = (ArrayList) details.getSeasons();
-                        this.seasonCount = arrayList.size();
-                    }
-                this.duration = (long) details.getDuration();
-            } catch (Exception ignored) {
+            if (details.getSeasons() != null) {
+                ArrayList arrayList = (ArrayList) details.getSeasons();
+                this.seasonCount = arrayList.size();
+            }
+            this.duration = (long) details.getDuration();
+        } catch (Exception ignored) {
             Logger.e("ContinueWatching", ignored.getMessage());
         }
 
@@ -505,7 +460,7 @@ public class EnveuVideoItemBean implements Serializable {
             this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();
             //  this.premium = details.isPremium();
 
-            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details);
+            this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details,imageType);
                /* if (details.getImages()!=null && details.getImages().getPoster()!=null && details.getImages().getPoster().getSources()!=null
                         && details.getImages().getPoster().getSources().size()>0){
                      details.getImages().getPoster().getSources().get(0).getSrc();
@@ -613,7 +568,7 @@ public class EnveuVideoItemBean implements Serializable {
                 this.seasonCount = arrayList.size();
             }
             this.duration = (long) details.getDuration();
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -655,7 +610,7 @@ public class EnveuVideoItemBean implements Serializable {
         return name;
     }
 
-    public ArrayList getSeasons(){
+    public ArrayList getSeasons() {
         return seasons;
     }
 
@@ -762,6 +717,7 @@ public class EnveuVideoItemBean implements Serializable {
     public List<String> getAssetCast() {
         return assetCast;
     }
+
     public String getAllAssetCast() {
         StringBuilder castString = new StringBuilder();
         if (assetCast != null && assetCast.size() > 0) {
@@ -956,7 +912,7 @@ public class EnveuVideoItemBean implements Serializable {
         return imageType;
     }
 
-    public String getParentalRating(){
+    public String getParentalRating() {
         return parentalRating;
     }
 
@@ -1060,7 +1016,6 @@ public class EnveuVideoItemBean implements Serializable {
                         ",status = '" + status + '\'' +
                         "}";
     }
-
 
 
     public Drawable getVipImageDrawable() {

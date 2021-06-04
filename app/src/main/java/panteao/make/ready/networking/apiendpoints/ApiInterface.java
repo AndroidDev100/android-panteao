@@ -164,11 +164,11 @@ public interface ApiInterface {
     Call<ContinueWatchingModel> getVideos(@Query("contentId") String manualImageAssetId, @Query("locale") String locale);
 
     @Headers("x-platform: android")
-    @GET("v3/search")
+    @GET("v4/search")
     io.reactivex.Observable<ResponseSearch> getSearch(@Query("keyword") String keyword, @Query("contentType") String type, @Query("size") int size, @Query("offset") int page, @Query("locale") String locale);
 
     @Headers("x-platform: android")
-    @GET("v3/search")
+    @GET("v4/search")
     Call<ResponseSearch> getSearchResults(@Query("keyword") String keyword, @Query("contentType") String type, @Query("size") int size, @Query("offset") int page, @Query("locale") String locale);
 
 
