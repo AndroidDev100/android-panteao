@@ -999,12 +999,12 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                     showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                                 }*/
                                 stopShimmer();
-                                showDialog(ChapterActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+//                                showDialog(ChapterActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                             }
 
                         } else if (response.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
                             stopShimmer();
-                            showDialog(ChapterActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+//                            showDialog(ChapterActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                             // showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                         }
 

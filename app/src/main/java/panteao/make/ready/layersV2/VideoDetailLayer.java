@@ -1,5 +1,7 @@
 package panteao.make.ready.layersV2;
 
+import com.google.gson.Gson;
+
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
@@ -12,6 +14,7 @@ import panteao.make.ready.networking.servicelayer.APIServiceLayer;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.config.LanguageLayer;
 
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,10 +46,10 @@ public class VideoDetailLayer {
             @Override
             public void onResponse(Call<EnveuVideoDetailsBean> call, Response<EnveuVideoDetailsBean> response) {
                 if (response.isSuccessful()) {
-
-                    if (response.body().getData() instanceof EnveuVideoDetails) {
+                    if (response.body().getData() != null) {
                         RailCommonData railCommonData = new RailCommonData();
                         AppCommonMethod.getAssetDetail(railCommonData, response);
+                        Logger.e("ASSET_DETAILS", new Gson().toJson(railCommonData));
                         callBack.onSuccess(railCommonData);
                     }
 

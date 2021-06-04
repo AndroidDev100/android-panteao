@@ -1311,11 +1311,11 @@ public class AppCommonMethod {
             EnveuVideoDetailsBean enveuVideoDetailsBean = new EnveuVideoDetailsBean();
             EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) response.body().getData();
             enveuVideoDetailsBean.setData(enveuVideoDetails);
-            EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetailsBean, railCommonData.getScreenWidget().getWidgetImageType());
+            EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetailsBean, ImageType.LDS.name());
             railCommonData.setEnveuVideoItemBeans(new ArrayList<>());
             railCommonData.getEnveuVideoItemBeans().add(enveuVideoItemBean);
         } catch (Exception ignored) {
-
+            Logger.e("ASSET_EXCEPTION", ignored.getMessage());
         }
     }
 
