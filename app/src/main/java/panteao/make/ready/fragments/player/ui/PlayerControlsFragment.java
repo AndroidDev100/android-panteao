@@ -432,4 +432,6 @@ public class PlayerControlsFragment extends Fragment {
     }
 
 
+    public interface OnFragmentInteractionListener {
+    }
 }

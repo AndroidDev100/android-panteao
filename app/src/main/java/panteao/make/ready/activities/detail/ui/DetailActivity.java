@@ -95,6 +95,7 @@ import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
+import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -118,7 +119,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PKEvent.Listener<PlayerEvent.StateChanged>, PlayerCallbacks {
+public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PlayerCallbacks {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -157,7 +158,6 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private FragmentTransaction transaction;
     private String sharingUrl;
     private String detailType;
-    private PlayerControlsFragment playerControlsFragment;
     private AlertDialogSingleButtonFragment errorDialog;
     private boolean errorDialogShown = false;
     private BookmarkingViewModel bookmarkingViewModel;
@@ -167,17 +167,20 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     private boolean isOfflineAvailable = false;
     private boolean isCastConnected = false;
     private KalturaOvpPlayer player;
-    private final Runnable updateTimeTask = new Runnable() {
-        public void run() {
-//            Log.d("ndhfdm", "playing");
-            Log.d("ndhfdm", player.getCurrentPosition()+"");
-            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
-//            seekBar1.setProgress(((int) player.getCurrentPosition()));
-//            seekBar1.setMax(((int) player.getDuration()));
-            mHandler.postDelayed(this, 100);
+    private KalturaFragment playerfragment;
+    private PlayerControlsFragment playerControlsFragment;
 
-        }
-    };
+//    private final Runnable updateTimeTask = new Runnable() {
+//        public void run() {
+////            Log.d("ndhfdm", "playing");
+//            Log.d("ndhfdm", player.getCurrentPosition()+"");
+//            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
+////            seekBar1.setProgress(((int) player.getCurrentPosition()));
+////            seekBar1.setMax(((int) player.getDuration()));
+//            mHandler.postDelayed(this, 100);
+//
+//        }
+//    };
 
     @Override
     public ActivityDetailBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
@@ -193,44 +196,44 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
-        player.addListener(this, PlayerEvent.stateChanged, this);
-        player.addListener(this, PlayerEvent.ended, this);
-        player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                Log.d("ndhfdm", "playing");
-                mHandler.postDelayed(updateTimeTask, 100);
-                if (playerControlsFragment != null) {
-                    playerControlsFragment.sendTapCallBack(true);
-                        playerControlsFragment.startHandler();
-
-                }
-
-            }
-        });
-         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                if (playerControlsFragment != null) {
-                    Log.d("ndhfdm", "playing");
-                    player.stop();
-                    if (mHandler != null && updateTimeTask != null)
-                        onBackPressed();
-                        mHandler.removeCallbacks(updateTimeTask);
-                }
-            }
-        });
- player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                if (playerControlsFragment != null) {
-
-                    Log.d("ndhfdm", "playing");
-
-                }
-            }
-        });
+//        player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
+//        player.addListener(this, PlayerEvent.stateChanged, this);
+//        player.addListener(this, PlayerEvent.ended, this);
+//        player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                Log.d("ndhfdm", "playing");
+//                mHandler.postDelayed(updateTimeTask, 100);
+//                if (playerControlsFragment != null) {
+//                    playerControlsFragment.sendTapCallBack(true);
+//                        playerControlsFragment.startHandler();
+//
+//                }
+//
+//            }
+//        });
+//         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                if (playerControlsFragment != null) {
+//                    Log.d("ndhfdm", "playing");
+//                    player.stop();
+//                    if (mHandler != null && updateTimeTask != null)
+//                        onBackPressed();
+//                        mHandler.removeCallbacks(updateTimeTask);
+//                }
+//            }
+//        });
+// player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                if (playerControlsFragment != null) {
+//
+//                    Log.d("ndhfdm", "playing");
+//
+//                }
+//            }
+//        });
 
 
 
@@ -240,8 +243,8 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerControlsFragment = new PlayerControlsFragment();
-        transaction.replace(R.id.player_root, playerControlsFragment);
+        playerfragment = new KalturaFragment();
+        transaction.replace(R.id.player_root, playerfragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -1919,17 +1922,17 @@ public class DetailActivity extends BaseBindingActivity<ActivityDetailBinding> i
         return true;
     }
 
-    @Override
-    public void onEvent(PlayerEvent.StateChanged event) {
-         if (event.newState == PlayerState.READY) {
-            getBinding().playerImage.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.GONE);
-        } else if (event.newState == PlayerState.BUFFERING) {
-            getBinding().pBar.setVisibility(View.VISIBLE);
-        } else if (event.newState == PlayerState.LOADING) {
-        }
-        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
-    }
+//    @Override
+//    public void onEvent(PlayerEvent.StateChanged event) {
+//         if (event.newState == PlayerState.READY) {
+//            getBinding().playerImage.setVisibility(View.GONE);
+//            getBinding().pBar.setVisibility(View.GONE);
+//        } else if (event.newState == PlayerState.BUFFERING) {
+//            getBinding().pBar.setVisibility(View.VISIBLE);
+//        } else if (event.newState == PlayerState.LOADING) {
+//        }
+//        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
+//    }
 
     @Override
     public void playPause(ImageView id) {
