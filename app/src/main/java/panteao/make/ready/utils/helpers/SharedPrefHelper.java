@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.security.CryptUtil;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -41,7 +46,7 @@ public class SharedPrefHelper {
 
     public String getString(String key, String defValue) {
         String decryptedValue = cryptUtil.decrypt(mSharedPreferences.getString(key, defValue), AppConstants.MY_MVHUB_ENCRYPTION_KEY);
-        if (decryptedValue == null || decryptedValue.equalsIgnoreCase("")||key.equalsIgnoreCase("DMS_Response")) {
+        if (decryptedValue == null || decryptedValue.equalsIgnoreCase("") || key.equalsIgnoreCase("DMS_Response")) {
             decryptedValue = mSharedPreferences.getString(key, defValue);
         }
         return decryptedValue;
@@ -50,7 +55,7 @@ public class SharedPrefHelper {
     public void setString(String key, String value) {
         String encryptedValue;
         encryptedValue = cryptUtil.encrypt(value, AppConstants.MY_MVHUB_ENCRYPTION_KEY);
-        if (key.equalsIgnoreCase("DMS_Response")||value.equalsIgnoreCase("")) {
+        if (key.equalsIgnoreCase("DMS_Response") || value.equalsIgnoreCase("")) {
             mEditor.putString(key, value);
         } else {
             mEditor.putString(key, encryptedValue);
@@ -77,4 +82,31 @@ public class SharedPrefHelper {
     }
 
 
+    public HashSet<String> getRecentSearchesMap() {
+        return (HashSet<String>) mSharedPreferences.getStringSet("RecentSearchMap", null);
+    }
+
+    public void addRecentSearch(String searchKeyWord) {
+        HashSet<String> recentSearchesMap = getRecentSearchesMap();
+        if (recentSearchesMap == null) {
+            recentSearchesMap = new HashSet();
+            recentSearchesMap.add(searchKeyWord);
+        } else {
+            recentSearchesMap.add(searchKeyWord);
+        }
+        mEditor.putStringSet("RecentSearchMap", recentSearchesMap);
+        mEditor.commit();
+    }
+
+    public List<String> getRecentSearches() {
+        if (getRecentSearchesMap() == null)
+            return new ArrayList();
+        return new ArrayList(getRecentSearchesMap());
+    }
+
+    public void clearRecentSearches() {
+        HashSet<String> recentSearchesMap = new HashSet<String>();
+        mEditor.putStringSet("RecentSearchMap", recentSearchesMap);
+        mEditor.commit();
+    }
 }

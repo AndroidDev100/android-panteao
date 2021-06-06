@@ -435,7 +435,6 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
         if (notid != null && !assetType.equalsIgnoreCase("")) {
             notificationAssetId = Integer.parseInt(notid);
             if (notificationAssetId > 0 && assetType != null && !assetType.equalsIgnoreCase("")) {
-                Logger.w("FCM_Payload_final --", notificationAssetId + "");
                 notificationObject = AppCommonMethod.createNotificationObject(notid, assetType);
                 viaIntent = true;
             }
@@ -452,7 +451,6 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                 try {
                     if (pendingDynamicLinkData != null) {
                         Uri deepLink = pendingDynamicLinkData.getLink();
-                        Log.e("deepLink", "in2" + pendingDynamicLinkData.getLink() + " " + deepLink.getQuery());
                         if (deepLink != null) {
                             Uri uri = Uri.parse(String.valueOf(deepLink));
                             String id = null;
@@ -460,8 +458,6 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                             try {
                                 id = uri.getQueryParameter("id");
                                 mediaType = uri.getQueryParameter("mediaType");
-                                Log.w("programeID", id);
-                                Log.w("programeMediaType", mediaType);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -477,40 +473,6 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                             } else {
                                 redirectToHome();
                             }
-
-
-
-
-
-                              /*  Logger.e("BranchCall", String.valueOf(referringParams));
-                                int assestId = 0;
-                                String contentType = "";
-                                if (referringParams.has("id") && referringParams.has("contentType")) {
-                                    try {
-                                        assestId = Integer.parseInt(referringParams.getString("id"));
-                                        contentType = referringParams.getString("contentType");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (!contentType.equalsIgnoreCase("") && assestId > 0) {
-                                        Logger.e("ASSET TYPE", String.valueOf(viaIntent));
-                                        KsPreferenceKeys.getInstance().setAppPrefJumpTo(contentType);
-                                        KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
-                                        KsPreferenceKeys.getInstance().setAppPrefJumpBackId(assestId);
-                                        redirections(referringParams);
-                                        Log.w("redirectionss", "redirections");
-
-                                    } else {
-                                        redirectToHome();
-                                    }
-
-                                } else {
-                                    redirectToHome();
-                                }*/
-                            // http://www.panteao.com/?id=32308&mediaType=SERIES&image=https:
-                            // cf-images.ap-southeast-1.prod.boltdns.net/v1/static/5854923532001/
-                            // f875275a-1a20-4022-98df-9e6562f7994d/e84c09fb-10a7-497a-9bc1-307ea942bcef/1280x720/match/image.jpg&name=Criminal+Justice&apn=panteao.make.ready.dev
-
                         }
 
                     }

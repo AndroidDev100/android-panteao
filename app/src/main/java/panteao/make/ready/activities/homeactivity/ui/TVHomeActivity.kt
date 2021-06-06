@@ -22,6 +22,8 @@ import com.make.enums.ImageType
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.activities.KalturaPlayerActivity
+import panteao.make.ready.activities.search.ui.ActivitySearch
+import panteao.make.ready.activities.search.ui.TVSearchActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
@@ -63,11 +65,10 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
             0,
             R.drawable.ic_search,
             R.drawable.ic_home,
-            R.drawable.ic_home,
-            R.drawable.ic_home,
-            R.drawable.ic_home,
+            R.drawable.ic_skillset,
+            R.drawable.ic_instructor,
+            R.drawable.ic_free,
             R.drawable.ic_watch_list,
-            R.drawable.ic_home,
             R.drawable.profile_icon,
             R.drawable.ic_settings,
             R.drawable.ic_exit
@@ -323,16 +324,18 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 ?.findViewById<View>(R.id.underline)?.visibility =
                 View.VISIBLE
     }
+
     private fun onLoaded(fragment: Fragment) {
         Handler().postDelayed({
             fragment.view?.requestFocus()
         }, 10)
     }
+
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
             2 -> {
-//                val searchActivity = Intent(this@TVHomeActivity, NewSearchActivity::class.java)
-//                startActivity(searchActivity)
+                val searchActivity = Intent(this@TVHomeActivity, TVSearchActivity::class.java)
+                startActivity(searchActivity)
             }
             3 -> {
                 drawerSelected(position)

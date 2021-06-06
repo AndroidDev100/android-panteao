@@ -384,6 +384,7 @@
     <string name="title_screen_2">Instructors</string>
     <string name="title_screen_3">Watchlist</string>
     <string name="title_screen_4">Help</string>
+    <string name="clear_searches">Clear Recent Search</string>
     <string-array name="menu_titles_with_login">
         <item>""</item>
         <item>""</item>
@@ -392,7 +393,6 @@
         <item>@string/title_skill_set</item>
         <item>@string/title_instructor</item>
         <item>@string/title_free</item>
-        <item>@string/title_screen_3</item>
         <item>@string/title_screen_4</item>
         <item>@string/my_profile</item>
         <item>@string/setting_title</item>

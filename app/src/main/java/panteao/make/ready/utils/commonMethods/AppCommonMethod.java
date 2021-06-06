@@ -1721,7 +1721,6 @@ public class AppCommonMethod {
         PlayerInitOptions playerInitOptions = new PlayerInitOptions(KalturaPlayerActivity.Companion.getPARTNER_ID());
         playerInitOptions.setAutoPlay(true);
         KalturaOvpPlayer player = KalturaOvpPlayer.create(context, playerInitOptions);
-
         player.setPlayerView(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         view.addView(player.getPlayerView());
         return player;
