@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.watcho.ui.fragments.VideoDetailsFullFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="contentsItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="38dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/dialog_green_color"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/exclusive"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:visibility="@{contentsItem.premium ? View.VISIBLE : View.GONE, default=gone}" />
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:maxLines="1"
+                android:text="@{contentsItem.title}"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <RelativeLayout
+                android:layout_width="@dimen/_280sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLines="3"
+                    android:text="@{contentsItem.description}"
+                    android:textColor="@color/darkGreyProfile"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cast_headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="1"
+                    android:text="@string/cast"
+                    android:textColor="@color/darkGreyProfile"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="1"
+                    android:textColor="@color/darkGreyProfile"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/director_headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="1"
+                    android:text="@string/crew"
+                    android:textColor="@color/darkGreyProfile"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/director_tv"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_regular"
+                    android:maxLines="1"
+                    android:text="@{contentsItem.assetGenres.get(0).toString()}"
+
+                    android:textColor="@color/darkGreyProfile"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/resume_layout"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/selector_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/resume_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_button"
+                    android:drawablePadding="10dp"
+                    android:gravity="left|center_vertical"
+                    android:paddingStart="10dp"
+                    android:text=""
+                    android:textAllCaps="false" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="150dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:minHeight="0dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="0dp"
+                    android:progressBackgroundTint="@color/lb_tv_white"
+                    android:progressTint="@color/themeColorDark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/playfrombegin"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_button"
+                android:drawablePadding="10dp"
+                android:gravity="left|center_vertical"
+                android:paddingStart="10dp"
+                android:text="Play from beginning"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_play"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/selector_button"
+                android:clickable="true"
+                android:drawableLeft="@drawable/play_grey"
+                android:drawablePadding="8dp"
+                android:focusable="true"
+                android:gravity="left|center_vertical"
+                android:nextFocusRight="@id/button_play"
+                android:paddingLeft="10dp"
+                android:text="@string/play"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/button_episodes"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_button"
+                android:drawablePadding="8dp"
+                android:gravity="left|center_vertical"
+                android:nextFocusRight="@id/button_episodes"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_watchlist"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_button"
+                android:drawableLeft="@drawable/add_to_watchlist"
+                android:drawablePadding="8dp"
+                android:gravity="left|center_vertical"
+                android:nextFocusRight="@id/button_watchlist"
+                android:paddingStart="10dp"
+                android:text="@string/watchlist"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/button_follow"
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_button"
+                android:drawableLeft="@drawable/like_icon"
+                android:drawablePadding="8dp"
+                android:gravity="left|center_vertical"
+                android:nextFocusRight="@id/button_follow"
+                android:paddingLeft="10dp"
+                android:text="@string/like"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/full_decription_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<FrameLayout-->
+        <!--android:id="@+id/series_season_data"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/full_decription_fragment"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/full_decription_fragment"-->
+        <!--app:layout_constraintHorizontal_bias="0.3"-->
+        <!--android:nextFocusUp="@id/button_follow"-->
+        <!--android:layout_marginTop="415dp"-->
+        <!--/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -35,6 +35,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.kaltura.netkit.utils.ErrorElement;
 import com.kaltura.playkit.PKEvent;
 import com.kaltura.playkit.PKMediaEntry;
@@ -160,8 +161,8 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     private final Runnable updateTimeTask = new Runnable() {
         public void run() {
 //            Log.d("ndhfdm", "playing");
-            Log.d("ndhfdm", player.getCurrentPosition()+"");
-            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
+            Log.d("ndhfdm", player.getCurrentPosition() + "");
+            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
 //            seekBar1.setProgress(((int) player.getCurrentPosition()));
 //            seekBar1.setMax(((int) player.getDuration()));
             mHandler.postDelayed(this, 100);
@@ -193,13 +194,13 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                 mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
                     playerControlsFragment.sendTapCallBack(true);
-                        playerControlsFragment.startHandler();
+                    playerControlsFragment.startHandler();
 
                 }
 
             }
         });
-         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
+        player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
@@ -207,11 +208,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                     player.stop();
                     if (mHandler != null && updateTimeTask != null)
                         onBackPressed();
-                        mHandler.removeCallbacks(updateTimeTask);
+                    mHandler.removeCallbacks(updateTimeTask);
                 }
             }
         });
- player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
+        player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
@@ -221,7 +222,6 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                 }
             }
         });
-
 
 
         getWindow().setBackgroundDrawableResource(R.color.black);
@@ -339,6 +339,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         }
 
     }
+
     public void playPlayerWhenShimmer() {
         getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
@@ -660,10 +661,10 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         getBinding().playerRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(playerControlsFragment != null){
+                if (playerControlsFragment != null) {
                     playerControlsFragment.sendTapCallBack(true);
-                     playerControlsFragment.callAnimation();
-                    Log.d("bnjm","visible");
+                    playerControlsFragment.callAnimation();
+                    Log.d("bnjm", "visible");
 //
                 }
             }
@@ -1913,7 +1914,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
-         if (event.newState == PlayerState.READY) {
+        if (event.newState == PlayerState.READY) {
             getBinding().playerImage.setVisibility(View.GONE);
             getBinding().pBar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
@@ -1933,7 +1934,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 
                 player.pause();
 //                playerControlsFragment.showControls();
-                Log.d("chgytfgh","pause");
+                Log.d("chgytfgh", "pause");
 
             } else {
                 id.setBackgroundResource(R.color.transparent);
@@ -1942,7 +1943,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 
                 player.play();
 
-                Log.d("chgytfgh","play");
+                Log.d("chgytfgh", "play");
             }
 
         }
@@ -1962,7 +1963,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     @Override
     public void Rewind() {
         if (player != null) {
-           player.seekTo(player.getCurrentPosition() - 10000);
+            player.seekTo(player.getCurrentPosition() - 10000);
             if (playerControlsFragment != null) {
                 playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
             }
@@ -1983,10 +1984,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     public void replay() {
 
     }
+
     @Override
     public void SeekbarLastPosition(long position) {
         if (player != null) {
-           player.seekTo((int) position);
+            player.seekTo((int) position);
         }
     }
 

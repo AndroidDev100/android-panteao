@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="contentsItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:background="@drawable/selector_button">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            errorImage="@{@drawable/placeholder_landscape}"
+            imageUrl="@{contentsItem.posterURL}"
+            placeholder="@{@drawable/placeholder_landscape}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/placeholder_landscape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/episode_title"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="-50dp"
+            android:background="#AD000000"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical"
+            android:lineHeight="1.5dp"
+            android:lineSpacingExtra="1.25dp"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/dialog_green_color"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!--        <TextView-->
+        <!--                android:id="@+id/txtLabels"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:layout_margin="2dp"-->
+        <!--                android:autoSizeMaxTextSize="12sp"-->
+        <!--                android:autoSizeTextType="none"-->
+        <!--                android:background="@color/dialog_green_color"-->
+        <!--                android:gravity="center"-->
+        <!--                android:padding="3dp"-->
+        <!--                android:text="@string/original_exclusive"-->
+        <!--                android:textColor="@android:color/white"-->
+        <!--                android:textSize="12sp"-->
+        <!--                android:visibility="@{contentsItem.premium ? View.VISIBLE : View.GONE, default=gone}"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent"/>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

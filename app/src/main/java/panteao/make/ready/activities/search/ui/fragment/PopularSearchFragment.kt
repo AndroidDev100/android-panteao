@@ -102,7 +102,7 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
                 BaseCategory()
             ).observe(this, Observer {
                 if (it != null) {
-                    if (it.getEnveuVideoItemBeans() != null || it.getEnveuVideoItemBeans()!!.size <= 0) {
+                    if (it.enveuVideoItemBeans != null || it.enveuVideoItemBeans!!.size <= 0) {
                         mOnPopularSearchInteractionListener?.noPopularSearchesFound()
                     } else {
                         mAdapter.addAll(0, it.getEnveuVideoItemBeans())

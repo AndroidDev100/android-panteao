@@ -31,13 +31,13 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
     private long mLastClickTime;
     boolean isDownloadEnable;
 
-    public MoreListAdapter(Activity context, List<String> itemsList, MoreItemClickListener call, boolean islogin,boolean isDownloadEnable) {
+    public MoreListAdapter(Activity context, List<String> itemsList, MoreItemClickListener call, boolean islogin, boolean isDownloadEnable) {
         this.itemsList = itemsList;
         this.mContext = context;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         this.itemClickListener = call;
         this.islogin = islogin;
-        this.isDownloadEnable=isDownloadEnable;
+        this.isDownloadEnable = isDownloadEnable;
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         holder.moreItemBinding.moreListTitle.setText("" + itemsList.get(i));
-        setIcons(holder.moreItemBinding.moreListIcon, i, holder.moreItemBinding);
+        setIcons(holder.moreItemBinding.moreListIcon, i, holder.moreItemBinding, itemsList.get(i));
     }
 
 
@@ -59,9 +59,9 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
         return itemsList.size();
     }
 
-    public void setIcons(ImageView v, int i, MoreItemBinding binding) {
+    public void setIcons(ImageView v, int i, MoreItemBinding binding, String menuName) {
 
-        if (!isDownloadEnable){
+        if (!isDownloadEnable) {
             if (islogin) {
 
                 if (KsPreferenceKeys.getInstance().getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
@@ -249,7 +249,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                 }
             }
 
-        }else {
+        } else {
             if (islogin) {
 
                 if (KsPreferenceKeys.getInstance().getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
@@ -465,9 +465,9 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
             super(view.getRoot());
             moreItemBinding = view;
             moreItemBinding.getRoot().setOnClickListener(view1 -> {
-                if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
+                if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                     AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
-                } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
+                } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                     AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
                 }
                 Logger.e("Caption", itemsList.get(getLayoutPosition()) + mContext.getResources().getString(R.string.redeem_coupon));
@@ -493,11 +493,9 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_watchlist));
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_history))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_history));
-                }
-                else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_downloads))) {
+                } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_downloads))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.my_downloads));
-                }
-                else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.sign_out))) {
+                } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.sign_out))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.sign_out));
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.membership_plan))) {
                     itemClickListener.onClick(mContext.getResources().getString(R.string.membership_plan));

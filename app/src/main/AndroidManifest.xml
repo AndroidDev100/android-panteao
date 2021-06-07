@@ -85,7 +85,10 @@
             android:name=".activities.downloads.MyDownloads"
             android:screenOrientation="locked"
             android:theme="@style/MyMaterialTheme" />
-
+        <activity
+            android:name=".activities.detailspage.activity.EpisodeDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

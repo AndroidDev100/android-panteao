@@ -38,5 +38,8 @@ data class WidgetsItem(
         val status: String? = null,
 
         @field:SerializedName("brightcoveImageType")
-         val widgetImageType: String? = null
+        val widgetImageType: String? = null,
+
+        @field:SerializedName("kalturaOTTImageType")
+        val kalturaOttImageType: String? = null
 )

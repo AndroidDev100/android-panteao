@@ -38,6 +38,7 @@ import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModel.popularSearch.ItemsItem;
 import panteao.make.ready.callbacks.commonCallbacks.SearchClickCallbacks;
 import panteao.make.ready.utils.constants.AppConstants;
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.AppPreference;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
@@ -79,7 +80,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         clickListner();
         connectionObserver();
         getBinding().toolbar.searchView.setOnQueryTextListener(this);
-        AppCommonMethod.trackFcmEvent("Search","",ActivitySearch.this,0);
+        AppCommonMethod.trackFcmEvent("Search", "", ActivitySearch.this, 0);
         KsPreferenceKeys.getInstance().setScreenName("Search");
 
 
@@ -188,7 +189,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         model = new ArrayList<>();
         callShimmer(getBinding().searchResultRecycler);
         setRecyclerProperties(getBinding().searchResultRecycler);
-         AppCommonMethod.trackFcmCustomEvent(ActivitySearch.this, AppConstants.SEARCH,"","","",0," ",0,"",0,0,searchKeyword,"","","");
+        AppCommonMethod.trackFcmCustomEvent(ActivitySearch.this, AppConstants.SEARCH, "", "", "", 0, " ", 0, "", 0, 0, searchKeyword, "", "", "");
 
         getBinding().rootView.setVisibility(View.GONE);
         getBinding().noResult.setVisibility(View.GONE);
@@ -202,6 +203,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                     getBinding().noResult.setVisibility(View.GONE);
                     getBinding().noResult1.setVisibility(View.GONE);
                     getBinding().rootView.setVisibility(View.GONE);
+                    Logger.e("Data", new Gson().toJson(data));
                     for (int i = 0; i < data.size(); i++) {
                         if (data.get(i).getPageTotal() > 0) {
                             if (data.get(i).getStatus()) {
@@ -220,13 +222,13 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                                         temp.setLayoutType(3);
                                     } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                                         temp.setLayoutType(4);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
                                         temp.setLayoutType(5);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
                                         temp.setLayoutType(6);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())) {
                                         temp.setLayoutType(7);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
                                         temp.setLayoutType(8);
                                     }
                                     temp.setSearchKey(searchKeyword);
@@ -341,7 +343,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     private void setUiComponents(RailCommonData jsonObject) {
         isShimmer = false;
-        if (jsonObject.getStatus() && jsonObject.getEnveuVideoItemBeans()!=null && jsonObject.getEnveuVideoItemBeans().size()>0) {
+        if (jsonObject.getStatus() && jsonObject.getEnveuVideoItemBeans() != null && jsonObject.getEnveuVideoItemBeans().size() > 0) {
             getBinding().tvPopularSearch.setVisibility(View.VISIBLE);
         } else {
             getBinding().popularSearchRecycler.setVisibility(View.GONE);
@@ -425,7 +427,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     @Override
     public void onEnveuItemClicked(EnveuVideoItemBean itemValue) {
-        AppCommonMethod.trackFcmEvent("Content Screen","", getApplicationContext(),0);
+        AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
 
 
         try {
@@ -516,7 +518,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             } catch (Exception e) {
 
             }
-            if (query!=null && query.trim().length()>2){
+            if (query != null && query.trim().length() > 2) {
                 hitApiSearchKeyword(query.trim());
             }
 

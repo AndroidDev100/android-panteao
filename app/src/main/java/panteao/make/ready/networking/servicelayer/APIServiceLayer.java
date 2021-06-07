@@ -8,6 +8,7 @@ import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.baseCollection.baseCategoryServices.BaseCategoryServices;
 import com.make.bookmarking.bean.continuewatching.ContinueWatchingBookmark;
 import com.make.callBacks.EnveuCallBacks;
+import com.make.enums.ImageType;
 import com.make.watchHistory.beans.ItemsItem;
 import com.google.gson.Gson;
 
@@ -286,7 +287,6 @@ public class APIServiceLayer {
                 } else {
                     RailCommonData railCommonData = new RailCommonData();
                     railCommonData.setStatus(false);
-                    Logger.e("APIRESPONSEERROR", response.message());
                     railCommonDataMutableLiveData.postValue(railCommonData);
                 }
             }
@@ -455,8 +455,8 @@ public class APIServiceLayer {
                                             Gson gson = new Gson();
                                             String tmp = gson.toJson(videoItem);
                                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
-                                            enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem));
-                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem));
+                                            enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem, ImageType.LDS.name()));
+                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem,ImageType.LDS.name()));
                                             enveuVideoItemBeans.add(enveuVideoItemBean);
                                         }
                                         railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
@@ -531,7 +531,7 @@ public class APIServiceLayer {
                                 enveuVideoItemBeans = new ArrayList<>();
                                 for (panteao.make.ready.beanModelV3.searchV2.ItemsItem videoItem : itemsItem) {
                                     EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
-                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem));
+                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem,ImageType.LDS.name()));
                                     if (type.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) && videoItem.getSeasons() != null)
                                         enveuVideoItemBean.setSeasonCount(videoItem.getSeasons().size());
 
