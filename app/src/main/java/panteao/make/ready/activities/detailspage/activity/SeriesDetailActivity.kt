@@ -18,6 +18,7 @@ import panteao.make.ready.activities.detailspage.listeners.OnKeyEventListener
 import panteao.make.ready.activities.detailspage.listeners.SeriesDetailsListener
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.ActivitySeriesDetailBinding
+import panteao.make.ready.databinding.ActivityTvSeriesDetailsBinding
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.tvBaseModels.basemodels.TvBaseBindingActivity
 import panteao.make.ready.utils.constants.AppConstants
@@ -25,7 +26,7 @@ import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 
 
-class SeriesDetailActivity : TvBaseBindingActivity<ActivitySeriesDetailBinding>(),
+class SeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBinding>(),
     SeriesDetailsListener, NoInternetFragment.OnFragmentInteractionListener {
     val TAG = this.javaClass.name
     private var id: Int? = null
@@ -38,8 +39,8 @@ class SeriesDetailActivity : TvBaseBindingActivity<ActivitySeriesDetailBinding>(
     private var noInternetFragment = NoInternetFragment()
 
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivitySeriesDetailBinding {
-        return ActivitySeriesDetailBinding.inflate(inflater)
+    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityTvSeriesDetailsBinding {
+        return ActivityTvSeriesDetailsBinding.inflate(inflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

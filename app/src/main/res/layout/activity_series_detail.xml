@@ -1,64 +1,436 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
 
     <data>
 
-        <import type="android.view.View" />
+        <variable
+            name="expandabletext"
+            type="String" />
 
         <variable
-            name="content"
+            name="casttext"
+            type="String" />
+
+
+        <variable
+            name="crewtext"
+            type="String" />
+
+
+        <variable
+            name="responseApi"
+            type="String" />
+
+        <variable
+            name="playlistItem"
             type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor">
 
-        <ImageView
-            android:id="@+id/imageView4"
-            errorImage="@{@drawable/placeholder_landscape}"
-            imageUrl="@{content.posterURL}"
-            placeholder="@{@drawable/placeholder_landscape}"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/content_discription"
-            android:scaleType="fitXY"
-            android:src="@drawable/placeholder_landscape"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="16:9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/video_details_fragment_frame"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ProgressBar
+        <panteao.make.ready.utils.CustomProgressBar
             android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="5dp"
-            android:theme="@style/progressBarGreen"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-        <FrameLayout
-            android:id="@+id/video_details_fragment_frame"
+
+        <LinearLayout
+            android:id="@+id/ll_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:background="@drawable/details_background_gradient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" >
+            android:background="?attr/episode_screen_background"
+            android:orientation="vertical">
 
-        </FrameLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    app:layout_constraintDimensionRatio="H,16:9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <RelativeLayout
+                        android:id="@+id/banner_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:visibility="visible">
+
+                        <FrameLayout
+                            android:id="@+id/flBackIconImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/backImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/NontonSize8"
+                                android:contentDescription="Series Backpress "
+                                android:tint="#FFFFFF"
+                                app:srcCompat="@drawable/back_icon_player" />
+                        </FrameLayout>
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/sliderImage"
+                            errorImage="@{@drawable/placeholder_landscape}"
+                            imageUrl="@{playlistItem.posterURL}"
+                            placeholder="@{@drawable/placeholder_landscape}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/placeholder_landscape"
+                            android:contentDescription="Shimmer Crousel "
+                            android:scaleType="centerCrop" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="20dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/bannerlabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:gravity="left"
+                                android:paddingLeft="@dimen/_5sdp"
+                                android:singleLine="true"
+                                android:text=""
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <ImageView
+                                android:id="@+id/ivPlayEpisode"
+                                android:layout_width="@dimen/seriesPlayIcon"
+                                android:layout_height="@dimen/seriesPlayIcon"
+                                android:layout_alignRight="@+id/bannerlabel"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginRight="@dimen/NontonSize12"
+                                android:layout_marginBottom="@dimen/NontonSize10"
+                                android:background="@drawable/player"
+                                android:contentDescription="TODO" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/series_shadow"
+                            android:layout_height="@dimen/_35sdp">
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <FrameLayout
+                android:id="@+id/fragment_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/playerFooter"
+                android:background="?attr/backgroundColor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="fill_vertical"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="?attr/backgroundColor"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/movie_detail_ll_margin_left"
+                            android:layout_marginTop="@dimen/NontonSize5"
+                            android:layout_marginRight="@dimen/movie_detail_ll_margin_left"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/series_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                                    android:lineHeight="@dimen/movie_title_line_height"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:textColor="?attr/title_color"
+                                    android:textSize="@dimen/font_large"
+                                    android:layout_marginTop="10dp"
+                                    tools:targetApi="p" />
+
+
+                                <TextView
+                                    android:id="@+id/vod_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginEnd="@dimen/movie_metadata_tag_margin_margin_right"
+                                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                    android:text=""
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/font_small" />
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="11dp"
+                                    android:orientation="vertical">
+
+                                    <panteao.make.ready.utils.helpers.ExpandableTextView
+                                        android:id="@+id/description_text"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="6dp"
+                                        android:ellipsize="end"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                        android:lineSpacingExtra="2dp"
+                                        android:maxLines="2"
+                                        android:text="@{responseApi.trim()}"
+                                        android:textColor="?attr/title_color"
+                                        android:textSize="@dimen/font_medium" />
+
+                                    <panteao.make.ready.utils.helpers.ExpandableCardLayout
+                                        android:id="@+id/expandable_layout"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/movie_metadata_expandable_card_margin_right"
+                                        android:orientation="vertical"
+                                        app:el_expanded="false">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <LinearLayout
+                                                android:id="@+id/llCastView"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/movie_detail_ll_margin_top">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                                    android:text="@string/cast"
+                                                    android:textColor="?attr/cast_title_color"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/cast_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                                    android:text="@{casttext}"
+                                                    android:textColor="?attr/cast_text_color"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:id="@+id/llCrewView"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                                    android:text="@string/crew"
+                                                    android:textColor="?attr/cast_title_color"
+                                                    android:textSize="@dimen/font_medium" />
+
+                                                <TextView
+                                                    android:id="@+id/crew_text"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                                    android:text="@{crewtext}"
+                                                    android:textColor="?attr/cast_text_color"
+                                                    android:textSize="@dimen/font_medium" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </panteao.make.ready.utils.helpers.ExpandableCardLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/less_button"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginTop="5dp"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:id="@+id/text_expandable"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                            android:maxLines="2"
+                                            android:padding="5dp"
+                                            android:textAllCaps="true"
+                                            android:text="@{expandabletext}"
+                                            android:textColor="?attr/more_less_text_color"
+                                            android:textSize="@dimen/font_medium" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <include
+                                    android:id="@+id/interaction_section"
+                                    layout="@layout/detail_watchlist_like_share_view" />
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:id="@+id/fragment_user_interaction"
+                                android:layout_marginBottom="@dimen/tab_top_margin"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:visibility="visible" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="@dimen/rail_top_margin"
+                        android:background="?attr/backgroundColor"
+                        android:minHeight="?actionBarSize"
+                        app:tabGravity="fill"
+                        app:tabIndicatorColor="@color/more_text_color_dark"
+                        app:tabMode="fixed"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="?attr/cancel_text_color"
+
+                        />
+                    <ImageView
+                        android:background="@color/description_grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <panteao.make.ready.utils.helpers.WrappingViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="?android:attr/actionBarSize"
+                        android:background="?attr/backgroundColor"
+                        android:visibility="visible" />
+
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/series_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/mShimmer"
+                layout="@layout/shimmer_layout_season" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection">
+
+            </include>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/transparent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </FrameLayout>
+
 </layout>
