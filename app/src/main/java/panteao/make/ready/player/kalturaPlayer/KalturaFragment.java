@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Log;
@@ -15,15 +17,22 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.kaltura.netkit.utils.ErrorElement;
 import com.kaltura.playkit.PKEvent;
+import com.kaltura.playkit.PKMediaEntry;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.PlayerState;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
+import com.kaltura.tvplayer.KalturaPlayer;
+import com.kaltura.tvplayer.OVPMediaOptions;
 
 import org.jetbrains.annotations.NotNull;
 
 import panteao.make.ready.R;
+import panteao.make.ready.activities.KalturaPlayerActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -34,7 +43,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements PlayerControlsFragment.OnFragmentInteractionListener, PlayerCallbacks,PKEvent.Listener<PlayerEvent.StateChanged> {
+public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEvent.Listener<PlayerEvent.StateChanged> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +53,7 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
     private FrameLayout playerLayout;
     private Context mcontext;
     private ProgressBar progressbar;
+    private PlayerCallbacks playerCallbacks;
 
     private PlayerControlsFragment playerControlsFragment;
     private final Handler mHandler = new Handler();
@@ -96,15 +106,69 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        findViewById();
+        View view = inflater.inflate(R.layout.fragment_kaltura, container, false);
+
+
+        findViewById(view);
         // Inflate the layout for this fragment
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
-
-     setPlayerListner();
-        return inflater.inflate(R.layout.fragment_kaltura, container, false);
+        callPlayerControlsFragment();
+        startPlayer();
+       setPlayerListner();
+       performClick();
+        return view;
 
     }
 
+    private void performClick() {
+        playerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playerControlsFragment != null) {
+                    playerControlsFragment.sendTapCallBack(true);
+                    playerControlsFragment.callAnimation();
+                    Log.d("bnjm", "visible");
+//
+                }
+            }
+        });
+    }
+
+    private void callPlayerControlsFragment() {
+
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        if (playerControlsFragment == null) {
+            try {
+                playerControlsFragment = new PlayerControlsFragment();
+                transaction.add(R.id.playerRoot, playerControlsFragment, "PlayerControlsFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+                playerControlsFragment.setPlayerCallBacks(this);
+//                playerControlsFragment.setVideoType(videoType);
+//                playerControlsFragment.setPlayerCallBacks(this);
+            } catch (Exception ignored) {
+
+            }
+
+        }
+    }
+    private void startPlayer() {
+        if (player!=null) {
+            player.stop();
+        }
+        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
+        player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
+            @Override
+            public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
+                if (loadError != null) {
+                    Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
+                }
+            }
+        });
+    }
     private void setPlayerListner() {
 
         player.addListener(this, PlayerEvent.stateChanged, this::onEvent);
@@ -129,30 +193,39 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
                     player.stop();
                     if (mHandler != null && updateTimeTask != null)
 //                        onBackPressed();
+                        finishPlayer();
                     mHandler.removeCallbacks(updateTimeTask);
                 }
             }
         });
-        player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                if (playerControlsFragment != null) {
 
-                    Log.d("ndhfdm", "playing");
+                player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
+                    @Override
+                    public void onEvent(PKEvent event) {
+                        if (playerControlsFragment != null) {
 
-                }
-            }
-        });
+                            Log.d("ndhfdm", "playing");
+
+                        }
+                    }
+                });
 
     }
 
-    private void findViewById() {
-        playerLayout=(FrameLayout)getView().findViewById(R.id.playerRoot);
-        progressbar=(ProgressBar)getView().findViewById(R.id.pBar);
+    private void findViewById(View view) {
+        playerLayout=(FrameLayout)view.findViewById(R.id.playerRoot);
+        progressbar=(ProgressBar)view.findViewById(R.id.pBar);
+
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
 
     }
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
+
          if (event.newState == PlayerState.READY) {
 //            getBinding().playerImage.setVisibility(View.GONE);
            progressbar.setVisibility(View.GONE);
@@ -160,21 +233,55 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
           progressbar.setVisibility(View.VISIBLE);
         } else if (event.newState == PlayerState.LOADING) {
         }
+
         Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
     }
 
     @Override
     public void playPause(ImageView id) {
+        if (player != null) {
+            if (player.isPlaying()) {
+                id.setBackgroundResource(R.color.transparent);
+                id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+
+                player.pause();
+//                playerControlsFragment.showControls();
+                Log.d("chgytfgh", "pause");
+
+            } else {
+                id.setBackgroundResource(R.color.transparent);
+
+                id.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+
+                player.play();
+
+                Log.d("chgytfgh", "play");
+            }
+
+        }
 
     }
 
     @Override
     public void Forward() {
+        if (player != null) {
+            player.seekTo(player.getCurrentPosition() + 10000);
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
+            }
+        }
+        Log.d("playyyyy","for");
 
     }
 
     @Override
     public void Rewind() {
+        if (player != null) {
+            player.seekTo(player.getCurrentPosition() - 10000);
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
+            }
+        }
 
     }
 
@@ -195,6 +302,9 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
 
     @Override
     public void SeekbarLastPosition(long position) {
+        if (player != null) {
+            player.seekTo((int) position);
+        }
 
     }
 
@@ -210,15 +320,10 @@ public class KalturaFragment extends Fragment implements PlayerControlsFragment.
 
     @Override
     public void bitRateRequest() {
+    }
 
+    public interface OnPlayerInteractionListener {
     }
 
 
-
-    @Override
-    public void onAttach(@NonNull @NotNull Activity context) {
-
-        super.onAttach(context);
-        this.mcontext=context;
-    }
 }

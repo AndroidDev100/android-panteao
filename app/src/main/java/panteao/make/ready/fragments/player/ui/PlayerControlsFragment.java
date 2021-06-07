@@ -11,6 +11,8 @@ import android.view.View;
 
 import panteao.make.ready.R;
 import panteao.make.ready.baseModels.BaseBindingFragment;
+import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -156,11 +158,7 @@ public class PlayerControlsFragment extends Fragment {
         seekBar.setPosition(currentposition);
     }
 
-    //    private void updateSeekbar(long currentposition) {
-//
-//        seekBar.setPosition(stringForTime(currentposition));
-//
-//    }
+
    public void sendPlayerCurrentPosition(int playerCurrentPosition) {
         seekBar.setPosition(playerCurrentPosition);
         if (playerCurrentPosition > playbackDuration) {
@@ -422,8 +420,8 @@ public class PlayerControlsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getActivity() instanceof PlayerCallbacks)
-           playerCallbacks = (PlayerCallbacks) getActivity();
+//        if (getActivity() instanceof PlayerCallbacks)
+//           playerCallbacks = (PlayerCallbacks) getActivity();
         btnPause.setVisibility(View.VISIBLE);
         btnPause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
         seekBar.setEnabled(true);
@@ -432,6 +430,7 @@ public class PlayerControlsFragment extends Fragment {
     }
 
 
-    public interface OnFragmentInteractionListener {
+    public void setPlayerCallBacks(PlayerCallbacks playerCallBacks) {
+        this.playerCallbacks = playerCallBacks;
     }
 }
