@@ -39,8 +39,8 @@ import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.article.ArticleActivity;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -49,7 +49,6 @@ import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;
 import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.callbacks.commonCallbacks.VersionValidator;
-import panteao.make.ready.databinding.ActivitySplashBinding;
 import panteao.make.ready.databinding.ActivityTvSplashBinding;
 import panteao.make.ready.dependencies.providers.DTGPrefrencesProvider;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -352,7 +351,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                         mLastClickTime = SystemClock.elapsedRealtime();
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(TVSplashActivity.this).detailScreen(TVSplashActivity.this, DetailActivity.class, assestId, "0", false);
+                        new ActivityLauncher(TVSplashActivity.this).detailScreen(TVSplashActivity.this, InstructorActivity.class, assestId, "0", false);
                         finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -361,7 +360,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                         mLastClickTime = SystemClock.elapsedRealtime();
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(TVSplashActivity.this).detailScreen(TVSplashActivity.this, DetailActivity.class, assestId, "0", false);
+                        new ActivityLauncher(TVSplashActivity.this).detailScreen(TVSplashActivity.this, InstructorActivity.class, assestId, "0", false);
                         finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {

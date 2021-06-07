@@ -49,8 +49,24 @@
         <activity android:name=".activities.search.ui.TVSearchActivity"></activity>
         <activity android:name=".activities.KalturaPlayerActivity"></activity>
         <activity android:name=".activities.live.LiveActivity" />
-        <activity android:name=".activities.detail.ui.EpisodeActivity" />
-        <activity android:name=".activities.detail.ui.DetailActivity" />
+        <activity android:name=".activities.instructor.ui.EpisodeActivity" />
+        <activity android:name=".activities.tutorial.ui.ChapterActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:screenOrientation="locked" />
+        <activity android:name=".activities.tutorial.ui.TutorialActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:screenOrientation="locked" />
+        <activity android:name=".activities.instructor.ui.InstructorActivity" />
+        <activity android:name=".activities.splash.ui.SplashNewActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
+        </activity>
         <activity android:name=".activities.ContactActivity" />
         <activity android:name=".activities.downloads.DownloadedEpisodesActivity" />
         <activity

@@ -56,6 +56,9 @@ public class EnveuVideoDetails {
     @SerializedName("title")
     @Expose
     private String title;
+    @SerializedName("kEntryId")
+    @Expose
+    private String kEntryId;
     @SerializedName("status")
     @Expose
     private String status;
@@ -232,6 +235,14 @@ public class EnveuVideoDetails {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getkEntryId() {
+        return kEntryId;
+    }
+
+    public void setkEntryId(String kEntryId) {
+        this.kEntryId = kEntryId;
     }
 
     public String getStatus() {

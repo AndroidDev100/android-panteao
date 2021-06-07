@@ -42,8 +42,8 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.gson.Gson;
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.article.ArticleActivity;
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;
@@ -594,7 +594,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         mLastClickTime = SystemClock.elapsedRealtime();
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, DetailActivity.class, assestId, "0", false);
+                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, InstructorActivity.class, assestId, "0", false);
                         finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -603,7 +603,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         mLastClickTime = SystemClock.elapsedRealtime();
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, DetailActivity.class, assestId, "0", false);
+                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, InstructorActivity.class, assestId, "0", false);
                         finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {

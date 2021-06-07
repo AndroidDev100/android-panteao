@@ -27,8 +27,8 @@ import androidx.lifecycle.ViewModelProviders;
 //import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 
-import panteao.make.ready.activities.detail.ui.DetailActivity;
-import panteao.make.ready.activities.detail.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
@@ -429,7 +429,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
                         if (preference.getAppPrefIsEpisode()){
                             new ActivityLauncher(SkipActivity.this).episodeScreen(SkipActivity.this, EpisodeActivity.class, assetId, "0", false);
                         } else {
-                            new ActivityLauncher(SkipActivity.this).detailScreen(SkipActivity.this, DetailActivity.class, assetId, "0", false);
+                            new ActivityLauncher(SkipActivity.this).detailScreen(SkipActivity.this, InstructorActivity.class, assetId, "0", false);
                         }
                     }
                 } else
