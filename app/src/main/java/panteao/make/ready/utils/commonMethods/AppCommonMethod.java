@@ -74,7 +74,6 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-import panteao.make.ready.utils.recoSense.RecoSenceManager;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 

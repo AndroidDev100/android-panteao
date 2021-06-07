@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.make.enums.Layouts
-import panteao.make.ready.PanteaoApplication
 import panteao.make.ready.R
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity
 import panteao.make.ready.baseModels.HomeBaseViewModel
@@ -32,7 +32,6 @@ import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
 import panteao.make.ready.utils.MediaTypeConstants
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
-import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -42,10 +41,9 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
 
 open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemViewClickedListener,
-        OnItemViewSelectedListener, BrowseSupportFragment.MainFragmentAdapterProvider {
+    OnItemViewSelectedListener, BrowseSupportFragment.MainFragmentAdapterProvider {
 
-    private val handler = Handler()
-    private var previousView: View? = null
+    private val handler = Handler(Looper.getMainLooper())
     open val TAG = "TabBaseFragment"
 
     private val mMainFragmentAdapter = MainFragmentAdapter(this)
@@ -54,7 +52,6 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         return mMainFragmentAdapter
     }
 
-    private var lastClickTime: Long = 0
     lateinit var viewModel: T
     private lateinit var dataUpdateCallBack: DataUpdateCallBack
 
@@ -62,15 +59,11 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     private var mGridPresenter: Presenter? = null
     private var gridRowAdapter: ArrayObjectAdapter? = null
     lateinit var mActivity: TVHomeActivity
-    private var railCommonDataList: ArrayList<RailCommonData> = ArrayList<RailCommonData>()
-
     private lateinit var dataLoadingListener: DataLoadingListener
     private lateinit var changeUi: ChangableUi
     private var counter = 0
     private lateinit var customListRowPresenter: ListRowPresenter
     private var isCrousal: Boolean = false
-    private var counterValueApiFail = 0
-    private var mIsLoading: Boolean = true
     private lateinit var railInjectionHelper: RailInjectionHelper
     private var mOnFragmentListener: OnTabBaseFragmentListener? = null
 
@@ -78,7 +71,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         mActivity = activity as TVHomeActivity
-        dataLoadingListener = activity as DataLoadingListener
+        dataLoadingListener = activity
         railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
         changeUi = activity
     }
@@ -100,7 +93,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
 
     protected fun setViewModel(viewModelClass: Class<*>) {
         viewModel =
-                ViewModelProviders.of(this).get<ViewModel>(viewModelClass as Class<ViewModel>) as T
+            ViewModelProviders.of(this).get<ViewModel>(viewModelClass as Class<ViewModel>) as T
     }
 
 
@@ -131,30 +124,31 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         mOnFragmentListener?.showProgressBarView(true)
         tabId?.let {
             railInjectionHelper.getScreenWidgets(fragmentActivity, it, object :
-                    CommonApiCallBack {
+                CommonApiCallBack {
                 override fun onSuccess(item: Any?) {
                     Logger.e("ASSET_DETAILS", Gson().toJson(item))
                     if (item is RailCommonData) {
                         if (item.screenWidget?.layout!!.equals(Layouts.HRO.name, true)) {
                             val enveuVideoItemBeanList =
-                                    ArrayList<EnveuVideoItemBean>()
+                                ArrayList<EnveuVideoItemBean>()
                             val enveuVideoItemBean =
-                                    EnveuVideoItemBean()
+                                EnveuVideoItemBean()
                             if (item.screenWidget?.landingPageAssetId != null) {
                                 enveuVideoItemBean.id =
-                                        item.screenWidget?.landingPageAssetId!!.toInt()
+                                    item.screenWidget?.landingPageAssetId!!.toInt()
                             }
                             enveuVideoItemBean.assetType = item.assetType
-                            enveuVideoItemBean.thumbnailImage=item.enveuVideoItemBeans[0].thumbnailImage
+                            enveuVideoItemBean.thumbnailImage =
+                                item.enveuVideoItemBeans[0].thumbnailImage
                             enveuVideoItemBeanList.add(enveuVideoItemBean)
                             item.enveuVideoItemBeans = enveuVideoItemBeanList
                         }
                         setRows(
-                                item.enveuVideoItemBeans!!,
-                                if (item.screenWidget?.name != null) item.screenWidget?.name.toString() else " ",
-                                0,
-                                item.railType,
-                                item
+                            item.enveuVideoItemBeans!!,
+                            if (item.screenWidget?.name != null) item.screenWidget?.name.toString() else " ",
+                            0,
+                            item.railType,
+                            item
                         )
                         mOnFragmentListener?.showProgressBarView(false)
                     }
@@ -162,8 +156,8 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
 
                 override fun onFailure(throwable: Throwable?) {
                     mOnFragmentListener?.showNoDataFoundView(
-                            false,
-                            getString(R.string.no_data_found)
+                        false,
+                        getString(R.string.no_data_found)
                     )
                     mOnFragmentListener?.showProgressBarView(false)
                 }
@@ -187,9 +181,9 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.MyMaterialTheme)
         val localInflater = inflater.cloneInContext(contextThemeWrapper)
@@ -197,11 +191,11 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     }
 
     private fun setRows(
-            result: List<EnveuVideoItemBean>,
-            channelName: String,
-            channelId: Long,
-            contentType: Int,
-            item: RailCommonData
+        result: List<EnveuVideoItemBean>,
+        channelName: String,
+        channelId: Long,
+        contentType: Int,
+        item: RailCommonData
     ) {
         dataLoadingListener.onLoadingOfFirstRow()
 
@@ -230,10 +224,10 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         gridRowAdapter?.addAll(0, result)
         var gridHeader = HeaderItem(rowsAdapter.size().toLong(), "")
         val dmsResponse =
-                KsPreferenceKeys.getInstance().getString("DMS_Response", "")
+            KsPreferenceKeys.getInstance().getString("DMS_Response", "")
         if (!dmsResponse!!.isEmpty()) {
             val configBean = Gson()
-                    .fromJson(dmsResponse, ConfigBean::class.java)
+                .fromJson(dmsResponse, ConfigBean::class.java)
             gridHeader = HeaderItem(rowsAdapter.size().toLong(), channelName)
             gridHeader.contentDescription = channelId.toString()
             if (contentType == AppConstants.HERO_LDS_LANDSCAPE)
@@ -256,10 +250,10 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
 
 
     override fun onItemSelected(
-            p0: Presenter.ViewHolder?,
-            item: Any?,
-            p2: RowPresenter.ViewHolder?,
-            row: Row?
+        p0: Presenter.ViewHolder?,
+        item: Any?,
+        p2: RowPresenter.ViewHolder?,
+        row: Row?
     ) {
         handler.removeCallbacksAndMessages(null)
         val listRowSelected = row?.id?.toInt()?.let { rowsAdapter.get(it) } as ListRow
@@ -318,292 +312,53 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
     }
 
     override fun onItemClicked(
-            p0: Presenter.ViewHolder?,
-            contentItem: Any?,
-            p2: RowPresenter.ViewHolder?,
-            p3: Row?
+        p0: Presenter.ViewHolder?,
+        contentItem: Any?,
+        p2: RowPresenter.ViewHolder?,
+        p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
             Logger.e("CLICKED_ITEM", Gson().toJson(contentItem))
-//            context?.let {
-//                if (contentItem.assetType.equals(MediaTypeConstants.getInstance().series, true)
-//                ) {
-//
-//                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().live, true)
-//                ) {
-//
-//                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().episode, true)
-//                ) {
-//                    railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
-//                            .observe(this, Observer {
-//                                if (it != null && it.baseCategoriesList!!.size > 0) {
-//                                    if (it.baseCategoriesList!!
-//                                                    .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
-//                                    ) {
-//                                        var videoDetail = it.baseCategoriesList!!.get(0)
-//
-//                                    }
-//                                }
-//                            })
-//                } else {
-//                    if (contentItem.assetType != null) {
-//                        if (contentItem.season == null || contentItem.series == null) {
-//                            contentItem.assetType?.let { assetType ->
-//                                AppCommonMethod.launchDetailScreen(
-//                                        it,
-//                                        0L,
-//                                        assetType,
-//                                        contentItem.id,
-//                                        " ",
-//                                        contentItem.isPremium
-//                                )
-//                            }
-//                        } else {
-//                            contentItem.assetType?.let { assetType ->
-//                                contentItem.series?.let { series ->
-//                                    contentItem.season?.let { season ->
-//                                        AppCommonMethod.launchDetailScreen(
-//                                                it,
-//                                                0L,
-//                                                assetType,
-//                                                contentItem.id,
-//                                                series,
-//                                                contentItem.isPremium
-//                                        )
-//                                    }
-//                                }
-//                            }
-//
-//                        }
-//                    } else {
-//                        AppCommonMethod.launchDetailScreen(
-//                                it,
-//                                0L,
-//                                AppConstants.Video,
-//                                contentItem.id,
-//                                "0",
-//                                contentItem.isPremium
-//                        )
-//                    }
-//                }
-//            }
+            context?.let {
+                if (contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().series,
+                        true
+                    ) || contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().show,
+                        true
+                    ) || contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().tutorial,
+                        true
+                    )
+                ) {
+
+                } else if (contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().episode,
+                        true
+                    ) || contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().chapter,
+                        true
+                    ) || contentItem.assetType.equals(
+                        MediaTypeConstants.getInstance().trailor,
+                        true
+                    )
+                ) {
+                    railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
+                        .observe(this, Observer {
+                            if (it != null && it.baseCategoriesList!!.size > 0) {
+                                if (it.baseCategoriesList!!
+                                        .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
+                                ) {
+                                    var videoDetail = it.baseCategoriesList!![0]
+
+                                }
+                            }
+                        })
+                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().instructor)) {
+                }
+            }
         }
     }
-
-//    private fun loadLivePlayer(contentItem: EnveuVideoItemBean) {
-//        if (NetworkConnectivity.isOnline(mActivity)) {
-//            railInjectionHelper.getAssetDetailsV2(contentItem.id.toString()).observe(this, Observer {
-//                if (it != null && it.baseCategoriesList!!.size > 0) {
-//                    if (it.baseCategoriesList
-//                                    ?.get(0)?.responseCode == AppConstants.RESPONSE_CODE_SUCCESS
-//                    ) {
-//                        val liveVideo = it.baseCategoriesList?.get(0)
-//                        if (liveVideo?.isPremium!! && !UserPreference.instance.entitlementState) {
-//                            if (UserPreference.instance.isLogin) {
-//                                hitApiEntitlement(
-//                                        contentItem,
-//                                        liveVideo.sku
-//                                )
-//                            } else {
-//                                val loginActivity =
-//                                        Intent(activity?.applicationContext, LoginActivity::class.java)
-//                                startActivity(loginActivity)
-//                            }
-//                        } else {
-//                            if (liveVideo.brightcoveVideoId.isEmpty()) {
-//                                if (UserPreference.instance.isLogin) {
-//                                    panteao.make.ready.purchase.planslayer.GetPlansLayer.getInstance()
-//                                            .getEntitlementStatus(
-//                                                    UserPreference.instance.userAuthToken
-//                                            ) { entitlementStatus, apiStatus ->
-////                                            if (entitlementStatus && apiStatus) {
-//                                                val livePlayerIntent =
-//                                                        Intent(activity, LivePlayerActivity::class.java)
-//                                                val args = Bundle()
-//                                                args.putString(
-//                                                        AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE,
-//                                                        liveVideo?.brightcoveVideoId
-//                                                )
-//                                                args.putString(
-//                                                        AppConstants.BUNDLE_ASSET_TYPE,
-//                                                        panteao.make.ready.utils.MediaTypeConstants.getInstance().live
-//                                                )
-//
-//                                                val isLiveDrm: String =
-//                                                        liveVideo.islivedrm
-//                                                if (!isLiveDrm.equals(
-//                                                                "",
-//                                                                ignoreCase = true
-//                                                        )
-//                                                ) {
-//                                                    if (isLiveDrm.equals(
-//                                                                    "true",
-//                                                                    ignoreCase = true
-//                                                            )
-//                                                    ) {
-//                                                        if (liveVideo.widevineLicence != null && !liveVideo?.widevineLicence.equals(
-//                                                                        "", true
-//                                                                ) && liveVideo.getWidevineURL != null && !liveVideo?.getGetWidevineURL()
-//                                                                        .equals("", ignoreCase = true)
-//                                                        ) {
-//                                                            args.putString(
-//                                                                    "isLivedrm",
-//                                                                    liveVideo?.getIslivedrm()
-//                                                            )
-//                                                            args.putString(
-//                                                                    "widevine_licence",
-//                                                                    liveVideo?.getWidevineLicence()
-//                                                            )
-//                                                            args.putString(
-//                                                                    "widevine_url",
-//                                                                    liveVideo?.getGetWidevineURL()
-//                                                            )
-//                                                            if (liveVideo?.getThumbnailImage() != null) {
-//                                                                // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getThumbnailImage());
-//                                                            } else if (liveVideo?.getPosterURL() != null) {
-//                                                                // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getPosterURL());
-//                                                            }
-//                                                            if (liveVideo?.isPremium() && liveVideo?.getThumbnailImage() != null) {
-//                                                                args.putString(
-//                                                                        AppConstants.BUNDLE_BANNER_IMAGE,
-//                                                                        liveVideo?.getThumbnailImage()
-//                                                                )
-//                                                            }
-//
-//                                                        } else {
-//                                                            Toast.makeText(
-//                                                                    activity,
-//                                                                    "Some thing went wrong",
-//                                                                    Toast.LENGTH_SHORT
-//                                                            ).show()
-//                                                        }
-//                                                    } else {
-//                                                        if (liveVideo.getWidevineURL != null && !liveVideo.getWidevineURL
-//                                                                        .equals("", ignoreCase = true)
-//                                                        ) {
-//                                                            // args.putString("widevine_licence",videoDetails.getWidevineLicence());
-//                                                            args.putString(
-//                                                                    "isLivedrm",
-//                                                                    liveVideo.islivedrm
-//                                                            )
-//                                                            args.putString(
-//                                                                    "widevine_url",
-//                                                                    liveVideo.getWidevineURL
-//                                                            )
-//                                                            if (liveVideo.isPremium && liveVideo.thumbnailImage != null) {
-//                                                                args.putString(
-//                                                                        AppConstants.BUNDLE_BANNER_IMAGE,
-//                                                                        liveVideo.thumbnailImage
-//                                                                )
-//                                                            }
-//                                                            livePlayerIntent.putExtra(
-//                                                                    AppConstants.BUNDLE_ASSET_BUNDLE,
-//                                                                    args
-//                                                            )
-//                                                        } else {
-//                                                            Toast.makeText(
-//                                                                    activity,
-//                                                                    "Some thing went wrong",
-//                                                                    Toast.LENGTH_SHORT
-//                                                            ).show()
-//                                                        }
-//                                                    }
-//                                                } else {
-//                                                    if (liveVideo.getWidevineURL != null && !liveVideo.getWidevineURL
-//                                                                    .equals("", ignoreCase = true)
-//                                                    ) {
-//                                                        // args.putString("widevine_licence",videoDetails.getWidevineLicence());
-//                                                        args.putString(
-//                                                                "isLivedrm",
-//                                                                liveVideo.islivedrm
-//                                                        )
-//                                                        args.putString(
-//                                                                "widevine_url",
-//                                                                liveVideo.getWidevineURL
-//                                                        )
-//                                                        if (liveVideo.thumbnailImage != null) {
-//                                                            // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getThumbnailImage());
-//                                                        } else if (liveVideo.posterURL != null) {
-//                                                            // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getPosterURL());
-//                                                        }
-//                                                        if (liveVideo.isPremium && liveVideo.thumbnailImage != null) {
-//                                                            args.putString(
-//                                                                    AppConstants.BUNDLE_BANNER_IMAGE,
-//                                                                    liveVideo.thumbnailImage
-//                                                            )
-//                                                        }
-//                                                        livePlayerIntent.putExtra(
-//                                                                AppConstants.BUNDLE_ASSET_BUNDLE,
-//                                                                args
-//                                                        )
-//                                                    } else {
-//                                                        Toast.makeText(
-//                                                                activity,
-//                                                                "Some thing went wrong",
-//                                                                Toast.LENGTH_SHORT
-//                                                        ).show()
-//                                                    }
-//                                                }
-//                                                startActivity(livePlayerIntent)
-////                                            } else {
-////                                                Toast.makeText(
-////                                                    activity!!,
-////                                                    "Buy Now",
-////                                                    Toast.LENGTH_LONG
-////                                                ).show()
-////                                            }
-//                                            }
-//                                } else {
-//                                    val loginActivity = Intent(
-//                                            activity?.applicationContext,
-//                                            LoginActivity::class.java
-//                                    )
-//                                    startActivity(loginActivity)
-//                                }
-//                            } else {
-//                                if (liveVideo.getWidevineURL != null && !liveVideo.getWidevineURL
-//                                                .equals("", ignoreCase = true)
-//                                ) {
-//                                    val livePlayerIntent =
-//                                            Intent(activity, LivePlayerActivity::class.java)
-//                                    val args = Bundle()
-//                                    // args.putString("widevine_licence",videoDetails.getWidevineLicence());
-//                                    args.putString(
-//                                            "isLivedrm",
-//                                            liveVideo.islivedrm
-//                                    )
-//                                    args.putString(
-//                                            "widevine_url",
-//                                            liveVideo.getWidevineURL
-//                                    )
-//                                    if (liveVideo.thumbnailImage != null) {
-//                                        // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getThumbnailImage());
-//                                    } else if (liveVideo.posterURL != null) {
-//                                        // ImageHelper.getInstance(LiveActivity.this).loadListImage(getBinding().channelLogo, videoDetails.getPosterURL());
-//                                    }
-//                                    if (liveVideo.isPremium && liveVideo.thumbnailImage != null) {
-//                                        args.putString(
-//                                                AppConstants.BUNDLE_BANNER_IMAGE,
-//                                                liveVideo.thumbnailImage
-//                                        )
-//                                    }
-//                                    livePlayerIntent.putExtra(
-//                                            AppConstants.BUNDLE_ASSET_BUNDLE,
-//                                            args
-//                                    )
-//                                    startActivity(livePlayerIntent)
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    Toast.makeText(activity, "Some thing went wrong", Toast.LENGTH_SHORT).show()
-//                }
-//            })
-//        } else {
-//            connectionValidation(false)
-//        }
-//    }
 
 //    private fun hitApiEntitlement(
 //            contentItem: EnveuVideoItemBean,

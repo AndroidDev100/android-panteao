@@ -386,6 +386,10 @@
     <string name="title_screen_3">Watchlist</string>
     <string name="title_screen_4">Help</string>
     <string name="clear_searches">Clear Recent Search</string>
+    <string name="content_discription">Image Description</string>
+    <string name="play">Play</string>
+    <string name="loading">Loading...</string>
+    <string name="episode_more">Episodes and More</string>
     <string-array name="menu_titles_with_login">
         <item>""</item>
         <item>""</item>

@@ -308,4 +308,13 @@ String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
     String TAB_ID = "tabId";
 
 
+    String SELECTED_SERIES_ID = "series_id";
+    String SELECTED_SEASON_NO = "season";
+    String SELECTED_SERIES = "selected_series";
+    String SELECTED_ITEM = "selectedItem";
+    String SELECTED_CONTENT_TYPE = "selectedContentType";
+    String TAG_FRAGMENT_ALERT = "fragmentAlert";
+    String VIDEO_DETAIL = "videoDetail";
+    String EPISODE_DETAIL = "episode_detail";
+    String SEASON_DETAIL = "SeasonDetails";
 }

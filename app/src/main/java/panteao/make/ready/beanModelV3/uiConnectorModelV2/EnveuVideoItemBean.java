@@ -24,8 +24,6 @@ import java.util.List;
 public class EnveuVideoItemBean implements Serializable {
     private ArrayList seasons;
     private String description;
-
-
     private String longDescription;
     private List<String> assetKeywords;
     private int likeCount;
