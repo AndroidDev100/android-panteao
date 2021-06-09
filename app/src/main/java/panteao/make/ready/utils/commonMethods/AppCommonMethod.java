@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
