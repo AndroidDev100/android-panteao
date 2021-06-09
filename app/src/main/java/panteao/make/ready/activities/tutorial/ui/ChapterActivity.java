@@ -96,6 +96,7 @@ import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
+import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -181,6 +182,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isOfflineAvailable = false;
     private boolean hitEvent = false;
     private boolean isCastConnected = false;
+    private KalturaFragment playerfragment;
 
 
     public static void closeActivity() {
@@ -242,6 +244,12 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         commentCounter = 0;
         isHitPlayerApi = false;
         AppCommonMethod.isPurchase = false;
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        playerfragment = new KalturaFragment();
+        transaction.replace(R.id.player_frame, playerfragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         if (getIntent().hasExtra(AppConstants.BUNDLE_ASSET_BUNDLE)) {
             extras = getIntent().getExtras();
@@ -893,7 +901,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private void parseVideoDetails(EnveuVideoItemBean videoDetails) {
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
-        ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+//        ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
         if (videoDetails.isPremium()) {
             isPremium=true;
             try {
@@ -1426,7 +1434,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         if (isPlayerError) {
             getBinding().playerImage.setVisibility(View.VISIBLE);
-            ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+//            ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             isPlayerError = false;
 
         } else {

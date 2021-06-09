@@ -231,11 +231,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        transaction.replace(R.id.player_root, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        playerfragment = new KalturaFragment();
+//        transaction.replace(R.id.player_root, playerfragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
 
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;

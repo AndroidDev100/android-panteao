@@ -192,9 +192,11 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                     Log.d("ndhfdm", "playing");
                     player.stop();
                     if (mHandler != null && updateTimeTask != null)
-//                        onBackPressed();
+                    {
+                        //                    onBackPressed();
                         finishPlayer();
                     mHandler.removeCallbacks(updateTimeTask);
+                }
                 }
             }
         });
@@ -325,5 +327,15 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     public interface OnPlayerInteractionListener {
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        player.pause();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        player.play();
+    }
 }
