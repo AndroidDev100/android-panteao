@@ -2,6 +2,7 @@ package panteao.make.ready.tvBaseModels.basemodels
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.make.enums.Layouts
 import panteao.make.ready.R
+import panteao.make.ready.activities.detailspage.activity.TVSeriesDetailActivity
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity
 import panteao.make.ready.baseModels.HomeBaseViewModel
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
@@ -31,7 +33,6 @@ import panteao.make.ready.cardlayout.cardpresenter.SquareCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
 import panteao.make.ready.utils.MediaTypeConstants
-import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -126,7 +127,6 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             railInjectionHelper.getScreenWidgets(fragmentActivity, it, object :
                 CommonApiCallBack {
                 override fun onSuccess(item: Any?) {
-                    Logger.e("ASSET_DETAILS", Gson().toJson(item))
                     if (item is RailCommonData) {
                         if (item.screenWidget?.layout!!.equals(Layouts.HRO.name, true)) {
                             val enveuVideoItemBeanList =
@@ -318,20 +318,19 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
-            Logger.e("CLICKED_ITEM", Gson().toJson(contentItem))
+            Logger.e("CLICKED_ITEM", Gson().toJson(contentItem.assetType))
             context?.let {
                 if (contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().series,
-                        true
-                    ) || contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().show,
                         true
                     ) || contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().tutorial,
                         true
                     )
                 ) {
-
+//                    val intent = Intent(requireActivity(), TVSeriesDetailActivity::class.java)
+//                    intent.putExtra(AppConstants.SELECTED_ITEM, contentItem.id)
+//                    activity?.startActivity(intent)
                 } else if (contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().episode,
                         true
@@ -345,13 +344,8 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                 ) {
                     railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
                         .observe(this, Observer {
-                            if (it != null && it.baseCategoriesList!!.size > 0) {
-                                if (it.baseCategoriesList!!
-                                        .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
-                                ) {
-                                    var videoDetail = it.baseCategoriesList!![0]
-
-                                }
+                            if (it != null) {
+                                    Logger.e("Chapter_details", Gson().toJson(it))
                             }
                         })
                 } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().instructor)) {

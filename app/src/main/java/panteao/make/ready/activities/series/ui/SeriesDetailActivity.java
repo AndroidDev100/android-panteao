@@ -341,28 +341,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
             }
         });
-        /*railInjectionHelper.getSeriesDetails(String.valueOf(seriesId)).observe(SeriesDetailActivity.this, enveuCommonResponse -> {
-            if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
-                if (enveuCommonResponse.getEnveuVideoItemBeans().get(0).getResponseCode() == AppConstants.RESPONSE_CODE_SUCCESS) {
-                    Logger.e("enveuCommonResponse", "" + enveuCommonResponse.getEnveuVideoItemBeans().get(0).toString());
-                    seriesDetailBean = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
-                    seriesId = seriesDetailBean.getId();
-                    setUserInteractionFragment(seriesId);
-                    setTabs();
-                    setUiComponents(seriesDetailBean);
-                    downloadHelper = new DownloadHelper(this, this);
-                    downloadHelper.setAssetType(AppConstants.ContentType.EPISODE);
-
-//                    downloadHelper.findVideo(seriesDetailBean.getBrightcoveVideoId());
-                } else {
-                    if (enveuCommonResponse.getEnveuVideoItemBeans().get(0).getResponseCode() == AppConstants.RESPONSE_CODE_LOGOUT) {
-                        showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
-                    } else {
-                        showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
-                    }
-                }
-            }
-        });*/
 
         getBinding().flBackIconImage.setOnClickListener(view -> onBackPressed());
 

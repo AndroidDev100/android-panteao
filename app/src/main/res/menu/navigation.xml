@@ -28,7 +28,7 @@
         android:id="@+id/navigation_originals"
         android:enabled="true"
         android:icon="@drawable/ic_free"
-        android:title="@string/title_free"
+        android:title="@string/title_premium"
         app:showAsAction="always|withText" />
 
     <item

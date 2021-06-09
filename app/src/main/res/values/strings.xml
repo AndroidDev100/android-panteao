@@ -238,7 +238,7 @@
     <string name="title_home">Home</string>
     <string name="title_skill_set">Skillset</string>
     <string name="title_instructor">Instructor</string>
-    <string name="title_free">Free</string>
+    <string name="title_premium">Premium</string>
     <string name="title_more1">More</string>
     <string name="delete_from_watchhistory">Video removed from Watch History</string>
     <string name="delete_from_watchhistory_error">Video can not be removed  from Watch History</string>
@@ -395,9 +395,10 @@
         <item>""</item>
         <item>@string/title_search</item>
         <item>@string/title_home</item>
-        <item>@string/title_skill_set</item>
         <item>@string/title_instructor</item>
-        <item>@string/title_free</item>
+        <item>@string/title_premium</item>
+        <item>@string/subscribe_now</item>
+        <item>@string/title_screen_3</item>
         <item>@string/title_screen_4</item>
         <item>@string/my_profile</item>
         <item>@string/setting_title</item>
