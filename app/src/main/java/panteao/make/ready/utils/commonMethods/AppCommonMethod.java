@@ -48,6 +48,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.ShowActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
@@ -927,7 +928,8 @@ public class AppCommonMethod {
             if (SDKConfig.getInstance().getShowDetailId().equalsIgnoreCase("")) {
                 //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.SHOW_ENVEU);
             } else {
-                new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
+                //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
+                new ActivityLauncher((BaseActivity) context).ShowScreenBrightCove((BaseActivity) context, ShowActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
             }
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
             new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);

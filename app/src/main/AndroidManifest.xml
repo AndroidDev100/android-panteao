@@ -46,14 +46,17 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.search.ui.TVSearchActivity"></activity>
-        <activity android:name=".activities.KalturaPlayerActivity"></activity>
+        <activity android:name=".activities.instructor.ui.ShowActivity"></activity>
+        <activity android:name=".activities.search.ui.TVSearchActivity" />
+        <activity android:name=".activities.KalturaPlayerActivity" />
         <activity android:name=".activities.live.LiveActivity" />
         <activity android:name=".activities.instructor.ui.EpisodeActivity" />
-        <activity android:name=".activities.tutorial.ui.ChapterActivity"
+        <activity
+            android:name=".activities.tutorial.ui.ChapterActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:screenOrientation="locked" />
-        <activity android:name=".activities.tutorial.ui.TutorialActivity"
+        <activity
+            android:name=".activities.tutorial.ui.TutorialActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:screenOrientation="locked" />
         <activity android:name=".activities.instructor.ui.InstructorActivity" />
@@ -89,6 +92,7 @@
             android:name=".activities.detailspage.activity.EpisodeDetailActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -212,7 +216,7 @@
             android:name=".activities.homeactivity.ui.TVHomeActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
-            tools:replace="android:theme"></activity>
+            tools:replace="android:theme" />
 
         <meta-data
             android:name="io.branch.sdk.BranchKey"

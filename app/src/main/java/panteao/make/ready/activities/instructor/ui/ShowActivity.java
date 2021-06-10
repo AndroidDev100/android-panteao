@@ -1,5 +1,12 @@
 package panteao.make.ready.activities.instructor.ui;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,25 +32,10 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
-import com.kaltura.netkit.utils.ErrorElement;
-import com.kaltura.playkit.PKEvent;
-import com.kaltura.playkit.PKMediaEntry;
-import com.kaltura.playkit.PlayerEvent;
-import com.kaltura.playkit.PlayerState;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
-import com.kaltura.tvplayer.KalturaPlayer;
-import com.kaltura.tvplayer.OVPMediaOptions;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
 
@@ -56,9 +48,8 @@ import java.util.concurrent.TimeUnit;
 
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.KalturaPlayerActivity;
-import panteao.make.ready.activities.instructor.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
+import panteao.make.ready.activities.instructor.viewModel.DetailViewModel;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
@@ -77,12 +68,11 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
-import panteao.make.ready.databinding.ActivityDetailBinding;
+import panteao.make.ready.databinding.ActivityShowBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
-import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
@@ -110,7 +100,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class InstructorActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener,KalturaFragment.OnPlayerInteractionListener {
+public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -161,12 +151,10 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     private KalturaFragment playerfragment;
     private KalturaOvpPlayer player;
 
-
     @Override
-    public ActivityDetailBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
-        return ActivityDetailBinding.inflate(inflater);
+    public ActivityShowBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
+        return ActivityShowBinding.inflate(inflater);
     }
-
     public long getPositonVideo() {
         return videoPos;
     }
@@ -182,11 +170,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        playerfragment = new KalturaFragment();
-//        transaction.replace(R.id.player_root, playerfragment);
-//        transaction.addToBackStack(null);
-//        transaction.commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        playerfragment = new KalturaFragment();
+        transaction.replace(R.id.player_root, playerfragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;
@@ -205,7 +193,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
             isLoggedIn = true;
         }
         AppCommonMethod.isPurchase = false;
-        viewModel = ViewModelProviders.of(InstructorActivity.this).get(DetailViewModel.class);
+        viewModel = ViewModelProviders.of(ShowActivity.this).get(DetailViewModel.class);
         bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
 
         setupUI(getBinding().llParent);
@@ -435,7 +423,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         super.onResume();
         requestAudioFocus();
 
-        boolean isTablet = InstructorActivity.this.getResources().getBoolean(R.bool.isTablet);
+        boolean isTablet = ShowActivity.this.getResources().getBoolean(R.bool.isTablet);
         if (isTablet) {
             AppCommonMethod.isResumeDetail = true;
         }
@@ -563,7 +551,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
-        InstructorActivity.this.registerReceiver(receiver, filter);
+        ShowActivity.this.registerReceiver(receiver, filter);
         setConnectivityListener(this);
     }
 
@@ -636,7 +624,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
             if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
-                Intent intent = new Intent(InstructorActivity.this, PurchaseActivity.class);
+                Intent intent = new Intent(ShowActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", videoDetails);
                 intent.putExtra("assestId", assestId);
                 intent.putExtra("contentType", AppConstants.ContentType.VIDEO.toString());
@@ -656,7 +644,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         preference.setAppPrefJumpBack(true);
         preference.setAppPrefIsEpisode(false);
         preference.setAppPrefJumpBackId(assestId);
-        new ActivityLauncher(InstructorActivity.this).loginActivity(InstructorActivity.this, LoginActivity.class);
+        new ActivityLauncher(ShowActivity.this).loginActivity(ShowActivity.this, LoginActivity.class);
 
     }
 
@@ -720,7 +708,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 //            @Override
 //            public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
 //                if (loadError != null) {
-//                    Toast.makeText(InstructorActivity.this, loadError.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ShowActivity.this, loadError.getMessage(), Toast.LENGTH_LONG).show();
 //                } else {
 //                    Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
 //                }
@@ -731,7 +719,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     public void getAssetDetails() {
         isHitPlayerApi = true;
         railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
-        railInjectionHelper.getAssetDetailsV2(String.valueOf(assestId)).observe(InstructorActivity.this, assetResponse -> {
+        railInjectionHelper.getAssetDetailsV2(String.valueOf(assestId)).observe(ShowActivity.this, assetResponse -> {
             if (assetResponse != null) {
                 if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
@@ -739,11 +727,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                     parseAssetDetails(assetResponse);
                 } else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                     if (assetResponse.getErrorModel() != null && assetResponse.getErrorModel().getErrorCode() != 0) {
-                        showDialog(InstructorActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog(ShowActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                     }
 
                 } else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-                    showDialog(InstructorActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                    showDialog(ShowActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                 }
             }
 
@@ -758,10 +746,10 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
-            ImageHelper.getInstance(InstructorActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+            ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {
                 isPremium = true;
-                ImageHelper.getInstance(InstructorActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+                ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
                 getBinding().tvPurchased.setVisibility(View.GONE);
                 getBinding().tvPremium.setVisibility(View.GONE);
 
@@ -818,7 +806,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 
     public void hitApiEntitlement(String sku) {
 
-        viewModel.hitApiEntitlement(token, sku).observe(InstructorActivity.this, responseEntitlement -> {
+        viewModel.hitApiEntitlement(token, sku).observe(ShowActivity.this, responseEntitlement -> {
             responseEntitlementModel = responseEntitlement;
             if (responseEntitlement.getStatus()) {
                 if (responseEntitlement.getData().getEntitled()) {
@@ -907,9 +895,9 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         try {
             isPremium = true;
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-                AppCommonMethod.resetLanguage("th", InstructorActivity.this);
+                AppCommonMethod.resetLanguage("th", ShowActivity.this);
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                AppCommonMethod.resetLanguage("en", InstructorActivity.this);
+                AppCommonMethod.resetLanguage("en", ShowActivity.this);
             }
             showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
@@ -1065,9 +1053,9 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     public void logoutUser() {
         isloggedout = false;
         if (isLogin) {
-            if (CheckInternetConnection.isOnline(Objects.requireNonNull(InstructorActivity.this))) {
+            if (CheckInternetConnection.isOnline(Objects.requireNonNull(ShowActivity.this))) {
                 clearCredientials(preference);
-                hitApiLogout(InstructorActivity.this, preference.getAppPrefAccessToken());
+                hitApiLogout(ShowActivity.this, preference.getAppPrefAccessToken());
             }
         }
     }
@@ -1092,7 +1080,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
             setCustomeFields(responseDetailPlayer, tempTag2);
         } else {
             setCustomeFields(responseDetailPlayer, "");
-            new ToastHandler(InstructorActivity.this).show(InstructorActivity.this.getResources().getString(R.string.can_not_play_error));
+            new ToastHandler(ShowActivity.this).show(ShowActivity.this.getResources().getString(R.string.can_not_play_error));
         }
         getBinding().setResponseApi(responseDetailPlayer);
         if (isLogin) {
@@ -1193,7 +1181,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     protected void onPause() {
         super.onPause();
         Logger.d("DetailActivityCalled", "True");
-        releaseAudioFocusForMyApp(InstructorActivity.this);
+        releaseAudioFocusForMyApp(ShowActivity.this);
         if (handler != null && runnable != null)
             handler.removeCallbacksAndMessages(runnable);
 
@@ -1242,7 +1230,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 
         if (isPlayerError) {
             getBinding().playerImage.setVisibility(View.VISIBLE);
-            ImageHelper.getInstance(InstructorActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+            ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             isPlayerError = false;
 
         } else {
@@ -1315,7 +1303,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     public void onConfigurationChanged(Configuration newConfig) {
         if (!isCastConnected) {
             super.onConfigurationChanged(newConfig);
-            boolean isTablet = InstructorActivity.this.getResources().getBoolean(R.bool.isTablet);
+            boolean isTablet = ShowActivity.this.getResources().getBoolean(R.bool.isTablet);
             AppCommonMethod.isOrientationChanged = true;
 
             if (newConfig.orientation == 2) {
@@ -1354,7 +1342,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         Log.d("episodeclick", "itemclick");
 
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
-            Toast.makeText(InstructorActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
+            Toast.makeText(ShowActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
             if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
                 Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
@@ -1370,9 +1358,9 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         if (data.getScreenWidget() != null && data.getScreenWidget().getContentID() != null) {
             String playListId = data.getScreenWidget().getContentID();
             if (data.getScreenWidget().getName() != null) {
-                new ActivityLauncher(InstructorActivity.this).listActivity(InstructorActivity.this, ListActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget());
+                new ActivityLauncher(ShowActivity.this).listActivity(ShowActivity.this, ListActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget());
             } else {
-                new ActivityLauncher(InstructorActivity.this).listActivity(InstructorActivity.this, ListActivity.class, playListId, "", 0, 0, data.getScreenWidget());
+                new ActivityLauncher(ShowActivity.this).listActivity(ShowActivity.this, ListActivity.class, playListId, "", 0, 0, data.getScreenWidget());
             }
         }
     }
@@ -1876,9 +1864,6 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
 //        }
 //        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
 //    }
-
-
-
 
 
 

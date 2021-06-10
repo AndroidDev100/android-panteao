@@ -9,7 +9,7 @@ import androidx.mediarouter.app.MediaRouteButton;
 
 //import com.google.android.gms.cast.framework.CastButtonFactory;
 import panteao.make.ready.R;
-import panteao.make.ready.databinding.EpisodeScreenBinding;
+import panteao.make.ready.databinding.ActivityShowBinding;
 
 public abstract class BaseBindingActivity<B extends ViewDataBinding> extends BaseActivity {
 

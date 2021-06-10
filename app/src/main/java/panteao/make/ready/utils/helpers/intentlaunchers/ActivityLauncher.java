@@ -10,6 +10,7 @@ import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
+import panteao.make.ready.activities.instructor.ui.ShowActivity;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -176,6 +177,35 @@ public class ActivityLauncher {
             ADHelper.getInstance(activity).getPipAct().moveTaskToBack(false);
             ADHelper.getInstance(activity).getPipAct().finish();
            // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+        activity.startActivity(intent);
+
+
+    }
+    public void ShowScreenBrightCove(Activity source, Class<ShowActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
+        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+
+        args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
+        args.putString(AppConstants.BUNDLE_DETAIL_TYPE, detailType);
+
+        //this is for non-series launcher
+        if (StringUtils.isNullOrEmpty(duration))
+            args.putString(AppConstants.BUNDLE_DURATION, "0");
+        else
+            args.putString(AppConstants.BUNDLE_DURATION, duration);
+
+        Intent intent = new Intent(source, destination);
+        intent.putExtra(AppConstants.BUNDLE_ASSET_BUNDLE, args);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
+        preference.setAppPrefAssetId(0);
+        Logger.e("JSON SENT",new Gson().toJson(args));
+        if (ADHelper.getInstance(activity).getPipAct()!=null){
+            ADHelper.getInstance(activity).getPipAct().moveTaskToBack(false);
+            ADHelper.getInstance(activity).getPipAct().finish();
+            // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         }
         activity.startActivity(intent);
 
