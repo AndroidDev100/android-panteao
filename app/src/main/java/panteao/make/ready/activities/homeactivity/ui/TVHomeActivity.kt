@@ -22,8 +22,6 @@ import com.make.constants.Constants
 import com.make.enums.ImageType
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
-import panteao.make.ready.activities.KalturaPlayerActivity
-import panteao.make.ready.activities.search.ui.ActivitySearch
 import panteao.make.ready.activities.search.ui.TVSearchActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
@@ -45,10 +43,11 @@ import java.util.*
 class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), ChangableUi,
     AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, View.OnClickListener,
     DataLoadingListener, OnTabBaseFragmentListener {
+    private var windowFocus: Boolean = false
     private val log = PKLog.get("MainActivity")
     private val START_POSITION = 0L // position for start playback in msec.
     private var player: KalturaPlayer? = null
-    private val ENTRY_ID = "1_7pg14mbg "
+    private val ENTRY_ID = "0_ugsfd90i"
     private var isFullScreen: Boolean = false
     private var playerState: PlayerState? = null
 
@@ -135,14 +134,14 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     }
 
     override fun onPause() {
-        binding.menuItems?.clearFocus()
+        binding.menuItems.clearFocus()
         player?.stop()
         super.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.menuItems?.clearFocus()
+        binding.menuItems.clearFocus()
         Constants.DRAWER_OPEN = false
     }
 
@@ -316,6 +315,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 binding.menuItems?.requestFocus()
             }
         }
+        windowFocus = hasFocus
         super.onWindowFocusChanged(hasFocus)
 
     }
@@ -526,19 +526,21 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     override fun onTrailerLoaded(asset: Any?) {
     }
 
-    override fun onCardSelected(position: Int) {
+    override fun onCardSelected(position: Int, enveuVideoItemBean: EnveuVideoItemBean) {
         currentCardPosition = position
         mHandler.removeCallbacksAndMessages(null)
         player?.stop()
-        binding.playerRoot?.visibility = View.GONE
+        binding.playerRoot.visibility = View.GONE
         mHandler.postDelayed({
-            val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(ENTRY_ID, 0L)
-            binding.playerRoot?.visibility = View.VISIBLE
-            player?.loadMedia(ovpMediaOptions) { entry, loadError ->
-                if (loadError != null) {
-                    Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
-                } else {
-                    log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
+            if (windowFocus) {
+                val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(enveuVideoItemBean.getkEntryId(), 0L)
+                binding.playerRoot.visibility = View.VISIBLE
+                player?.loadMedia(ovpMediaOptions) { entry, loadError ->
+                    if (loadError != null) {
+                        Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
+                    } else {
+                        log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
+                    }
                 }
             }
         }, 5000)

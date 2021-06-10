@@ -8,5 +8,5 @@ interface DataLoadingListener {
     fun onLoadingOfFirstRow()
     fun onDataLoaded(boolean: Boolean)
     fun onTrailerLoaded(asset: Any?)
-    fun onCardSelected(position:Int)
+    fun onCardSelected(position: Int, enveuVideoItemBean: EnveuVideoItemBean)
 }

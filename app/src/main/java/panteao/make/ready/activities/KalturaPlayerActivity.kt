@@ -1,14 +1,9 @@
 package panteao.make.ready.activities
 
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import com.google.android.material.snackbar.Snackbar
 import com.kaltura.playkit.PKLog
 import com.kaltura.playkit.PlayerEvent
 import com.kaltura.playkit.PlayerState
@@ -24,51 +19,12 @@ class KalturaPlayerActivity : FragmentActivity() {
     private val log = PKLog.get("MainActivity")
     private val START_POSITION = 0L // position for start playback in msec.
     private var player: KalturaPlayer? = null
-    private var isFullScreen: Boolean = false
     private var playerState: PlayerState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kaltura_player)
-
         loadPlaykitPlayer()
-
-        addPlayPauseButton()
-        showSystemUI()
-
-        activity_main.setOnClickListener { v ->
-            if (isFullScreen) {
-                showSystemUI()
-            } else {
-                hideSystemUI()
-            }
-        }
-
-    }
-
-    private fun hideSystemUI() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
-        } else {
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE)
-        }
-        isFullScreen = true
-    }
-
-    private fun showSystemUI() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        } else {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-        isFullScreen = false
     }
 
     private fun addPlayerStateListener() {
@@ -78,30 +34,9 @@ class KalturaPlayerActivity : FragmentActivity() {
 
     }
 
-    /**
-     * Just add a simple button which will start/pause playback.
-     */
-    private fun addPlayPauseButton() {
-        //Add clickListener.
-        play_pause_button.setOnClickListener { v ->
-            player?.let {
-                if (it.isPlaying) {
-                    //If player is playing, change text of the button and pause.
-                    play_pause_button.setText("R.string.play_text")
-                    it.pause()
-                } else {
-                    //If player is not playing, change text of the button and play.
-                    play_pause_button.setText("R.string.pause_text")
-                    it.play()
-                }
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         player?.let {
-            play_pause_button.setText("R.string.pause_text")
             it.onApplicationResumed()
             it.play()
         }
@@ -124,7 +59,10 @@ class KalturaPlayerActivity : FragmentActivity() {
 
         player = KalturaOvpPlayer.create(this, playerInitOptions)
 
-        player?.setPlayerView(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+        player?.setPlayerView(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
         val container = player_root
         container.addView(player?.playerView)
 
@@ -142,7 +80,7 @@ class KalturaPlayerActivity : FragmentActivity() {
 
     private fun buildOvpMediaOptions(): OVPMediaOptions {
         val ovpMediaAsset = OVPMediaAsset()
-        ovpMediaAsset.entryId = ENTRY_ID
+        ovpMediaAsset.entryId = intent.getStringExtra("EntryId")
         ovpMediaAsset.ks = null
         ovpMediaAsset.redirectFromEntryId = true
         val ovpMediaOptions = OVPMediaOptions(ovpMediaAsset)
@@ -152,7 +90,7 @@ class KalturaPlayerActivity : FragmentActivity() {
     }
 
     companion object {
-        val PARTNER_ID = 3181353
+        val PARTNER_ID = 802792
         val SERVER_URL = "https://cdnapisec.kaltura.com"
         val ENTRY_ID = "1_7pg14mbg"
     }
