@@ -91,31 +91,22 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         String header = "";
         switch (getItemViewType(pos)) {
             case 0:
-                header = context.getString(R.string.heading_shows);
-                break;
-            case 1:
-                header = context.getString(R.string.heading_episodes);
-                break;
-            case 2:
-                header = context.getString(R.string.heading_movies);
-                break;
-            case 3:
-                header = context.getString(R.string.heading_series);
-                break;
-            case 4:
-                header = context.getString(R.string.heading_live);
-                break;
-            case 5:
                 header = MediaTypeConstants.getInstance().getInstructor();
                 break;
-            case 6:
-                header = MediaTypeConstants.getInstance().getChapter();
+            case 1:
+                header = context.getString(R.string.heading_series);
                 break;
-            case 7:
-                header = MediaTypeConstants.getInstance().getTrailor();
+            case 2:
+                header = context.getString(R.string.heading_episodes);
                 break;
-            case 8:
+            case 3:
                 header=MediaTypeConstants.getInstance().getTutorial();
+                break;
+            case 4:
+                header=MediaTypeConstants.getInstance().getChapter();
+                break;
+            case 5:
+                header = context.getString(R.string.heading_shows);
                 break;
 
         }
