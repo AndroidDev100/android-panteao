@@ -88,6 +88,7 @@ import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
+import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -109,7 +110,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class InstructorActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, PKEvent.Listener<PlayerEvent.StateChanged>, PlayerCallbacks {
+public class InstructorActivity extends BaseBindingActivity<ActivityDetailBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener,KalturaFragment.OnPlayerInteractionListener {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -157,18 +158,19 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     public static boolean isBackStacklost = false;
     private boolean isOfflineAvailable = false;
     private boolean isCastConnected = false;
+    private KalturaFragment playerfragment;
     private KalturaOvpPlayer player;
-    private final Runnable updateTimeTask = new Runnable() {
-        public void run() {
-//            Log.d("ndhfdm", "playing");
-            Log.d("ndhfdm", player.getCurrentPosition() + "");
-            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
-//            seekBar1.setProgress(((int) player.getCurrentPosition()));
-//            seekBar1.setMax(((int) player.getDuration()));
-            mHandler.postDelayed(this, 100);
-
-        }
-    };
+//    private final Runnable updateTimeTask = new Runnable() {
+//        public void run() {
+////            Log.d("ndhfdm", "playing");
+//            Log.d("ndhfdm", player.getCurrentPosition() + "");
+//            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
+////            seekBar1.setProgress(((int) player.getCurrentPosition()));
+////            seekBar1.setMax(((int) player.getDuration()));
+//            mHandler.postDelayed(this, 100);
+//
+//        }
+//    };
 
     @Override
     public ActivityDetailBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
@@ -184,44 +186,44 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
-        player.addListener(this, PlayerEvent.stateChanged, this);
-        player.addListener(this, PlayerEvent.ended, this);
-        player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                Log.d("ndhfdm", "playing");
-                mHandler.postDelayed(updateTimeTask, 100);
-                if (playerControlsFragment != null) {
-                    playerControlsFragment.sendTapCallBack(true);
-                    playerControlsFragment.startHandler();
-
-                }
-
-            }
-        });
-        player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                if (playerControlsFragment != null) {
-                    Log.d("ndhfdm", "playing");
-                    player.stop();
-                    if (mHandler != null && updateTimeTask != null)
-                        onBackPressed();
-                    mHandler.removeCallbacks(updateTimeTask);
-                }
-            }
-        });
-        player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                if (playerControlsFragment != null) {
-
-                    Log.d("ndhfdm", "playing");
-
-                }
-            }
-        });
+//        player = AppCommonMethod.loadPlayer(this, getBinding().playerRoot);
+//        player.addListener(this, PlayerEvent.stateChanged, this);
+//        player.addListener(this, PlayerEvent.ended, this);
+//        player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                Log.d("ndhfdm", "playing");
+//                mHandler.postDelayed(updateTimeTask, 100);
+//                if (playerControlsFragment != null) {
+//                    playerControlsFragment.sendTapCallBack(true);
+//                    playerControlsFragment.startHandler();
+//
+//                }
+//
+//            }
+//        });
+//        player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                if (playerControlsFragment != null) {
+//                    Log.d("ndhfdm", "playing");
+//                    player.stop();
+//                    if (mHandler != null && updateTimeTask != null)
+//                        onBackPressed();
+//                    mHandler.removeCallbacks(updateTimeTask);
+//                }
+//            }
+//        });
+//        player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
+//            @Override
+//            public void onEvent(PKEvent event) {
+//                if (playerControlsFragment != null) {
+//
+//                    Log.d("ndhfdm", "playing");
+//
+//                }
+//            }
+//        });
 
 
         getWindow().setBackgroundDrawableResource(R.color.black);
@@ -229,11 +231,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerControlsFragment = new PlayerControlsFragment();
-        transaction.replace(R.id.player_root, playerControlsFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        playerfragment = new KalturaFragment();
+//        transaction.replace(R.id.player_root, playerfragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
 
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;
@@ -658,17 +660,17 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
             }
         });
 
-        getBinding().playerRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playerControlsFragment != null) {
-                    playerControlsFragment.sendTapCallBack(true);
-                    playerControlsFragment.callAnimation();
-                    Log.d("bnjm", "visible");
-//
-                }
-            }
-        });
+//        getBinding().playerRoot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (playerControlsFragment != null) {
+//                    playerControlsFragment.sendTapCallBack(true);
+//                    playerControlsFragment.callAnimation();
+//                    Log.d("bnjm", "visible");
+////
+//                }
+//            }
+//        });
 
         connectionObserver();
     }
@@ -757,23 +759,23 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         }
         //postCommentClick();
         BuyNowClick();
-        startPlayer();
+//        startPlayer();
     }
 
-    private void startPlayer() {
-        player.stop();
-        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
-        player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
-            @Override
-            public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
-                if (loadError != null) {
-                    Toast.makeText(InstructorActivity.this, loadError.getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
-                }
-            }
-        });
-    }
+//    private void startPlayer() {
+//        player.stop();
+//        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
+//        player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
+//            @Override
+//            public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
+//                if (loadError != null) {
+//                    Toast.makeText(InstructorActivity.this, loadError.getMessage(), Toast.LENGTH_LONG).show();
+//                } else {
+//                    Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
+//                }
+//            }
+//        });
+//    }
 
     public void getAssetDetails() {
         isHitPlayerApi = true;
@@ -1912,98 +1914,22 @@ public class InstructorActivity extends BaseBindingActivity<ActivityDetailBindin
         return true;
     }
 
-    @Override
-    public void onEvent(PlayerEvent.StateChanged event) {
-        if (event.newState == PlayerState.READY) {
-            getBinding().playerImage.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.GONE);
-        } else if (event.newState == PlayerState.BUFFERING) {
-            getBinding().pBar.setVisibility(View.VISIBLE);
-        } else if (event.newState == PlayerState.LOADING) {
-        }
-        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
-    }
+//    @Override
+//    public void onEvent(PlayerEvent.StateChanged event) {
+//        if (event.newState == PlayerState.READY) {
+//            getBinding().playerImage.setVisibility(View.GONE);
+//            getBinding().pBar.setVisibility(View.GONE);
+//        } else if (event.newState == PlayerState.BUFFERING) {
+//            getBinding().pBar.setVisibility(View.VISIBLE);
+//        } else if (event.newState == PlayerState.LOADING) {
+//        }
+//        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
+//    }
 
-    @Override
-    public void playPause(ImageView id) {
 
-        if (player != null) {
-            if (player.isPlaying()) {
-                id.setBackgroundResource(R.color.transparent);
-                id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
 
-                player.pause();
-//                playerControlsFragment.showControls();
-                Log.d("chgytfgh", "pause");
 
-            } else {
-                id.setBackgroundResource(R.color.transparent);
 
-                id.setBackgroundResource(R.drawable.ic_baseline_pause_24);
 
-                player.play();
 
-                Log.d("chgytfgh", "play");
-            }
-
-        }
-    }
-
-    @Override
-    public void Forward() {
-        if (player != null) {
-            player.seekTo(player.getCurrentPosition() + 10000);
-            if (playerControlsFragment != null) {
-                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
-            }
-        }
-
-    }
-
-    @Override
-    public void Rewind() {
-        if (player != null) {
-            player.seekTo(player.getCurrentPosition() - 10000);
-            if (playerControlsFragment != null) {
-                playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
-            }
-        }
-    }
-
-    @Override
-    public void finishPlayer() {
-
-    }
-
-    @Override
-    public void checkOrientation(ImageView id) {
-
-    }
-
-    @Override
-    public void replay() {
-
-    }
-
-    @Override
-    public void SeekbarLastPosition(long position) {
-        if (player != null) {
-            player.seekTo((int) position);
-        }
-    }
-
-    @Override
-    public void showPlayerController(boolean isVisible) {
-
-    }
-
-    @Override
-    public void changeBitRateRequest(String title, int position) {
-
-    }
-
-    @Override
-    public void bitRateRequest() {
-
-    }
 }
