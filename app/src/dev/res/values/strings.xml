@@ -2,6 +2,7 @@
     <!--QA ID-->
 <!--    <string name="facebook_app_id">729810874460112</string>-->
         <string name="facebook_app_id">223342169169169</string>
+    <string name="fb_login_protocol_scheme">fb223342169169169</string>
 
     <!-- <string name="branch_key">key_live_pmLNi9QcTFaYi53K9btkLjnhAuf22I9h</string>-->
     <string name="branch_key">key_live_egG0oap83Po2jiMG3GGEXhmorrpmtOVA</string>
