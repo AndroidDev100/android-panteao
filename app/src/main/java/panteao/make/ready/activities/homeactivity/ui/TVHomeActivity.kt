@@ -23,6 +23,8 @@ import com.make.enums.ImageType
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.activities.search.ui.TVSearchActivity
+import panteao.make.ready.activities.usermanagment.ui.LoginActivity
+import panteao.make.ready.activities.usermanagment.ui.TVLoginActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
@@ -38,6 +40,7 @@ import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.ImageHelper
 import panteao.make.ready.utils.helpers.NetworkConnectivity
+import panteao.make.ready.utils.helpers.database.preferences.UserPreference
 import java.util.*
 
 class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), ChangableUi,
@@ -415,35 +418,17 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 binding.noDataFragment?.visibility = View.GONE
 
             }
-//            7 -> {
-//                drawerSelected(position)
-//                premiumFragment = PremiumFragment()
-//                premiumFragment?.let {
-//                    onLoaded(it)
-//                    setBundle(SDKConfig.getInstance().fourthTabId)
-//                    it.arguments = bundle
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.home_fragment, it, AppLevelConstants.TAG_PREMIUM_FRAGMENT)
-//                            .commit()
-//                    active?.let { it1 ->
-//                        fragmentManager.beginTransaction().hide(it1).show(it).commit()
-//                    }
-//                    active = it
-//                }
-//                showProgressBarLayout(false)
-//                binding.noDataFragment?.visibility = View.GONE
-//
-//            }
-////            getString(R.string.my_watch_history) -> {
-////                if (UserPreference.instance.isLogin) {
-////                    val userWatchListActivity =
-////                        Intent(this@HomeActivity, UserWatchHistoryActivity::class.java)
-////                    startActivity(userWatchListActivity)
-////                } else {
-////                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
-////                    startActivity(loginActivity)
-////                }
-////            }
+            7 -> {
+                if (UserPreference.instance.isLogin) {
+//                    val userWatchListActivity =
+//                        Intent(this@TVHomeActivity, UserWatchHistoryActivity::class.java)
+//                    startActivity(userWatchListActivity)
+                } else {
+                    val loginActivity = Intent(this@TVHomeActivity, TVLoginActivity::class.java)
+                    startActivity(loginActivity)
+                }
+            }
+
 //            8 -> {
 //                if (UserPreference.instance.isLogin) {
 //                    val userWatchListActivity =
@@ -533,7 +518,8 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         binding.playerRoot.visibility = View.GONE
         mHandler.postDelayed({
             if (windowFocus) {
-                val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(enveuVideoItemBean.getkEntryId(), 0L)
+                val ovpMediaOptions =
+                    AppCommonMethod.buildOvpMediaOptions(enveuVideoItemBean.getkEntryId(), 0L)
                 binding.playerRoot.visibility = View.VISIBLE
                 player?.loadMedia(ovpMediaOptions) { entry, loadError ->
                     if (loadError != null) {

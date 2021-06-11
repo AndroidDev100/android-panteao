@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_theme_color"
+        android:baselineAligned="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/logoImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:contentDescription="@string/image_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/makereadytv_logo" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="80dp"
+                android:layout_toEndOf="@id/logoImage"
+                android:theme="@style/progressBarGreen"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black_theme_color"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/rootView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/lnEtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/edittext_bottom_line"
+                        android:nextFocusLeft="@id/lnEtEmail"
+                        android:nextFocusRight="@id/lnEtEmail"
+                        android:nextFocusUp="@id/lnEtEmail"
+                        android:nextFocusDown="@id/lnEtPassword"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp">
+
+
+                        <EditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:focusable="true"
+                            android:fontFamily="@font/roboto_medium"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusLeft="@id/etEmail"
+                            android:nextFocusRight="@id/etEmail"
+                            android:nextFocusDown="@id/etPassword"
+                            android:padding="5dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/edit_text"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/errorEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/valid_email"
+                        android:textColor="@color/inspection_color"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+
+
+                    <LinearLayout
+                        android:id="@+id/lnEtPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_bottom_line"
+                        android:nextFocusLeft="@id/lnEtPassword"
+                        android:nextFocusRight="@id/lnEtPassword"
+                        android:nextFocusUp="@id/lnEtEmail"
+                        android:nextFocusDown="@id/llLogin"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp">
+
+                        <EditText
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:focusable="true"
+                            android:fontFamily="@font/roboto_medium"
+                            android:hint="@string/password"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:nextFocusLeft="@id/etPassword"
+                            android:nextFocusRight="@id/etPassword"
+                            android:nextFocusUp="@id/etEmail"
+                            android:nextFocusDown="@id/llLogin"
+                            android:padding="5dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/edit_text"
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/errorPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/inspection_color"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+
+
+                    <LinearLayout
+                        android:id="@+id/llLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/login_button_selecter"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:nextFocusLeft="@id/llLogin"
+                        android:nextFocusRight="@id/llLogin"
+                        android:nextFocusUp="@id/etPassword"
+                        android:nextFocusDown="@id/rlFacebookLogin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/sign_in_with_enveu"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/or_caps"
+                        android:textColor="@color/edittextview"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                    <LinearLayout
+                        android:id="@+id/rlFacebookLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center|center_vertical"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/facebook_login_button_selecter"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:nextFocusLeft="@id/rlFacebookLogin"
+                        android:nextFocusRight="@id/rlFacebookLogin"
+                        android:nextFocusUp="@id/llLogin"
+                        android:nextFocusDown="@id/btnForgetPassword">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@string/image_description"
+                            android:src="@drawable/facebook_icon"
+                            android:tint="#ffffff" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/rounded_button1"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/sign_in_with_facebook"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="@string/or"
+                        android:textColor="@color/edittextview"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:gravity="bottom">
+
+                    <Button
+                        android:id="@+id/btnForgetPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_my_account_button"
+                        android:nextFocusLeft="@id/btnForgetPassword"
+                        android:nextFocusRight="@id/btnForgetPassword"
+                        android:nextFocusUp="@id/rlFacebookLogin"
+                        android:nextFocusDown="@id/btnForgetPassword"
+                        android:text="@string/forgot_password"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

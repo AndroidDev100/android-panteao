@@ -283,8 +283,8 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             if ((cardRowAdapterSelected.indexOf(item) == cardRowAdapterSelected.size() - 1) && (cardRowAdapterSelected.size() % AppConstants.PAGE_SIZE == 0)) {
 //                railInjectionHelper.getPlaylistById(activity,
 //                        row.headerItem.name,
-//                        if (((cardRowAdapterSelected.size() / AppLevelConstants.PAGE_SIZE) == 1)) 1 else (cardRowAdapterSelected.size() / AppLevelConstants.PAGE_SIZE) + 1,
-//                        AppLevelConstants.PAGE_SIZE,
+//                        if (((cardRowAdapterSelected.size() / AppConstants.PAGE_SIZE) == 1)) 1 else (cardRowAdapterSelected.size() / AppConstants.PAGE_SIZE) + 1,
+//                        AppConstants.PAGE_SIZE,
 //                        object : panteao.make.ready.ui.callbacks.CommonApiCallBack {
 //                            override fun onSuccess(item: Any?) {
 //                                if (item != null && item is RailCommonData) {

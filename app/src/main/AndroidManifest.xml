@@ -211,12 +211,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
+
         <activity
-            android:name=".activities.detailspage.activity.VideoDetailActivity"
+            android:name=".activities.usermanagment.ui.TVLoginActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
-
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="@string/branch_key" />
