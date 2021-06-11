@@ -152,7 +152,7 @@ class KalturaPlayerActivity : FragmentActivity() {
     }
 
     companion object {
-        val PARTNER_ID = 3181353
+        val PARTNER_ID = 802792
         val SERVER_URL = "https://cdnapisec.kaltura.com"
         val ENTRY_ID = "1_7pg14mbg"
     }

@@ -218,6 +218,7 @@ public interface AppConstants {
     String BUNDLE_ASSET_TYPE = "assetType";
     String BUNDLE_CURRENT_ASSET_ID = "currentAssetId";
      String TAG_NO_INTERNET_FRAGMENT="NO_INTERNET_CONNECTION";
+    String ENTRY_ID ="entry_id" ;
 
     enum UserLoginType {
         Manual,

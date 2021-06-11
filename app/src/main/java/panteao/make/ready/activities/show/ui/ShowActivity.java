@@ -169,11 +169,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        transaction.replace(R.id.player_root, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+      setPlayerFragment();
 
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;
@@ -226,7 +222,20 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             connectionValidation(false);
         }
     }
+   private void setPlayerFragment(){
+       Bundle args = new Bundle();
+       if (videoDetails != null) {
+            args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
+            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+        }
+       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+       playerfragment = new KalturaFragment();
+       playerfragment.setArguments(args);
+       transaction.replace(R.id.player_root, playerfragment);
+       transaction.addToBackStack(null);
+       transaction.commit();
 
+   }
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
             UIinitialization();
