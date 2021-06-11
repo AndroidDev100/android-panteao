@@ -21,7 +21,7 @@ import com.make.bookmarking.bean.BookmarkingResponse;
 import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.watchList.adapter.WatchHistoryAdapter;
 import panteao.make.ready.activities.watchList.adapter.WatchListAdapter;
 import panteao.make.ready.activities.watchList.viewModel.WatchListViewModel;

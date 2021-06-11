@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;

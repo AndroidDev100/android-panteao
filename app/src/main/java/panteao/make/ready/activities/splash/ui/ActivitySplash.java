@@ -43,7 +43,7 @@ import com.google.gson.Gson;
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;

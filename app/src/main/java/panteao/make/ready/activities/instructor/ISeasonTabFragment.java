@@ -1,4 +1,4 @@
-package panteao.make.ready.activities.tutorial;
+package panteao.make.ready.activities.instructor;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.RelatedInstructorsActivity;
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutBinding> implements SeasonAdapter.EpisodeItemClick {
+public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutBinding> implements SeasonAdapter.EpisodeItemClick {
 
     private RailInjectionHelper railInjectionHelper;
     private int seriesId;
@@ -54,7 +56,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     private List<EnveuVideoItemBean> seasonEpisodes, allEpiosdes;
     private long mLastClickTime = 0;
 
-    public TSeasonTabFragment() {
+    public ISeasonTabFragment() {
     }
 
     public int getSelectedSeason() {
@@ -112,9 +114,9 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                 seasonList = new ArrayList<>();
                 selectedSeason = 1;
                 int tempSeaon = bundle.getInt(AppConstants.BUNDLE_SELECTED_SEASON);
-                if (context instanceof ChapterActivity && tempSeaon > 0)
+                if (context instanceof RelatedInstructorsActivity && tempSeaon > 0)
                     selectedSeason = tempSeaon;
-                if (context instanceof TutorialActivity) {
+                if (context instanceof InstructorActivity) {
                     if (seasonArray != null && !seasonArray.isEmpty()) {
                         selectedSeason = (int) seasonArray.get(0);
                     }
@@ -167,10 +169,10 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                 else
                     seasonList.add(new SelectedSeasonModel(getResources().getString(R.string.season) + " " + seasonArray.get(i), (int) seasonArray.get(i), false));
             }
-            if (context instanceof TutorialActivity) {
-                ((TutorialActivity) context).showSeasonList(seasonList, selectedSeason + 1);
-            } else if (context instanceof ChapterActivity) {
-                ((ChapterActivity) context).showSeasonList(seasonList, selectedSeason + 1);
+            if (context instanceof InstructorActivity) {
+                ((InstructorActivity) context).showSeasonList(seasonList, selectedSeason + 1);
+            } else if (context instanceof RelatedInstructorsActivity) {
+                ((RelatedInstructorsActivity) context).showSeasonList(seasonList, selectedSeason + 1);
             }
         });
 
@@ -179,19 +181,19 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
 
     public void hideProgressBar() {
-        if (context instanceof TutorialActivity) {
-            ((TutorialActivity) context).isSeasonData = true;
-            ((TutorialActivity) context).stopShimmer();
-            ((TutorialActivity) context).dismissLoading(((TutorialActivity) context).getBinding().progressBar);
+        if (context instanceof InstructorActivity) {
+            ((InstructorActivity) context).isSeasonData = true;
+            ((InstructorActivity) context).stopShimmer();
+            ((InstructorActivity) context).dismissLoading(((InstructorActivity) context).getBinding().progressBar);
             if (seasonAdapter != null) {
-                ((TutorialActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
+                ((InstructorActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
             }
-        } else if (context instanceof ChapterActivity) {
-            ((ChapterActivity) context).dismissLoading(((ChapterActivity) context).getBinding().progressBar);
-            ((ChapterActivity) context).isSeasonData = true;
-            ((ChapterActivity) context).stopShimmercheck();
+        } else if (context instanceof RelatedInstructorsActivity) {
+            ((RelatedInstructorsActivity) context).dismissLoading(((RelatedInstructorsActivity) context).getBinding().progressBar);
+            ((RelatedInstructorsActivity) context).isSeasonData = true;
+            ((RelatedInstructorsActivity) context).stopShimmercheck();
             if (seasonAdapter != null) {
-                ((ChapterActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
+                ((RelatedInstructorsActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
             }
         }
     }
@@ -238,7 +240,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                     getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
                                     getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                     new RecyclerAnimator(getActivity()).animate(getBinding().seriesRecyclerView);
-                                    seasonAdapter = new SeasonAdapter(getActivity(), allEpiosdes, seriesId, currentAssetId, TSeasonTabFragment.this);
+                                    seasonAdapter = new SeasonAdapter(getActivity(), allEpiosdes, seriesId, currentAssetId, ISeasonTabFragment.this);
                                     getBinding().seriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                                     ((SimpleItemAnimator) getBinding().seriesRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
                                     getBinding().seriesRecyclerView.setAdapter(seasonAdapter);
@@ -250,8 +252,8 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                     hideProgressBar();
                                 }
 
-                                if (context instanceof ChapterActivity) {
-                                    ((ChapterActivity) context).episodesList(allEpiosdes);
+                                if (context instanceof RelatedInstructorsActivity) {
+                                    ((RelatedInstructorsActivity) context).episodesList(allEpiosdes);
                                 }
                             }
                         }
@@ -348,8 +350,8 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                     seasonEpisodes.addAll(railCommonData.getEnveuVideoItemBeans());
                     seasonAdapter.notifyDataSetChanged();
                 }
-                if (context instanceof ChapterActivity) {
-                    ((ChapterActivity) context).episodesList(seasonEpisodes);
+                if (context instanceof RelatedInstructorsActivity) {
+                    ((RelatedInstructorsActivity) context).episodesList(seasonEpisodes);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);
@@ -387,7 +389,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                 AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getBrightcoveVideoId()), AppConstants.Episode, enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
                 break;
             case AppConstants.Series:
-                //  new ActivityLauncher(getActivity()).seriesDetailScreen(getActivity(), TutorialActivity.class, id);
+                //  new ActivityLauncher(getActivity()).seriesDetailScreen(getActivity(), InstructorActivity.class, id);
                 break;
             case AppConstants.Video:
                // new ActivityLauncher(getActivity()).detailScreenBrightCove(getActivity(), DetailActivity.class, brighCoveId, assetID, "0", isPremium, AppConstants.MOVIE_ENVEU);

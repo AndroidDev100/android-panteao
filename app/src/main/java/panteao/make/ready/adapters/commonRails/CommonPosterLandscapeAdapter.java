@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;

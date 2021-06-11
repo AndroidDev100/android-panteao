@@ -1,4 +1,4 @@
-package panteao.make.ready.activities.tutorial.ui;
+package panteao.make.ready.activities.instructor.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -59,6 +59,8 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
+import panteao.make.ready.activities.instructor.IRecommendationRailFragment;
+import panteao.make.ready.activities.instructor.ISeasonTabFragment;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
@@ -116,7 +118,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
@@ -152,7 +154,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private String sharingUrl;
     private AudioManager audioManager;
     private AudioFocusRequest focusRequest;
-    private TSeasonTabFragment seasonTabFragment;
+    private ISeasonTabFragment seasonTabFragment;
     private EnveuVideoItemBean seriesDetailBean;
     private CommentsFragment commentsFragment;
     private Dialog seasonDialog;
@@ -236,7 +238,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
-        viewModel = ViewModelProviders.of(ChapterActivity.this).get(DetailViewModel.class);
+        viewModel = ViewModelProviders.of(RelatedInstructorsActivity.this).get(DetailViewModel.class);
         setupUI(getBinding().llParent);
         commentCounter = 0;
         isHitPlayerApi = false;
@@ -338,7 +340,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
-    TRecommendationRailFragment railFragment;
+    IRecommendationRailFragment railFragment;
 
     public void setTabs(String seasonNumber, boolean noEpisode) {
         if (seriesDetailBean != null) {
@@ -348,11 +350,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         getBinding().tabLayout.setSelectedTabIndicatorGravity(INDICATOR_GRAVITY_BOTTOM);
         if (episodeTabAdapter == null) {
             episodeTabAdapter = new EpisodeTabAdapter(getSupportFragmentManager());
-            railFragment = new TRecommendationRailFragment();
+            railFragment = new IRecommendationRailFragment();
             Bundle args = new Bundle();
             args.putString(AppConstants.BUNDLE_TAB_ID, tabId);
             railFragment.setArguments(args);
-            seasonTabFragment = new TSeasonTabFragment();
+            seasonTabFragment = new ISeasonTabFragment();
             Bundle bundleSeason = new Bundle();
 
             if (noEpisode) {
@@ -608,7 +610,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     protected void onResume() {
         super.onResume();
         requestAudioFocus();
-        boolean isTablet = ChapterActivity.this.getResources().getBoolean(R.bool.isTablet);
+        boolean isTablet = RelatedInstructorsActivity.this.getResources().getBoolean(R.bool.isTablet);
         if (isTablet) {
             AppCommonMethod.isResumeDetail = true;
         }
@@ -718,7 +720,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
-        ChapterActivity.this.registerReceiver(receiver, filter);
+        RelatedInstructorsActivity.this.registerReceiver(receiver, filter);
         setConnectivityListener(this);
     }
 
@@ -772,7 +774,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
             if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
-                Intent intent = new Intent(ChapterActivity.this, PurchaseActivity.class);
+                Intent intent = new Intent(RelatedInstructorsActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", videoDetails);
                 intent.putExtra("assestId", assestId);
                 intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
@@ -797,7 +799,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         preference.setAppPrefHasSelectedId(true);
         preference.setAppPrefSelectodSeasonId(selectedSeasonId);
-        new ActivityLauncher(ChapterActivity.this).loginActivity(ChapterActivity.this, LoginActivity.class);
+        new ActivityLauncher(RelatedInstructorsActivity.this).loginActivity(RelatedInstructorsActivity.this, LoginActivity.class);
     }
 
     public void UIinitialization() {
@@ -864,7 +866,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (fromBingWatch) {
             parseVideoDetails(nextEpisode);
         } else {
-            railInjectionHelper.getSeriesDetailsV2(String.valueOf(assestId)).observe(ChapterActivity.this, new Observer<ResponseModel>() {
+            railInjectionHelper.getSeriesDetailsV2(String.valueOf(assestId)).observe(RelatedInstructorsActivity.this, new Observer<ResponseModel>() {
                 @Override
                 public void onChanged(ResponseModel response) {
                     if (response != null) {
@@ -984,7 +986,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             setTabs(seasonNumber, false);
         } else {
 
-            railInjectionHelper.getSeriesDetailsV2(String.valueOf(seriesId)).observe(ChapterActivity.this, new Observer<ResponseModel>() {
+            railInjectionHelper.getSeriesDetailsV2(String.valueOf(seriesId)).observe(RelatedInstructorsActivity.this, new Observer<ResponseModel>() {
                 @Override
                 public void onChanged(ResponseModel response) {
                     if (response != null) {
@@ -1055,7 +1057,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     public void hitApiEntitlement(String sku) {
 
-        viewModel.hitApiEntitlement(token, sku).observe(ChapterActivity.this, responseEntitlement -> {
+        viewModel.hitApiEntitlement(token, sku).observe(RelatedInstructorsActivity.this, responseEntitlement -> {
             responseEntitlementModel = responseEntitlement;
             if (responseEntitlement.getStatus()) {
                 if (responseEntitlement.getData().getEntitled()) {
@@ -1099,9 +1101,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         try {
             isPremium=true;
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-                AppCommonMethod.resetLanguage("th", ChapterActivity.this);
+                AppCommonMethod.resetLanguage("th", RelatedInstructorsActivity.this);
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                AppCommonMethod.resetLanguage("en", ChapterActivity.this);
+                AppCommonMethod.resetLanguage("en", RelatedInstructorsActivity.this);
             }
             showDialog("", getResources().getString(R.string.premium_popup_message));
         }catch (Exception ignored){
@@ -1218,9 +1220,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void logoutUser() {
         isloggedout = false;
         if (isLogin) {
-            if (CheckInternetConnection.isOnline(Objects.requireNonNull(ChapterActivity.this))) {
+            if (CheckInternetConnection.isOnline(Objects.requireNonNull(RelatedInstructorsActivity.this))) {
                 clearCredientials(preference);
-                hitApiLogout(ChapterActivity.this, preference.getAppPrefAccessToken());
+                hitApiLogout(RelatedInstructorsActivity.this, preference.getAppPrefAccessToken());
             }
         }
     }
@@ -1248,7 +1250,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             setCustomeFields(responseDetailPlayer, tempTag2);
         } else {
             setCustomeFields(responseDetailPlayer, "");
-            new ToastHandler(ChapterActivity.this).show(ChapterActivity.this.getResources().getString(R.string.can_not_play_error));
+            new ToastHandler(RelatedInstructorsActivity.this).show(RelatedInstructorsActivity.this.getResources().getString(R.string.can_not_play_error));
         }
         if (responseDetailPlayer.getDescription() != null && responseDetailPlayer.getDescription().equalsIgnoreCase("")) {
             getBinding().descriptionText.setVisibility(View.GONE);
@@ -1392,7 +1394,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (NetworkChangeReceiver.connectivityReceiverListener != null)
                 NetworkChangeReceiver.connectivityReceiverListener = null;
         }
-        releaseAudioFocusForMyApp(ChapterActivity.this);
+        releaseAudioFocusForMyApp(RelatedInstructorsActivity.this);
 
 
     }
@@ -1493,7 +1495,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void onConfigurationChanged(Configuration newConfig) {
         if (!isCastConnected) {
             super.onConfigurationChanged(newConfig);
-            boolean isTablet = ChapterActivity.this.getResources().getBoolean(R.bool.isTablet);
+            boolean isTablet = RelatedInstructorsActivity.this.getResources().getBoolean(R.bool.isTablet);
             AppCommonMethod.isOrientationChanged = true;
             //if (isTablet) {
             if (newConfig.orientation == 2) {
@@ -1531,7 +1533,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         Log.d("episodeclick", "itemclick");
 
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
-            Toast.makeText(ChapterActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
+            Toast.makeText(RelatedInstructorsActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
             if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
                 Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
@@ -1632,9 +1634,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void showSeasonList(ArrayList<SelectedSeasonModel> list, int selectedSeasonId) {
         getBinding().transparentLayout.setVisibility(View.VISIBLE);
 
-        ChapterActivity.SeasonListAdapter listAdapter = new ChapterActivity.SeasonListAdapter(list, selectedSeasonId);
-        builder = new AlertDialog.Builder(ChapterActivity.this);
-        LayoutInflater inflater = LayoutInflater.from(ChapterActivity.this);
+        RelatedInstructorsActivity.SeasonListAdapter listAdapter = new RelatedInstructorsActivity.SeasonListAdapter(list, selectedSeasonId);
+        builder = new AlertDialog.Builder(RelatedInstructorsActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(RelatedInstructorsActivity.this);
         View content = inflater.inflate(R.layout.season_custom_dialog, null);
         builder.setView(content);
         RecyclerView mRecyclerView = content.findViewById(R.id.my_recycler_view);
@@ -1645,10 +1647,10 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         });
 
         //Creating Adapter to fill data in Dialog
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(ChapterActivity.this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(RelatedInstructorsActivity.this));
         mRecyclerView.setAdapter(listAdapter);
         alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(ChapterActivity.this, R.color.transparent_series));
+        alertDialog.getWindow().setBackgroundDrawable(ActivityCompat.getDrawable(RelatedInstructorsActivity.this, R.color.transparent_series));
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         if (alertDialog.getWindow() != null)
@@ -1664,7 +1666,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     }
 
-    class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
+    class SeasonListAdapter extends RecyclerView.Adapter<RelatedInstructorsActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;
 
@@ -1675,14 +1677,14 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         @NonNull
         @Override
-        public ChapterActivity.SeasonListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RelatedInstructorsActivity.SeasonListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_season_listing, parent, false);
 
-            return new ChapterActivity.SeasonListAdapter.ViewHolder(view);
+            return new RelatedInstructorsActivity.SeasonListAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ChapterActivity.SeasonListAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final RelatedInstructorsActivity.SeasonListAdapter.ViewHolder holder, final int position) {
             holder.season.setText(list.get(position).getList());
             if (list.get(position).isSelected()) {
                 holder.season.setTextColor(getResources().getColor(R.color.moretitlecolor));
@@ -1762,7 +1764,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
         if (supportsPiPMode()) {
 //            PictureInPictureManager.getInstance().onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
-            ADHelper.getInstance(ChapterActivity.this).pipActivity(ChapterActivity.this);
+            ADHelper.getInstance(RelatedInstructorsActivity.this).pipActivity(RelatedInstructorsActivity.this);
 //            playerFragment.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
         }
     }
@@ -2435,4 +2437,5 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         return true;
     }
 }
+
 

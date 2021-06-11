@@ -40,7 +40,7 @@ import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;

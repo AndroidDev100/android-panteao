@@ -1,4 +1,4 @@
-package panteao.make.ready.activities.instructor.viewModel;
+package panteao.make.ready.activities.show.viewModel;
 
 import android.app.Application;
 

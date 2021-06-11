@@ -1,4 +1,4 @@
-package panteao.make.ready.activities.instructor.adapter;
+package panteao.make.ready.activities.show.adapter;
 
 import android.content.Context;
 import android.graphics.Color;

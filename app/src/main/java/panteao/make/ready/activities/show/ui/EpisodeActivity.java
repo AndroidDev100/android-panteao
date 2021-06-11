@@ -1,4 +1,4 @@
-package panteao.make.ready.activities.instructor.ui;
+package panteao.make.ready.activities.show.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -59,8 +59,8 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.activities.instructor.adapter.AllCommentAdapter;
-import panteao.make.ready.activities.instructor.viewModel.DetailViewModel;
+import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
+import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
@@ -103,7 +103,6 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.ADHelper;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
-import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.StringUtils;

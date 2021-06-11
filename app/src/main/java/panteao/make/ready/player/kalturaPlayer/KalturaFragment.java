@@ -1,11 +1,8 @@
 package panteao.make.ready.player.kalturaPlayer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,11 +25,8 @@ import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
 
-import org.jetbrains.annotations.NotNull;
-
 import panteao.make.ready.R;
 import panteao.make.ready.activities.KalturaPlayerActivity;
-import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
