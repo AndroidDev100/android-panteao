@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;

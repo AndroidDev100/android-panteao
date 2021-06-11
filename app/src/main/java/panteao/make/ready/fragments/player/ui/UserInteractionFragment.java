@@ -20,7 +20,7 @@ import com.google.gson.JsonObject;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -271,7 +271,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ActivityTrackers.getInstance().setLauncherActivity("EpisodeActivity");
         } else if (context instanceof InstructorActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-//            ((DetailActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((InstructorActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
         }
     }
 

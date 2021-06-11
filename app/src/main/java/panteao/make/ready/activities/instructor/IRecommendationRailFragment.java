@@ -1,4 +1,4 @@
-package panteao.make.ready.fragments.player.ui;
+package panteao.make.ready.activities.instructor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +18,13 @@ import com.make.enums.Layouts;
 import com.make.enums.ListingLayoutType;
 import com.make.enums.PDFTarget;
 
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.instructor.ui.RelatedInstructorsActivity;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
 import panteao.make.ready.activities.privacypolicy.ui.WebViewActivity;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
@@ -43,7 +45,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendationRailFragment extends BaseBindingFragment<DetailFooterFragmentBinding> implements CommonRailtItemClickListner, MoreClickListner {
+public class IRecommendationRailFragment extends BaseBindingFragment<DetailFooterFragmentBinding> implements CommonRailtItemClickListner, MoreClickListner {
 
     private List<RailCommonData> railCommonDataList = new ArrayList<>();
     private CommonAdapterNew adapterDetailRail;
@@ -78,7 +80,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         Bundle bundle = bund;
         if (bundle != null) {
             tabId = bundle.getString(AppConstants.BUNDLE_TAB_ID);
-          //tabId = "3";
+            //tabId = "3";
             hitApiRecommendationRail();
         }
     }
@@ -103,7 +105,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                         getBinding().rlFooter.setVisibility(View.VISIBLE);
                         getBinding().recyclerView.setVisibility(View.VISIBLE);
                         //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
-                        adapterDetailRail = new CommonAdapterNew(getActivity(), railCommonDataList, RecommendationRailFragment.this::railItemClick, RecommendationRailFragment.this::moreRailClick);
+                        adapterDetailRail = new CommonAdapterNew(getActivity(), railCommonDataList, IRecommendationRailFragment.this::railItemClick, IRecommendationRailFragment.this::moreRailClick);
                         getBinding().recyclerView.setAdapter(adapterDetailRail);
 
                     } else {
@@ -145,24 +147,24 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
 
     public void removeTab() {
-        if (context instanceof SeriesDetailActivity) {
-            ((SeriesDetailActivity) context).removeTab(1);
-        } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity) context).removeTab(1);
+        if (context instanceof InstructorActivity) {
+            ((InstructorActivity) context).removeTab(1);
+        } else if (context instanceof RelatedInstructorsActivity) {
+            ((RelatedInstructorsActivity) context).removeTab(1);
         }
 
     }
 
     public void hideProgressBar() {
-        if (context instanceof SeriesDetailActivity) {
-            ((SeriesDetailActivity) context).isRailData = true;
-            ((SeriesDetailActivity) context).stopShimmer();
-            ((SeriesDetailActivity) context).dismissLoading(((SeriesDetailActivity) context).getBinding().progressBar);
-        } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity)
-                    context).dismissLoading(((EpisodeActivity) context).getBinding().progressBar);
-            ((EpisodeActivity) context).isRailData = true;
-            ((EpisodeActivity) context).stopShimmercheck();
+        if (context instanceof InstructorActivity) {
+            ((InstructorActivity) context).isRailData = true;
+            ((InstructorActivity) context).stopShimmer();
+            ((InstructorActivity) context).dismissLoading(((InstructorActivity) context).getBinding().progressBar);
+        } else if (context instanceof RelatedInstructorsActivity) {
+            ((RelatedInstructorsActivity)
+                    context).dismissLoading(((RelatedInstructorsActivity) context).getBinding().progressBar);
+            ((RelatedInstructorsActivity) context).isRailData = true;
+            ((RelatedInstructorsActivity) context).stopShimmercheck();
 
 
         }
@@ -194,23 +196,23 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             } else {
 
-                    if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() != null) {
-                        if (AppCommonMethod.getCheckBCID(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())){
-                            getActivity().finish();
-                            AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
-                        }else {
-                            getActivity().finish();
-                            AppCommonMethod.launchDetailScreen(getActivity(), 0l, railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
-                        }
-                    } else {
-                        if (AppCommonMethod.getCheckBCID(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())){
-                            getActivity().finish();
-                            AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()), AppConstants.Video, railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
-                        }else {
-                            getActivity().finish();
-                            AppCommonMethod.launchDetailScreen(getActivity(), 0l, AppConstants.Video, railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
-                        }
+                if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() != null) {
+                    if (AppCommonMethod.getCheckBCID(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())){
+                        getActivity().finish();
+                        AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    }else {
+                        getActivity().finish();
+                        AppCommonMethod.launchDetailScreen(getActivity(), 0l, railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
                     }
+                } else {
+                    if (AppCommonMethod.getCheckBCID(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())){
+                        getActivity().finish();
+                        AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()), AppConstants.Video, railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    }else {
+                        getActivity().finish();
+                        AppCommonMethod.launchDetailScreen(getActivity(), 0l, AppConstants.Video, railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    }
+                }
 
             }
         }
@@ -265,7 +267,7 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 playListId = data.getScreenWidget().getLandingPagePlayListId();
 
             if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
-               startListingActivity(data);
+                startListingActivity(data);
             } else if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
                 startGridActivity(data);
             } else {
@@ -333,3 +335,4 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
         void updateData(int id);
     }
 }
+

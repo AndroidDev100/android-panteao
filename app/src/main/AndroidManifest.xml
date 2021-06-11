@@ -46,11 +46,11 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.instructor.ui.ShowActivity"></activity>
+        <activity android:name=".activities.show.ui.ShowActivity"></activity>
         <activity android:name=".activities.search.ui.TVSearchActivity" />
         <activity android:name=".activities.KalturaPlayerActivity" />
         <activity android:name=".activities.live.LiveActivity" />
-        <activity android:name=".activities.instructor.ui.EpisodeActivity" />
+        <activity android:name=".activities.show.ui.EpisodeActivity" />
         <activity
             android:name=".activities.tutorial.ui.ChapterActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"

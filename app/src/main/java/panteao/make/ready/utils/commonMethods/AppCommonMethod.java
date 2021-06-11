@@ -25,7 +25,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -39,7 +38,6 @@ import com.kaltura.tvplayer.PlayerInitOptions;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageType;
 import com.make.enums.RailCardType;
-import com.make.enums.WidgetImageType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -47,8 +45,8 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
-import panteao.make.ready.activities.instructor.ui.ShowActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
@@ -941,7 +939,7 @@ public class AppCommonMethod {
             } else {
                 new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
