@@ -72,6 +72,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
         getBinding().toolbar.screenText.setText(ForceLoginFbActivity.this.getResources().getString(R.string.email_id));
         getBinding().toolbar.backLayout.setVisibility(View.VISIBLE);
 //        getBinding().toolbar.mediaRouteButton.setVisibility(View.GONE);
+//        gethitApiFBLoginIntent()
         if (getIntent().hasExtra(AppConstants.EXTRA_REGISTER_USER)) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
