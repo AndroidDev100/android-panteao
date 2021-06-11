@@ -242,12 +242,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         isHitPlayerApi = false;
         AppCommonMethod.isPurchase = false;
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        transaction.replace(R.id.player_frame, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
         if (getIntent().hasExtra(AppConstants.BUNDLE_ASSET_BUNDLE)) {
             extras = getIntent().getExtras();
             if (extras != null) {
@@ -302,7 +296,20 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             noConnectionLayout();
         }
     }
+    private void setPlayerFragment(){
+        Bundle args = new Bundle();
+        if (videoDetails != null) {
+            args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
+            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        playerfragment = new KalturaFragment();
+        playerfragment.setArguments(args);
+        transaction.replace(R.id.player_frame, playerfragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+    }
 
     public void postCommentClick() {
       /*  getBinding().interactionSection.showComments.setOnClickListener(v -> {
@@ -971,6 +978,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
 
         setUI(videoDetails);
+        setPlayerFragment();
     }
     //***********************^||||call episode data from above API\\\\\^***************************************//
 

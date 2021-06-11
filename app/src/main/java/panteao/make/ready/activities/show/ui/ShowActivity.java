@@ -169,7 +169,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 WindowManager.LayoutParams.FLAG_SECURE);
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
-      setPlayerFragment();
 
         //change this id in future for rails in details
         tabId = AppConstants.HOME_ENVEU;
@@ -753,6 +752,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
+            setPlayerFragment();
+
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {
