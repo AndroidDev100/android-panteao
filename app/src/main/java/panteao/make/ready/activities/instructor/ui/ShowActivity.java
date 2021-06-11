@@ -755,6 +755,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 getBinding().backButton.setVisibility(View.VISIBLE);
+
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
 
                 if (isLogin) {
