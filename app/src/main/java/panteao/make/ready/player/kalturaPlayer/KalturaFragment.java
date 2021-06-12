@@ -161,7 +161,15 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             @Override
             public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
                 if (loadError != null) {
-                    Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                    if (getActivity()!=null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
                 } else {
                     Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
                 }
