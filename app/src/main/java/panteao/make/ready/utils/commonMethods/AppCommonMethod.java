@@ -1482,6 +1482,15 @@ public class AppCommonMethod {
 
     }
 
+    public static boolean getCheckKEntryId(String brightcoveVideoId) {
+        if (brightcoveVideoId != null && !brightcoveVideoId.equalsIgnoreCase("")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public static void handleTags(String isVIPTag, String isNewS, FrameLayout isVIP, FrameLayout newSeries, FrameLayout newEpisode, FrameLayout newMovie, String assetType) {
         try {
             if (isVIPTag.equalsIgnoreCase("true")) {

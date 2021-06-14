@@ -278,7 +278,7 @@
     <string name="language_indonesia">bahasa Indonesia</string>
     <string name="go_to_my_downloads">View My Downloads</string>
     <string name="download">Download</string>
-    <string name="no_downloads">Films and TV programmes that you download appear here.</string>
+    <string name="no_downloads">You don\'t have any downloaded content to watch</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>

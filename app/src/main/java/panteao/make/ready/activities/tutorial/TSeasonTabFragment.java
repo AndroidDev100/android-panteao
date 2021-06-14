@@ -125,7 +125,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
             if (seriesId == -1) {
                 getBinding().seasonHeader.setVisibility(View.VISIBLE);
-                getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+                getBinding().seasonHeader.setText(getResources().getString(R.string.all_chapters));
                 getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 getBinding().comingSoon.setVisibility(View.VISIBLE);
                 getBinding().seriesRecyclerView.setVisibility(View.GONE);
@@ -235,7 +235,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
                                 if (seasonAdapter == null) {
                                     allEpiosdes = enveuCommonResponse.getEnveuVideoItemBeans();
-                                    getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+                                    getBinding().seasonHeader.setText(getResources().getString(R.string.all_chapters));
                                     getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                     new RecyclerAnimator(getActivity()).animate(getBinding().seriesRecyclerView);
                                     seasonAdapter = new SeasonAdapter(getActivity(), allEpiosdes, seriesId, currentAssetId, TSeasonTabFragment.this);
@@ -372,11 +372,11 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         int assetID = enveuVideoItemBean.getId();*/
 
 
-        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) || assetType.equalsIgnoreCase(AppConstants.Episode)) {
-            if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getBrightcoveVideoId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getBrightcoveVideoId()), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getkEntryId()), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), 0l, MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), 0l, MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
 
         }
