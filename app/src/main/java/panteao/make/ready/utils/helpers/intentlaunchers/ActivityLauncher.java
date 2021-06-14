@@ -153,10 +153,10 @@ public class ActivityLauncher {
 
 
 
-    public void detailScreenBrightCove(Activity source, Class<InstructorActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
+    public void detailScreenBrightCove(Activity source, Class<InstructorActivity> destination, String videoId, int id, String duration, boolean isPremium, String detailType) {
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+        args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
 
         args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
         args.putString(AppConstants.BUNDLE_DETAIL_TYPE, detailType);
@@ -182,10 +182,10 @@ public class ActivityLauncher {
 
 
     }
-    public void ShowScreenBrightCove(Activity source, Class<ShowActivity> destination, Long videoId, int id, String duration, boolean isPremium, String detailType) {
+    public void ShowScreenBrightCove(Activity source, Class<ShowActivity> destination, String videoId, int id, String duration, boolean isPremium, String detailType) {
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+        args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
 
         args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
         args.putString(AppConstants.BUNDLE_DETAIL_TYPE, detailType);
@@ -212,12 +212,12 @@ public class ActivityLauncher {
 
     }
 
-    public void chapterScreenBrightcove(Activity source, Class<ChapterActivity> destination, Long videoId, int id, String duration, boolean isPremium) {
+    public void chapterScreenBrightcove(Activity source, Class<ChapterActivity> destination, String videoId, int id, String duration, boolean isPremium) {
         KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
 
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+        args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
         args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
 
         if (StringUtils.isNullOrEmpty(duration))
@@ -263,12 +263,12 @@ public class ActivityLauncher {
     }
 
 
-    public void episodeScreenBrightcove(Activity source, Class<EpisodeActivity> destination, Long videoId, int id, String duration, boolean isPremium) {
+    public void episodeScreenBrightcove(Activity source, Class<EpisodeActivity> destination, String videoId, int id, String duration, boolean isPremium) {
         KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
 
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
+        args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, videoId);
         args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
 
         if (StringUtils.isNullOrEmpty(duration))

@@ -146,7 +146,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isHitPlayerApi = false;
     private int selectedIdIntent = -1;
     private String tabId;
-    private Long brightCoveVideoId;
+    private String brightCoveVideoId;
     private RailInjectionHelper railInjectionHelper;
     private FragmentTransaction transaction;
     private String sharingUrl;
@@ -250,7 +250,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 extras = extras.getBundle(AppConstants.BUNDLE_ASSET_BUNDLE);
                 assestId = Objects.requireNonNull(extras).getInt(AppConstants.BUNDLE_ASSET_ID);
                 videoPos = TimeUnit.SECONDS.toMillis(Long.parseLong(extras.getString(AppConstants.BUNDLE_DURATION)));
-                brightCoveVideoId = Objects.requireNonNull(extras).getLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
+                brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
 
             }
         } else {
@@ -940,18 +940,18 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 if (entitlementStatus && apiStatus) {
                                     isAdShowingToUser = false;
                                 }
-                                brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                                //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                                 playPlayerWhenShimmer();
                             }
                         });
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
-                        brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                        //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                         playPlayerWhenShimmer();
                     }
 
                 } else {
-                    brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                    //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                     playPlayerWhenShimmer();
                 }
 
@@ -1150,7 +1150,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                        //brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -1544,8 +1544,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             Toast.makeText(ChapterActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
-            if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
-                Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
+            if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
+                String getVideoId = item.getEnveuVideoItemBeans().get(position).getkEntryId();
                 AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             }
         }
@@ -1612,7 +1612,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     public void episodesList(List<EnveuVideoItemBean> seasonEpisodes) {
         try {
-            if (brightCoveVideoId > 0) {
+            if (brightCoveVideoId!=null && !brightCoveVideoId.equalsIgnoreCase("")) {
                 seasonEpisodesList = new ArrayList<>();
                 if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
                     for (int i = 0; i < seasonEpisodes.size(); i++) {

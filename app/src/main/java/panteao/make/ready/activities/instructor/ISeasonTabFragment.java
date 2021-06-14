@@ -375,10 +375,10 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
 
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) || assetType.equalsIgnoreCase(AppConstants.Episode)) {
-            if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getBrightcoveVideoId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getBrightcoveVideoId()), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), 0l, MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
 
         }

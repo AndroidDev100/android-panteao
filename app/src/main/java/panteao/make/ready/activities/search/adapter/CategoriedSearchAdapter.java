@@ -341,12 +341,12 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         } catch (Exception e) {
 
         }
-        if (AppCommonMethod.getCheckBCID(itemValue.getBrightcoveVideoId())) {
-            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
+        if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
+            String getVideoId = itemValue.getkEntryId();
             PrintLogging.printLog("", "SearchAssetType-->>" + itemValue.getAssetType());
             AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
         } else {
-            AppCommonMethod.launchDetailScreen(context, 0l, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
 
         }
     }

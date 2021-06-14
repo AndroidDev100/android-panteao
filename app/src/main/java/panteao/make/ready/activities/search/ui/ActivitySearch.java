@@ -453,8 +453,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         } catch (Exception e) {
 
         }
-        if (AppCommonMethod.getCheckBCID(itemValue.getBrightcoveVideoId())) {
-            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
+        if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
+            String getVideoId = itemValue.getkEntryId();
             AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
         }
     }

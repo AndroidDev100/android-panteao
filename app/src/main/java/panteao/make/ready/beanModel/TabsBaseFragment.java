@@ -407,14 +407,14 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         } else {
 
             if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() == MediaTypeConstants.getInstance().getSeries()) {
-                Long videoId = Long.parseLong(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
+                String videoId = railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId();
                 AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             } else {
                 if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() != null && railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()!=null &&
                         !railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId().equalsIgnoreCase("")) {
-                    AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
                 } else {
-                    AppCommonMethod.launchDetailScreen(getActivity(), 0l, railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), "", railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
                 }
             }
         }
@@ -429,9 +429,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         String landingPageType = railCommonData.getScreenWidget().getLandingPageType();
         if (landingPageType != null) {
             if (landingPageType.equals(LandingPageType.DEF.name()) || landingPageType.equals(LandingPageType.AST.name())) {
-                Long videoId = 0l;
-                if (AppCommonMethod.getCheckBCID(railCommonData.getEnveuVideoItemBeans().get(0).getBrightcoveVideoId())) {
-                    videoId = Long.parseLong(railCommonData.getEnveuVideoItemBeans().get(0).getBrightcoveVideoId());
+                String videoId = "";
+                if (AppCommonMethod.getCheckKEntryId(railCommonData.getEnveuVideoItemBeans().get(0).getkEntryId())) {
+                    videoId = railCommonData.getEnveuVideoItemBeans().get(0).getkEntryId();
                 }
                 AppCommonMethod.heroAssetRedirections(railCommonData,getActivity(),videoId,Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()),"0",false);
 

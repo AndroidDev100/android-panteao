@@ -130,7 +130,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private boolean loadingComment = true;
     private boolean isHitPlayerApi = false;
     private int playerApiCount = 0;
-    private long brightCoveVideoId;
+    private String brightCoveVideoId;
     private String tabId;
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
@@ -201,7 +201,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 extras = extras.getBundle(AppConstants.BUNDLE_ASSET_BUNDLE);
                 assestId = Objects.requireNonNull(extras).getInt(AppConstants.BUNDLE_ASSET_ID);
                 videoPos = TimeUnit.SECONDS.toMillis(Long.parseLong(extras.getString(AppConstants.BUNDLE_DURATION)));
-                brightCoveVideoId = Objects.requireNonNull(extras).getLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
+                brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
                 tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
 //                downloadHelper = new DownloadHelper(this, this, AppConstants.ContentType.VIDEO.name());
                 //  downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
@@ -261,7 +261,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private void stopShimmer() {
         Logger.e("stopShimmer", String.valueOf(brightCoveVideoId));
 
-        if (brightCoveVideoId != 0) {
+        if (brightCoveVideoId!=null && !brightCoveVideoId.equalsIgnoreCase("")) {
             //  getBinding().playerImage.setVisibility(View.GONE);
         } else {
             //  getBinding().playerImage.setVisibility(View.VISIBLE);
@@ -787,19 +787,19 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                                     if (entitlementStatus && apiStatus) {
                                         isAdShowingToUser = false;
                                     }
-                                    brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                                    //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                                     playPlayerWhenShimmer();
                                 }
                             });
                         } else {
                             getBinding().pBar.setVisibility(View.GONE);
-                            brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                            //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                             playPlayerWhenShimmer();
                         }
 
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
-                        brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                        //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                         playPlayerWhenShimmer();
                     }
                 } else {
@@ -945,7 +945,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                       // brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -1354,8 +1354,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             Toast.makeText(ShowActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
-            if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
-                Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
+            if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
+                String getVideoId = item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId();
                 AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
 
             }
