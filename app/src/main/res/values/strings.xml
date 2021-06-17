@@ -327,6 +327,8 @@
     <string name="heading_instructor">Instructor</string>
     <string name="heading_series">Series</string>
     <string name="heading_live">Live</string>
+    <string name="heading_tutorial">Tutorials</string>
+    <string name="heading_chapter">Chapters</string>
     <string name="heading_shows">Shows</string>
     <string name="heading_episodes">Episodes</string>
     <string name="live_tag">•Live</string>

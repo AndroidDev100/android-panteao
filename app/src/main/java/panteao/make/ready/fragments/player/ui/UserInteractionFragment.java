@@ -23,6 +23,9 @@ import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.show.ui.ShowActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.utils.MediaTypeConstants;
@@ -267,11 +270,23 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ActivityTrackers.getInstance().setLauncherActivity("SeriesDetailActivity");
             ((SeriesDetailActivity) context).openLogin();
         } else if (context instanceof EpisodeActivity) {
-//            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
             ActivityTrackers.getInstance().setLauncherActivity("EpisodeActivity");
         } else if (context instanceof InstructorActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
             ((InstructorActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+        }
+        else if (context instanceof ShowActivity) {
+            ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
+            ((ShowActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+        }
+        else if (context instanceof ChapterActivity) {
+            ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
+            ((ChapterActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+        }
+        else if (context instanceof TutorialActivity) {
+            ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
+            ((TutorialActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
         }
     }
 
@@ -521,6 +536,13 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
             assetType = MediaTypeConstants.getInstance().getLive();
+
+        }
+        else if (context instanceof ShowActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = MediaTypeConstants.getInstance().getShow();
 
         }
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {

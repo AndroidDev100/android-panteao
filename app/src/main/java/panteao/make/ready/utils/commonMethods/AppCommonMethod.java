@@ -611,13 +611,13 @@ public class AppCommonMethod {
 
     public static String calculateTimein_hh_mm_format(long milliseconds) {
 
-        if (milliseconds % 1000 > 0) {
+       /* if (milliseconds % 1000 > 0) {
             milliseconds = milliseconds + (milliseconds % 1000);
-        }
+        }*/
 
-        long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
-        long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
-        long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
+        long hours = TimeUnit.SECONDS.toHours(milliseconds);
+        long minute = TimeUnit.SECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
+        long second = TimeUnit.SECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
 
         Log.w("episodeTiming", minute + " " + second);
 
@@ -1593,13 +1593,13 @@ public class AppCommonMethod {
     public static String calculateTimeinMinutes(long milliseconds) {
         String minutes = "";
         try {
-            if (milliseconds % 1000 > 0) {
+           /* if (milliseconds % 1000 > 0) {
                 milliseconds = milliseconds + (milliseconds % 1000);
-            }
+            }*/
 
-            long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
-            long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
-            long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
+            long hours = TimeUnit.SECONDS.toHours(milliseconds);
+            long minute = TimeUnit.SECONDS.toMinutes(milliseconds);
+            long second = TimeUnit.SECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
 
             Log.w("episodeTiming", minute + "   ---   " + milliseconds);
             minutes = String.format("%02d", minute);
@@ -1640,7 +1640,7 @@ public class AppCommonMethod {
         try {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
             //  Log.e("FinalUrl-->>in", imageURL);
-            Log.e("ImageUrl-->>in", imgUrl);
+           // Log.e("ImageUrl-->>in", imgUrl);
             String uri = createURI(title, assetId, assetType, imgUrl, activity);
 
 
@@ -1668,7 +1668,7 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                               // Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
@@ -1701,7 +1701,7 @@ public class AppCommonMethod {
             shortLinkTask.toString();
 
         } catch (Exception ignored) {
-
+           Log.w("appcrashOnShare",ignored.getMessage());
         }
     }
 

@@ -33,14 +33,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:paddingEnd="5dp"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/moreText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/roboto_regular"
                 android:maxLines="1"
-                android:text="@string/title_more"
+                android:background="@drawable/more_arrow"
                 android:textColor="?attr/more_text_color"
                 android:textSize="@dimen/_16dp"
                 app:layout_constraintEnd_toEndOf="parent"

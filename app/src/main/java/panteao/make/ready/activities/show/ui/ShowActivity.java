@@ -165,8 +165,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         super.onCreate(savedInstanceState);
 
         getWindow().setBackgroundDrawableResource(R.color.black);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+       /* getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);*/
         KsPreferenceKeys.getInstance().setScreenName("Content Screen");
 
 

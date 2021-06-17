@@ -26,6 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clickable="false"
+                android:paddingBottom="@dimen/_5sdp"
                 android:visibility="gone" />
 
             <ScrollView

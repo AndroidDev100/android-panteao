@@ -182,7 +182,14 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         }
         else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())){
             getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_live));
-        }else {
+        }
+        else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+            getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_tutorial));
+        }
+        else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+            getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_chapter));
+        }
+        else {
             getBinding().toolbar.tvSearchResultHeader.setText("");
         }
 

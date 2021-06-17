@@ -399,6 +399,7 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:clickable="true"
+                android:paddingTop="@dimen/_75sdp"
                 android:indeterminate="true"
                 android:indeterminateTintMode="src_atop"
                 android:visibility="gone" />
