@@ -54,14 +54,14 @@ android {
     productFlavors {
         dev {
             dimension 'default'
-            versionCode 3
-            versionName "1.2"
+            versionCode 4
+            versionName "1.3"
             applicationId "panteao.make.ready.dev"
         }
         prod {
             dimension 'default'
-            versionCode 999
-            versionName "1.0"
+            versionCode 34
+            versionName "34"
             applicationId "panteao.make.ready"
         }
     }
