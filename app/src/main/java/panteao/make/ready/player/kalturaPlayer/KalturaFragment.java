@@ -103,6 +103,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             IsbingeWatch = bundle.getBoolean("binge_watch");
@@ -135,6 +136,8 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         startPlayer();
        setPlayerListner();
        performClick();
+        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
+
         return view;
 
     }
@@ -355,14 +358,14 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                     if (playerControlsFragment != null) {
                         playerControlsFragment.sendLandscapeCallback();
                     }
-                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin_landscape);
+//                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin_landscape);
                     currentConfig = newConfig;
 //
                 } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     if (playerControlsFragment != null) {
                         playerControlsFragment.sendPortraitCallback();
                     }
-                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
+//                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
                     getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     currentConfig = newConfig;
                    playerLayout.setPadding(0, 0, 0, 0);
@@ -490,7 +493,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     public void onPause() {
         super.onPause();
         if (player != null) {
-           player.pause();
+           player.stop();
         }
     }
 
@@ -510,17 +513,17 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         super.onActivityCreated(savedInstanceState);
         try {
             mListener = (OnPlayerInteractionListener) getActivity();
-
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-               getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams)playerLayout.getLayoutParams();
-                captionParams.bottomMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
-                captionParams.topMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
-               playerLayout.setLayoutParams(captionParams);
-
-            }
+//
+//            int orientation = getResources().getConfiguration().orientation;
+//            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+//               getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams)playerLayout.getLayoutParams();
+//                captionParams.bottomMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
+//                captionParams.topMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
+//               playerLayout.setLayoutParams(captionParams);
+//
+//            }
         }catch (Exception ignored){
 
         }

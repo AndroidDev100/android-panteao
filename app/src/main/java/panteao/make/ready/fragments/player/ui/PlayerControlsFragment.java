@@ -459,11 +459,13 @@ public class PlayerControlsFragment extends Fragment {
         params.gravity = Gravity.CENTER;
         seekBarControl.setLayoutParams(params);
 
+
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
         params1.setMargins(0, 0, 0, 0);
+
 
         try {
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
@@ -492,6 +494,7 @@ public class PlayerControlsFragment extends Fragment {
         }
 
     }
+
 
     public static void setParamstoSeekBarControl(View seekBarControl) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
