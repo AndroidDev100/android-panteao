@@ -46,7 +46,9 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.show.ui.ShowActivity"></activity>
+        <activity android:name=".activities.show.ui.ShowActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="fullSensor"></activity>
         <activity android:name=".activities.search.ui.TVSearchActivity" />
         <activity android:name=".activities.KalturaPlayerActivity" />
         <activity android:name=".activities.live.LiveActivity" />

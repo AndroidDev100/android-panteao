@@ -105,7 +105,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     @Override
     public void onBindViewHolder(@NonNull SeasonAdapter.SeasonViewHolder holder, int position) {
         if (videoItemBeans.get(position) != null) {
-//            holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
+            holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
         }
         if(AppCommonMethod.getCheckBCID(videoItemBeans.get(position).getBrightcoveVideoId())) {
 //            downloadHelper.findVideo(videoItemBeans.get(position).getBrightcoveVideoId(), new VideoListener() {

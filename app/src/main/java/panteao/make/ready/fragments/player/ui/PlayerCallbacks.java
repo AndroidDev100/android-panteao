@@ -7,6 +7,8 @@ public interface PlayerCallbacks {
     void Forward();
     void Rewind();
     void finishPlayer();
+    void skipIntro();
+    void bingeWatch();
     void checkOrientation(ImageView id);
     void replay();
     void SeekbarLastPosition(long position);
