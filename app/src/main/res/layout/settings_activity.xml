@@ -144,7 +144,7 @@
                     android:paddingLeft="@dimen/NontonSize10"
                     android:paddingRight="@dimen/NontonSize10"
                     android:textColor="?attr/more_text_color"
-                    android:layout_marginStart="34dp"
+                    android:layout_marginStart="4dp"
                     android:layout_gravity="center"
                     android:visibility="invisible"
                     />

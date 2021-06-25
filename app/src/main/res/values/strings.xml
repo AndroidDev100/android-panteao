@@ -239,6 +239,7 @@
     <string name="title_skill_set">Skillset</string>
     <string name="title_instructor">Instructor</string>
     <string name="title_premium">Premium</string>
+    <string name="title_free">Free</string>
     <string name="title_more1">More</string>
     <string name="delete_from_watchhistory">Video removed from Watch History</string>
     <string name="delete_from_watchhistory_error">Video can not be removed  from Watch History</string>
@@ -277,7 +278,7 @@
     <string name="language_indonesia">bahasa Indonesia</string>
     <string name="go_to_my_downloads">View My Downloads</string>
     <string name="download">Download</string>
-    <string name="no_downloads">Films and TV programmes that you download appear here.</string>
+    <string name="no_downloads">You don\'t have any downloaded content to watch</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>
@@ -326,6 +327,8 @@
     <string name="heading_instructor">Instructor</string>
     <string name="heading_series">Series</string>
     <string name="heading_live">Live</string>
+    <string name="heading_tutorial">Tutorials</string>
+    <string name="heading_chapter">Chapters</string>
     <string name="heading_shows">Shows</string>
     <string name="heading_episodes">Episodes</string>
     <string name="live_tag">•Live</string>
@@ -406,5 +409,7 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_heading_chapters">CHAPTERS</string>
+    <string name="all_chapters">All Chapters</string>
 
 </resources>

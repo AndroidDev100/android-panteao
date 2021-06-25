@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -182,7 +182,14 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         }
         else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())){
             getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_live));
-        }else {
+        }
+        else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+            getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_tutorial));
+        }
+        else if (searchType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+            getBinding().toolbar.tvSearchResultHeader.setText(getString(R.string.heading_chapter));
+        }
+        else {
             getBinding().toolbar.tvSearchResultHeader.setText("");
         }
 
@@ -306,7 +313,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
             }
             mLastClickTime = SystemClock.elapsedRealtime();
 
-            AppCommonMethod.launchDetailScreen(ActivityResults.this, Long.valueOf(itemValue.getId()), itemValue.getType(),itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(ActivityResults.this, String.valueOf(itemValue.getId()), itemValue.getType(),itemValue.getId(), "0", false);
 
         } else {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -328,11 +335,11 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         } catch (Exception e) {
 
         }
-        if (AppCommonMethod.getCheckBCID(itemValue.getBrightcoveVideoId())) {
-            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
+        if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
+            String getVideoId = itemValue.getBrightcoveVideoId();
             AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
         } else {
-            AppCommonMethod.launchDetailScreen(this, 0l, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
 
         }
     }

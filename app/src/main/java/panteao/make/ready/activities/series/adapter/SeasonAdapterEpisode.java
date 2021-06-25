@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.R;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
 import panteao.make.ready.databinding.ListRowSeasonBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;

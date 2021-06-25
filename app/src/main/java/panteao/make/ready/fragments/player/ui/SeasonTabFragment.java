@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -126,6 +126,8 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
             if (seriesId == -1) {
                 getBinding().seasonHeader.setVisibility(View.VISIBLE);
                 getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+//                getBinding().seasonHeader.setText(getResources().getString(R.string.all_chapters));
+
                 getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 getBinding().comingSoon.setVisibility(View.VISIBLE);
                 getBinding().seriesRecyclerView.setVisibility(View.GONE);
@@ -236,6 +238,8 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                 if (seasonAdapter == null) {
                                     allEpiosdes = enveuCommonResponse.getEnveuVideoItemBeans();
                                     getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+//                                    getBinding().seasonHeader.setText(getResources().getString(R.string.all_chapters));
+
                                     getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                     new RecyclerAnimator(getActivity()).animate(getBinding().seriesRecyclerView);
                                     seasonAdapter = new SeasonAdapter(getActivity(), allEpiosdes, seriesId, currentAssetId, SeasonTabFragment.this);
@@ -373,10 +377,10 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
 
 
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) || assetType.equalsIgnoreCase(AppConstants.Episode)) {
-            if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getBrightcoveVideoId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getBrightcoveVideoId()), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), 0l, MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
 
         }

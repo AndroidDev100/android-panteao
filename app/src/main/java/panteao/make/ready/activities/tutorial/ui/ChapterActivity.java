@@ -59,8 +59,8 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.activities.instructor.adapter.AllCommentAdapter;
-import panteao.make.ready.activities.instructor.viewModel.DetailViewModel;
+import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
+import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
@@ -91,8 +91,6 @@ import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
-import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
-import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
@@ -105,7 +103,6 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.ADHelper;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
-import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
@@ -149,7 +146,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isHitPlayerApi = false;
     private int selectedIdIntent = -1;
     private String tabId;
-    private Long brightCoveVideoId;
+    private String brightCoveVideoId;
     private RailInjectionHelper railInjectionHelper;
     private FragmentTransaction transaction;
     private String sharingUrl;
@@ -225,8 +222,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         super.onCreate(savedInstanceState);
         isActive = true;
         getWindow().setBackgroundDrawableResource(R.color.black);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+      /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);*/
 
         if (SDKConfig.getInstance().getEpisodeDetailId().equalsIgnoreCase("")) {
             //tabId = AppConstants.EPISODE_ENVEU;
@@ -245,11 +242,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         isHitPlayerApi = false;
         AppCommonMethod.isPurchase = false;
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        transaction.replace(R.id.player_frame, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+
 
         if (getIntent().hasExtra(AppConstants.BUNDLE_ASSET_BUNDLE)) {
             extras = getIntent().getExtras();
@@ -257,7 +250,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 extras = extras.getBundle(AppConstants.BUNDLE_ASSET_BUNDLE);
                 assestId = Objects.requireNonNull(extras).getInt(AppConstants.BUNDLE_ASSET_ID);
                 videoPos = TimeUnit.SECONDS.toMillis(Long.parseLong(extras.getString(AppConstants.BUNDLE_DURATION)));
-                brightCoveVideoId = Objects.requireNonNull(extras).getLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
+                brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
 
             }
         } else {
@@ -328,7 +321,20 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         transaction.commit();
 
     }
+    private void setPlayerFragment(){
+        Bundle args = new Bundle();
+        if (videoDetails != null) {
+            args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
+            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        playerfragment = new KalturaFragment();
+        playerfragment.setArguments(args);
+        transaction.replace(R.id.player_frame, playerfragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+    }
     public void removeCommentFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (commentsFragment != null) {
@@ -371,7 +377,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
 
             seasonTabFragment.setArguments(bundleSeason);
-            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
+//            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
+            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_chapters));
+
             episodeTabAdapter.addFragment(railFragment, getString(R.string.tab_heading_other));
             getBinding().viewPager.setAdapter(episodeTabAdapter);
             getBinding().viewPager.setOffscreenPageLimit(2);
@@ -932,18 +940,18 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 if (entitlementStatus && apiStatus) {
                                     isAdShowingToUser = false;
                                 }
-                                brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                                //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                                 playPlayerWhenShimmer();
                             }
                         });
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
-                        brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                        //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                         playPlayerWhenShimmer();
                     }
 
                 } else {
-                    brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                    //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
                     playPlayerWhenShimmer();
                 }
 
@@ -974,6 +982,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
 
         setUI(videoDetails);
+        setPlayerFragment();
+
     }
     //***********************^||||call episode data from above API\\\\\^***************************************//
 
@@ -1140,7 +1150,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                        //brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -1534,8 +1544,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             Toast.makeText(ChapterActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
-            if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
-                Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
+            if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
+                String getVideoId = item.getEnveuVideoItemBeans().get(position).getkEntryId();
                 AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             }
         }
@@ -1602,7 +1612,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     public void episodesList(List<EnveuVideoItemBean> seasonEpisodes) {
         try {
-            if (brightCoveVideoId > 0) {
+            if (brightCoveVideoId!=null && !brightCoveVideoId.equalsIgnoreCase("")) {
                 seasonEpisodesList = new ArrayList<>();
                 if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
                     for (int i = 0; i < seasonEpisodes.size(); i++) {

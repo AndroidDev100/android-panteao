@@ -221,7 +221,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Video, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
                             }*/
 
-                            AppCommonMethod.launchDetailScreen(mContext,0l,continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
+                            AppCommonMethod.launchDetailScreen(mContext,"",continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
 
 //                            AppCommonMethod.trackFcmEvent("Content Screen","", mContext,0);
 //                            AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT,"Main - Home",itemsList.get(i).getAssetType(),itemsList.get(i).getSeriesId(),itemsList.get(i).getName()+"",i,itemsList.get(i).getTitle(),i,itemsList.get(i).getId()+"",0,0,"","");

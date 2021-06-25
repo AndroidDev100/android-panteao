@@ -7,7 +7,7 @@ import android.os.SystemClock;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.article.ArticleActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.constants.AppConstants;

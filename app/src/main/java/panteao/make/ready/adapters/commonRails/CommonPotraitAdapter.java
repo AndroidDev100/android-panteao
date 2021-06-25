@@ -249,7 +249,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
                             } else {
                                 AppCommonMethod.launchDetailScreen(mContext, 0l, AppConstants.Video, continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium());
                             }*/
-                            AppCommonMethod.launchDetailScreen(mContext, 0l, continuelist.get(position).getUserAssetDetail().getAssetType(), continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium());
+                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(position).getUserAssetDetail().getAssetType(), continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium());
 
                             AppCommonMethod.trackFcmEvent("Content Screen","", mContext,0);
 

@@ -3,12 +3,16 @@ package panteao.make.ready.activities.usermanagment.ui;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -61,6 +65,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.gson.Gson;
@@ -77,6 +82,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -121,6 +128,20 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "panteao.make.ready.dev",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
         setupUI(getBinding().rootView);
         callBinding();
 
@@ -234,7 +255,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                 clearEditView();
                 isFbLoginClick = true;
                 getBinding().fbButton.performClick();
-
+//                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
             } else
                 connectionObserver();
@@ -284,6 +305,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                                 }*/
                                 showHideProgress(getBinding().progressBar);
                                 //  setFileToUpload();
+
                                 hitApiFBLogin();
 
                             } catch (JSONException e) {
@@ -371,6 +393,8 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     public void hitApiFBLogin() {
+        Log.d("hbnm", "hitfb");
+
         if (CheckInternetConnection.isOnline(LoginActivity.this)) {
 
             showLoading(getBinding().progressBar, true);
@@ -383,13 +407,18 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                         modelLogin = loginResponseModelResponse.getData();
                         String stringJson = gson.toJson(loginResponseModelResponse.getData());
                         saveUserDetails(stringJson, loginResponseModelResponse.getData().getId(), false);
+                       Log.d("hbnm", Profile.getCurrentProfile()+"");
                 AppCommonMethod.trackFcmCustomEvent(getApplicationContext(),AppConstants.SIGN_IN_SUCCESS,"","","",0," ",0,"",0,0,"","",loginResponseModelResponse.getData().getId()+"",loginResponseModelResponse.getData().getName()+"");
 
                     } else if (loginResponseModelResponse.getResponseCode() == 403) {
+                        Log.d("hbnm", Profile.getCurrentProfile()+"");
+                        Log.d("hbnm", "forcelogin");
+
                         new ActivityLauncher(LoginActivity.this).forceLogin(LoginActivity.this, ForceLoginFbActivity.class, accessTokenFB, id, name, "");
                     } else {
                         dismissLoading(getBinding().progressBar);
                         showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+                        Log.d("hbnm","error");
                     }
                 }
             });

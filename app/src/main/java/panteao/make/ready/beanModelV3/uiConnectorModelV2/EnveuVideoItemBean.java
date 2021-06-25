@@ -106,7 +106,7 @@ public class EnveuVideoItemBean implements Serializable {
     public EnveuVideoItemBean(EnveuVideoDetailsBean details,String imageType) {
         try {
             this.title = details.getData().getTitle() == null ? "" : details.getData().getTitle();
-            this.kEntryId = details.getData().getTitle() == null ? "" : details.getData().getkEntryId();
+            this.kEntryId = details.getData().getkEntryId() == null ? "" : details.getData().getkEntryId();
             this.description = details.getData().getDescription() == null ? "" : details.getData().getDescription().trim();
             this.assetGenres = details.getData().getGenres() == null ? new ArrayList<>() : details.getData().getGenres();
             this.assetCast = details.getData().getCast() == null ? new ArrayList<>() : details.getData().getCast();
@@ -207,6 +207,7 @@ public class EnveuVideoItemBean implements Serializable {
         try {
 
             this.title = details.getTitle() == null ? "" : details.getTitle();
+            this.kEntryId = details.getkEntryId() == null ? "" : details.getkEntryId();
             this.description = details.getDescription() == null ? "" : details.getDescription().trim();
             this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
             this.assetCast = details.getCast() == null ? new ArrayList<>() : details.getCast();

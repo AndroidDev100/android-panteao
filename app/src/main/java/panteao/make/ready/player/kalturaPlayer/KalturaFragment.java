@@ -1,11 +1,8 @@
 package panteao.make.ready.player.kalturaPlayer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,14 +25,12 @@ import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
 
-import org.jetbrains.annotations.NotNull;
-
 import panteao.make.ready.R;
 import panteao.make.ready.activities.KalturaPlayerActivity;
-import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 /**
@@ -157,12 +152,24 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         if (player!=null) {
             player.stop();
         }
-        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(KalturaPlayerActivity.Companion.getENTRY_ID(), 0L);
+        String entryID="";
+        if(getArguments().containsKey(AppConstants.ENTRY_ID)){
+        entryID=getArguments().getString(AppConstants.ENTRY_ID);
+        }
+        OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(entryID, 0L);
         player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
             @Override
             public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
                 if (loadError != null) {
-                    Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                    if (getActivity()!=null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
                 } else {
                     Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
                 }

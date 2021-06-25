@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.activities.instructor.viewModel.DetailViewModel;
+import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
@@ -1148,7 +1148,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
             Toast.makeText(LiveActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
             if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId())) {
-                Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId());
+                String getVideoId = item.getEnveuVideoItemBeans().get(position).getkEntryId();
                 AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             }
         }

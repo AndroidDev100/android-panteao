@@ -46,10 +46,11 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.search.ui.TVSearchActivity"></activity>
-        <activity android:name=".activities.KalturaPlayerActivity"></activity>
+        <activity android:name=".activities.show.ui.ShowActivity"></activity>
+        <activity android:name=".activities.search.ui.TVSearchActivity" />
+        <activity android:name=".activities.KalturaPlayerActivity" />
         <activity android:name=".activities.live.LiveActivity" />
-        <activity android:name=".activities.instructor.ui.EpisodeActivity" />
+        <activity android:name=".activities.show.ui.EpisodeActivity" />
         <activity
             android:name=".activities.tutorial.ui.ChapterActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
@@ -97,6 +98,11 @@
             android:value="@string/facebook_app_id" /> <!-- <service -->
         <!-- android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" -->
         <!-- android:enabled="true" /> -->
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
         <activity
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
@@ -105,38 +111,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <data android:scheme="mvhubplus" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="0j4bs.app.link"
-                    android:scheme="https" />
-                <!-- example-alternate domain is required for App Links when the Journeys/Web SDK and Deepviews are used inside your website. -->
-                <data
-                    android:host="0j4bs-alternate.app.link"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <data
-                    android:host="open"
-                    android:scheme="panteao" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -162,33 +136,6 @@
                     android:host="@string/fcm_host_link"
                     android:scheme="https" />
             </intent-filter>
-
-            <!-- Branch App Links (optional) -->
-
-
-            <!--
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="www.panteao.com"
-                    android:scheme="https" />
-                &lt;!&ndash; <data &ndash;&gt;
-                &lt;!&ndash; android:host="www.watcho.com" &ndash;&gt;
-                &lt;!&ndash; android:scheme="https" /> &ndash;&gt;
-
-                <data
-                    android:host="@string/branch_host"
-                    android:scheme="https" />
-                &lt;!&ndash; <data &ndash;&gt;
-                &lt;!&ndash; android:host="lets.watcho.com" &ndash;&gt;
-                &lt;!&ndash; android:scheme="https" /> &ndash;&gt;
-
-            </intent-filter>
-            -->
         </activity>
         <activity
             android:name=".activities.splash.ui.TVSplashActivity"

@@ -384,41 +384,31 @@ public class APIServiceLayer {
                 // keyword= URLEncoder.encode(keyword, "UTF-8");
                 //String searchValue=
 
-                Observable<ResponseSearch> call = endpoint.getSearch(keyword, "MOVIES", size, page, languageCode)
+                Observable<ResponseSearch> call = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getInstructor(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
                 Observable<ResponseSearch> call1 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getSeries(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call2 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getLive(), size, page, languageCode)
+                Observable<ResponseSearch> call2 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getEpisode(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call3 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getShow(), size, page, languageCode)
+                Observable<ResponseSearch> call3 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getTutorial(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call4 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getEpisode(), size, page, languageCode)
+                Observable<ResponseSearch> call4 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getChapter(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call5 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getInstructor(), size, page, languageCode)
+                Observable<ResponseSearch> call5 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getShow(), size, page, languageCode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call6 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getChapter(), size, page, languageCode)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io());
 
-                Observable<ResponseSearch> call7 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getTrailor(), size, page, languageCode)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io());
-
-                Observable<ResponseSearch> call8 = endpoint.getSearch(keyword, MediaTypeConstants.getInstance().getTutorial(), size, page, languageCode)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io());
-                Observable<List<ResponseSearch>> combined = Observable.zip(call, call1, call2, call3, call4, call5, call6, call7, call8, (list, list1, list2, list3, list4, list5, list6, list7, list8) -> {
+                Observable<List<ResponseSearch>> combined = Observable.zip(call, call1, call2, call3, call4, call5, (list, list1, list2, list3, list4, list5) -> {
                     List<ResponseSearch> mlist = new ArrayList<>();
                     mlist.add(list);
                     mlist.add(list1);
@@ -426,9 +416,6 @@ public class APIServiceLayer {
                     mlist.add(list3);
                     mlist.add(list4);
                     mlist.add(list5);
-                    mlist.add(list6);
-                    mlist.add(list7);
-                    mlist.add(list8);
                     return mlist;
                 }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
                 combined.subscribe(new Observer<List<ResponseSearch>>() {

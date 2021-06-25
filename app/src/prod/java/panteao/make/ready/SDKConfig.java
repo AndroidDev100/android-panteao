@@ -12,7 +12,7 @@ import java.util.List;
 public class SDKConfig {
 
     private static SDKConfig sdkConfigInstance;
-    boolean isTablet = MvHubPlusApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
+    boolean isTablet = PanteaoApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
     ConfigBean configBean;
 
     private SDKConfig() {
@@ -29,18 +29,29 @@ public class SDKConfig {
     /*PROD keys*//*
      */
 
-    public static String CONFIG_BASE_URL = "https://api.enveu.com/experience-manager-fe-api/app/api/v1/config/";
+    /*public static String CONFIG_BASE_URL = "https://api.enveu.com/experience-manager-fe-api/app/api/v1/config/";
     public static String API_KEY_MOB = "oorgebfpjudysyrtdhwmlaqlavglgmtlvplaodpt";
     public static String API_KEY_TAB = "zzmnptygwjeybngjnumcrhcmwchszfjgkbeieflw";
-    /* UAT keys*/
-   /* public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.uat.enveu.com/app/api/v1/config/";
+    *//* UAT keys*//*
+   *//* public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.uat.enveu.com/app/api/v1/config/";
     public static String API_KEY_MOB = "spkuaohqsngqcrvfrgforegkooveiobspgwwbmce";
-    public static String API_KEY_TAB = "unwtftwilxazacjururwsdtwuepymqqxlvamahqf";*/
+    public static String API_KEY_TAB = "unwtftwilxazacjururwsdtwuepymqqxlvamahqf";*//*
     public static int CONFIG_VERSION = 1;
     public static String ApplicationStatus = "disconnected";
     public static String TERMCONDITION = "https://www.mvhub.com/term.php";
     public static String PRIVACYPOLICY = "https://www.mvhub.com/privacy.php";
     public static String WEBP_QUALITY = "filters:format(webp):quality(60)/";
+    public static int DOWNLOAD_EXPIRY_DAYS=30;
+    public static boolean DOWNLOAD_ENABLE=true;*/
+
+    public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
+    public static String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
+    public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";
+    public static int CONFIG_VERSION = 1;
+    public static String ApplicationStatus = "disconnected";
+    public static String TERMCONDITION = "https://www.mvhub.com/term.php";
+    public static String PRIVACYPOLICY = "https://www.mvhub.com/privacy.php";
+    public static String WEBP_QUALITY="filters:format(webp):quality(60)/";
     public static int DOWNLOAD_EXPIRY_DAYS=30;
     public static boolean DOWNLOAD_ENABLE=true;
 
@@ -97,41 +108,51 @@ public class SDKConfig {
     }
 
     public String getFirstTabId() {
-        return AppCommonMethod.getHomeTabId(configBean, "HOME");
+        return AppCommonMethod.getHomeTabId(configBean,"HOME");
     }
 
     public String getSecondTabId() {
-        return AppCommonMethod.getHomeTabId(configBean, "LIVE TV");
+        return AppCommonMethod.getHomeTabId(configBean,"SKILLSET");
 
     }
-
     public String getThirdTabId() {
-        return AppCommonMethod.getHomeTabId(configBean, "FREE");
+        return AppCommonMethod.getHomeTabId(configBean,"INSTRUCTOR");
     }
-
     public String getFourthTabId() {
-        return AppCommonMethod.getHomeTabId(configBean, "PREMIUM");
+        return AppCommonMethod.getHomeTabId(configBean,"FREE");
     }
 
     public String getMovieDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean, "MOVIES DETAIL");
+        return AppCommonMethod.getHomeTabId(configBean,"MOVIE");
     }
 
     public String getShowDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean, "SHOWS DETAIL");
+        return AppCommonMethod.getHomeTabId(configBean,"SHOW DETAIL");
     }
 
     public String getEpisodeDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean, "EPISODES DETAIL");
+        return AppCommonMethod.getHomeTabId(configBean,"EPISODE DETAIL");
     }
 
     public String getSeriesDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean, "SERIES DETAIL");
+        return AppCommonMethod.getHomeTabId(configBean,"SERIES DETAIL");
+    }
+    public String getTutorialDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"TUTORIAL DETAIL");
+    }
+    public String getChapterDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"CHAPTER DETAIL");
+    }
+    public String getTrailerDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"TRAILER DETAIL");
+    }
+    public String getInstructorDetaildId() {
+        return AppCommonMethod.getHomeTabId(configBean,"INSTRUCTOR DETAIL");
+    }
+    public String getLiveDetailId() {
+        return AppCommonMethod.getHomeTabId(configBean,"LIVE");
     }
 
-    public String getLiveDetailId() {
-        return AppCommonMethod.getHomeTabId(configBean, "LIVETV DETAIL");
-    }
 
     public String getPopularSearchId() {
         return configBean == null ? "" : configBean.getData().getAppConfig().getPopularSearchId().toString();

@@ -12,23 +12,23 @@
     <item
         android:id="@+id/navigation_sinetron"
         android:enabled="true"
-        android:icon="@drawable/ic_skillset"
-        android:title="@string/title_skill_set"
+        android:icon="@drawable/ic_instructor"
+        android:title="@string/title_instructor"
         app:showAsAction="always|withText" />
 
 
     <item
         android:id="@+id/navigation_premium"
         android:enabled="true"
-        android:icon="@drawable/ic_instructor"
-        android:title="@string/title_instructor"
+        android:icon="@drawable/ic_home_premium"
+        android:title="@string/title_premium"
         app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigation_originals"
         android:enabled="true"
-        android:icon="@drawable/ic_free"
-        android:title="@string/title_premium"
+        android:icon="@drawable/ic_home_mydownloads"
+        android:title="@string/my_downloads"
         app:showAsAction="always|withText" />
 
     <item

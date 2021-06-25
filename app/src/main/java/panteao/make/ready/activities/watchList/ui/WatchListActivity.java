@@ -21,7 +21,7 @@ import com.make.bookmarking.bean.BookmarkingResponse;
 import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.watchList.adapter.WatchHistoryAdapter;
 import panteao.make.ready.activities.watchList.adapter.WatchListAdapter;
 import panteao.make.ready.activities.watchList.viewModel.WatchListViewModel;
@@ -602,15 +602,15 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
         AppCommonMethod.trackFcmEvent("Content Screen","", getApplicationContext(),0);
 
-        if (AppCommonMethod.getCheckBCID(itemValue.getBrightcoveVideoId())) {
-            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
+        if (AppCommonMethod.getCheckBCID(itemValue.getkEntryId())) {
+            String getVideoId = itemValue.getkEntryId();
             if (itemValue.getAssetType() != null) {
                 AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
             } else {
                 AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false);
             }
         }else {
-            AppCommonMethod.launchDetailScreen(this, 0l, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
         }
     }
 

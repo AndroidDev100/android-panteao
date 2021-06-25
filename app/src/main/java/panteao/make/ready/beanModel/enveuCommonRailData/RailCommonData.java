@@ -415,7 +415,13 @@ public class RailCommonData implements Parcelable {
             for (DataItem enveuVideoDetails1 : enveuVideoDetails) {
                 Gson gson = new Gson();
                 String tmp = gson.toJson(enveuVideoDetails1);
-                EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1,screenWidget.getWidgetImageType());
+                EnveuVideoItemBean enveuVideoItemBean=null;
+                if (screenWidget!=null && screenWidget.getWidgetImageType()!=null){
+                    enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1,screenWidget.getWidgetImageType());
+                }else {
+                     enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetails1,null);
+                }
+
 
                 if (this.screenWidget != null && this.screenWidget.getWidgetImageType() != null && this.screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                     Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
@@ -424,9 +430,9 @@ public class RailCommonData implements Parcelable {
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
 
                 } else {
-                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType());
+                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1,null);
                     enveuVideoItemBean.setPosterURL(imageUrl);
-                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,screenWidget.getWidgetImageType()));
+                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1,null));
                 }
                 enveuVideoItemBeans.add(enveuVideoItemBean);
             }

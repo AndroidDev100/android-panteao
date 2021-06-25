@@ -218,6 +218,7 @@ public interface AppConstants {
     String BUNDLE_ASSET_TYPE = "assetType";
     String BUNDLE_CURRENT_ASSET_ID = "currentAssetId";
      String TAG_NO_INTERNET_FRAGMENT="NO_INTERNET_CONNECTION";
+    String ENTRY_ID ="entry_id" ;
 
     enum UserLoginType {
         Manual,
@@ -297,7 +298,7 @@ public interface AppConstants {
 
 // FireBaseLinks
 String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
-    String FIREBASE_DPLNK_PREFIX = "https://panteaoandroid.page.link/";
+    String FIREBASE_DPLNK_PREFIX = "https://panteaoproductions.page.link/";
    String FIREBASE_IOS_PACKAGE = "com.panteaoproductions.mobile.dev";
   String FIREBASE_ANDROID_PACKAGE = "panteao.make.ready.dev";
 

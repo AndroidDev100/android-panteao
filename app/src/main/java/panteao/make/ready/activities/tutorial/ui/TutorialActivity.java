@@ -448,7 +448,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             bundleSeason.putInt(AppConstants.BUNDLE_SEASON_COUNT, seriesDetailBean.getSeasonCount());
             seasonTabFragment.setArguments(bundleSeason);
 
-            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
+//            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
+              episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_chapters));
+
             episodeTabAdapter.addFragment(railFragment, getString(R.string.tab_heading_other));
             getBinding().viewPager.setAdapter(episodeTabAdapter);
             getBinding().viewPager.setOffscreenPageLimit(10);

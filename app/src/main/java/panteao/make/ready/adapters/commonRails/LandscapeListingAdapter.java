@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;

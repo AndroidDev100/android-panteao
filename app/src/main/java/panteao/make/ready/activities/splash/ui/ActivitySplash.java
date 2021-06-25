@@ -43,9 +43,10 @@ import com.google.gson.Gson;
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
-import panteao.make.ready.activities.instructor.ui.EpisodeActivity;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
+import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
@@ -281,8 +282,11 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         @Override
                         public void run() {
                             Log.w("branchRedirectors", "-->>non" + "");
-                            new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
-                            finish();
+                            if(deepLinkObject==null){
+                                new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
+                                finish();
+                            }
+
                         }
                     }, 1000);
                 }
@@ -586,25 +590,12 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         launchSeriesPage(contentType, assestId);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).seriesDetailScreen(ActivitySplash.this, SeriesDetailActivity.class, assestId);
-                        finish();
-                    } else if (contentType.equalsIgnoreCase(AppConstants.ContentType.VIDEO.name()) || contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
+                        //finish();
+                    }  else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, InstructorActivity.class, assestId, "0", false);
-                        finish();
-                    } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
-                        new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
-                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, InstructorActivity.class, assestId, "0", false);
-                        finish();
+                        new ActivityLauncher(ActivitySplash.this).showScreen(ActivitySplash.this, ShowActivity.class, assestId, "0", false);
+                       // finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                             return;
@@ -613,7 +604,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).liveScreenBrightCove(ActivitySplash.this, LiveActivity.class, 0l, assestId, "0", false, SDKConfig.getInstance().getLiveDetailId());
-                        finish();
+                       // finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                             return;
@@ -621,7 +612,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         mLastClickTime = SystemClock.elapsedRealtime();
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).episodeScreen(ActivitySplash.this, EpisodeActivity.class, assestId, "0", false);
-                        finish();
+                       // finish();
                     } else if (contentType.equalsIgnoreCase(AppConstants.ContentType.ARTICLE.toString())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                             return;
@@ -629,7 +620,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         mLastClickTime = SystemClock.elapsedRealtime();
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
-                        finish();
+                       // finish();
                     }
                 } else {
                     new ActivityLauncher(this).homeScreen(this, HomeActivity.class);

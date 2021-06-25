@@ -13,6 +13,7 @@ import panteao.make.ready.databinding.ActivityDetailBinding;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.databinding.ActivityHelpBinding;
 import panteao.make.ready.databinding.ActivityLiveBinding;
+import panteao.make.ready.databinding.ActivityShowBinding;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.R;
@@ -47,6 +48,12 @@ public class ToolBarHandler {
     }
 
     public void setAction(final ActivityLiveBinding binding) {
+        binding.lessButton.setOnClickListener(view -> {
+            Logger.i("click", "less");
+            //  binding.lessText.setText("Less");
+        });
+    }
+    public void setAction(final ActivityShowBinding binding) {
         binding.lessButton.setOnClickListener(view -> {
             Logger.i("click", "less");
             //  binding.lessText.setText("Less");
