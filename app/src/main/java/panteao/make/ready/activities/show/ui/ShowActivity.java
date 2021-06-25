@@ -671,9 +671,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         EnveuVideoItemBean player = new EnveuVideoItemBean();
         Data data = new Data();
         data.setContentTitle("");
-        if (player.getDescription() != null && player.getDescription().equalsIgnoreCase("")) {
+        /*if (player.getDescription() == null || player.getDescription().equalsIgnoreCase("")) {
             getBinding().descriptionText.setVisibility(View.GONE);
-        }
+            getBinding().textExpandable.setVisibility(View.GONE);
+        }*/
         getBinding().setResponseApi(player);
 
         setupUI(getBinding().llParent);
@@ -753,7 +754,15 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
             setPlayerFragment();
-
+            if (videoDetails.getDescription()!=null){
+                if (videoDetails.getDescription().equalsIgnoreCase("")){
+                    getBinding().descriptionText.setVisibility(View.GONE);
+                    getBinding().textExpandable.setVisibility(View.GONE);
+                }
+            }else {
+                getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
+            }
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {

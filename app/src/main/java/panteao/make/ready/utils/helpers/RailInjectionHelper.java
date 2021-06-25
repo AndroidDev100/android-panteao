@@ -589,6 +589,63 @@ public class RailInjectionHelper extends AndroidViewModel {
         }
     }
 
+    public LiveData<ResponseModel> getInstructorRelatedContent(int seriesId, int pageNo, int size, int seasonNumber) {
+        MutableLiveData liveData=new MutableLiveData();
+        if (seasonNumber == -1) {
+
+            SeasonEpisodesList.getInstance().getInstructorRelatedContent(seriesId, pageNo, size, new ApiResponseModel<RailCommonData>() {
+                @Override
+                public void onStart() {
+                    liveData.postValue(new ResponseModel(APIStatus.START.name(), null, null));
+                }
+
+                @Override
+                public void onSuccess(RailCommonData response) {
+                    liveData.postValue(new ResponseModel(APIStatus.SUCCESS.name(), response, null));
+                }
+
+                @Override
+                public void onError(ApiErrorModel apiError) {
+                    liveData.postValue(new ResponseModel(APIStatus.ERROR.name(), null, apiError));
+                }
+
+                @Override
+                public void onFailure(ApiErrorModel httpError) {
+                    liveData.postValue(new ResponseModel(APIStatus.FAILURE.name(), null, httpError));
+                }
+            });
+
+
+            return liveData;//SeasonEpisodesList.getInstance().getAllEpisodes(seriesId, pageNo, size);
+
+        }else {
+            SeasonEpisodesList.getInstance().getSeasonEpisodesV2(seriesId, pageNo, size, seasonNumber, new ApiResponseModel<RailCommonData>() {
+                @Override
+                public void onStart() {
+                    liveData.postValue(new ResponseModel(APIStatus.START.name(), null, null));
+                }
+
+                @Override
+                public void onSuccess(RailCommonData response) {
+                    liveData.postValue(new ResponseModel(APIStatus.SUCCESS.name(), response, null));
+                }
+
+                @Override
+                public void onError(ApiErrorModel apiError) {
+                    liveData.postValue(new ResponseModel(APIStatus.ERROR.name(), null, apiError));
+                }
+
+                @Override
+                public void onFailure(ApiErrorModel httpError) {
+                    liveData.postValue(new ResponseModel(APIStatus.FAILURE.name(), null, httpError));
+                }
+            });
+
+            return liveData;
+        }
+    }
+
+
     public LiveData<ResponseModel> getAssetDetailsV2(String asseetID) {
         MutableLiveData liveData=new MutableLiveData();
         VideoDetailLayer.getInstance().getVideoDetails(asseetID, new ApiResponseModel<RailCommonData>() {

@@ -104,7 +104,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             hitApiIsLike();
             hitApiIsWatchList();
             isloggedout = false;
-            if (context instanceof SeriesDetailActivity) {
+            if (context instanceof SeriesDetailActivity || context instanceof InstructorActivity  || context instanceof TutorialActivity) {
                 getBinding().watchList.setVisibility(View.GONE);
             }
 

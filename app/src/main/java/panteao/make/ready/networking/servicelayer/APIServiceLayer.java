@@ -199,6 +199,29 @@ public class APIServiceLayer {
 
     }
 
+    public void getInstructorRelatedContent(int seriesId, int pageNumber,
+                                 int size, ApiResponseModel listener) {
+        this.callBack = listener;
+        callBack.onStart();
+        languageCode = LanguageLayer.getCurrentLanguageCode();
+        endpoint.getInstructorRelatedContent(seriesId, pageNumber, size, languageCode).enqueue(new Callback<EnveuCommonResponse>() {
+            @Override
+            public void onResponse(Call<EnveuCommonResponse> call, Response<EnveuCommonResponse> response) {
+                Gson gson = new Gson();
+                String json = gson.toJson(response.body());
+                Logger.w("EpisodesListResponse", json + "");
+                parseResponseAsRailCommonData(response);
+            }
+
+            @Override
+            public void onFailure(Call<EnveuCommonResponse> call, Throwable t) {
+                ApiErrorModel errorModel = new ApiErrorModel(500, t.getMessage());
+                callBack.onFailure(errorModel);
+            }
+        });
+
+    }
+
     public void getAllEpisodesV2(int seriesId, int pageNumber,
                                  int size, ApiResponseModel listener) {
         this.callBack = listener;
@@ -221,6 +244,7 @@ public class APIServiceLayer {
         });
 
     }
+
 
     private void parseResponseAsRailCommonData(Response<EnveuCommonResponse> response) {
         if (response.body() != null && response.body().getData() != null) {
