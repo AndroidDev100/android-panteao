@@ -69,7 +69,7 @@ public class PlayerControlsFragment extends Fragment {
     private ImageView btnPause;
     private ImageView btnForward;
     private ImageView btnRewind;
-    private ImageView btnback;
+    private View btnback;
     public ImageView backArrow;
     private DefaultTimeBar seekBar;
     private long playbackDuration, playbackCurrentPosition;
@@ -392,6 +392,14 @@ public class PlayerControlsFragment extends Fragment {
             }
         });
 
+        skipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.skipIntro();
+                }
+            }
+        });
 
         //Replay video event
 //        replay.setOnClickListener(new View.OnClickListener() {
@@ -460,11 +468,14 @@ public class PlayerControlsFragment extends Fragment {
         seekBarControl.setLayoutParams(params);
 
 
+
+
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
         params1.setMargins(0, 0, 0, 0);
+         backArrow.setLayoutParams(params1);
 
 
         try {
@@ -472,7 +483,7 @@ public class PlayerControlsFragment extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params2.setMargins(0, 10, 60, 0);
+            params2.setMargins(0, 0, 0, 0);
             params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         } catch (Exception ignored) {
 
@@ -483,9 +494,9 @@ public class PlayerControlsFragment extends Fragment {
     public void sendLandscapeCallback() {
         try {
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
-
             if (!getResources().getBoolean(R.bool.isTablet)) {
                 setParamstoSeekBarControl(seekBarControl);
+                setParamstoBackbutton(backArrow);
 
                 //Utils.setParamstoSetingButton(skipBtn);
             }
@@ -494,14 +505,23 @@ public class PlayerControlsFragment extends Fragment {
         }
 
     }
+    public static void setParamstoBackbutton(View btnback) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 60, 0, 0);
 
+
+        btnback.setLayoutParams(params);
+    }
 
     public static void setParamstoSeekBarControl(View seekBarControl) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 0, 0, 60);
+        params.setMargins(0, 0, 0, 110);
         seekBarControl.setLayoutParams(params);
     }
 
@@ -509,7 +529,6 @@ public class PlayerControlsFragment extends Fragment {
         btnPause=(ImageView)view.findViewById(R.id.pause);
         btnForward=(ImageView)view.findViewById(R.id.forward);
         btnRewind=(ImageView)view.findViewById(R.id.rew);
-        btnback=(ImageView)view.findViewById(R.id.back_arrow);
        relativeLayout=view.findViewById(R.id.control_layout);
        seekBar= view.findViewById(R.id.exo_progress);
        currentPosition=view.findViewById(R.id.exo_position);
@@ -521,6 +540,9 @@ public class PlayerControlsFragment extends Fragment {
         fullscreen = (ImageView) view.findViewById(R.id.fullscreen);
         bingeBtn = (LinearLayout) view.findViewById(R.id.bingeBtn);
         bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
+        skipBtn = (LinearLayout) view.findViewById(R.id.skipBtn);
+        skipBtn.setVisibility(View.VISIBLE);
+
 
 //        hideControls();
 
@@ -544,4 +566,16 @@ public class PlayerControlsFragment extends Fragment {
     public void setPlayerCallBacks(PlayerCallbacks playerCallBacks) {
         this.playerCallbacks = playerCallBacks;
     }
+
+    public void showSkipButton() {
+
+            skipBtn.setVisibility(View.GONE);
+
+
+    }
+    public void hideSkipIntro() {
+        skipBtn.setVisibility(View.GONE);
+
+    }
+
 }

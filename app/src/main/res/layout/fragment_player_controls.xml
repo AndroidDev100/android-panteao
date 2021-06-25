@@ -9,10 +9,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:layout_alignParentLeft="true"
         >
-
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="wrap_content"
@@ -53,6 +53,40 @@
                 android:src="@drawable/forward_icon"/>
 
         </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/seekbar_ll"
+        android:id="@+id/skip_ll"
+        android:gravity="right">
+
+        <LinearLayout
+            android:id="@+id/skipBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/skip_intro"
+            android:paddingStart="8dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="6dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/skipTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip_intro"
+                android:textColor="@color/white"
+                android:textSize="13dp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -393,9 +393,9 @@
     <dimen name="upload_edit_text_margin_left">10dp</dimen>
     <dimen name="extra_large_text_view_size_title">18sp</dimen>
     <dimen name="seek_bar_margin_start">38dp</dimen>
-    <dimen name="caption_margin_landscape">120dp</dimen>
+    <dimen name="caption_margin_landscape">140dp</dimen>
     <dimen name="caption_margin">30dp</dimen>
-    <dimen name="live_full_screen_bottom">60dp</dimen>
+    <dimen name="live_full_screen_bottom">70dp</dimen>
 
     <declare-styleable name="CircularProgressBar">
         <attr format="integer" name="progress"/>

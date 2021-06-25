@@ -57,6 +57,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     private Context mcontext;
     private ProgressBar progressbar;
     private PlayerCallbacks playerCallbacks;
+    private Boolean skipIntroEnable = false;
     private boolean IsbingeWatch = false;
     private int bingeWatchTimer = 0;
     private  String entryID="";
@@ -136,7 +137,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         startPlayer();
        setPlayerListner();
        performClick();
-        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
+//        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
 
         return view;
 
@@ -203,6 +204,8 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                 Log.d("ndhfdm", "playing");
                 mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
+                    skipIntroEnable=true;
+                    showSkipIntro();
                     if (!isBingeWatchTimeCalculate){
                         Log.w("totalDuartion",player.getDuration()+"");
                         Log.w("totalDuartion",bingeWatchTimer*1000+"");
@@ -290,6 +293,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     public void onEvent(PlayerEvent.StateChanged event) {
 
          if (event.newState == PlayerState.READY) {
+
 //            getBinding().playerImage.setVisibility(View.GONE);
            progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
@@ -380,9 +384,31 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         checkBackButtonClickOrientation();
 
     }
+  private void showSkipIntro(){
+        if(player.getCurrentPosition() >= 0 && player.getCurrentPosition() <=15000){
+            playerControlsFragment.showSkipButton();
+        }
+
+
+  }
+//    private void HideSkipIntro(){
+//
+//    }
 
     @Override
     public void skipIntro() {
+
+        if(skipIntroEnable == true){
+
+           player.seekTo(15000);
+            playerControlsFragment.hideSkipIntro();
+           skipIntroEnable=false;
+        }
+        else if(player.getCurrentPosition() >= 15000){
+            playerControlsFragment.hideSkipIntro();
+
+
+        }
 
     }
     int totalEpisodes=0;
