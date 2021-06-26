@@ -1190,6 +1190,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     protected void onPause() {
         super.onPause();
+
         Logger.d("DetailActivityCalled", "True");
         releaseAudioFocusForMyApp(ShowActivity.this);
         if (handler != null && runnable != null)

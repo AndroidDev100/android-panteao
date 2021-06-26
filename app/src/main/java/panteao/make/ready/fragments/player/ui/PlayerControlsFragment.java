@@ -569,11 +569,12 @@ public class PlayerControlsFragment extends Fragment {
 
     public void showSkipButton() {
 
-            skipBtn.setVisibility(View.GONE);
+            skipBtn.setVisibility(View.VISIBLE);
 
 
     }
     public void hideSkipIntro() {
+        if(skipBtn.getVisibility() == View.VISIBLE)
         skipBtn.setVisibility(View.GONE);
 
     }

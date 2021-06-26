@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.kaltura.netkit.utils.ErrorElement;
 import com.kaltura.playkit.PKEvent;
 import com.kaltura.playkit.PKMediaEntry;
+import com.kaltura.playkit.Player;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.PlayerState;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
@@ -61,6 +62,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     private boolean IsbingeWatch = false;
     private int bingeWatchTimer = 0;
     private  String entryID="";
+    private int stopPosition =0;
 
     private boolean showBingeWatchControls =false;
     private boolean isBingeWatchTimeCalculate=false;
@@ -119,6 +121,16 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
 //            seekBar1.setProgress(((int) player.getCurrentPosition()));
 //            seekBar1.setMax(((int) player.getDuration()));
+            if(player.getCurrentPosition() >= 15000)
+            {
+                playerControlsFragment.showControls();
+                playerControlsFragment.hideSkipIntro();
+
+            }
+            else {
+                playerControlsFragment.showSkipButton();
+                playerControlsFragment.hideControls();
+            }
             mHandler.postDelayed(this, 100);
 
 
@@ -205,7 +217,6 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                 mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
                     skipIntroEnable=true;
-                    showSkipIntro();
                     if (!isBingeWatchTimeCalculate){
                         Log.w("totalDuartion",player.getDuration()+"");
                         Log.w("totalDuartion",bingeWatchTimer*1000+"");
@@ -297,6 +308,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 //            getBinding().playerImage.setVisibility(View.GONE);
            progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
+             playerControlsFragment.hideControls();
           progressbar.setVisibility(View.VISIBLE);
         } else if (event.newState == PlayerState.LOADING) {
         }
@@ -384,27 +396,16 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         checkBackButtonClickOrientation();
 
     }
-  private void showSkipIntro(){
-        if(player.getCurrentPosition() >= 0 && player.getCurrentPosition() <=15000){
-            playerControlsFragment.showSkipButton();
-        }
 
-
-  }
-//    private void HideSkipIntro(){
-//
-//    }
 
     @Override
     public void skipIntro() {
 
-        if(skipIntroEnable == true){
-
+        if(skipIntroEnable == true ){
            player.seekTo(15000);
-            playerControlsFragment.hideSkipIntro();
            skipIntroEnable=false;
         }
-        else if(player.getCurrentPosition() >= 15000){
+        else {
             playerControlsFragment.hideSkipIntro();
 
 
@@ -519,14 +520,20 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     public void onPause() {
         super.onPause();
         if (player != null) {
-           player.stop();
+             stopPosition = (int) player.getCurrentPosition();
+           player.pause();
         }
     }
 
     @Override
     public void onResume() {
+
+        if (player != null) {
+            player.seekTo(stopPosition);
+            player.play();
+        }
         super.onResume();
-        player.play();
+
     }
 
     @Override
