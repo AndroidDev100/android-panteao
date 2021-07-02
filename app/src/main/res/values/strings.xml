@@ -411,5 +411,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_heading_chapters">CHAPTERS</string>
     <string name="all_chapters">All Chapters</string>
+    <string name="next_episode">Next Episode</string>
 
 </resources>

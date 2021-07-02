@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.kaltura.android.exoplayer2.ui.DefaultTimeBar;
@@ -60,18 +62,23 @@ public class PlayerControlsFragment extends Fragment {
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
     private ImageView btnPlay;
+    private View seekBarControl;
+    public ImageView fullscreen;
     public TextView currentPosition;
     private TextView totalDuration;
     private ImageView btnPause;
     private ImageView btnForward;
     private ImageView btnRewind;
     private ImageView btnback;
+    public ImageView backArrow;
     private DefaultTimeBar seekBar;
     private long playbackDuration, playbackCurrentPosition;
-
+    private boolean isOffline = false;
     private RelativeLayout relativeLayout;
     private LinearLayout seekbarLayout;
     private LinearLayout childControls;
+    private LinearLayout skipBtn, bingeBtn;
+    public ConstraintLayout bingeLay;
 
     private boolean dragging = false;
 
@@ -340,6 +347,16 @@ public class PlayerControlsFragment extends Fragment {
                 }
             }
         });
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.finishPlayer();
+                }
+                playerCallbacks.checkOrientation(backArrow);
+            }
+        });
         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -356,17 +373,24 @@ public class PlayerControlsFragment extends Fragment {
                 return false;
             }
         });
-        //Back button click
-//        btnback.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (playerCallbacks != null) {
-//                    playerCallbacks.finishPlayer();
-//                }
-//                playerCallbacks.checkOrientation(btnback);
-//            }
-//        });
 
+        fullscreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.checkOrientation(fullscreen);
+                }
+            }
+        });
+
+        bingeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    playerCallbacks.bingeWatch();
+                }
+            }
+        });
 
 
         //Replay video event
@@ -396,10 +420,90 @@ public class PlayerControlsFragment extends Fragment {
         childControls.setVisibility(View.GONE);
         seekbarLayout.setVisibility(View.GONE);
     }
+    public void showBingeWatch() {
+        try {
+            if (timer) {
+                if (viewHideShowTimeHandler != null) {
+                    viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+        childControls.setVisibility(View.GONE);
+        seekbarLayout.setVisibility(View.GONE);
+        bingeLay.setVisibility(View.VISIBLE);
+        bingeBtn.setVisibility(View.VISIBLE);
+        backArrow.setVisibility(View.VISIBLE);
+    }
+
+    public void hideBingeWatch() {
+        try {
+            bingeLay.setVisibility(View.GONE);
+            bingeBtn.setVisibility(View.GONE);
+            backArrow.setVisibility(View.GONE);
+        }catch (Exception e){
+
+        }
+
+    }
+    public void sendPortraitCallback() {
+        Log.w("captionHide", "sendPortraitCallback");
+
+        fullscreen.setBackgroundResource(R.drawable.full_screen);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 0, 0, 0);
+        params.gravity = Gravity.CENTER;
+        seekBarControl.setLayoutParams(params);
 
 
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params1.setMargins(0, 0, 0, 0);
 
 
+        try {
+            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params2.setMargins(0, 10, 60, 0);
+            params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    public void sendLandscapeCallback() {
+        try {
+            fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
+
+            if (!getResources().getBoolean(R.bool.isTablet)) {
+                setParamstoSeekBarControl(seekBarControl);
+
+                //Utils.setParamstoSetingButton(skipBtn);
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
+
+
+    public static void setParamstoSeekBarControl(View seekBarControl) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 0, 0, 60);
+        seekBarControl.setLayoutParams(params);
+    }
 
     private void findId(View view) {
         btnPause=(ImageView)view.findViewById(R.id.pause);
@@ -412,10 +516,17 @@ public class PlayerControlsFragment extends Fragment {
        totalDuration=view.findViewById(R.id.exo_duration);
        seekbarLayout=view.findViewById(R.id.seekbar_ll);
        childControls=view.findViewById(R.id.childControls);
+        seekBarControl = (View) view.findViewById(R.id.seekbarLayout);
+        backArrow=(ImageView)view.findViewById(R.id.backArrow);
+        fullscreen = (ImageView) view.findViewById(R.id.fullscreen);
+        bingeBtn = (LinearLayout) view.findViewById(R.id.bingeBtn);
+        bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
+
 //        hideControls();
 
-    }
 
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

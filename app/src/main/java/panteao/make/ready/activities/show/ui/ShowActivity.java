@@ -1311,7 +1311,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (!isCastConnected) {
+//        if (!isCastConnected) {
             super.onConfigurationChanged(newConfig);
             boolean isTablet = ShowActivity.this.getResources().getBoolean(R.bool.isTablet);
             AppCommonMethod.isOrientationChanged = true;
@@ -1321,7 +1321,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             } else {
                 showVideoDetail();
             }
-        }
+//        }
 
 //        if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
 //            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
@@ -1862,6 +1862,17 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //        GoogleCastComponent.setUpMediaRouteButton(this, menu);
         return true;
     }
+
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
+
+    }
+
 
 //    @Override
 //    public void onEvent(PlayerEvent.StateChanged event) {
