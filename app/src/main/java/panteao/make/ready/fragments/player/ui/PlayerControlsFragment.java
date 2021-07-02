@@ -57,7 +57,7 @@ public class PlayerControlsFragment extends Fragment {
     private Handler viewHideShowTimeHandler;
     private boolean timer = true ;
     private boolean mFlag = false;
-
+    private  ImageView qualitySettings;
     private Formatter formatter;
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
@@ -327,6 +327,14 @@ public class PlayerControlsFragment extends Fragment {
 
             }
         });
+       qualitySettings.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if (playerCallbacks != null) {
+//                   playerCallbacks.QualitySettings();
+               }
+           }
+       });
 
 
         //Seek player for 10 seconds from currentPosition
@@ -542,6 +550,7 @@ public class PlayerControlsFragment extends Fragment {
         bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
         skipBtn = (LinearLayout) view.findViewById(R.id.skipBtn);
         skipBtn.setVisibility(View.VISIBLE);
+        qualitySettings=(ImageView)view.findViewById(R.id.iv_quality);
 
 
 //        hideControls();

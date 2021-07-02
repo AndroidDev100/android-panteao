@@ -25,6 +25,20 @@
             android:contentDescription="backarrow"
             android:padding="4dp"
             android:src="@drawable/videobackicon" />
+        <ImageView
+            android:id="@+id/iv_quality"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="5dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_settings"
+             />
     </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

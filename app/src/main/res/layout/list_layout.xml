@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_setting_text"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_medium_large"
+        android:text="Video Quality"
+        android:textColor="@android:color/white"
+        android:padding="8dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center"
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:id="@+id/video_spinner"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_medium_large"
+        android:text="Video Quality"
+        android:textColor="@android:color/white"
+        android:layout_centerInParent="true"
+        android:foregroundTint="@color/white"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center|right"
+         />
+
+</RelativeLayout>
