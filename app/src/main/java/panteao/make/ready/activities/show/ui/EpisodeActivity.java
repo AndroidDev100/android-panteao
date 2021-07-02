@@ -928,7 +928,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             getBinding().tvBuyNow.setVisibility(View.VISIBLE);
             getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
             getBinding().backButton.setVisibility(View.VISIBLE);
-            hitApiEntitlement(videoDetails.getSku());
+//            hitApiEntitlement(videoDetails.getSku());
 
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {

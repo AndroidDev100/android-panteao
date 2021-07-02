@@ -70,7 +70,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             int index = 0;
             for (EnveuVideoItemBean videoItemBean :
                     videoItemBeans) {
-                indexMap.put(videoItemBean.getBrightcoveVideoId(), index);
+                indexMap.put(videoItemBean.getkEntryId(), index);
                 index++;
             }
             notifyDataSetChanged();
@@ -82,7 +82,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             int index = (int) indexMap.get(videoId);
             for (EnveuVideoItemBean videoItemBean :
                     videoItemBeans) {
-                if (videoItemBean.getBrightcoveVideoId().equals(videoId)) {
+                if (videoItemBean.getkEntryId().equals(videoId)) {
                     videoItemBeans.set(index, videoItemBean);
                     notifyItemChanged(index);
                 }
@@ -387,7 +387,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     public String getEpisodeNumber(String videoId) {
         for (EnveuVideoItemBean enveuVideoItemBean :
                 videoItemBeans) {
-            if (enveuVideoItemBean.getBrightcoveVideoId().equals(videoId)) {
+            if (enveuVideoItemBean.getkEntryId().equals(videoId)) {
                 return String.valueOf(enveuVideoItemBean.getEpisodeNo());
             }
         }

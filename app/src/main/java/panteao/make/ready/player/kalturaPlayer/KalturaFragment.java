@@ -1,14 +1,12 @@
 package panteao.make.ready.player.kalturaPlayer;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,10 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kaltura.netkit.utils.ErrorElement;
@@ -28,14 +30,20 @@ import com.kaltura.playkit.PKEvent;
 import com.kaltura.playkit.PKMediaEntry;
 import com.kaltura.playkit.PlayerEvent;
 import com.kaltura.playkit.PlayerState;
+import com.kaltura.playkit.player.PKTracks;
+import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import panteao.make.ready.R;
-import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
+import panteao.make.ready.player.tracks.TrackItemAdapter;
+import panteao.make.ready.player.tracks.TracksItem;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -56,18 +64,22 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     private FrameLayout playerLayout;
     private Context mcontext;
     private ProgressBar progressbar;
+    private boolean isDialogShowing = false;
     private PlayerCallbacks playerCallbacks;
+    private Boolean skipIntroEnable = false;
     private boolean IsbingeWatch = false;
     private int bingeWatchTimer = 0;
-    private  String entryID="";
-
-    private boolean showBingeWatchControls =false;
-    private boolean isBingeWatchTimeCalculate=false;
+    private String entryID = "";
+    private int stopPosition = 0;
+    private Dialog videodialog;
+    private Spinner videoSpinner;
+    private boolean showBingeWatchControls = false;
+    private boolean isBingeWatchTimeCalculate = false;
 
     private int bottomMargin = 0;
     private boolean isOfflineVideo = false;
     private PlayerControlsFragment playerControlsFragment;
-    private  Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -111,18 +123,28 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         }
 
     }
+
     private final Runnable updateTimeTask = new Runnable() {
         public void run() {
 //            Log.d("ndhfdm", "playing");
-            Log.d("ndhfdm", player.getCurrentPosition()+"");
-            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(),(int) player.getDuration());
+            Log.d("ndhfdm", player.getCurrentPosition() + "");
+            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
 //            seekBar1.setProgress(((int) player.getCurrentPosition()));
 //            seekBar1.setMax(((int) player.getDuration()));
+            if (player.getCurrentPosition() >= 15000) {
+                playerControlsFragment.showControls();
+                playerControlsFragment.hideSkipIntro();
+
+            } else {
+                playerControlsFragment.showSkipButton();
+                playerControlsFragment.hideControls();
+            }
             mHandler.postDelayed(this, 100);
 
 
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,12 +153,17 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
         findViewById(view);
         // Inflate the layout for this fragment
+
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
+        videodialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
+
+        videoSpinner = (Spinner) videodialog.findViewById(R.id.video_spinner);
+
         callPlayerControlsFragment();
         startPlayer();
-       setPlayerListner();
-       performClick();
-        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
+        setPlayerListner();
+        performClick();
+//        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
 
         return view;
 
@@ -175,12 +202,13 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
         }
     }
+
     private void startPlayer() {
-        if (player!=null) {
+        if (player != null) {
             player.stop();
         }
-        if(getArguments().containsKey(AppConstants.ENTRY_ID)){
-        entryID=getArguments().getString(AppConstants.ENTRY_ID);
+        if (getArguments().containsKey(AppConstants.ENTRY_ID)) {
+            entryID = getArguments().getString(AppConstants.ENTRY_ID);
         }
         OVPMediaOptions ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(entryID, 0L);
         player.loadMedia(ovpMediaOptions, new KalturaPlayer.OnEntryLoadListener() {
@@ -202,6 +230,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             }
         });
     }
+
     private void setPlayerListner() {
 
         player.addListener(this, PlayerEvent.stateChanged, this::onEvent);
@@ -211,23 +240,24 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                 Log.d("ndhfdm", "playing");
                 mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
-                    if (!isBingeWatchTimeCalculate){
-                        Log.w("totalDuartion",player.getDuration()+"");
-                        Log.w("totalDuartion",bingeWatchTimer*1000+"");
-                        Log.w("totalDuartion",player.getDuration()-bingeWatchTimer*1000+"");
-                        int timeCalculation= (int) (player.getDuration()-bingeWatchTimer*1000);
-                        if (timeCalculation>bingeWatchTimer){
-                            isBingeWatchTimeCalculate=true;
-                            bingeWatchTimer= (int) (player.getDuration()-bingeWatchTimer*1000);
+                    skipIntroEnable = true;
+                    if (!isBingeWatchTimeCalculate) {
+                        Log.w("totalDuartion", player.getDuration() + "");
+                        Log.w("totalDuartion", bingeWatchTimer * 1000 + "");
+                        Log.w("totalDuartion", player.getDuration() - bingeWatchTimer * 1000 + "");
+                        int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
+                        if (timeCalculation > bingeWatchTimer) {
+                            isBingeWatchTimeCalculate = true;
+                            bingeWatchTimer = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         }
 
                     }
                     playerControlsFragment.sendTapCallBack(true);
                     playerControlsFragment.startHandler();
-                    if (IsbingeWatch && bingeWatchTimer>0){
+                    if (IsbingeWatch && bingeWatchTimer > 0) {
                         int currentPosition = (int) player.getCurrentPosition();
-                        if (currentPosition >= bingeWatchTimer){
-                            showBingeWatchControls=true;
+                        if (currentPosition >= bingeWatchTimer) {
+                            showBingeWatchControls = true;
 
                             playerControlsFragment.showBingeWatch();
 
@@ -254,54 +284,68 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 //                        }
 
                 }
-                    if (mHandler != null && updateTimeTask != null)
-                    {
-                        //                    onBackPressed();
-                        finishPlayer();
+                if (mHandler != null && updateTimeTask != null) {
+                    //                    onBackPressed();
+                    finishPlayer();
                     mHandler.removeCallbacks(updateTimeTask);
                 }
-                    if (IsbingeWatch){
-                        isBingeWatchTimeCalculate=false;
-                        Logger.d("bingewatcher","ytirrrr");
-                        mListener.bingeWatchCall(entryID);
-                    }
+                if (IsbingeWatch) {
+                    isBingeWatchTimeCalculate = false;
+                    Logger.d("bingewatcher", "ytirrrr");
+                    mListener.bingeWatchCall(entryID);
+                }
 
             }
         });
 
-                player.addListener(this, PlayerState.READY, new PKEvent.Listener() {
-                    @Override
-                    public void onEvent(PKEvent event) {
-                        if (playerControlsFragment != null) {
+        player.addListener(this, PlayerEvent.tracksAvailable, new PKEvent.Listener<PlayerEvent.TracksAvailable>() {
+            @Override
+            public void onEvent(PlayerEvent.TracksAvailable event) {
+                PlayerEvent.TracksAvailable tracksAvailable = (PlayerEvent.TracksAvailable) event;
+                PKTracks tracks = tracksAvailable.tracksInfo;
+                if (tracks.getVideoTracks().size() > 0) {
 
+                    Log.d("vgbjjbh", "Default video isAdaptive = " + tracks.getVideoTracks().get(tracks.getDefaultAudioTrackIndex()).isAdaptive() + " bitrate = " + tracks.getVideoTracks().get(tracks.getDefaultAudioTrackIndex()).getBitrate());
+                }
+//                populateSpinnersWithTrackInfo(tracks);
+            }
+        });
 
-                        }
-                    }
-                });
+        player.addListener(this, PlayerEvent.videoTrackChanged, new PKEvent.Listener<PlayerEvent.VideoTrackChanged>() {
+            @Override
+            public void onEvent(PlayerEvent.VideoTrackChanged event) {
+
+            }
+        });
 
     }
 
     private void findViewById(View view) {
-        playerLayout=(FrameLayout)view.findViewById(R.id.playerRoot);
-        progressbar=(ProgressBar)view.findViewById(R.id.pBar);
+
+        playerLayout = (FrameLayout) view.findViewById(R.id.playerRoot);
+        progressbar = (ProgressBar) view.findViewById(R.id.pBar);
         container = view.findViewById(R.id.container);
 
 
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
 
 
     }
+
     @Override
     public void onEvent(PlayerEvent.StateChanged event) {
 
-         if (event.newState == PlayerState.READY) {
+        if (event.newState == PlayerState.READY) {
+
 //            getBinding().playerImage.setVisibility(View.GONE);
-           progressbar.setVisibility(View.GONE);
+            progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
-          progressbar.setVisibility(View.VISIBLE);
+            playerControlsFragment.hideControls();
+            progressbar.setVisibility(View.VISIBLE);
         } else if (event.newState == PlayerState.LOADING) {
         }
 
@@ -341,7 +385,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                 playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
             }
         }
-        Log.d("playyyyy","for");
+        Log.d("playyyyy", "for");
 
     }
 
@@ -355,29 +399,31 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         }
 
     }
+
     Configuration currentConfig = null;
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
-            super.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
 
-                if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                   getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    if (playerControlsFragment != null) {
-                        playerControlsFragment.sendLandscapeCallback();
-                    }
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendLandscapeCallback();
+            }
 //                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin_landscape);
-                    currentConfig = newConfig;
+            currentConfig = newConfig;
 //
-                } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    if (playerControlsFragment != null) {
-                        playerControlsFragment.sendPortraitCallback();
-                    }
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (playerControlsFragment != null) {
+                playerControlsFragment.sendPortraitCallback();
+            }
 //                    bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    currentConfig = newConfig;
-                   playerLayout.setPadding(0, 0, 0, 0);
-                }
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            currentConfig = newConfig;
+            playerLayout.setPadding(0, 0, 0, 0);
+        }
 
 
     }
@@ -389,27 +435,41 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
     }
 
+
     @Override
     public void skipIntro() {
 
+        if (skipIntroEnable == true) {
+            player.seekTo(15000);
+            skipIntroEnable = false;
+        } else {
+            playerControlsFragment.hideSkipIntro();
+
+
+        }
+
     }
-    int totalEpisodes=0;
+
+    int totalEpisodes = 0;
+
     public void totalEpisodes(int size) {
-        totalEpisodes=size;
+        totalEpisodes = size;
     }
-    int runningEpisodes=0;
+
+    int runningEpisodes = 0;
+
     public void currentEpisodes(int i) {
-        runningEpisodes=i;
-        Log.w("totalZies",totalEpisodes+" "+runningEpisodes);
-        if (runningEpisodes<totalEpisodes){
-            IsbingeWatch=true;
-        }else {
-            IsbingeWatch=false;
+        runningEpisodes = i;
+        Log.w("totalZies", totalEpisodes + " " + runningEpisodes);
+        if (runningEpisodes < totalEpisodes) {
+            IsbingeWatch = true;
+        } else {
+            IsbingeWatch = false;
         }
     }
 
     public void bingeWatchStatus(boolean b) {
-        IsbingeWatch=b;
+        IsbingeWatch = b;
     }
 
     @Override
@@ -438,20 +498,21 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         captionParams.bottomMargin = (int) 0;
         captionParams.topMargin = (int) 0;
         playerLayout.setLayoutParams(captionParams);
-           if (id.getId() == R.id.backArrow) {
+        if (id.getId() == R.id.backArrow) {
             _isOrientation(1, id);
         } else {
-               int orientation = getActivity().getResources().getConfiguration().orientation;
-               if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                   getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-                   id.setBackgroundResource(R.drawable.full_screen);
-               } else {
-                   getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                   id.setBackgroundResource(R.drawable.exit_full_screen);
-               }
+            int orientation = getActivity().getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                id.setBackgroundResource(R.drawable.full_screen);
+            } else {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                id.setBackgroundResource(R.drawable.exit_full_screen);
+            }
 
-           }
+        }
     }
+
     private void _isOrientation(int i, ImageView id) {
         int orientation = getActivity().getResources().getConfiguration().orientation;
 
@@ -463,11 +524,79 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             }
         }
     }
+
     @Override
     public void replay() {
 
     }
 
+    @Override
+    public void QualitySettings() {
+        {
+            isDialogShowing = true;
+
+//            chooseQualityDialouge();
+
+            videodialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            videodialog.setContentView(R.layout.list_layout);
+
+            videodialog.setCanceledOnTouchOutside(true);
+
+            videodialog.setCanceledOnTouchOutside(true);
+            if (videodialog.getWindow() != null) {
+                videodialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                videodialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                videodialog.show();
+            }
+
+        }
+
+    }
+
+
+
+
+    private TracksItem[] buildVideoTrackItems(List<VideoTrack> videoTracks) {
+        //Initialize TrackItem array with size of videoTracks list.
+        TracksItem[] trackItems = new TracksItem[videoTracks.size()];
+
+        //Iterate through all available video tracks.
+        for (int i = 0; i < videoTracks.size(); i++) {
+            //Get video track from index i.
+            VideoTrack videoTrackInfo = videoTracks.get(i);
+
+            //Check if video track is adaptive. If so, give it "Auto" name.
+            if (videoTrackInfo.isAdaptive()) {
+                //In this case, if this track is selected, the player will
+                //adapt the playback bitrate automatically, based on user bandwidth and device capabilities.
+                //Initialize TrackItem.
+                trackItems[i] = new TracksItem("Auto", videoTrackInfo.getUniqueId());
+            } else {
+
+                //If it is not adaptive track, build readable name based on width and height of the track.
+                StringBuilder nameStringBuilder = new StringBuilder();
+                nameStringBuilder.append(videoTrackInfo.getBitrate());
+
+                //Initialize TrackItem.
+                trackItems[i] = new TracksItem(nameStringBuilder.toString(), videoTrackInfo.getUniqueId());
+            }
+        }
+        return trackItems;
+    }
+//    private void chooseQualityDialouge() {
+//        Dialog videodialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
+//        videodialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        videodialog.setContentView(R.layout.video_quality);
+//        videodialog.setCanceledOnTouchOutside(true);
+//
+//        videodialog.setCanceledOnTouchOutside(true);
+//        if (videodialog.getWindow() != null) {
+//            videodialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//            videodialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//            videodialog.show();
+//        }
+//
+//    }
 
     @Override
     public void SeekbarLastPosition(long position) {
@@ -501,14 +630,20 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     public void onPause() {
         super.onPause();
         if (player != null) {
-           player.stop();
+             stopPosition = (int) player.getCurrentPosition();
+           player.pause();
         }
     }
 
     @Override
     public void onResume() {
+
+        if (player != null) {
+            player.seekTo(stopPosition);
+            player.play();
+        }
         super.onResume();
-        player.play();
+
     }
 
     @Override

@@ -11,6 +11,7 @@ public interface PlayerCallbacks {
     void bingeWatch();
     void checkOrientation(ImageView id);
     void replay();
+    void QualitySettings();
     void SeekbarLastPosition(long position);
     void showPlayerController(boolean isVisible);
     void changeBitRateRequest(String title,int position);

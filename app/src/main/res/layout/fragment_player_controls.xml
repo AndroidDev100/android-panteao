@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/control_layout"
     android:background="@color/transparent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+  >
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:layout_alignParentLeft="true"
         >
-
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="wrap_content"
@@ -20,6 +25,20 @@
             android:contentDescription="backarrow"
             android:padding="4dp"
             android:src="@drawable/videobackicon" />
+        <ImageView
+            android:id="@+id/iv_quality"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="5dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_settings"
+             />
     </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +72,7 @@
                 android:src="@drawable/forward_icon"/>
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,7 +142,39 @@
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/skip_ll"
+        android:layout_alignParentBottom="true"
+        android:gravity="right">
 
+        <LinearLayout
+            android:id="@+id/skipBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:background="@drawable/skip_intro"
+            android:paddingStart="8dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="6dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/skipTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip_intro"
+                android:textColor="@color/white"
+                android:textSize="13dp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
