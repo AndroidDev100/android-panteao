@@ -52,13 +52,13 @@ public class PurchaseRepository {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
                 jsonObject1.put("enveuSMSOfferContentSKU", sku);
             }else {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSSubscriptionOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
             }
 
 
@@ -194,6 +194,43 @@ public class PurchaseRepository {
         return liveDataPurchaseResponse;
     }
 
+    public LiveData<ResponseMembershipAndPlan> getNewPlans(String token) {
+
+        MutableLiveData<ResponseMembershipAndPlan> liveDataPurchaseResponse = new MutableLiveData<>();
+        APIDetails endpoint = RequestConfig.getUserInteration(token).create(APIDetails.class);
+        Call<ResponseMembershipAndPlan> call = endpoint.getPlans("RECURRING_SUBSCRIPTION",true);
+        call.enqueue(new Callback<ResponseMembershipAndPlan>() {
+            @Override
+            public void onResponse(Call<ResponseMembershipAndPlan> call, Response<ResponseMembershipAndPlan> response) {
+
+
+                ResponseMembershipAndPlan purchaseResponseModel = new ResponseMembershipAndPlan();
+                if (response.code() == 200) {
+                    purchaseResponseModel.setStatus(true);
+                    //                 purchaseResponseModel.setDebugMessage(response.body().getDebugMessage());
+                    purchaseResponseModel.setData(response.body().getData());
+                    liveDataPurchaseResponse.postValue(purchaseResponseModel);
+                } else {
+                    purchaseResponseModel.setStatus(false);
+                    liveDataPurchaseResponse.postValue(purchaseResponseModel);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMembershipAndPlan> call, Throwable t) {
+                ResponseMembershipAndPlan purchaseResponseModel = new ResponseMembershipAndPlan();
+                purchaseResponseModel.setStatus(false);
+                liveDataPurchaseResponse.postValue(purchaseResponseModel);
+
+            }
+        });
+
+
+        return liveDataPurchaseResponse;
+    }
+
+
 
     public LiveData<ResponseCancelPurchase> cancelPlan(String token) {
 
@@ -264,7 +301,7 @@ public class PurchaseRepository {
 
             if (purchaseModel!=null){
                 jsonObject1.put("purchasePrice", purchaseModel.getPrice());
-                jsonObject1.put("purchaseCurrency", purchaseModel.getCurrency());
+                jsonObject1.put("purchaseCurrency", "USD");
             }else {
                 jsonObject1.put("purchasePrice", "");
                 jsonObject1.put("purchaseCurrency", "");
