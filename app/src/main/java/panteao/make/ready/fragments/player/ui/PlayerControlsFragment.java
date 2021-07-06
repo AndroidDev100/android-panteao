@@ -331,7 +331,7 @@ public class PlayerControlsFragment extends Fragment {
            @Override
            public void onClick(View v) {
                if (playerCallbacks != null) {
-//                   playerCallbacks.QualitySettings();
+                   playerCallbacks.QualitySettings();
                }
            }
        });
@@ -465,6 +465,7 @@ public class PlayerControlsFragment extends Fragment {
     }
     public void sendPortraitCallback() {
         Log.w("captionHide", "sendPortraitCallback");
+        qualitySettings.setVisibility(View.GONE);
 
         fullscreen.setBackgroundResource(R.drawable.full_screen);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -501,11 +502,13 @@ public class PlayerControlsFragment extends Fragment {
 
     public void sendLandscapeCallback() {
         try {
+            qualitySettings.setVisibility(View.VISIBLE);
+            qualitySettings.setBackgroundResource(R.drawable.ic_settings);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
             if (!getResources().getBoolean(R.bool.isTablet)) {
                 setParamstoSeekBarControl(seekBarControl);
                 setParamstoBackbutton(backArrow);
-
+                setParamstoQuality(qualitySettings);
                 //Utils.setParamstoSetingButton(skipBtn);
             }
         } catch (Exception e) {
@@ -518,10 +521,22 @@ public class PlayerControlsFragment extends Fragment {
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 60, 0, 0);
+        params.setMargins(7, 65, 0, 0);
 
 
         btnback.setLayoutParams(params);
+
+    }
+    public static void setParamstoQuality(View quality) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 65, 15, 0);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+      quality.setLayoutParams(params);
+
     }
 
     public static void setParamstoSeekBarControl(View seekBarControl) {

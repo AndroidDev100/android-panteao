@@ -9,13 +9,6 @@ import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-import panteao.make.ready.beanModelV3.continueWatching.DataItem;
-import panteao.make.ready.beanModelV3.playListModelV2.PlayListDetailsResponse;
-import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
-import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
-import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class ImageLayer {
     private static ImageLayer imageLayerInstance;

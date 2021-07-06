@@ -69,8 +69,6 @@ import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
-import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
-import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.adapters.player.EpisodeTabAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;

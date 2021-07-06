@@ -45,29 +45,6 @@ import com.make.enums.PlaylistType;
 import java.util.ArrayList;
 import java.util.List;
 
-import panteao.make.ready.ObservableRxList;
-import panteao.make.ready.beanModel.emptyResponse.ResponseEmpty;
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModel.responseGetWatchlist.ResponseGetIsWatchlist;
-import panteao.make.ready.beanModel.responseIsLike.ResponseIsLike;
-import panteao.make.ready.beanModelV3.continueWatching.DataItem;
-import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
-import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
-import panteao.make.ready.layersV2.ContinueWatchingLayer;
-import panteao.make.ready.layersV2.ListPaginationDataLayer;
-import panteao.make.ready.layersV2.SearchLayer;
-import panteao.make.ready.layersV2.SeasonEpisodesList;
-import panteao.make.ready.layersV2.SeriesDataLayer;
-import panteao.make.ready.layersV2.VideoDetailLayer;
-import panteao.make.ready.networking.apistatus.APIStatus;
-import panteao.make.ready.networking.errormodel.ApiErrorModel;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
-import panteao.make.ready.networking.servicelayer.APIServiceLayer;
-import panteao.make.ready.repository.home.HomeFragmentRepository;
-import panteao.make.ready.repository.userManagement.RegistrationLoginRepository;
-import panteao.make.ready.utils.constants.AppConstants;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 
 public class RailInjectionHelper extends AndroidViewModel {
     private MutableLiveData<RailCommonData> mutableRailCommonData = new MutableLiveData<>();

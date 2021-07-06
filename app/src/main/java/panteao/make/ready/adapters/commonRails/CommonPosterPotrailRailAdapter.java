@@ -26,10 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class CommonPosterPotrailRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

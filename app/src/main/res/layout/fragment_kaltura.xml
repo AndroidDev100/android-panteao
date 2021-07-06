@@ -39,6 +39,12 @@
 <!--            android:layout_height="match_parent"-->
 <!--            android:layout_gravity="center_horizontal|bottom"-->
 <!--            android:visibility="invisible" />-->
+        <include
+            android:id="@+id/tracks_selection_menu"
+            layout="@layout/list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"

@@ -12,10 +12,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import panteao.make.ready.enums.DownloadStatus;
-import panteao.make.ready.utils.helpers.downloads.MediaTypeCheck;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
-import panteao.make.ready.utils.helpers.downloads.VideoListListener;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.RowEpisodeListBinding;
@@ -27,12 +24,8 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>{
     private final Activity context;

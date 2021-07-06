@@ -30,13 +30,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
 
-import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
-import panteao.make.ready.activities.videoquality.adapter.ChangeLanguageAdapter;
-import panteao.make.ready.activities.videoquality.bean.LanguageItem;
-import panteao.make.ready.activities.videoquality.callBack.ItemClick;
-import panteao.make.ready.activities.videoquality.viewModel.VideoQualityViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-
 public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActivityBinding> implements ItemClick, ChangeLanguageDialog.AlertDialogListener {
     private VideoQualityViewModel viewModel;
     private ChangeLanguageAdapter notificationAdapter;

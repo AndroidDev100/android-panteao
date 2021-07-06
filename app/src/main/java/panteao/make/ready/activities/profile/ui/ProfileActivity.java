@@ -87,10 +87,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.beanModel.AppUserModel;
-
 
 public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> implements AlertDialogFragment.AlertDialogListener {
     private final List<String> permissionNeeds = Arrays.asList("email", "public_profile");

@@ -6,23 +6,27 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kaltura.netkit.utils.ErrorElement;
@@ -37,12 +41,12 @@ import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import panteao.make.ready.R;
+import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
-import panteao.make.ready.player.tracks.TrackItemAdapter;
 import panteao.make.ready.player.tracks.TracksItem;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -53,7 +57,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEvent.Listener<PlayerEvent.StateChanged> {
+public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,19 +67,24 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     private KalturaOvpPlayer player;
     private FrameLayout playerLayout;
     private Context mcontext;
+    private View tracksSelectionMenu;
     private ProgressBar progressbar;
+    private boolean isSelected = false;
     private boolean isDialogShowing = false;
     private PlayerCallbacks playerCallbacks;
     private Boolean skipIntroEnable = false;
     private boolean IsbingeWatch = false;
     private int bingeWatchTimer = 0;
+   ArrayList<TracksItem> trackItemList=new ArrayList<TracksItem>();
+    ArrayList<VideoTrack>  videoTracks=new ArrayList<VideoTrack>();
+    private PKTracks tracks;
+   private String  trackName="";
     private String entryID = "";
     private int stopPosition = 0;
     private Dialog videodialog;
-    private Spinner videoSpinner;
     private boolean showBingeWatchControls = false;
     private boolean isBingeWatchTimeCalculate = false;
-
+    private  int pos;
     private int bottomMargin = 0;
     private boolean isOfflineVideo = false;
     private PlayerControlsFragment playerControlsFragment;
@@ -155,9 +164,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         // Inflate the layout for this fragment
 
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
-        videodialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
 
-        videoSpinner = (Spinner) videodialog.findViewById(R.id.video_spinner);
 
         callPlayerControlsFragment();
         startPlayer();
@@ -294,12 +301,16 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             @Override
             public void onEvent(PlayerEvent.TracksAvailable event) {
                 PlayerEvent.TracksAvailable tracksAvailable = (PlayerEvent.TracksAvailable) event;
-                PKTracks tracks = tracksAvailable.tracksInfo;
+               tracks = tracksAvailable.tracksInfo;
                 if (tracks.getVideoTracks().size() > 0) {
 
                     Log.d("vgbjjbh", "Default video isAdaptive = " + tracks.getVideoTracks().get(tracks.getDefaultAudioTrackIndex()).isAdaptive() + " bitrate = " + tracks.getVideoTracks().get(tracks.getDefaultAudioTrackIndex()).getBitrate());
                 }
+
 //                populateSpinnersWithTrackInfo(tracks);
+//
+
+//
             }
         });
 
@@ -353,8 +364,6 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
                 player.pause();
 //                playerControlsFragment.showControls();
-                Log.d("chgytfgh", "pause");
-
             } else {
                 id.setBackgroundResource(R.color.transparent);
 
@@ -362,7 +371,6 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
                 player.play();
 
-                Log.d("chgytfgh", "play");
             }
 
         }
@@ -524,71 +532,66 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
     @Override
     public void QualitySettings() {
-        {
+
             isDialogShowing = true;
+        chooseVideoquality();
 
-//            chooseQualityDialouge();
+    }
+    private void chooseVideoquality() {
+        final RecyclerView recycleview;
+//        playerControlsFragment.callHandler();
+        videodialog = new Dialog(getActivity(), R.style.AppAlertTheme);
+        videodialog.setContentView(R.layout.list_layout);
+       videodialog.setTitle(getString(R.string.title_video_quality));
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.47);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.65);
+        videodialog.getWindow().setLayout(width,height);
+       videodialog.show();
+        recycleview = videodialog.findViewById(R.id.recycler_view_quality);
+        Button closeButton = videodialog.findViewById(R.id.close);
+        closeButton.setOnClickListener(v -> videodialog.cancel());
+        if (recycleview != null) {
+            VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList);
+            recycleview.setAdapter(trackItemAdapter);
+            recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
+         trackItemAdapter.notifyDataSetChanged();
+        } else {
+//            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
+        }
+        trackItemList.clear();
+        if(tracks.getVideoTracks().size()>0) {
+            for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
 
-            videodialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            videodialog.setContentView(R.layout.list_layout);
+                VideoTrack videoTrackInfo = tracks.getVideoTracks().get(i);
+                setVideoQuality();
+                if (videoTrackInfo.isAdaptive()) {
+                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
+                } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000) {
+                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
+                } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000)) {
+                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
+                } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000) {
 
-            videodialog.setCanceledOnTouchOutside(true);
-
-            videodialog.setCanceledOnTouchOutside(true);
-            if (videodialog.getWindow() != null) {
-                videodialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                videodialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                videodialog.show();
+                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
+                }
             }
-
+        }else{
+            Logger.d("tracksSize",tracks.getVideoTracks().size()+"");
         }
 
     }
 
+private void setVideoQuality() {
+        String selectedTrack = KsPreferenceKeys.getInstance().getQualityName();
+    if (!TextUtils.isEmpty(selectedTrack)) {
+        trackName = selectedTrack;
 
+        Log.d("TrackNameIs", trackName);
+        Log.d("TrackNameIs", selectedTrack);
 
-
-    private TracksItem[] buildVideoTrackItems(List<VideoTrack> videoTracks) {
-        //Initialize TrackItem array with size of videoTracks list.
-        TracksItem[] trackItems = new TracksItem[videoTracks.size()];
-
-        //Iterate through all available video tracks.
-        for (int i = 0; i < videoTracks.size(); i++) {
-            //Get video track from index i.
-            VideoTrack videoTrackInfo = videoTracks.get(i);
-
-            //Check if video track is adaptive. If so, give it "Auto" name.
-            if (videoTrackInfo.isAdaptive()) {
-                //In this case, if this track is selected, the player will
-                //adapt the playback bitrate automatically, based on user bandwidth and device capabilities.
-                //Initialize TrackItem.
-                trackItems[i] = new TracksItem("Auto", videoTrackInfo.getUniqueId());
-            } else {
-
-                //If it is not adaptive track, build readable name based on width and height of the track.
-                StringBuilder nameStringBuilder = new StringBuilder();
-                nameStringBuilder.append(videoTrackInfo.getBitrate());
-
-                //Initialize TrackItem.
-                trackItems[i] = new TracksItem(nameStringBuilder.toString(), videoTrackInfo.getUniqueId());
-            }
-        }
-        return trackItems;
     }
-//    private void chooseQualityDialouge() {
-//        Dialog videodialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
-//        videodialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        videodialog.setContentView(R.layout.video_quality);
-//        videodialog.setCanceledOnTouchOutside(true);
-//
-//        videodialog.setCanceledOnTouchOutside(true);
-//        if (videodialog.getWindow() != null) {
-//            videodialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//            videodialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//            videodialog.show();
-//        }
-//
-//    }
+}
+
 
     @Override
     public void SeekbarLastPosition(long position) {
@@ -611,6 +614,12 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     @Override
     public void bitRateRequest() {
     }
+
+    @Override
+    public void onFinishDialog() {
+
+    }
+
 
     public interface OnPlayerInteractionListener {
         default void bingeWatchCall(String entryID) {
@@ -648,20 +657,77 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         super.onActivityCreated(savedInstanceState);
         try {
             mListener = (OnPlayerInteractionListener) getActivity();
-//
-//            int orientation = getResources().getConfiguration().orientation;
-//            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//               getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams)playerLayout.getLayoutParams();
-//                captionParams.bottomMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
-//                captionParams.topMargin = (int) getResources().getDimension(R.dimen.live_full_screen_bottom);
-//               playerLayout.setLayoutParams(captionParams);
-//
-//            }
+
         }catch (Exception ignored){
 
         }
 
     }
-}
+    static class ViewHolder1 extends RecyclerView.ViewHolder {
+
+        ImageView tick;
+        private TextView qualityText;
+
+        private ViewHolder1(View itemView) {
+            super(itemView);
+            tick =itemView.findViewById(R.id.tick_image);
+            qualityText = itemView.findViewById(R.id.tvTrackName);
+
+        }
+    }
+    class VideoTracksAdapter extends RecyclerView.Adapter<ViewHolder1> {
+        final ArrayList<TracksItem> tracks;
+
+
+        private VideoTracksAdapter(ArrayList<TracksItem> videoTracks) {
+            this.tracks = videoTracks;
+
+
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder1 onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tracks_item_list_row, parent, false);
+            return new ViewHolder1(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final ViewHolder1 holder, final int position) {
+
+            if (KsPreferenceKeys.getInstance().getQualityName().equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
+                holder.tick.setBackgroundResource(R.drawable.tick);
+            } else {
+                holder.tick.setBackgroundResource(0);
+            }
+                holder.qualityText.setText(tracks.get(position).getTrackName());
+                holder.qualityText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        KsPreferenceKeys.getInstance().setQualityPosition(position);
+                        KsPreferenceKeys.getInstance().setQualityName(trackItemList.get(position).getTrackName());
+
+                            trackName = trackItemList.get(position).getTrackName();
+                            player.changeTrack(tracks.get(position).getUniqueId());
+
+                               notifyDataSetChanged();
+
+                    }
+                });
+
+
+
+
+
+            }
+
+            @Override
+            public int getItemCount () {
+                return trackItemList.size();
+            }
+        }
+
+
+
+    }

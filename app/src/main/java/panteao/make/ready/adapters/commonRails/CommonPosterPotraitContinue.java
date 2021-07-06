@@ -21,9 +21,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
 
-import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPosterPotraitContinue.SingleItemRowHolder> {
 
     private final String contentType;

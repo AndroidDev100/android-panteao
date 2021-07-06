@@ -21,11 +21,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import java.util.ArrayList;
 import java.util.List;
 
-import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscapeAdapter.SingleItemRowHolder> {
 
     private final List<ItemsItem> seasonItems;

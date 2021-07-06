@@ -4,7 +4,6 @@ import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
@@ -38,16 +36,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
-import panteao.make.ready.networking.apistatus.APIStatus;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding> implements AlertDialogFragment.AlertDialogListener {
 

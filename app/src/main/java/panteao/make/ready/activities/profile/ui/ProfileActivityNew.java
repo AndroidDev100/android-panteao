@@ -26,9 +26,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.Objects;
 
-import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-
 
 public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBinding> implements AlertDialogFragment.AlertDialogListener {
     private RegistrationLoginViewModel viewModel;

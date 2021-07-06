@@ -20,10 +20,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.Objects;
 
-import panteao.make.ready.activities.redeemcoupon.viewModel.RedeemViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 
 public class RedeemCouponActivity extends BaseBindingActivity<ActivityRedeemCouponBinding> implements AlertDialogFragment.AlertDialogListener {
     private String token;

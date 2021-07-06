@@ -32,8 +32,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.activities.listing.callback.ItemClickListener;
-
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
     private int limitView = 5;
