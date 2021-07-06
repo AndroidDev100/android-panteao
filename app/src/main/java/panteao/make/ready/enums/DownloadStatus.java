@@ -5,5 +5,6 @@ public enum DownloadStatus {
     REQUESTED,
     PAUSE,
     DOWNLOADING,
-    DOWNLOADED
+    DOWNLOADED,
+    FAILED
 }

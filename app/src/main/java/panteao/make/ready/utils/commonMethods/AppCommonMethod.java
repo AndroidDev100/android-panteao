@@ -35,6 +35,7 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.kaltura.playkit.providers.ovp.OVPMediaAsset;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
+import com.kaltura.tvplayer.OfflineManager;
 import com.kaltura.tvplayer.PlayerInitOptions;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageType;
@@ -61,6 +62,7 @@ import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
+import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.tarcker.EventConstant;
 import panteao.make.ready.tarcker.FCMEvents;
@@ -1839,4 +1841,18 @@ public class AppCommonMethod {
     }
 
 
+    public static DownloadStatus getDownloadStatus(OfflineManager.AssetDownloadState downloadState) {
+        if (downloadState==null){
+            return DownloadStatus.START;
+        }
+        if (downloadState.name().equalsIgnoreCase("paused")){
+            return panteao.make.ready.enums.DownloadStatus.PAUSE;
+        }else if (downloadState.name().equalsIgnoreCase("started")){
+            return DownloadStatus.DOWNLOADING;
+        }
+        else if (downloadState.name().equalsIgnoreCase("completed")){
+            return DownloadStatus.DOWNLOADED;
+        }
+        return DownloadStatus.START;
+    }
 }
