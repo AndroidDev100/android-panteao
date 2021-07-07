@@ -32,8 +32,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import panteao.make.ready.baseModels.BaseBindingActivity;
-
 import static panteao.make.ready.R.font.roboto_regular;
 
 public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScreenBinding> implements AlertDialogFragment.AlertDialogListener {

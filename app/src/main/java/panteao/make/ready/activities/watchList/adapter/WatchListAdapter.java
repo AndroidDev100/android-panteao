@@ -25,8 +25,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.utils.MediaTypeConstants;
-
 public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.SingleItemRowHolder> {
 
     private static final int ITEM = 0;

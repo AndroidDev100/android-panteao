@@ -6,7 +6,6 @@ import panteao.make.ready.networking.apiendpoints.RequestConfig;
 import panteao.make.ready.networking.detailPlayer.APIDetails;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

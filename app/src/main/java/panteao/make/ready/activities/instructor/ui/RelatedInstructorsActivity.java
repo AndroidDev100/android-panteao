@@ -69,8 +69,6 @@ import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
-import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
-import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.adapters.player.EpisodeTabAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -123,7 +121,6 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -671,9 +668,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:

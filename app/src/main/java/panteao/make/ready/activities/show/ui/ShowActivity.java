@@ -116,7 +116,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -496,9 +495,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     // don’t start playback
                     Logger.d("AudioFocus", "Failed");
                 {
-                    if (fragment != null) {
-                        //    fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -1270,7 +1267,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //                    downloadHelper.pauseVideo(downloadAbleVideo.getId());
 //            }
         }
-        AppCommonMethod.isInternet = fragment != null;
+        AppCommonMethod.isInternet = isConnected;
     }
 
     @Override
@@ -1286,8 +1283,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     Logger.e(TAG, "AUDIOFOCUS_LOSS");
                     //Loss of audio focus for a long time
                     //Stop playing the sound
-                    if (fragment != null)
-                        //  fragment.pauseNontonPlayer();
                         break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     Logger.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
@@ -1302,9 +1297,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
                 default:
                     //
-            }
-            if (fragment != null) {
-                // fragment.pauseOnOtherAudio();
             }
             // do something - or do it not
         }

@@ -1,6 +1,5 @@
 package panteao.make.ready.utils.config;
 
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.SDKConfig;
 

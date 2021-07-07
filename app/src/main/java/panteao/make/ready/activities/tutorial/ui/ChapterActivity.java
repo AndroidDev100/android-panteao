@@ -121,7 +121,6 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -678,9 +677,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:

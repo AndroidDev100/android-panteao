@@ -40,13 +40,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
-import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
-import panteao.make.ready.utils.CustomLayoutManager;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 import static panteao.make.ready.utils.constants.AppConstants.ADS_BANNER;
 import static panteao.make.ready.utils.constants.AppConstants.ADS_CUS;
 import static panteao.make.ready.utils.constants.AppConstants.ADS_MREC;

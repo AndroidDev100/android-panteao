@@ -414,5 +414,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="select_video_quality">select video quality</string>
     <string name="video_quality">Video Quality</string>
+    <string name="title_video_quality">Select Video Quality</string>
+    <string name="no_tracks_available">No tracks available</string>
 
 </resources>

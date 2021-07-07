@@ -30,7 +30,6 @@ import panteao.make.ready.activities.settings.ActivitySettings;
 import panteao.make.ready.activities.usermanagment.ui.ChangePasswordActivity;
 import panteao.make.ready.activities.watchList.ui.WatchListActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.cms.HelpActivity;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.more.adapter.MoreListAdapter;

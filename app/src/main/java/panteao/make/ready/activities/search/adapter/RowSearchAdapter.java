@@ -3,32 +3,24 @@ package panteao.make.ready.activities.search.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import panteao.make.ready.utils.constants.AppConstants;
+
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.CommonSearchAdapterBinding;
-import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
-import panteao.make.ready.utils.helpers.StringUtils;
-
 import java.util.List;
-
-import panteao.make.ready.activities.search.ui.ActivitySearch;
-import panteao.make.ready.utils.MediaTypeConstants;
 
 public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.SingleItemRowHolder> {
     private static final int ITEM = 0;

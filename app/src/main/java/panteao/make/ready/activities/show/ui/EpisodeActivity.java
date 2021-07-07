@@ -122,12 +122,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
-    private int watchList = 0;
-    private int watchListId = 0;
-    private int likeCounter = 0;
     private String videoUrl = "";
     private String vastUrl = "";
     private String token;
@@ -182,6 +178,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean hitEvent = false;
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
+    private boolean skipIntro=true;
 
 
     public static void closeActivity() {
@@ -681,9 +678,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -835,8 +830,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         response = new ResponseDetailPlayer();
         preference.setAppPrefAssetId(assestId);
-        watchList = 0;
-        likeCounter = 0;
         isLogin = preference.getAppPrefLoginStatus();
         token = preference.getAppPrefAccessToken();
         Logger.e("", "APP_PREF_ACCESS_TOKEN" + token);
@@ -1586,9 +1579,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void bingeWatchCall(String entryid) {
         int nextEpisdoeId = 0;
         int iValue = -1;
-        Logger.d("bingewatchcalled", seasonEpisodesList.size() + "");
         if (seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
-            Logger.d("bingewatchcalled", "for");
             for (int i = 0; i < seasonEpisodesList.size(); i++) {
                 int id = seasonEpisodesList.get(i).getId();
                 if (id == assestId) {
@@ -1596,7 +1587,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     iValue = i + 1;
                     break;
                 }
-
             }
             if (iValue > -1) {
                 nextEpisode = seasonEpisodesList.get(iValue);
@@ -1611,12 +1601,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 refreshDetailPage(nextEpisdoeId);
 
             }
-
-        } else {
-            Logger.d("bingewatchcalled", "else");
-
         }
-
     }
 
     List<EnveuVideoItemBean> seasonEpisodesList;
@@ -1881,16 +1866,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //
     @Override
     public void onPlayerStart() {
-//        Log.d("onPlayerStart", "values");
-//        try {
-//            AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
-//
-////            AppCommonMethod.trackFcmCustomEvent(EpisodeActivity.this, AppConstants.CONTENT_PLAY, videoDetails.getAssetType(), "", "", 0, videoDetails.getTitle(), 0, videoDetails.getSeriesId(), player.getCurrentPosition(), videoDetails.getDuration(), "", "", "", "");
-//
-//        } catch (Exception ignored) {
-//
-//        }
-//
         try {
             Log.w("onPlayerStart", "");
             getBinding().backButton.setVisibility(View.GONE);
@@ -1904,13 +1879,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails.getAssetType() != null) {
                 mediaType = videoDetails.getAssetType();
             }
-//            AppCommonMethod.trackFcmEvent(name, mediaType, EpisodeActivity.this, 0);
-            Logger.e("BINGE_WATCH", String.valueOf(seasonEpisodesList.size()));
             if (playerfragment != null && seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
                 playerfragment.totalEpisodes(seasonEpisodesList.size());
                 for (int i = 0; i < seasonEpisodesList.size(); i++) {
                     int id = seasonEpisodesList.get(i).getId();
-                    Log.w("episodesId", id + "  " + assestId + "  " + i);
                     if (id == assestId) {
                         playerfragment.currentEpisodes(i + 1);
                         break;
@@ -1919,16 +1891,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
                 }
             }
-//            if (seasonEpisodesList.size() > 0) {
-//
-//            } else {
-//                if (playerfragment != null) {
-//                    playerfragment.bingeWatchStatus(false);
-//                }
-//            }
-
+            if (seasonEpisodesList == null || seasonEpisodesList.size() <= 0) {
+                if (playerfragment != null) {
+                    playerfragment.bingeWatchStatus(false);
+                }
+            }
+            playerfragment.skipIntroStatus(skipIntro);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

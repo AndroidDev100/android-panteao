@@ -21,7 +21,6 @@ import panteao.make.ready.dependencies.DaggerEnveuComponent;
 import panteao.make.ready.dependencies.EnveuComponent;
 import panteao.make.ready.dependencies.modules.UserPreferencesModule;
 import panteao.make.ready.utils.TrackerUtil.TrackerUtil;
-import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
