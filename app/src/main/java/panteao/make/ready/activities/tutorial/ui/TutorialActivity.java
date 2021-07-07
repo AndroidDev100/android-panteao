@@ -122,10 +122,10 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 WindowManager.LayoutParams.FLAG_SECURE);*/
         shimmerCounter = 0;
 
-        if (SDKConfig.getInstance().getSeriesDetailId().equalsIgnoreCase("")) {
+        if (SDKConfig.getInstance().getTutorialDetailId().equalsIgnoreCase("")) {
             tabId = "10000";
         } else {
-            tabId = SDKConfig.getInstance().getSeriesDetailId();
+            tabId = SDKConfig.getInstance().getTutorialDetailId();
         }
 
         setupUI(getBinding().llParent);
@@ -594,8 +594,14 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 }
             }*/
 //            getBinding().seriesCount.setVisibility(View.GONE);
-            if (seriesResponse.getDescription()!=null && seriesResponse.getDescription().equalsIgnoreCase("")){
+            if (seriesResponse.getDescription()!=null){
+                if (seriesResponse.getDescription().equalsIgnoreCase("")){
+                    getBinding().descriptionText.setVisibility(View.GONE);
+                    getBinding().textExpandable.setVisibility(View.GONE);
+                }
+            }else {
                 getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
             }
             getBinding().setResponseApi(seriesResponse.getDescription().trim());
             count = 0;

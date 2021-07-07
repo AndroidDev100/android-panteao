@@ -224,11 +224,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
       /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);*/
 
-        if (SDKConfig.getInstance().getEpisodeDetailId().equalsIgnoreCase("")) {
+        if (SDKConfig.getInstance().getChapterDetailId().equalsIgnoreCase("")) {
             //tabId = AppConstants.EPISODE_ENVEU;
             tabId = "10000";
         } else {
-            tabId = SDKConfig.getInstance().getEpisodeDetailId();
+            tabId = SDKConfig.getInstance().getChapterDetailId();
         }
 
         preference = KsPreferenceKeys.getInstance();
@@ -1258,8 +1258,14 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             setCustomeFields(responseDetailPlayer, "");
             new ToastHandler(ChapterActivity.this).show(ChapterActivity.this.getResources().getString(R.string.can_not_play_error));
         }
-        if (responseDetailPlayer.getDescription() != null && responseDetailPlayer.getDescription().equalsIgnoreCase("")) {
+        if (responseDetailPlayer.getDescription()!=null){
+            if (responseDetailPlayer.getDescription().equalsIgnoreCase("")){
+                getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
+            }
+        }else {
             getBinding().descriptionText.setVisibility(View.GONE);
+            getBinding().textExpandable.setVisibility(View.GONE);
         }
         getBinding().setResponseApi(responseDetailPlayer);
         setExpandable();

@@ -410,6 +410,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_heading_chapters">CHAPTERS</string>
+    <string name="tab_heading_related_content">RELATED CONTENT</string>
     <string name="all_chapters">All Chapters</string>
     <string name="next_episode">Next Episode</string>
     <string name="select_video_quality">select video quality</string>

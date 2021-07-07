@@ -35,12 +35,14 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
+import com.kaltura.tvplayer.OfflineManager;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +50,7 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.downloads.NetworkHelper;
+import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
@@ -92,6 +95,8 @@ import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ToolBarHandler;
 import panteao.make.ready.utils.helpers.downloads.DownloadHelper;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.utils.helpers.downloads.VideoListListener;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
@@ -99,7 +104,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
+public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -141,7 +146,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private AlertDialogSingleButtonFragment errorDialog;
     private boolean errorDialogShown = false;
     private BookmarkingViewModel bookmarkingViewModel;
-    private DownloadHelper downloadHelper;
+    private KTDownloadHelper downloadHelper;
     private UserInteractionFragment userInteractionFragment;
     public static boolean isBackStacklost = false;
     private boolean isOfflineAvailable = false;
@@ -202,8 +207,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 videoPos = TimeUnit.SECONDS.toMillis(Long.parseLong(extras.getString(AppConstants.BUNDLE_DURATION)));
                 brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
                 tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
-//                downloadHelper = new DownloadHelper(this, this, AppConstants.ContentType.VIDEO.name());
-                //  downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
+                downloadHelper = new KTDownloadHelper(this,this);
+                //downloadHelper.startDownload();
+               //x downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
             }
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras " + "Search_Show_All");
@@ -232,6 +238,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
        transaction.replace(R.id.player_root, playerfragment);
        transaction.addToBackStack(null);
        transaction.commit();
+       if (videoDetails != null) {
+           downloadHelper.getAssetInfo(videoDetails.getkEntryId());
+       }
+
 
    }
     private void connectionValidation(Boolean aBoolean) {
@@ -668,9 +678,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         EnveuVideoItemBean player = new EnveuVideoItemBean();
         Data data = new Data();
         data.setContentTitle("");
-        if (player.getDescription() != null && player.getDescription().equalsIgnoreCase("")) {
+        /*if (player.getDescription() == null || player.getDescription().equalsIgnoreCase("")) {
             getBinding().descriptionText.setVisibility(View.GONE);
-        }
+            getBinding().textExpandable.setVisibility(View.GONE);
+        }*/
         getBinding().setResponseApi(player);
 
         setupUI(getBinding().llParent);
@@ -750,7 +761,15 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
             setPlayerFragment();
-
+            if (videoDetails.getDescription()!=null){
+                if (videoDetails.getDescription().equalsIgnoreCase("")){
+                    getBinding().descriptionText.setVisibility(View.GONE);
+                    getBinding().textExpandable.setVisibility(View.GONE);
+                }
+            }else {
+                getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
+            }
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {
@@ -970,6 +989,26 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         transaction.replace(R.id.fragment_user_interaction, userInteractionFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                userInteractionFragment.setDownloadable(true);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Logger.e(TAG, "onDownloadProgress" +"  ------ "+"paused");
+                                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(downloadState));
+                            }
+                        },50);
+
+                    }
+                });
+               // downloadHelper.startDownload();
+            }
+        },1500);
     }
 
 
@@ -1220,6 +1259,14 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         preference.setAppPrefJumpTo("");
         preference.setAppPrefBranchIo(false);
         AppCommonMethod.seasonId = -1;
+        if (downloadHelper!=null){
+            if (downloadHelper.getManager() != null) {
+                // Removing listeners by setting it to null
+                /*downloadHelper.getManager().setAssetStateListener(null);
+                downloadHelper.getManager().setDownloadProgressListener(null);
+                downloadHelper.getManager().stop();*/
+            }
+        }
         if (timer != null)
             timer.cancel();
 
@@ -1304,7 +1351,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-//        if (!isCastConnected) {
+        if (!isCastConnected) {
             super.onConfigurationChanged(newConfig);
             boolean isTablet = ShowActivity.this.getResources().getBoolean(R.bool.isTablet);
             AppCommonMethod.isOrientationChanged = true;
@@ -1314,7 +1361,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             } else {
                 showVideoDetail();
             }
-//        }
+        }
 
 //        if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
 //            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
@@ -1608,11 +1655,13 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     private void selectDownloadVideoQuality() {
-//        downloadHelper.selectVideoQuality(position -> {
-//            String[] array = getResources().getStringArray(R.array.download_quality);
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//            downloadHelper.startVideoDownload(downloadAbleVideo, position);
-//        });
+        downloadHelper.selectVideoQuality(position -> {
+            if (videoDetails!=null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")){
+                String[] array = getResources().getStringArray(R.array.download_quality);
+                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                downloadHelper.startDownload(position,videoDetails.getkEntryId(),videoDetails.getTitle());
+            }
+        });
     }
 
     public void postCommentClick() {
@@ -1627,12 +1676,12 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         AppCommonMethod.showPopupMenu(this, view, R.menu.download_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.cancel_download:
-//                    downloadHelper.cancelVideo(downloadAbleVideo.getId());
+                    downloadHelper.cancelVideo(videoDetails.getkEntryId());
                     break;
                 case R.id.pause_download:
                     Log.w("pauseVideo", "pop");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                    downloadHelper.pauseVideo(downloadAbleVideo.getId());
+                    downloadHelper.pauseVideo(videoDetails.getkEntryId());
                     break;
             }
             return false;
@@ -1644,7 +1693,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         AppCommonMethod.showPopupMenu(this, view, R.menu.delete_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.delete_download:
-//                    downloadHelper.deleteVideo(downloadAbleVideo);
+                    downloadHelper.cancelVideo(videoDetails.getkEntryId());
                     break;
                 case R.id.my_Download:
                     new ActivityLauncher(this).launchMyDownloads();
@@ -1662,14 +1711,14 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                     Log.w("pauseClicked", "in3");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                    downloadHelper.resumeDownload(downloadAbleVideo.getId());
+                    downloadHelper.resumeDownload(videoDetails.getkEntryId());
                 } else {
                     //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                 }
             } else {
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
                 Log.w("pauseClicked", "in4");
-//                downloadHelper.resumeDownload(downloadAbleVideo.getId());
+                downloadHelper.resumeDownload(videoDetails.getkEntryId());
             }
         } else {
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
@@ -1694,16 +1743,16 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //
 //    }
 
-//    @Override
-//    public void onDownloadProgress(@androidx.annotation.NonNull Video
-//                                           video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
-//                                           downloadStatus) {
-//        Logger.e(TAG, "onDownloadProgress" + downloadStatus.getProgress());
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-//            userInteractionFragment.setDownloadProgress((float) downloadStatus.getProgress());
-//        }
-//    }
+/*    @Override
+    public void onDownloadProgress(@androidx.annotation.NonNull Video
+                                           video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
+                                           downloadStatus) {
+        Logger.e(TAG, "onDownloadProgress" + downloadStatus.getProgress());
+        if (userInteractionFragment != null) {
+            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
+            userInteractionFragment.setDownloadProgress((float) downloadStatus.getProgress());
+        }
+    }*/
 //
 //    @Override
 //    public void onDownloadPaused(@androidx.annotation.NonNull Video
@@ -1868,6 +1917,77 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
 
 //    @Override
+    @Override
+    public void setDownloadProgressListener(float progress,String assetId) {
+        Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress);
+        if (userInteractionFragment != null) {
+          //  String string = String.format(Locale.ROOT, "%.1f", progress);
+           // Log.e("finalPer",string);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (videoDetails!=null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("") && videoDetails.getkEntryId().equalsIgnoreCase(assetId)){
+                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
+                        userInteractionFragment.setDownloadProgress((int)progress);
+                    }
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void onDownloadPaused(@NonNull @NotNull String assetId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Logger.e(TAG, "onDownloadProgress" +"  ------ "+"paused");
+                        OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetId);
+                        if (info!=null){
+                            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+                        }else {
+                            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+                        }
+
+                    }
+                },500);
+
+            }
+        });
+
+    }
+
+    OfflineManager.AssetDownloadState downloadState;
+    @Override
+    public void initialStatus(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+        this.downloadState=state;
+    }
+
+    @Override
+    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(state));
+                userInteractionFragment.setDownloadProgress(0);
+            }
+        });
+    }
+
+    @Override
+    public void onAssetDownloadComplete(@NonNull @NotNull String assetId) {
+        OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetId);
+        if (info!=null){
+            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+        }else {
+            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+        }
+    }
+
+    //    @Override
 //    public void onEvent(PlayerEvent.StateChanged event) {
 //        if (event.newState == PlayerState.READY) {
 //            getBinding().playerImage.setVisibility(View.GONE);
@@ -1878,8 +1998,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //        }
 //        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
 //    }
-
-
 
 
 }

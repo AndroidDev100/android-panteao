@@ -54,6 +54,8 @@ public class SDKConfig {
     public static String WEBP_QUALITY="filters:format(webp):quality(60)/";
     public static int DOWNLOAD_EXPIRY_DAYS=30;
     public static boolean DOWNLOAD_ENABLE=true;
+    public static int PARTNER_ID= 802792;
+    public static String KALTURA_SERVER_URL =  "https://cdnapisec.kaltura.com";
 
     /*uat keys*//*
     public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.uat.enveu.com/app/api/v1/config/";

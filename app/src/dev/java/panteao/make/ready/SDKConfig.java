@@ -34,7 +34,8 @@ public class SDKConfig {
     public static String WEBP_QUALITY="filters:format(webp):quality(60)/";
     public static int DOWNLOAD_EXPIRY_DAYS=30;
     public static boolean DOWNLOAD_ENABLE=true;
-
+    public static int PARTNER_ID= 802792;
+    public static String KALTURA_SERVER_URL =  "https://cdnapisec.kaltura.com";
     public void setConfigObject(ConfigBean configResponse,boolean isTablet) {
         this.configBean=configResponse;
         MediaTypeConstants.getInstance().setConfigObject(configBean);

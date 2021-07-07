@@ -38,6 +38,12 @@ public class SeasonEpisodesList {
         APIServiceLayer.getInstance().getAllEpisodesV2(seriesId, pageNumber, size, listener);
     }
 
+    public void getInstructorRelatedContent(int seriesId, int pageNumber,
+                                 int size, ApiResponseModel listener) {
+        APIServiceLayer.getInstance().getInstructorRelatedContent(seriesId, pageNumber, size, listener);
+    }
+
+
     private void parseResponseAsRailCommonData(Response<EnveuCommonResponse> response) {
         if (response.body() != null && response.body().getData() != null) {
             RailCommonData railCommonData = new RailCommonData(response.body().getData());

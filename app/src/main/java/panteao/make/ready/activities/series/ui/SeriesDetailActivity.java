@@ -570,8 +570,14 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
             }*/
 //            getBinding().seriesCount.setVisibility(View.GONE);
-            if (seriesResponse.getDescription()!=null && seriesResponse.getDescription().equalsIgnoreCase("")){
+            if (seriesResponse.getDescription()!=null){
+                if (seriesResponse.getDescription().equalsIgnoreCase("")){
+                    getBinding().descriptionText.setVisibility(View.GONE);
+                    getBinding().textExpandable.setVisibility(View.GONE);
+                }
+            }else {
                 getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
             }
             getBinding().setResponseApi(seriesResponse.getDescription().trim());
             count = 0;

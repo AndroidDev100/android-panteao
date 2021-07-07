@@ -147,7 +147,8 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             mLastClickTime = SystemClock.elapsedRealtime();
             totalPages++;
             if (seasonCount > 0) {
-                getSeasonEpisodes();
+                //getSeasonEpisodes();
+                getAllEpisodes();
             } else {
                 //here -1 indicates not to send seasonNumber key
                 getAllEpisodes();
@@ -211,7 +212,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     }
 
     public void getAllEpisodes() {
-        railInjectionHelper.getEpisodeNoSeasonV2(seriesId, totalPages, 50, -1).observe(getActivity(), new Observer<ResponseModel>() {
+        railInjectionHelper.getInstructorRelatedContent(seriesId, totalPages, 50, -1).observe(getActivity(), new Observer<ResponseModel>() {
             @Override
             public void onChanged(ResponseModel response) {
                 if (response != null) {
@@ -374,12 +375,19 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         int assetID = enveuVideoItemBean.getId();*/
 
 
-        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) || assetType.equalsIgnoreCase(AppConstants.Episode)) {
+        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
             if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
+
+        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+                if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                    AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                } else {
+                    AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                }
 
         }
 

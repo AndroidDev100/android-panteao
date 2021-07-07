@@ -121,10 +121,10 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
                 WindowManager.LayoutParams.FLAG_SECURE);*/
         shimmerCounter = 0;
 
-        if (SDKConfig.getInstance().getSeriesDetailId().equalsIgnoreCase("")) {
+        if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
             tabId = "10000";
         } else {
-            tabId = SDKConfig.getInstance().getSeriesDetailId();
+            tabId = SDKConfig.getInstance().getInstructorDetaildId();
         }
 
         setupUI(getBinding().llParent);
@@ -134,7 +134,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
             if (extras != null) {
                 extras = extras.getBundle(AppConstants.BUNDLE_ASSET_BUNDLE);
                 assestId = Objects.requireNonNull(extras).getInt(AppConstants.BUNDLE_ASSET_ID);
-                tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
+               // tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
 //                downloadHelper = new DownloadHelper(this, this, AppConstants.ContentType.VIDEO.name());
                 //  downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
             }
@@ -441,7 +441,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
             seasonTabFragment.setArguments(bundleSeason);
 
 //            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
-            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_chapters));
+            episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_related_content));
 
             episodeTabAdapter.addFragment(railFragment, getString(R.string.tab_heading_other));
             getBinding().viewPager.setAdapter(episodeTabAdapter);
@@ -591,8 +591,14 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
                 }
             }*/
 //            getBinding().seriesCount.setVisibility(View.GONE);
-            if (seriesResponse.getDescription()!=null && seriesResponse.getDescription().equalsIgnoreCase("")){
+            if (seriesResponse.getDescription()!=null){
+                if (seriesResponse.getDescription().equalsIgnoreCase("")){
+                    getBinding().descriptionText.setVisibility(View.GONE);
+                    getBinding().textExpandable.setVisibility(View.GONE);
+                }
+            }else {
                 getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
             }
             getBinding().setResponseApi(seriesResponse.getDescription().trim());
             count = 0;

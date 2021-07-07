@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -104,7 +105,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             hitApiIsLike();
             hitApiIsWatchList();
             isloggedout = false;
-            if (context instanceof SeriesDetailActivity) {
+            if (context instanceof SeriesDetailActivity || context instanceof InstructorActivity  || context instanceof TutorialActivity) {
                 getBinding().watchList.setVisibility(View.GONE);
             }
 
@@ -796,7 +797,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             }
 
         }catch (Exception e){
-
+            Log.e("crashhappen",e.toString());
         }
     }
 

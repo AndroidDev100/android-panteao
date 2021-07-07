@@ -1257,8 +1257,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             setCustomeFields(responseDetailPlayer, "");
             new ToastHandler(EpisodeActivity.this).show(EpisodeActivity.this.getResources().getString(R.string.can_not_play_error));
         }
-        if (responseDetailPlayer.getDescription() != null && responseDetailPlayer.getDescription().equalsIgnoreCase("")) {
+        if (responseDetailPlayer.getDescription()!=null){
+            if (responseDetailPlayer.getDescription().equalsIgnoreCase("")){
+                getBinding().descriptionText.setVisibility(View.GONE);
+                getBinding().textExpandable.setVisibility(View.GONE);
+            }
+        }else {
             getBinding().descriptionText.setVisibility(View.GONE);
+            getBinding().textExpandable.setVisibility(View.GONE);
         }
         getBinding().setResponseApi(responseDetailPlayer);
         setExpandable();
