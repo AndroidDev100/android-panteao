@@ -53,7 +53,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEvent.Listener<PlayerEvent.StateChanged> {
+public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -127,7 +127,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     private final Runnable updateTimeTask = new Runnable() {
         public void run() {
 //            Log.d("ndhfdm", "playing");
-            Log.d("ndhfdm", player.getCurrentPosition() + "");
+//            Log.d("ndhfdm", player.getCurrentPosition() + "");
             playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
 //            seekBar1.setProgress(((int) player.getCurrentPosition()));
 //            seekBar1.setMax(((int) player.getDuration()));
@@ -215,7 +215,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
             @Override
             public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
                 if (loadError != null) {
-                    if (getActivity()!=null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -237,14 +237,10 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
-                Log.d("ndhfdm", "playing");
                 mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
                     skipIntroEnable = true;
                     if (!isBingeWatchTimeCalculate) {
-                        Log.w("totalDuartion", player.getDuration() + "");
-                        Log.w("totalDuartion", bingeWatchTimer * 1000 + "");
-                        Log.w("totalDuartion", player.getDuration() - bingeWatchTimer * 1000 + "");
                         int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         if (timeCalculation > bingeWatchTimer) {
                             isBingeWatchTimeCalculate = true;
@@ -258,21 +254,23 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
                         int currentPosition = (int) player.getCurrentPosition();
                         if (currentPosition >= bingeWatchTimer) {
                             showBingeWatchControls = true;
-
                             playerControlsFragment.showBingeWatch();
-
                         }
                     }
-
                 }
-
+            }
+        });
+        player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+                Logger.e("BINGE_WATCH", "METADATA LOADED");
+                mListener.onPlayerStart();
             }
         });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
-                    Log.d("ndhfdm", "playing");
                     player.stop();
                     showBingeWatchControls = false;
                     playerControlsFragment.hideControls();
@@ -470,6 +468,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 
     public void bingeWatchStatus(boolean b) {
         IsbingeWatch = b;
+        Logger.e("BINGE_WATCH_STATUS", String.valueOf(b));
     }
 
     @Override
@@ -554,8 +553,6 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
     }
 
 
-
-
     private TracksItem[] buildVideoTrackItems(List<VideoTrack> videoTracks) {
         //Initialize TrackItem array with size of videoTracks list.
         TracksItem[] trackItems = new TracksItem[videoTracks.size()];
@@ -624,14 +621,16 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
         default void bingeWatchCall(String entryID) {
 
         }
-        void onPlayerStart();    }
+
+        void onPlayerStart();
+    }
 
     @Override
     public void onPause() {
         super.onPause();
         if (player != null) {
-             stopPosition = (int) player.getCurrentPosition();
-           player.pause();
+            stopPosition = (int) player.getCurrentPosition();
+            player.pause();
         }
     }
 
@@ -667,7 +666,7 @@ public class KalturaFragment extends Fragment implements  PlayerCallbacks,PKEven
 //               playerLayout.setLayoutParams(captionParams);
 //
 //            }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
