@@ -76,7 +76,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
                         holder.description.setText("");
                     }
                     //  holder.plan_type.setText(View.GONE);
-                    holder.currency_price.setText("" + list.get(position).getCurrency() + " " + list.get(position).getPrice());
+                    holder.currency_price.setText(list.get(position).getPrice());
                     if (list.get(position).getOfferPeriod().equalsIgnoreCase(VodOfferType.WEEKLY.name())) {
                         //   holder.plan_type.setText("" + context.getResources().getString(R.string.weekly_pack));
                     } else if (list.get(position).getOfferPeriod().equalsIgnoreCase(VodOfferType.MONTHLY.name())) {

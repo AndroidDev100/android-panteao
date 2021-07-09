@@ -42,6 +42,7 @@
         <include
             android:id="@+id/tracks_selection_menu"
             layout="@layout/list_layout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />

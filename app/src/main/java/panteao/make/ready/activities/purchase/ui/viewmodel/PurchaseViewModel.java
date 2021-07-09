@@ -34,6 +34,10 @@ public class PurchaseViewModel extends AndroidViewModel {
         return PurchaseRepository.getInstance().getPlans(token);
     }
 
+    public LiveData<ResponseMembershipAndPlan> getNewPlans(String token) {
+        return PurchaseRepository.getInstance().getNewPlans(token);
+    }
+
     public LiveData<ResponseCancelPurchase> cancelPlan(String token) {
         return PurchaseRepository.getInstance().cancelPlan(token);
     }
