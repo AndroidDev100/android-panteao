@@ -26,24 +26,18 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
-import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.instructor.IRecommendationRailFragment;
 import panteao.make.ready.activities.instructor.ISeasonTabFragment;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
-import panteao.make.ready.activities.show.ui.ShowActivity;
-import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
-import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
 import panteao.make.ready.networking.apistatus.APIStatus;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.utils.MediaTypeConstants;
@@ -60,8 +54,6 @@ import panteao.make.ready.databinding.ActivitySeriesDetailBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
-import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
-import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -78,12 +70,9 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;

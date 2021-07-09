@@ -103,6 +103,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.ADHelper;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
+import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
@@ -116,17 +117,13 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
-    private int watchList = 0;
-    private int watchListId = 0;
-    private int likeCounter = 0;
     private String videoUrl = "";
     private String vastUrl = "";
     private String token;
@@ -146,6 +143,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isHitPlayerApi = false;
     private int selectedIdIntent = -1;
     private String tabId;
+    private String Entryid;
     private String brightCoveVideoId;
     private RailInjectionHelper railInjectionHelper;
     private FragmentTransaction transaction;
@@ -180,6 +178,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean hitEvent = false;
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
+    private boolean skipIntro=true;
 
 
     public static void closeActivity() {
@@ -222,8 +221,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         super.onCreate(savedInstanceState);
         isActive = true;
         getWindow().setBackgroundDrawableResource(R.color.black);
-        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);*/
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
 
         if (SDKConfig.getInstance().getEpisodeDetailId().equalsIgnoreCase("")) {
             //tabId = AppConstants.EPISODE_ENVEU;
@@ -248,7 +247,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 extras = extras.getBundle(AppConstants.BUNDLE_ASSET_BUNDLE);
                 assestId = Objects.requireNonNull(extras).getInt(AppConstants.BUNDLE_ASSET_ID);
                 videoPos = TimeUnit.SECONDS.toMillis(Long.parseLong(extras.getString(AppConstants.BUNDLE_DURATION)));
-                brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
+                Entryid = Objects.requireNonNull(extras).getString(AppConstants.ENTRY_ID);
 
             }
         } else {
@@ -296,11 +295,15 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             noConnectionLayout();
         }
     }
-    private void setPlayerFragment(){
+
+    private void setPlayerFragment() {
         Bundle args = new Bundle();
         if (videoDetails != null) {
             args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
-            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+            args.putBoolean("binge_watch", SDKConfig.getInstance().getBingeWatchingEnabled());
+            args.putInt("binge_watch_timer", SDKConfig.getInstance().getTimer());
+            args.putBoolean("from_binge", fromBingWatch);
+            Logger.d("ENTRY_ID", videoDetails.getkEntryId() + "");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         playerfragment = new KalturaFragment();
@@ -349,7 +352,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     public void setTabs(String seasonNumber, boolean noEpisode) {
         if (seriesDetailBean != null) {
-//            downloadHelper = new DownloadHelper(this, this, seriesDetailBean.getBrightcoveVideoId(), seriesDetailBean.getTitle(), MediaTypeConstants.getInstance().getEpisode(), videoDetails);
+//            downloadHelper = new DownloadHelper(this, this, seriesDetailBean.getEntryid(), seriesDetailBean.getTitle(), MediaTypeConstants.getInstance().getEpisode(), videoDetails);
 //            downloadHelper.findVideo(videoDetails.getBrightcoveVideoId());
         }
         getBinding().tabLayout.setSelectedTabIndicatorGravity(INDICATOR_GRAVITY_BOTTOM);
@@ -454,7 +457,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
                 }, 1000);
 
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
         }
@@ -469,7 +472,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (getBinding().tabLayout.getTabCount() >= 1 && position <= getBinding().tabLayout.getTabCount()) {
             episodeTabAdapter.removeTabPage(position);
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-            params.width = (int) getResources().getDimension(R.dimen.tab_layout_single);;//(int) getResources().getDimension(R.dimen.tab_layout_single);
+            params.width = (int) getResources().getDimension(R.dimen.tab_layout_single);
+            ;//(int) getResources().getDimension(R.dimen.tab_layout_single);
             getBinding().tabLayout.setLayoutParams(params);
             //  getBinding().tabLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height));
 
@@ -500,14 +504,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         getBinding().mShimmer.sfShimmer1.startShimmer();
         getBinding().mShimmer.sfShimmer2.startShimmer();
         getBinding().mShimmer.sfShimmer3.startShimmer();
-        if (isPremium){
+        if (isPremium) {
             showPremiumPopup();
         }
         // playPlayerWhenShimmer();
     }
 
     public void playPlayerWhenShimmer() {
-        getBinding().pBar.setVisibility(View.VISIBLE);
+//        getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
@@ -551,7 +555,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         try {
 //            downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -674,9 +678,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -809,7 +811,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (!fromBingWatch) {
             callShimmer();
         }
-        isPremium=false;
+        isPremium = false;
         railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
         loadingComment = true;
         commentCounter = 0;
@@ -828,8 +830,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         response = new ResponseDetailPlayer();
         preference.setAppPrefAssetId(assestId);
-        watchList = 0;
-        likeCounter = 0;
         isLogin = preference.getAppPrefLoginStatus();
         token = preference.getAppPrefAccessToken();
         Logger.e("", "APP_PREF_ACCESS_TOKEN" + token);
@@ -905,16 +905,16 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private void parseVideoDetails(EnveuVideoItemBean videoDetails) {
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
-//        ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+        ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
         if (videoDetails.isPremium()) {
-            isPremium=true;
+            isPremium = true;
             try {
                 if (!isLogin) {
-                    if (fromBingWatch){
+                    if (fromBingWatch) {
                         showPremiumPopup();
                     }
                 }
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -923,10 +923,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             getBinding().tvBuyNow.setVisibility(View.VISIBLE);
             getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
             getBinding().backButton.setVisibility(View.VISIBLE);
-            hitApiEntitlement(videoDetails.getSku());
+//            hitApiEntitlement(videoDetails.getSku());
 
         } else {
-            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+            if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
                 isLogin = preference.getAppPrefLoginStatus();
                 if (isLogin) {
                     if (!preference.getEntitlementStatus()) {
@@ -936,18 +936,18 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 if (entitlementStatus && apiStatus) {
                                     isAdShowingToUser = false;
                                 }
-                                //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                                Entryid = (videoDetails.getkEntryId());
                                 playPlayerWhenShimmer();
                             }
                         });
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
-                        //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                        Entryid = (videoDetails.getkEntryId());
                         playPlayerWhenShimmer();
                     }
 
                 } else {
-                    //brightCoveVideoId = Long.parseLong(videoDetails.getBrightcoveVideoId());
+                    Entryid = (videoDetails.getkEntryId());
                     playPlayerWhenShimmer();
                 }
 
@@ -1065,7 +1065,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             responseEntitlementModel = responseEntitlement;
             if (responseEntitlement.getStatus()) {
                 if (responseEntitlement.getData().getEntitled()) {
-                    isPremium=false;
+                    isPremium = false;
                     getBinding().tvBuyNow.setVisibility(View.GONE);
                     if (responseEntitlement.getData() != null) {
                         updateBuyNowText(responseEntitlement, 1);
@@ -1078,13 +1078,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         @Override
                         public void run() {
                             try {
-                                if (fromBingWatch){
+                                if (fromBingWatch) {
                                     showPremiumPopup();
-                                }else {
-                                    isPremium=true;
+                                } else {
+                                    isPremium = true;
                                 }
 
-                            }catch (Exception ignored){
+                            } catch (Exception ignored) {
 
                             }
                         }
@@ -1100,17 +1100,18 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         });
     }
 
-    boolean isPremium=false;
+    boolean isPremium = false;
+
     private void showPremiumPopup() {
         try {
-            isPremium=true;
+            isPremium = true;
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.resetLanguage("th", EpisodeActivity.this);
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
             }
             showDialog("", getResources().getString(R.string.premium_popup_message));
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
@@ -1145,7 +1146,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        //brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                        Entryid = (responseEntitlement.getData().getBrightcoveVideoId());
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -1430,8 +1431,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onFinishDialog() {
         Logger.w("onfinishdialog", "episode");
-        if (isPremium){
-            isPremium=false;
+        if (isPremium) {
+            isPremium = false;
             int orientation = this.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 //                if (playerFragment != null) {
@@ -1540,14 +1541,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     @Override
     public void railItemClick(RailCommonData item, int position) {
-        Log.d("episodeclick", "itemclick");
-
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             Toast.makeText(EpisodeActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
-            if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
-                String getVideoId = item.getEnveuVideoItemBeans().get(position).getkEntryId();
-                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+            if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
+                Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getkEntryId());
+                AppCommonMethod.launchDetailScreen(this, getVideoId.toString(), AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
             }
         }
     }
@@ -1579,60 +1578,62 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     int playerOrientation = -1;
     EnveuVideoItemBean nextEpisode = null;
 //
-//    @Override
-//    public void bingeWatchCall(String brightcoveId) {
-//        int nextEpisdoeId = 0;
-//        int iValue = -1;
-//        if (seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
-//            for (int i = 0; i < seasonEpisodesList.size(); i++) {
-//                int id = seasonEpisodesList.get(i).getId();
-//                if (id == assestId) {
-//                    nextEpisdoeId = seasonEpisodesList.get(i + 1).getId();
-//                    iValue = i + 1;
-//                    break;
-//                }
-//            }
-//            if (iValue > -1) {
-//                nextEpisode = seasonEpisodesList.get(iValue);
-//                getBinding().backButton.setVisibility(View.VISIBLE);
-//                getBinding().playerImage.setVisibility(View.VISIBLE);
-//                ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, seasonEpisodesList.get(iValue).getPosterURL());
-//                AppCommonMethod.isPurchase = false;
-//                seriesId = AppCommonMethod.seriesId;
-//                isHitPlayerApi = false;
-//                fromBingWatch = true;
-//                //playerOrientation=playerFragment.getCurrentOrientation();
-//                refreshDetailPage(nextEpisdoeId);
-//            }
-//
-//        }
-//
-//    }
+
+
+    //
+    @Override
+    public void bingeWatchCall(String entryid) {
+        int nextEpisdoeId = 0;
+        int iValue = -1;
+        if (seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
+            for (int i = 0; i < seasonEpisodesList.size(); i++) {
+                int id = seasonEpisodesList.get(i).getId();
+                if (id == assestId) {
+                    nextEpisdoeId = seasonEpisodesList.get(i + 1).getId();
+                    iValue = i + 1;
+                    break;
+                }
+            }
+            if (iValue > -1) {
+                nextEpisode = seasonEpisodesList.get(iValue);
+                getBinding().backButton.setVisibility(View.VISIBLE);
+                getBinding().playerImage.setVisibility(View.VISIBLE);
+                ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, seasonEpisodesList.get(iValue).getPosterURL());
+                AppCommonMethod.isPurchase = false;
+                seriesId = AppCommonMethod.seriesId;
+                isHitPlayerApi = false;
+                fromBingWatch = true;
+                //playerOrientation=playerFragment.getCurrentOrientation();
+                refreshDetailPage(nextEpisdoeId);
+
+            }
+        }
+    }
 
     List<EnveuVideoItemBean> seasonEpisodesList;
 
     public void episodesList(List<EnveuVideoItemBean> seasonEpisodes) {
         try {
-            if (brightCoveVideoId!=null && !brightCoveVideoId.equalsIgnoreCase("")) {
-                seasonEpisodesList = new ArrayList<>();
-                if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
-                    for (int i = 0; i < seasonEpisodes.size(); i++) {
-                        if (seasonEpisodes.get(i).getBrightcoveVideoId() != null) {
-                            String id = seasonEpisodes.get(i).getBrightcoveVideoId();
-                            if (id.equalsIgnoreCase(String.valueOf(brightCoveVideoId))) {
-                                seasonEpisodesList.addAll(seasonEpisodes);
-//                                if (playerFragment != null) {
-//                                    playerFragment.totalEpisodes(seasonEpisodesList.size());
-//                                    playerFragment.currentEpisodes(i + 1);
-//                                }
-
-                                break;
+//            if (Entryid != null) {
+            seasonEpisodesList = new ArrayList<>();
+            if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
+                for (int i = 0; i < seasonEpisodes.size(); i++) {
+                    if (seasonEpisodes.get(i).getkEntryId() != null) {
+                        String id = seasonEpisodes.get(i).getkEntryId();
+                        if (id.equalsIgnoreCase(String.valueOf(Entryid))) {
+                            seasonEpisodesList.addAll(seasonEpisodes);
+                            if (playerfragment != null) {
+                                playerfragment.totalEpisodes(seasonEpisodesList.size());
+                                playerfragment.currentEpisodes(i + 1);
                             }
+
+                            break;
                         }
                     }
-
                 }
+
             }
+//            }
 
         } catch (Exception ignored) {
 
@@ -1794,7 +1795,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     boolean isPlayerError = false;
 
-//    @Override
+    //    @Override
 //    public void onPlayerError(String error) {
 //        try {
 //            getBinding().backButton.setVisibility(View.VISIBLE);
@@ -1869,59 +1870,35 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //
 //    }
 //
-//    @Override
-//    public void onPlayerStart() {
-//        Log.d("onPlayerStart", "values");
-//        try {
-//            AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
-//
-//            AppCommonMethod.trackFcmCustomEvent(EpisodeActivity.this, AppConstants.CONTENT_PLAY, videoDetails.getAssetType(), "", "", 0, videoDetails.getTitle(), 0, videoDetails.getSeriesId(), playerFragment.getBaseVideoView().getCurrentPosition(), videoDetails.getDuration(), "", "", "", "");
-//
-//        } catch (Exception ignored) {
-//
-//        }
-//
-//        try {
-//            Log.w("onPlayerStart", "");
-//            getBinding().backButton.setVisibility(View.GONE);
-//            getBinding().playerImage.setVisibility(View.GONE);
-//            getBinding().pBar.setVisibility(View.GONE);
-//            String name = "";
-//            String mediaType = "";
-//            if (videoDetails.getTitle() != null) {
-//                name = videoDetails.getTitle();
-//            }
-//            if (videoDetails.getAssetType() != null) {
-//                mediaType = videoDetails.getAssetType();
-//            }
-////            AppCommonMethod.trackFcmEvent(name, mediaType, EpisodeActivity.this, 0);
-//            if (playerFragment != null && seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
-//                playerFragment.totalEpisodes(seasonEpisodesList.size());
-//                for (int i = 0; i < seasonEpisodesList.size(); i++) {
-//
-//                    int id = seasonEpisodesList.get(i).getId();
-//                    Log.w("episodesId", id + "  " + assestId + "  " + i);
-//                    if (id == assestId) {
-//                        playerFragment.currentEpisodes(i + 1);
-//                        break;
-//                    } else {
-//                        playerFragment.bingeWatchStatus(false);
-//                    }
-//                }
-//            }
-//            if (seasonEpisodesList.size() > 0) {
-//
-//            } else {
-//                if (playerFragment != null) {
-//                    playerFragment.bingeWatchStatus(false);
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//
-//        }
-//    }
-//
+    @Override
+    public void onPlayerStart() {
+        try {
+            getBinding().backButton.setVisibility(View.GONE);
+            getBinding().playerImage.setVisibility(View.GONE);
+            getBinding().pBar.setVisibility(View.GONE);
+            if (playerfragment != null && seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
+                playerfragment.totalEpisodes(seasonEpisodesList.size());
+                for (int i = 0; i < seasonEpisodesList.size(); i++) {
+                    int id = seasonEpisodesList.get(i).getId();
+                    if (id == assestId) {
+                        playerfragment.currentEpisodes(i + 1);
+                        break;
+                    } else {
+                        playerfragment.bingeWatchStatus(true);
+                    }
+                }
+            }
+            if (seasonEpisodesList == null || seasonEpisodesList.size() <= 0) {
+                if (playerfragment != null) {
+                    playerfragment.bingeWatchStatus(false);
+                }
+            }
+            playerfragment.skipIntroStatus(skipIntro);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //    @Override
 //    public void onAdStarted() {
 //        try {
@@ -2006,16 +1983,16 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
                 int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
-                Log.w("downloadClick",videoQuality+"");
+                Log.w("downloadClick", videoQuality + "");
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1 && NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                     if (source instanceof UserInteractionFragment) {
                         if (videoQuality != 4) {
-                            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
-                                if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
+                            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                                if (videoDetails.getSeasonNumber().equalsIgnoreCase("")) {
                                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    downloadHelper.startEpisodeDownload(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()), videoQuality);
 
-                                }else {
+                                } else {
                                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    downloadHelper.startEpisodeDownload(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()), videoQuality);
 
@@ -2023,12 +2000,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                             }
                         } else {
                             //Log.w("downloadClick",videoQuality+ " "+videoDetails.getEpisodeNo());
-                            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
-                                if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
+                            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                                if (videoDetails.getSeasonNumber().equalsIgnoreCase("")) {
                                     //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), 1, String.valueOf(videoDetails.getEpisodeNo()));
 
-                                }else {
+                                } else {
                                     //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                    selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()));
 
@@ -2081,11 +2058,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 0) {
                         if (source instanceof UserInteractionFragment) {
                             if (videoQuality != 4) {
-                                if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
-                                    if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
+                                if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                                    if (videoDetails.getSeasonNumber().equalsIgnoreCase("")) {
                                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                        downloadHelper.startEpisodeDownload(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), 1, String.valueOf(videoDetails.getEpisodeNo()), videoQuality);
-                                    }else {
+                                    } else {
                                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                                        downloadHelper.startEpisodeDownload(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()), videoQuality);
                                     }
@@ -2093,11 +2070,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 }
 
                             } else {
-                                if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
-                                    if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
+                                if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                                    if (videoDetails.getSeasonNumber().equalsIgnoreCase("")) {
 
 //                                        selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), 1, String.valueOf(videoDetails.getEpisodeNo()) + "");
-                                    }else {
+                                    } else {
 //                                        selectDownloadVideoQuality(downloadAbleVideo, String.valueOf(videoDetails.getBrightcoveVideoId()), seasonTabFragment.getSelectedSeason(), String.valueOf(videoDetails.getEpisodeNo()) + "");
                                     }
 
@@ -2140,13 +2117,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
 
                     } else {
-                        if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())){
-                            if (videoDetails.getSeasonNumber().equalsIgnoreCase("")){
+                        if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                            if (videoDetails.getSeasonNumber().equalsIgnoreCase("")) {
 //                                showWifiSettings(downloadAbleVideo,
 //                                        String.valueOf(videoDetails.getBrightcoveVideoId()),
 //                                        1,
 //                                        videoDetails.getEpisodeNo() + "", videoQuality);
-                            }else {
+                            } else {
 //                                showWifiSettings(downloadAbleVideo,
 //                                        String.valueOf(videoDetails.getBrightcoveVideoId()),
 //                                        seasonTabFragment.getSelectedSeason(),
@@ -2158,8 +2135,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     // Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                 }
             }
-        }catch (Exception ignored){
-            Log.w("downloadCrash",ignored.toString());
+        } catch (Exception ignored) {
+            Log.w("downloadCrash", ignored.toString());
         }
 
     }
@@ -2215,12 +2192,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 switch (item.getItemId()) {
                     case R.id.cancel_download:
 //                        downloadHelper.cancelVideo(videoId);
-                        if (videoId.equals(String.valueOf(brightCoveVideoId)))
+                        if (videoId.equals(String.valueOf(Entryid)))
                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
                         break;
                     case R.id.pause_download:
 //                        downloadHelper.pauseVideo(videoId);
-                        if (videoId.equals(String.valueOf(brightCoveVideoId)))
+                        if (videoId.equals(String.valueOf(Entryid)))
                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.PAUSE);
                         break;
                 }
@@ -2244,7 +2221,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 return false;
             });
         } else {
-            if (videoId.equals(String.valueOf(brightCoveVideoId)))
+            if (videoId.equals(String.valueOf(Entryid)))
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
         }
     }
@@ -2254,11 +2231,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (source instanceof UserInteractionFragment) {
             // downloadHelper.resumeDownload(downloadAbleVideo.getId());
 
-            Log.w("pauseClicked","in2");
+            Log.w("pauseClicked", "in2");
             if (NetworkConnectivity.isOnline(this)) {
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                        Log.w("pauseClicked","in3");
+                        Log.w("pauseClicked", "in3");
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                        downloadHelper.resumeDownload(downloadAbleVideo.getId());
                     } else {
@@ -2266,20 +2243,20 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
                 } else {
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                    Log.w("pauseClicked","in4");
+                    Log.w("pauseClicked", "in4");
 //                    downloadHelper.resumeDownload(downloadAbleVideo.getId());
                 }
-            }else {
+            } else {
                 Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
             }
 
         } else {
             //downloadHelper.resumeDownload(videoId);
-            Log.w("pauseClicked","in2");
+            Log.w("pauseClicked", "in2");
             if (NetworkConnectivity.isOnline(this)) {
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                        Log.w("pauseClicked","in3");
+                        Log.w("pauseClicked", "in3");
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
 //                        downloadHelper.resumeDownload(downloadAbleVideo.getId());
                     } else {
@@ -2287,10 +2264,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
                 } else {
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                    Log.w("pauseClicked","in4");
+                    Log.w("pauseClicked", "in4");
 //                    downloadHelper.resumeDownload(downloadAbleVideo.getId());
                 }
-            }else {
+            } else {
                 Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
             }
         }
@@ -2330,7 +2307,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //        }
 //    }
 
-//    @Override
+    //    @Override
 //    public void onDownloadPaused(@androidx.annotation.NonNull Video video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus downloadStatus) {
 //        Logger.e(TAG, "onDownloadPaused");
 //        if (video.getId().equals(downloadAbleVideo.getId()))

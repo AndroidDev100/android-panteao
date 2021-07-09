@@ -2,6 +2,7 @@ package panteao.make.ready.tvBaseModels.basemodels
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.make.enums.Layouts
 import panteao.make.ready.R
+import panteao.make.ready.activities.KalturaPlayerActivity
+import panteao.make.ready.activities.detailspage.activity.VideoDetailActivity
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity
 import panteao.make.ready.baseModels.HomeBaseViewModel
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
@@ -31,7 +34,6 @@ import panteao.make.ready.cardlayout.cardpresenter.SquareCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
 import panteao.make.ready.utils.MediaTypeConstants
-import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -126,7 +128,6 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             railInjectionHelper.getScreenWidgets(fragmentActivity, it, object :
                 CommonApiCallBack {
                 override fun onSuccess(item: Any?) {
-                    Logger.e("ASSET_DETAILS", Gson().toJson(item))
                     if (item is RailCommonData) {
                         if (item.screenWidget?.layout!!.equals(Layouts.HRO.name, true)) {
                             val enveuVideoItemBeanList =
@@ -258,9 +259,15 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         handler.removeCallbacksAndMessages(null)
         val listRowSelected = row?.id?.toInt()?.let { rowsAdapter.get(it) } as ListRow
         val cardRowAdapterSelected = listRowSelected.adapter as ArrayObjectAdapter
-        dataLoadingListener.onCardSelected(cardRowAdapterSelected.indexOf(item))
         val isPlayerCard = cardRowAdapterSelected.getPresenter(item) is AssetCardPresenter
         if (item is EnveuVideoItemBean) {
+            railInjectionHelper.getAssetDetailsV2(item.id.toString())
+                .observe(this, Observer {
+                    if (it != null && it.baseCategory != null) {
+                        val railCommonData = it.baseCategory as RailCommonData
+                        dataLoadingListener.onCardSelected(cardRowAdapterSelected.indexOf(item), railCommonData.enveuVideoItemBeans[0])
+                    }
+                })
             dataLoadingListener.onDataLoading(item, true)
             val listRowSelected = row.id.toInt().let { rowsAdapter.get(it) } as ListRow
             val cardRowAdapterSelected = listRowSelected.adapter as ArrayObjectAdapter
@@ -276,8 +283,8 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
             if ((cardRowAdapterSelected.indexOf(item) == cardRowAdapterSelected.size() - 1) && (cardRowAdapterSelected.size() % AppConstants.PAGE_SIZE == 0)) {
 //                railInjectionHelper.getPlaylistById(activity,
 //                        row.headerItem.name,
-//                        if (((cardRowAdapterSelected.size() / AppLevelConstants.PAGE_SIZE) == 1)) 1 else (cardRowAdapterSelected.size() / AppLevelConstants.PAGE_SIZE) + 1,
-//                        AppLevelConstants.PAGE_SIZE,
+//                        if (((cardRowAdapterSelected.size() / AppConstants.PAGE_SIZE) == 1)) 1 else (cardRowAdapterSelected.size() / AppConstants.PAGE_SIZE) + 1,
+//                        AppConstants.PAGE_SIZE,
 //                        object : panteao.make.ready.ui.callbacks.CommonApiCallBack {
 //                            override fun onSuccess(item: Any?) {
 //                                if (item != null && item is RailCommonData) {
@@ -318,20 +325,18 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
-            Logger.e("CLICKED_ITEM", Gson().toJson(contentItem))
             context?.let {
                 if (contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().series,
-                        true
-                    ) || contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().show,
                         true
                     ) || contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().tutorial,
                         true
                     )
                 ) {
-
+//                    val intent = Intent(requireActivity(), TVSeriesDetailActivity::class.java)
+//                    intent.putExtra(AppConstants.SELECTED_ITEM, contentItem.id)
+//                    activity?.startActivity(intent)
                 } else if (contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().episode,
                         true
@@ -345,16 +350,22 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                 ) {
                     railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
                         .observe(this, Observer {
-                            if (it != null && it.baseCategoriesList!!.size > 0) {
-                                if (it.baseCategoriesList!!
-                                        .get(0).responseCode == AppConstants.RESPONSE_CODE_SUCCESS
-                                ) {
-                                    var videoDetail = it.baseCategoriesList!![0]
-
-                                }
+                            if (it != null && it.baseCategory != null) {
+                                val railCommonData = it.baseCategory as RailCommonData
+                                val playerIntent =
+                                    Intent(requireActivity(), KalturaPlayerActivity::class.java)
+                                playerIntent.putExtra(
+                                    "EntryId",
+                                    railCommonData.enveuVideoItemBeans[0].getkEntryId()
+                                )
+                                startActivity(playerIntent)
                             }
                         })
                 } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().instructor)) {
+                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().show)) {
+                    val intent = Intent(requireActivity(), VideoDetailActivity::class.java)
+                    intent.putExtra(AppConstants.SELECTED_ITEM, contentItem.id)
+                    activity?.startActivity(intent)
                 }
             }
         }

@@ -57,13 +57,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import panteao.make.ready.adapters.CommonListingAdapter;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.beanModel.responseModels.series.season.SeasonResponse;
-import panteao.make.ready.layersV2.ContinueWatchingLayer;
-import panteao.make.ready.utils.MediaTypeConstants;
-
 
 public class GridActivity extends BaseBindingActivity<ListingActivityBinding> implements ItemClickListener {
     String playListId;

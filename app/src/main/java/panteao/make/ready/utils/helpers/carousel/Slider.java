@@ -31,11 +31,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.Random;
 
-import panteao.make.ready.utils.helpers.carousel.adapter.SliderAdapter;
-import panteao.make.ready.utils.helpers.carousel.indicators.IndicatorShape;
-import panteao.make.ready.utils.helpers.carousel.indicators.SlideIndicatorsGroup;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 
 public class Slider extends FrameLayout implements ViewPager.OnPageChangeListener {
 

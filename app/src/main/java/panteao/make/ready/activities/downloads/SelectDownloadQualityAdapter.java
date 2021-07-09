@@ -18,8 +18,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 
 public class SelectDownloadQualityAdapter extends RecyclerView.Adapter<SelectDownloadQualityAdapter.SingleItemRowHolder> {
 

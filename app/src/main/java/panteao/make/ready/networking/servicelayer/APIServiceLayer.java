@@ -209,7 +209,6 @@ public class APIServiceLayer {
             public void onResponse(Call<EnveuCommonResponse> call, Response<EnveuCommonResponse> response) {
                 Gson gson = new Gson();
                 String json = gson.toJson(response.body());
-                Logger.w("EpisodesListResponse", json + "");
                 parseResponseAsRailCommonData(response);
             }
 
@@ -230,9 +229,6 @@ public class APIServiceLayer {
         endpoint.getRelatedContentWithoutSNo(seriesId, pageNumber, size, languageCode).enqueue(new Callback<EnveuCommonResponse>() {
             @Override
             public void onResponse(Call<EnveuCommonResponse> call, Response<EnveuCommonResponse> response) {
-                Gson gson = new Gson();
-                String json = gson.toJson(response.body());
-                Logger.w("EpisodesListResponse", json + "");
                 parseResponseAsRailCommonData(response);
             }
 
@@ -274,8 +270,6 @@ public class APIServiceLayer {
                 if (response.isSuccessful()) {
                     Gson gson = new Gson();
                     String json = gson.toJson(response.body());
-                    Logger.w("VideoDetailResponse", json + "");
-
                     if (response.body().getData() instanceof EnveuVideoDetails) {
                         RailCommonData railCommonData = new RailCommonData();
                         AppCommonMethod.getAssetDetail(railCommonData, response);

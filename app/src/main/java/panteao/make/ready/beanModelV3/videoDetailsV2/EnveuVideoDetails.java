@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import panteao.make.ready.beanModelV3.playListModelV2.Images;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class EnveuVideoDetails {
     private long publishedDate;
     @SerializedName("seasons")
     @Expose
-    private List<Integer> seasons = null;
+    private List<Integer> seasons = new ArrayList<>();
     @SerializedName("contentMonetization")
     @Expose
     private Object contentMonetization;

@@ -15,8 +15,6 @@ import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
 
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 public class ShimmerRecyclerView extends RecyclerView {
 
     private Adapter mActualAdapter;

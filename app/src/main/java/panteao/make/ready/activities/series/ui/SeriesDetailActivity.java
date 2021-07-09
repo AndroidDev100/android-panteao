@@ -32,7 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
-import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -73,10 +72,8 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
@@ -319,7 +316,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
                         if (response.getBaseCategory() != null) {
                             RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
-                            // enveuCommonResponse.getEnveuVideoItemBeans().get(0).getAssetCast();
                             parseSeriesData(enveuCommonResponse);
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
@@ -341,28 +337,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
             }
         });
-        /*railInjectionHelper.getSeriesDetails(String.valueOf(seriesId)).observe(SeriesDetailActivity.this, enveuCommonResponse -> {
-            if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
-                if (enveuCommonResponse.getEnveuVideoItemBeans().get(0).getResponseCode() == AppConstants.RESPONSE_CODE_SUCCESS) {
-                    Logger.e("enveuCommonResponse", "" + enveuCommonResponse.getEnveuVideoItemBeans().get(0).toString());
-                    seriesDetailBean = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
-                    seriesId = seriesDetailBean.getId();
-                    setUserInteractionFragment(seriesId);
-                    setTabs();
-                    setUiComponents(seriesDetailBean);
-                    downloadHelper = new DownloadHelper(this, this);
-                    downloadHelper.setAssetType(AppConstants.ContentType.EPISODE);
-
-//                    downloadHelper.findVideo(seriesDetailBean.getBrightcoveVideoId());
-                } else {
-                    if (enveuCommonResponse.getEnveuVideoItemBeans().get(0).getResponseCode() == AppConstants.RESPONSE_CODE_LOGOUT) {
-                        showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
-                    } else {
-                        showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
-                    }
-                }
-            }
-        });*/
 
         getBinding().flBackIconImage.setOnClickListener(view -> onBackPressed());
 

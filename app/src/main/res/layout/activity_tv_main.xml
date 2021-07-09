@@ -97,7 +97,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="300dp"
                 android:orientation="vertical"
                 android:paddingLeft="75dp"
                 android:paddingTop="35dp"
@@ -366,7 +366,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linearLayout">
-
             </FrameLayout>
 
             <FrameLayout
@@ -377,7 +376,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
-
             </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

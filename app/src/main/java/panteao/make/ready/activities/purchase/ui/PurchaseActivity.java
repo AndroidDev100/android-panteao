@@ -2,7 +2,6 @@ package panteao.make.ready.activities.purchase.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
@@ -71,15 +70,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-
-import panteao.make.ready.activities.purchase.ui.adapter.PurchaseAdapter;
-import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
-import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.cms.HelpActivity;
-import panteao.make.ready.utils.inAppBilling.BillingProcessor;
-import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
-import panteao.make.ready.utils.inAppBilling.PurchaseType;
 
 
 public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> implements AlertDialogFragment.AlertDialogListener, PurchaseAdapter.OnPurchaseItemClick, InAppProcessListener {

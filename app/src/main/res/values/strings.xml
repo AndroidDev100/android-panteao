@@ -398,9 +398,10 @@
         <item>""</item>
         <item>@string/title_search</item>
         <item>@string/title_home</item>
-        <item>@string/title_skill_set</item>
         <item>@string/title_instructor</item>
-        <item>@string/title_free</item>
+        <item>@string/title_premium</item>
+        <item>@string/subscribe_now</item>
+        <item>@string/title_screen_3</item>
         <item>@string/title_screen_4</item>
         <item>@string/my_profile</item>
         <item>@string/setting_title</item>
@@ -411,5 +412,11 @@
     <string name="tab_heading_chapters">CHAPTERS</string>
     <string name="tab_heading_related_content">RELATED CONTENT</string>
     <string name="all_chapters">All Chapters</string>
+    <string name="next_episode">Next Episode</string>
+    <string name="select_video_quality">select video quality</string>
+    <string name="video_quality">Video Quality</string>
+    <string name="title_video_quality">Select Video Quality</string>
+    <string name="no_tracks_available">No tracks available</string>
+    <string name="new_episodes_added_soon">New Episodes will be added soon</string>
 
 </resources>

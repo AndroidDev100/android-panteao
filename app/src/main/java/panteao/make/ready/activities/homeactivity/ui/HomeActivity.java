@@ -48,9 +48,6 @@ import panteao.make.ready.utils.inAppUpdate.ApplicationUpdateManager;
 
 import org.jetbrains.annotations.NotNull;
 
-import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-
 
 public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> implements MoreFragment.MoreFragmentInteraction, AppUpdateCallBack {
 

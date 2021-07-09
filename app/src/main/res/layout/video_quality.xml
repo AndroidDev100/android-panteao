@@ -1,0 +1,97 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context="com.watcho.fragments.plancard.Half_Yearly_Plan">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/playback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/select_video_quality"
+                android:textSize="@dimen/font_large"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/radio_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_margin_left"
+                android:layout_marginTop="@dimen/selector_margin_top"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/playback">
+
+                <RadioButton
+                    android:id="@+id/lowbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <RadioButton
+                    android:id="@+id/mediumbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <RadioButton
+                    android:id="@+id/highbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/_text_margin_top"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/low"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/radio_selector"
+                app:layout_constraintTop_toBottomOf="@+id/playback" />
+
+            <TextView
+                android:id="@+id/medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/medium"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/radio_selector"
+                app:layout_constraintTop_toBottomOf="@+id/low" />
+
+            <TextView
+                android:id="@+id/high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/high"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toRightOf="@id/radio_selector"
+                app:layout_constraintTop_toBottomOf="@+id/medium" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

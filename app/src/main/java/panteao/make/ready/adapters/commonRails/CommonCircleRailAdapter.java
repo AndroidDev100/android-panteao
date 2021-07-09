@@ -28,12 +28,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import java.util.ArrayList;
 import java.util.List;
 
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
 public class CommonCircleRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private long mLastClickTime = 0;

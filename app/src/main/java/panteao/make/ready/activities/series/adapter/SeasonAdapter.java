@@ -12,10 +12,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import panteao.make.ready.enums.DownloadStatus;
-import panteao.make.ready.utils.helpers.downloads.MediaTypeCheck;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
-import panteao.make.ready.utils.helpers.downloads.VideoListListener;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.RowEpisodeListBinding;
@@ -27,12 +24,8 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>{
     private final Activity context;
@@ -70,7 +63,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             int index = 0;
             for (EnveuVideoItemBean videoItemBean :
                     videoItemBeans) {
-                indexMap.put(videoItemBean.getBrightcoveVideoId(), index);
+                indexMap.put(videoItemBean.getkEntryId(), index);
                 index++;
             }
             notifyDataSetChanged();
@@ -82,7 +75,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             int index = (int) indexMap.get(videoId);
             for (EnveuVideoItemBean videoItemBean :
                     videoItemBeans) {
-                if (videoItemBean.getBrightcoveVideoId().equals(videoId)) {
+                if (videoItemBean.getkEntryId().equals(videoId)) {
                     videoItemBeans.set(index, videoItemBean);
                     notifyItemChanged(index);
                 }
@@ -105,7 +98,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     @Override
     public void onBindViewHolder(@NonNull SeasonAdapter.SeasonViewHolder holder, int position) {
         if (videoItemBeans.get(position) != null) {
-//            holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
+            holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
         }
         if(AppCommonMethod.getCheckBCID(videoItemBeans.get(position).getBrightcoveVideoId())) {
 //            downloadHelper.findVideo(videoItemBeans.get(position).getBrightcoveVideoId(), new VideoListener() {
@@ -387,7 +380,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     public String getEpisodeNumber(String videoId) {
         for (EnveuVideoItemBean enveuVideoItemBean :
                 videoItemBeans) {
-            if (enveuVideoItemBean.getBrightcoveVideoId().equals(videoId)) {
+            if (enveuVideoItemBean.getkEntryId().equals(videoId)) {
                 return String.valueOf(enveuVideoItemBean.getEpisodeNo());
             }
         }

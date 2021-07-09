@@ -121,7 +121,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -506,9 +505,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     // don’t start playback
                     Logger.d("AudioFocus", "Failed");
                 {
-                    if (fragment != null) {
-                        //    fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -1228,6 +1225,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     protected void onPause() {
         super.onPause();
+
         Logger.d("DetailActivityCalled", "True");
         releaseAudioFocusForMyApp(ShowActivity.this);
         if (handler != null && runnable != null)
@@ -1315,7 +1313,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //                    downloadHelper.pauseVideo(downloadAbleVideo.getId());
 //            }
         }
-        AppCommonMethod.isInternet = fragment != null;
+        AppCommonMethod.isInternet = isConnected;
     }
 
     @Override
@@ -1331,8 +1329,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     Logger.e(TAG, "AUDIOFOCUS_LOSS");
                     //Loss of audio focus for a long time
                     //Stop playing the sound
-                    if (fragment != null)
-                        //  fragment.pauseNontonPlayer();
                         break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     Logger.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
@@ -1347,9 +1343,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
                 default:
                     //
-            }
-            if (fragment != null) {
-                // fragment.pauseOnOtherAudio();
             }
             // do something - or do it not
         }
@@ -1632,6 +1625,18 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         return true;
     }
 
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
+
+    }
+
+
+//    @Override
     @Override
     public void setDownloadProgressListener(float progress,String assetId) {
         Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress);

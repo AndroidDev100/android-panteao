@@ -19,8 +19,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.List;
 
-import panteao.make.ready.activities.videoquality.bean.LanguageItem;
-
 
 public class ChangeLanguageAdapter extends RecyclerView.Adapter<ChangeLanguageAdapter.SingleItemRowHolder> {
 

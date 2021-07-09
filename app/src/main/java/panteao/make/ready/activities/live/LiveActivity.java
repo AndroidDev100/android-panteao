@@ -99,7 +99,6 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -1079,7 +1078,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        AppCommonMethod.isInternet = fragment != null;
+        AppCommonMethod.isInternet = isConnected;
     }
 
     @Override
@@ -1095,7 +1094,6 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                     Logger.e(TAG, "AUDIOFOCUS_LOSS");
                     //Loss of audio focus for a long time
                     //Stop playing the sound
-                    if (fragment != null)
                         //  fragment.pauseNontonPlayer();
                         break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -1111,9 +1109,6 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
                 default:
                     //
-            }
-            if (fragment != null) {
-                // fragment.pauseOnOtherAudio();
             }
             // do something - or do it not
         }

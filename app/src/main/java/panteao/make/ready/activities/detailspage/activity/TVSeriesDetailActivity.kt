@@ -16,17 +16,21 @@ import panteao.make.ready.activities.detailspage.fragment.SeasonsDetailsFragment
 import panteao.make.ready.activities.detailspage.fragment.SeriesDetailFragment
 import panteao.make.ready.activities.detailspage.listeners.OnKeyEventListener
 import panteao.make.ready.activities.detailspage.listeners.SeriesDetailsListener
+import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
-import panteao.make.ready.databinding.ActivitySeriesDetailBinding
 import panteao.make.ready.databinding.ActivityTvSeriesDetailsBinding
 import panteao.make.ready.fragments.common.NoInternetFragment
+import panteao.make.ready.networking.apistatus.APIStatus
+import panteao.make.ready.networking.responsehandler.ResponseModel
 import panteao.make.ready.tvBaseModels.basemodels.TvBaseBindingActivity
 import panteao.make.ready.utils.constants.AppConstants
+import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
+import panteao.make.ready.utils.helpers.database.preferences.UserPreference
 
 
-class SeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBinding>(),
+class TVSeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBinding>(),
     SeriesDetailsListener, NoInternetFragment.OnFragmentInteractionListener {
     val TAG = this.javaClass.name
     private var id: Int? = null
@@ -87,30 +91,73 @@ class SeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBindin
     }
 
     private fun callDetailPageApi(id: Int?, contentType: String?) {
-        val assetId = id
-//        railInjectionHelper.getSeriesDetails(assetId.toString()).observe(this, Observer {
-//            if (it != null && it.getEnveuVideoItemBeans()!!.isNotEmpty()) {
-//                if (it.getEnveuVideoItemBeans()!![0].responseCode == AppConstants.RESPONSE_CODE_SUCCESS) {
-//                    val selectedSeriesDetail = it.getEnveuVideoItemBeans()?.get(0)
-//                    binding?.progressBar?.visibility = View.GONE
-//                    SeriesDetailManager.getInstance().selectedSeries = selectedSeriesDetail
-//                    setUI(selectedSeriesDetail!!)
-//                    seriesDetailFragment = SeriesDetailFragment.newInstance()
-//                    val bundle = Bundle()
-//                    bundle.putSerializable(AppConstants.SELECTED_SERIES, selectedSeriesDetail)
-//                    seriesDetailFragment.arguments = bundle
-//                    addFragment(seriesDetailFragment, R.id.video_details_fragment_frame, false, TAG)
-//
-//                } else {
-//                    Toast.makeText(this, "Some thing went wrong", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        })
+        val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        railInjectionHelper.getSeriesDetailsV2(id.toString())
+            .observe(this@TVSeriesDetailActivity,
+                { response ->
+                    if (response != null) {
+                        if (response.status.equals(APIStatus.START.name, ignoreCase = true)) {
+                        } else if (response.status.equals(
+                                APIStatus.SUCCESS.name,
+                                ignoreCase = true
+                            )
+                        ) {
+                            if (response.baseCategory != null) {
+                                binding.progressBar.visibility = View.GONE
+                                val enveuCommonResponse = response.baseCategory as RailCommonData
+                                val selectedSeriesDetail =
+                                    enveuCommonResponse.enveuVideoItemBeans?.get(0)
+                                SeriesDetailManager.getInstance().selectedSeries =
+                                    selectedSeriesDetail
+                                setUI(selectedSeriesDetail!!)
+                            }
+                        } else if (response.status.equals(
+                                APIStatus.ERROR.name,
+                                ignoreCase = true
+                            )
+                        ) {
+                            if (response.errorModel.errorCode != 0) {
+                                if (response.errorModel.errorCode == AppConstants.RESPONSE_CODE_LOGOUT) {
+                                    if (UserPreference.instance.isLogin) {
+                                        //                                        hitApiLogout()
+                                    }
+                                    // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
+                                } else {
+//                                    showDialog(
+//                                        this@TVSeriesDetailActivity.getResources()
+//                                            .getString(R.string.error),
+//                                        resources.getString(R.string.something_went_wrong)
+//                                    )
+                                }
+                            }
+                        } else if (response.status.equals(
+                                APIStatus.FAILURE.name,
+                                ignoreCase = true
+                            )
+                        ) {
+//                            showDialog(
+//                                this@TVSeriesDetailActivity.getResources().getString(R.string.error),
+//                                resources.getString(R.string.something_went_wrong)
+//                            )
+                        }
+                    }
+                })
 
     }
 
     private fun setUI(videoDetail: EnveuVideoItemBean) {
-        binding?.content = videoDetail
+        binding.content = videoDetail
+        seriesDetailFragment = SeriesDetailFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putSerializable(AppConstants.SELECTED_SERIES, videoDetail)
+//        SeriesDetailManager.getInstance().setBookmarks(continueWatchingBookmarkList)
+        seriesDetailFragment.arguments = bundle
+        addFragment(
+            seriesDetailFragment,
+            R.id.video_details_fragment_frame,
+            false,
+            TAG
+        )
     }
 
 

@@ -69,8 +69,6 @@ import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
-import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
-import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.adapters.player.EpisodeTabAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -118,12 +116,11 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -671,9 +668,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -1663,6 +1658,16 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
         lWindowParams.width = WindowManager.LayoutParams.MATCH_PARENT; // this is where the magic happens
         lWindowParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         alertDialog.getWindow().setAttributes(lWindowParams);
+
+    }
+
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
 
     }
 

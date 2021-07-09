@@ -46,11 +46,16 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.show.ui.ShowActivity"></activity>
+        <activity
+            android:name=".activities.show.ui.ShowActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="fullSensor" />
         <activity android:name=".activities.search.ui.TVSearchActivity" />
         <activity android:name=".activities.KalturaPlayerActivity" />
         <activity android:name=".activities.live.LiveActivity" />
-        <activity android:name=".activities.show.ui.EpisodeActivity" />
+        <activity android:name=".activities.show.ui.EpisodeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".activities.tutorial.ui.ChapterActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
@@ -59,17 +64,9 @@
             android:name=".activities.tutorial.ui.TutorialActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:screenOrientation="locked" />
-        <activity android:name=".activities.instructor.ui.InstructorActivity" />
-        <activity android:name=".activities.splash.ui.SplashNewActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-
-        </activity>
+        <activity android:name=".activities.instructor.ui.InstructorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="fullSensor"/>
         <activity android:name=".activities.ContactActivity" />
         <activity android:name=".activities.downloads.DownloadedEpisodesActivity" />
         <activity
@@ -135,10 +132,8 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="@string/fcm_prefix_link"
                     android:scheme="http" />
@@ -154,7 +149,6 @@
             tools:replace="android:theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
@@ -163,7 +157,21 @@
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
-
+        <activity
+            android:name=".activities.detailspage.activity.TVSeriesDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme" />
+        <activity
+            android:name=".activities.detailspage.activity.TVInstructorDetailsActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme" />
+        <activity
+            android:name=".activities.usermanagment.ui.TVLoginActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme" />
         <meta-data
             android:name="io.branch.sdk.BranchKey"
             android:value="@string/branch_key" />

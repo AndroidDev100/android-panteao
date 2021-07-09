@@ -116,12 +116,11 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
     private KsPreferenceKeys preference;
-    private NontonPlayerExtended fragment;
     private int assestId;
     private int seriesId;
     private int watchList = 0;
@@ -678,9 +677,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
                 {
-                    if (fragment != null) {
-                        //  fragment.pauseOnOtherAudio();
-                    }
+
                 }
                 break;
                 case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
@@ -1678,6 +1675,16 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         lWindowParams.width = WindowManager.LayoutParams.MATCH_PARENT; // this is where the magic happens
         lWindowParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         alertDialog.getWindow().setAttributes(lWindowParams);
+
+    }
+
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
 
     }
 

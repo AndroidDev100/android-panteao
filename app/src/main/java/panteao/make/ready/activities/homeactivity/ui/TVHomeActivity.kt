@@ -22,9 +22,9 @@ import com.make.constants.Constants
 import com.make.enums.ImageType
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
-import panteao.make.ready.activities.KalturaPlayerActivity
-import panteao.make.ready.activities.search.ui.ActivitySearch
 import panteao.make.ready.activities.search.ui.TVSearchActivity
+import panteao.make.ready.activities.usermanagment.ui.LoginActivity
+import panteao.make.ready.activities.usermanagment.ui.TVLoginActivity
 import panteao.make.ready.adapters.tv.TvMenuAdapter
 import panteao.make.ready.beanModel.model.MenuModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
@@ -40,16 +40,15 @@ import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.ImageHelper
 import panteao.make.ready.utils.helpers.NetworkConnectivity
+import panteao.make.ready.utils.helpers.database.preferences.UserPreference
 import java.util.*
 
-class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), ChangableUi, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, View.OnClickListener, DataLoadingListener, OnTabBaseFragmentListener {
+class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), ChangableUi,
+    AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, View.OnClickListener,
+    DataLoadingListener, OnTabBaseFragmentListener {
+    private var windowFocus: Boolean = false
     private val log = PKLog.get("MainActivity")
-    private val START_POSITION = 0L // position for start playback in msec.
     private var player: KalturaPlayer? = null
-    private val ENTRY_ID = "1_7pg14mbg "
-    private var isFullScreen: Boolean = false
-    private var playerState: PlayerState? = null
-
     private var firstTime: Boolean = true
     private var currentCardPosition: Int = -1
     private var prevPosition: Int = 1
@@ -62,17 +61,18 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     private var homeFragment: TVHomeFragment? = null
     private var noInternetFragment = NoInternetFragment()
     private var menuDrawables = arrayOf(
-            0,
-            0,
-            R.drawable.ic_search,
-            R.drawable.ic_home,
-            R.drawable.ic_skillset,
-            R.drawable.ic_instructor,
-            R.drawable.ic_free,
-            R.drawable.ic_watch_list,
-            R.drawable.profile_icon,
-            R.drawable.ic_settings,
-            R.drawable.ic_exit
+        0,
+        0,
+        R.drawable.ic_search,
+        R.drawable.ic_home,
+        R.drawable.ic_instructor,
+        R.drawable.ic_home_premium,
+        R.drawable.membership_icon,
+        R.drawable.ic_watch_list,
+        R.drawable.ic_watch_list,
+        R.drawable.profile_icon,
+        R.drawable.ic_settings,
+        R.drawable.ic_exit
     )
     private val mHandler = Handler(Looper.getMainLooper())
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityTvMainBinding {
@@ -82,29 +82,29 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     override fun uichanged(position: Int) {
         val animFadeIn = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
         if (position == 1) {
-            binding?.ui2?.clearAnimation()
-            binding?.ui2?.visibility = View.GONE
-            binding?.imageView4?.startAnimation(animFadeIn)
-            binding?.linearLayout?.startAnimation(animFadeIn)
-            binding?.homeFragment?.layoutParams?.height = 640
-            binding?.imageView4?.visibility = View.VISIBLE
-            binding?.linearLayout?.visibility = View.VISIBLE
+            binding.ui2?.clearAnimation()
+            binding.ui2?.visibility = View.GONE
+            binding.imageView4?.startAnimation(animFadeIn)
+            binding.linearLayout?.startAnimation(animFadeIn)
+            binding.homeFragment?.layoutParams?.height = 640
+            binding.imageView4?.visibility = View.VISIBLE
+            binding.linearLayout?.visibility = View.VISIBLE
         } else if (position == 3) {
-            binding?.ui2?.clearAnimation()
-            binding?.imageView4?.clearAnimation()
-            binding?.linearLayout?.clearAnimation()
-            binding?.ui2?.visibility = View.GONE
-            binding?.imageView4?.visibility = View.GONE
-            binding?.homeFragment?.layoutParams?.height = ActionBar.LayoutParams.MATCH_PARENT
-            binding?.linearLayout?.visibility = View.GONE
+            binding.ui2?.clearAnimation()
+            binding.imageView4?.clearAnimation()
+            binding.linearLayout?.clearAnimation()
+            binding.ui2?.visibility = View.GONE
+            binding.imageView4?.visibility = View.GONE
+            binding.homeFragment?.layoutParams?.height = ActionBar.LayoutParams.MATCH_PARENT
+            binding.linearLayout?.visibility = View.GONE
         } else {
-            binding?.ui2?.clearAnimation()
-            binding?.ui2?.visibility = View.GONE
-            binding?.imageView4?.startAnimation(animFadeIn)
-            binding?.linearLayout?.startAnimation(animFadeIn)
-            binding?.homeFragment?.layoutParams?.height = 640
-            binding?.imageView4?.visibility = View.VISIBLE
-            binding?.linearLayout?.visibility = View.VISIBLE
+            binding.ui2?.clearAnimation()
+            binding.ui2?.visibility = View.GONE
+            binding.imageView4?.startAnimation(animFadeIn)
+            binding.linearLayout?.startAnimation(animFadeIn)
+            binding.homeFragment?.layoutParams?.height = 640
+            binding.imageView4?.visibility = View.VISIBLE
+            binding.linearLayout?.visibility = View.VISIBLE
         }
     }
 
@@ -112,7 +112,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         super.onCreate(savedInstanceState)
         connectionObserver()
         uichanged(1)
-        player = AppCommonMethod.loadPlayer(this, binding?.playerRoot)
+        player = AppCommonMethod.loadPlayer(this, binding.playerRoot)
     }
 
     override fun onBackPressed() {
@@ -132,13 +132,14 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     }
 
     override fun onPause() {
-        binding?.menuItems?.clearFocus()
+        binding.menuItems.clearFocus()
+        player?.stop()
         super.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        binding?.menuItems?.clearFocus()
+        binding.menuItems.clearFocus()
         Constants.DRAWER_OPEN = false
     }
 
@@ -152,16 +153,16 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 it.arguments = bundle
                 active = it
                 fragmentManager.beginTransaction()
-                        .add(R.id.home_fragment, it, "")
-                        .show(it).commit()
+                    .add(R.id.home_fragment, it, "")
+                    .show(it).commit()
             }
             createMenuRows()
         } else {
             addFragment(
-                    noInternetFragment,
-                    android.R.id.content,
-                    true,
-                    ""
+                noInternetFragment,
+                android.R.id.content,
+                true,
+                ""
             )
         }
     }
@@ -179,26 +180,26 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
             menuModel.menuId = index
             buttons.add(menuModel)
         }
-        binding?.menuItems?.adapter = TvMenuAdapter(buttons, this)
-        binding?.menuItems?.onItemClickListener = this
-        binding?.menuItems?.onItemSelectedListener = this
-        binding?.menuItems?.setOnKeyListener(object : View.OnKeyListener {
+        binding.menuItems?.adapter = TvMenuAdapter(buttons, this)
+        binding.menuItems.onItemClickListener = this
+        binding.menuItems?.onItemSelectedListener = this
+        binding.menuItems?.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event?.action == KeyEvent.ACTION_DOWN) {
                     if (Constants.DRAWER_OPEN) {
                         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-//                            return if (binding?.menuItems?.selectedItemPosition == 9) {
-//                                binding?.menuItems?.setSelection(11)
+//                            return if (binding.menuItems?.selectedItemPosition == 9) {
+//                                binding.menuItems?.setSelection(11)
 //                                true
 //                            } else {
 //                                false
 //                            }
                         } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                            if (binding?.menuItems?.selectedItemPosition == 2) {
+                            if (binding.menuItems?.selectedItemPosition == 2) {
                                 return true
                             } else {
-//                                return if (binding?.menuItems?.selectedItemPosition == 11) {
-//                                    binding?.menuItems?.setSelection(9)
+//                                return if (binding.menuItems?.selectedItemPosition == 11) {
+//                                    binding.menuItems?.setSelection(9)
 //                                    true
 //                                } else {
 //                                    false
@@ -215,73 +216,73 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 
     private fun openDrawer() {
         Constants.DRAWER_OPEN = true
-        val params = binding?.biggerDrawerFrame?.layoutParams
+        val params = binding.biggerDrawerFrame?.layoutParams
         params?.width = AppCommonMethod.dptoPx(this, 200).toInt()
-        binding?.biggerDrawerFrame?.layoutParams = params
-        binding?.menuItems?.setSelection(selectedPostion)
-        binding?.menuItems?.requestFocus()
-        binding?.menuItems?.getChildAt(selectedPostion)
-                ?.findViewById<View>(R.id.underline)?.visibility = View.INVISIBLE
+        binding.biggerDrawerFrame?.layoutParams = params
+        binding.menuItems?.setSelection(selectedPostion)
+        binding.menuItems?.requestFocus()
+        binding.menuItems?.getChildAt(selectedPostion)
+            ?.findViewById<View>(R.id.underline)?.visibility = View.INVISIBLE
         player?.stop()
-        binding?.playerRoot?.visibility = View.GONE
+        binding.playerRoot?.visibility = View.GONE
     }
 
     private fun closeDrawer() {
         Constants.DRAWER_OPEN = false
-        val params = binding?.biggerDrawerFrame?.layoutParams
+        val params = binding.biggerDrawerFrame?.layoutParams
         params?.width = AppCommonMethod.dptoPx(this, 50).toInt()
-        binding?.biggerDrawerFrame?.layoutParams = params
+        binding.biggerDrawerFrame?.layoutParams = params
         homeFragment?.view?.requestFocus()
         if (!firstTime) {
             if (prevPosition != 0 && prevPosition != 1) {
                 setColorFilter(
-                        binding?.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
-                        resources.getColor(R.color.greyTextColor)
+                    binding.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
+                    resources.getColor(R.color.greyTextColor)
                 )
             } else {
                 setColorFilter(
-                        binding?.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
-                        resources.getColor(android.R.color.transparent)
+                    binding.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
+                    resources.getColor(android.R.color.transparent)
                 )
             }
             prevPosition = selectedPostion
 
             if (prevPosition != 0 && prevPosition != 1) {
                 setColorFilter(
-                        binding?.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
-                        resources.getColor(R.color.white)
+                    binding.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
+                    resources.getColor(R.color.white)
                 )
             } else {
                 setColorFilter(
-                        binding?.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
-                        resources.getColor(android.R.color.transparent)
+                    binding.menuItems?.getChildAt(prevPosition)?.findViewById(R.id.label_text)!!,
+                    resources.getColor(android.R.color.transparent)
                 )
             }
             if (prevPosition != 0 && prevPosition != 1)
-                binding?.menuItems?.getChildAt(selectedPostion)
-                        ?.findViewById<View>(R.id.underline)?.visibility = View.VISIBLE
+                binding.menuItems?.getChildAt(selectedPostion)
+                    ?.findViewById<View>(R.id.underline)?.visibility = View.VISIBLE
         } else {
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
                 firstTime = false
-                binding?.menuItems?.getChildAt(selectedPostion)
-                        ?.findViewById<ImageView>(R.id.label_text)
-                        ?.setColorFilter(resources.getColor(R.color.white))
+                binding.menuItems?.getChildAt(selectedPostion)
+                    ?.findViewById<ImageView>(R.id.label_text)
+                    ?.setColorFilter(resources.getColor(R.color.white))
 
-                binding?.menuItems?.getChildAt(selectedPostion)
-                        ?.findViewById<View>(R.id.underline)?.visibility = View.VISIBLE
+                binding.menuItems?.getChildAt(selectedPostion)
+                    ?.findViewById<View>(R.id.underline)?.visibility = View.VISIBLE
 
                 setColorFilter(
-                        binding?.menuItems?.getChildAt(0)?.findViewById(R.id.label_text)!!,
-                        resources.getColor(android.R.color.transparent)
+                    binding.menuItems?.getChildAt(0)?.findViewById(R.id.label_text)!!,
+                    resources.getColor(android.R.color.transparent)
                 )
 //                val imageView =
-//                        binding?.menuItems?.getChildAt(1)?.findViewById<ImageView>(R.id.label_text)!!
+//                        binding.menuItems?.getChildAt(1)?.findViewById<ImageView>(R.id.label_text)!!
 //                setColorFilter(imageView, resources.getColor(R.color.transparent))
             }, 500)
 
         }
 //
-//        binding?.biggerDrawerFrame?.setBackgroundColor(
+//        binding.biggerDrawerFrame?.setBackgroundColor(
 //                resources.getColor(R.color.transBlackColor)
 //        )
     }
@@ -292,9 +293,9 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 
     private fun showProgressBarLayout(showLayout: Boolean) {
         if (showLayout) {
-            binding?.progressLayout?.visibility = View.VISIBLE
+            binding.progressLayout?.visibility = View.VISIBLE
         } else {
-            binding?.progressLayout?.visibility = View.GONE
+            binding.progressLayout?.visibility = View.GONE
         }
     }
 
@@ -309,21 +310,22 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         if (hasFocus) {
             if (Constants.DRAWER_OPEN) {
-                binding?.menuItems?.requestFocus()
+                binding.menuItems?.requestFocus()
             }
         }
+        windowFocus = hasFocus
         super.onWindowFocusChanged(hasFocus)
 
     }
 
     private fun drawerSelected(position: Int) {
-        binding?.menuItems?.getChildAt(selectedPostion)
-                ?.findViewById<View>(R.id.underline)?.visibility =
-                View.INVISIBLE
+        binding.menuItems?.getChildAt(selectedPostion)
+            ?.findViewById<View>(R.id.underline)?.visibility =
+            View.INVISIBLE
         selectedPostion = position
-        binding?.menuItems?.getChildAt(selectedPostion)
-                ?.findViewById<View>(R.id.underline)?.visibility =
-                View.VISIBLE
+        binding.menuItems?.getChildAt(selectedPostion)
+            ?.findViewById<View>(R.id.underline)?.visibility =
+            View.VISIBLE
     }
 
     private fun onLoaded(fragment: Fragment) {
@@ -346,15 +348,15 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                     bundle.putString(AppConstants.TAB_ID, SDKConfig.getInstance().firstTabId)
                     it.arguments = bundle
                     fragmentManager.beginTransaction()
-                            .replace(R.id.home_fragment, it, "HomeFragment")
-                            .commit()
+                        .replace(R.id.home_fragment, it, "HomeFragment")
+                        .commit()
                     active?.let { it1 ->
                         fragmentManager.beginTransaction().hide(it1).show(it).commit()
                     }
                     active = it
                 }
                 showProgressBarLayout(false)
-                binding?.noDataFragment?.visibility = View.GONE
+                binding.noDataFragment?.visibility = View.GONE
             }
             4 -> {
                 drawerSelected(position)
@@ -364,15 +366,15 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                     bundle.putString(AppConstants.TAB_ID, SDKConfig.getInstance().secondTabId)
                     it.arguments = bundle
                     fragmentManager.beginTransaction()
-                            .replace(R.id.home_fragment, it, "SkillSetFragment")
-                            .commit()
+                        .replace(R.id.home_fragment, it, "SkillSetFragment")
+                        .commit()
                     active?.let { it1 ->
                         fragmentManager.beginTransaction().hide(it1).show(it).commit()
                     }
                     active = it
                 }
                 showProgressBarLayout(false)
-                binding?.noDataFragment?.visibility = View.GONE
+                binding.noDataFragment?.visibility = View.GONE
             }
             5 -> {
                 drawerSelected(position)
@@ -382,15 +384,15 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                     bundle.putString(AppConstants.TAB_ID, SDKConfig.getInstance().thirdTabId)
                     it.arguments = bundle
                     fragmentManager.beginTransaction()
-                            .replace(R.id.home_fragment, it, "InstructorFragment")
-                            .commit()
+                        .replace(R.id.home_fragment, it, "InstructorFragment")
+                        .commit()
                     active?.let { it1 ->
                         fragmentManager.beginTransaction().hide(it1).show(it).commit()
                     }
                     active = it
                 }
                 showProgressBarLayout(false)
-                binding?.noDataFragment?.visibility = View.GONE
+                binding.noDataFragment?.visibility = View.GONE
             }
             6 -> {
                 drawerSelected(position)
@@ -400,46 +402,28 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                     bundle.putString(AppConstants.TAB_ID, SDKConfig.getInstance().fourthTabId)
                     it.arguments = bundle
                     fragmentManager.beginTransaction()
-                            .replace(R.id.home_fragment, it, "FreeFragment")
-                            .commit()
+                        .replace(R.id.home_fragment, it, "FreeFragment")
+                        .commit()
                     active?.let { it1 ->
                         fragmentManager.beginTransaction().hide(it1).show(it).commit()
                     }
                     active = it
                 }
                 showProgressBarLayout(false)
-                binding?.noDataFragment?.visibility = View.GONE
+                binding.noDataFragment?.visibility = View.GONE
 
             }
-//            7 -> {
-//                drawerSelected(position)
-//                premiumFragment = PremiumFragment()
-//                premiumFragment?.let {
-//                    onLoaded(it)
-//                    setBundle(SDKConfig.getInstance().fourthTabId)
-//                    it.arguments = bundle
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.home_fragment, it, AppLevelConstants.TAG_PREMIUM_FRAGMENT)
-//                            .commit()
-//                    active?.let { it1 ->
-//                        fragmentManager.beginTransaction().hide(it1).show(it).commit()
-//                    }
-//                    active = it
-//                }
-//                showProgressBarLayout(false)
-//                binding?.noDataFragment?.visibility = View.GONE
-//
-//            }
-////            getString(R.string.my_watch_history) -> {
-////                if (UserPreference.instance.isLogin) {
-////                    val userWatchListActivity =
-////                        Intent(this@HomeActivity, UserWatchHistoryActivity::class.java)
-////                    startActivity(userWatchListActivity)
-////                } else {
-////                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
-////                    startActivity(loginActivity)
-////                }
-////            }
+            7 -> {
+                if (UserPreference.instance.isLogin) {
+//                    val userWatchListActivity =
+//                        Intent(this@TVHomeActivity, UserWatchHistoryActivity::class.java)
+//                    startActivity(userWatchListActivity)
+                } else {
+                    val loginActivity = Intent(this@TVHomeActivity, TVLoginActivity::class.java)
+                    startActivity(loginActivity)
+                }
+            }
+
 //            8 -> {
 //                if (UserPreference.instance.isLogin) {
 //                    val userWatchListActivity =
@@ -491,17 +475,25 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 
     override fun onDataLoading(item: EnveuVideoItemBean, setAsset: Boolean) {
         if (item.imageType == ImageType.LDS.name || item.imageType == ImageType.LDS2.name)
-            ImageHelper.getInstance(this).tabsloadImage(binding?.imageView4, item.posterURL, getDrawable(R.drawable.placeholder_landscape))
+            ImageHelper.getInstance(this).tabsloadImage(
+                binding.imageView4,
+                item.posterURL,
+                getDrawable(R.drawable.placeholder_landscape)
+            )
         else
-            ImageHelper.getInstance(this).tabsloadImage(binding?.imageView4, item.thumbnailImage, getDrawable(R.drawable.placeholder_landscape))
+            ImageHelper.getInstance(this).tabsloadImage(
+                binding.imageView4,
+                item.thumbnailImage,
+                getDrawable(R.drawable.placeholder_landscape)
+            )
 
-        binding?.content = item
+        binding.content = item
         if (item.assetCast == null || item.assetGenres == null) {
-            binding?.lnCastHeadline?.visibility = View.GONE
-            binding?.lnDirectorHeadline?.visibility = View.GONE
+            binding.lnCastHeadline?.visibility = View.GONE
+            binding.lnDirectorHeadline?.visibility = View.GONE
         } else {
-//            binding?.lnCastHeadline?.visibility = View.VISIBLE
-//            binding?.lnDirectorHeadline?.visibility = View.VISIBLE
+//            binding.lnCastHeadline?.visibility = View.VISIBLE
+//            binding.lnDirectorHeadline?.visibility = View.VISIBLE
         }
     }
 
@@ -514,19 +506,22 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     override fun onTrailerLoaded(asset: Any?) {
     }
 
-    override fun onCardSelected(position: Int) {
+    override fun onCardSelected(position: Int, enveuVideoItemBean: EnveuVideoItemBean) {
         currentCardPosition = position
         mHandler.removeCallbacksAndMessages(null)
         player?.stop()
-        binding?.playerRoot?.visibility = View.GONE
+        binding.playerRoot.visibility = View.GONE
         mHandler.postDelayed({
-            val ovpMediaOptions = AppCommonMethod.buildOvpMediaOptions(ENTRY_ID, 0L)
-            binding?.playerRoot?.visibility = View.VISIBLE
-            player?.loadMedia(ovpMediaOptions) { entry, loadError ->
-                if (loadError != null) {
-                    Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
-                } else {
-                    log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
+            if (windowFocus) {
+                val ovpMediaOptions =
+                    AppCommonMethod.buildOvpMediaOptions(enveuVideoItemBean.getkEntryId(), 0L)
+                binding.playerRoot.visibility = View.VISIBLE
+                player?.loadMedia(ovpMediaOptions) { entry, loadError ->
+                    if (loadError != null) {
+                        Toast.makeText(this, loadError.message, Toast.LENGTH_LONG).show()
+                    } else {
+                        log.d("OVPMedia onEntryLoadComplete  entry = " + entry.id)
+                    }
                 }
             }
         }, 5000)

@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 
 import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
-import panteao.make.ready.activities.videoquality.ui.ChangeLanguageActivity;
 import panteao.make.ready.activities.videoquality.ui.VideoQualityActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
@@ -17,11 +16,6 @@ import panteao.make.ready.databinding.SettingsActivityBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 
-import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
-import panteao.make.ready.activities.videoquality.ui.ChangeLanguageActivity;
-import panteao.make.ready.activities.videoquality.ui.VideoQualityActivity;
-import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 
