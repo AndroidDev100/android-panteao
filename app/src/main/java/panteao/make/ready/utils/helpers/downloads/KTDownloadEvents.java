@@ -10,4 +10,5 @@ public interface KTDownloadEvents {
     void initialStatus(@NonNull OfflineManager.AssetDownloadState state);
     void onStateChanged(@NonNull OfflineManager.AssetDownloadState state);
     void onAssetDownloadComplete(@NonNull String assetId);
+    void onAssetDownloadFailed(@NonNull String assetId,Exception e);
 }

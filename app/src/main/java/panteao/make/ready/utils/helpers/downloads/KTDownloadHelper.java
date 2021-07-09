@@ -2,7 +2,6 @@ package panteao.make.ready.utils.helpers.downloads;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 
@@ -21,9 +20,11 @@ import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OfflineManager;
 import com.kaltura.tvplayer.offline.OfflineManagerSettings;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import panteao.make.ready.R;
@@ -68,7 +69,8 @@ public class KTDownloadHelper {
         manager.setAssetStateListener(new OfflineManager.AssetStateListener() {
             @Override
             public void onAssetDownloadFailed(@NonNull String assetId, @NonNull Exception error) {
-                Log.w("downloadStatus",assetId+" "+"onAssetDownloadFailed");
+                ktDownloadEvents.onAssetDownloadFailed(assetId,error);
+                Log.w("downloadStatus",assetId+" "+"onAssetDownloadFailed "+error.toString());
                // toastLong("Download of" + error + "failed:" + error);
                // updateItemStatus(assetId);
             }
@@ -115,6 +117,18 @@ public class KTDownloadHelper {
             public void onStateChanged(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo) {
                 Log.w("downloadStatus",assetId+" "+"onStateChanged"+"  "+assetInfo.getState());
                 if (assetInfo!=null && assetInfo.getState()!=null){
+                    Long sizeBytes=assetInfo.getEstimatedSize();
+
+                    if (sizeBytes == null ||sizeBytes <= 0) {
+
+                    }else {
+                       Float v= (Float.valueOf(sizeBytes) / (1000*1000));
+                        String formattedString = String.format("%.01f", v);
+                       Log.w("sizeOfAsset",formattedString+" "+"MB");
+                    }
+
+                    //return String.format(Locale.ROOT, "%.3f", (Float.valueOf(sizeBytes) / (1000*1000))) + "mb";
+
                     ktDownloadEvents.onStateChanged(assetInfo.getState());
                 }else {
                     ktDownloadEvents.onStateChanged(null);
@@ -181,18 +195,31 @@ public class KTDownloadHelper {
             }
         };
 
+        OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+        OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,title);
+        manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
+
+    }
+
+    private OfflineManager.SelectionPrefs createUserPrefrences(int position) {
+        Log.w("qualityPosition",position+"");
         OfflineManager.SelectionPrefs defaultPrefs = new OfflineManager.SelectionPrefs();
-        defaultPrefs.videoHeight = 300;
-        defaultPrefs.videoBitrate = 600000;
-        defaultPrefs.videoWidth = 400;
+        if (position==0){
+            defaultPrefs.videoBitrate = 1000000;
+        }else if (position==1){
+            defaultPrefs.videoBitrate = 600000;
+        }else if (position==2){
+            defaultPrefs.videoBitrate = 450000;
+        }else if (position==3){
+            defaultPrefs.videoBitrate = 450000;
+        }else {
+            defaultPrefs.videoBitrate = 150000;
+        }
+
         defaultPrefs.allAudioLanguages = true;
         defaultPrefs.allTextLanguages = true;
         defaultPrefs.allowInefficientCodecs = false;
-
-        OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,title);
-
-        manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
-
+        return defaultPrefs;
     }
 
     int selectedVideoQualityPosition=0;
@@ -210,6 +237,8 @@ public class KTDownloadHelper {
 
         String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
         List<String> stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+        stringList.remove(4);
+
 
         selectedVideoQualityPosition=0;
         SelectDownloadQualityAdapter downloadQualityAdapter=new SelectDownloadQualityAdapter(zContext, stringList, new VideoQualitySelectedListener() {

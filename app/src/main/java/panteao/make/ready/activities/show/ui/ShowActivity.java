@@ -714,7 +714,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         if (!isHitPlayerApi) {
             getAssetDetails();
         }
-        //postCommentClick();
         BuyNowClick();
 //        startPlayer();
     }
@@ -1493,122 +1492,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     boolean isPlayerError = false;
-
-//    @Override
-//    public void onPlayerError(String error) {
-//        try {
-//            getBinding().backButton.setVisibility(View.VISIBLE);
-//            getBinding().pBar.setVisibility(View.GONE);
-//            Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-//            String errorMessage = getString(R.string.player_error);
-//            if (!NetworkConnectivity.isOnline(this)) {
-//                errorMessage = getString(R.string.no_internet_connection);
-//                if (!isOfflineAvailable) {
-////                    playerFragment.getBaseVideoView().pause();
-//                }
-//            } else {
-//                if (!errorDialogShown) {
-//                    isPlayerError = true;
-//                    errorDialogShown = true;
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    errorDialog = AlertDialogSingleButtonFragment.newInstance("", errorMessage, getResources().getString(R.string.ok));
-//                    errorDialog.setCancelable(false);
-//                    errorDialog.setAlertDialogCallBack(new AlertDialogFragment.AlertDialogListener() {
-//                        @Override
-//                        public void onFinishDialog() {
-//                            getBinding().backButton.setVisibility(View.VISIBLE);
-//                            getBinding().playerImage.setVisibility(View.VISIBLE);
-//                            ImageHelper.getInstance(DetailActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
-//                            isPlayerError = false;
-//                        }
-//                    });
-//                    errorDialog.show(fm, "fragment_alert");
-//                }
-//            }
-//        } catch (Exception e) {
-//
-//        }
-//
-//    }
-
-//    @Override
-//    public void onBookmarkCall(int currentPosition) {
-//        if (isLogin) {
-//            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
-//        }
-//    }
-
-
-//    @Override
-//    public void onBookmarkFinish() {
-//        if (isLogin) {
-//            bookmarkingViewModel.finishBookmark(token, assestId);
-//        }
-//    }
-
-//    @Override
-//    public void onPlayerStart() {
-//        Log.d("tagPLayer", videoDetails.getAssetType());
-//        try {
-//            getBinding().backButton.setVisibility(View.GONE);
-//            getBinding().playerImage.setVisibility(View.GONE);
-//            getBinding().pBar.setVisibility(View.GONE);
-//            String name = "";
-//            String mediaType = "";
-//            if (videoDetails.getTitle() != null) {
-//                name = videoDetails.getTitle();
-//            }
-//            if (videoDetails.getAssetType() != null) {
-//                mediaType = videoDetails.getAssetType();
-//            }
-////            AppCommonMethod.trackFcmEvent(name, mediaType, DetailActivity.this, 0);
-//
-//        } catch (Exception e) {
-//
-//        }
-//    }
-
-//    @Override
-//    public void onAdStarted() {
-//        try {
-//            getBinding().pBar.setVisibility(View.GONE);
-//            getBinding().playerImage.setVisibility(View.GONE);
-//        } catch (Exception ignored) {
-//
-//        }
-//    }
-
-   /* @Override
-    public void onDownloadClicked(String videoId, Object position, Object source) {
-        if (source instanceof UserInteractionFragment) {
-            boolean loginStatus = preference.getAppPrefLoginStatus();
-            if (!loginStatus)
-                new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
-            else {
-                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
-                if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
-                    if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                        if (videoQuality != 4) {
-                            downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
-                        } else {
-                            selectDownloadVideoQuality();
-                        }
-                    } else {
-                        showWifiSettings(videoQuality);
-                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
-                      //  Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    if (videoQuality != 4) {
-                        downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
-                    } else {
-                        selectDownloadVideoQuality();
-                    }
-                }
-            }
-        }
-    }*/
-
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
         if (source instanceof UserInteractionFragment) {
@@ -1671,13 +1554,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         });
     }
 
-    public void postCommentClick() {
-        View view = getLayoutInflater().inflate(R.layout.layout_download_quality_bottom_sheet, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        dialog.setContentView(view);
-        dialog.show();
-    }
-
     @Override
     public void onProgressbarClicked(View view, Object source, String videoId) {
         AppCommonMethod.showPopupMenu(this, view, R.menu.download_menu, item -> {
@@ -1733,162 +1609,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     }
 
-//    @Override
-//    public void onDownloadRequested(@androidx.annotation.NonNull Video video) {
-//        Logger.i(TAG, String.format(
-//                "Starting to process '%s' video download request", video.getName()));
-//    }
-//
-//
-//    @Override
-//    public void onDownloadStarted(@androidx.annotation.NonNull Video video, long l,
-//                                  @androidx.annotation.NonNull Map<String, Serializable> map) {
-//        Logger.e(TAG, "onDownloadStarted" + l);
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-//        }
-//
-//    }
-
-/*    @Override
-    public void onDownloadProgress(@androidx.annotation.NonNull Video
-                                           video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
-                                           downloadStatus) {
-        Logger.e(TAG, "onDownloadProgress" + downloadStatus.getProgress());
-        if (userInteractionFragment != null) {
-            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-            userInteractionFragment.setDownloadProgress((float) downloadStatus.getProgress());
-        }
-    }*/
-//
-//    @Override
-//    public void onDownloadPaused(@androidx.annotation.NonNull Video
-//                                         video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
-//                                         downloadStatus) {
-//        Logger.e(TAG, "onDownloadPaused");
-//        if (userInteractionFragment != null) {
-//            downloadHelper.getDownloadStatus(video.getId(), new OfflineCallback<DownloadStatus>() {
-//                @Override
-//                public void onSuccess(DownloadStatus downloadStatus) {
-//                    if (downloadStatus.getCode() == DownloadStatus.STATUS_PAUSED) {
-//                        if (String.valueOf(brightCoveVideoId).equalsIgnoreCase(video.getId())) {
-//                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.PAUSE);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Throwable throwable) {
-//
-//                }
-//            });
-//
-//        }
-//    }
-//
-//    @Override
-//    public void onDownloadCompleted(@androidx.annotation.NonNull Video
-//                                            video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
-//                                            downloadStatus) {
-//        Logger.e(TAG, "onDownloadCompleted");
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADED);
-//        }
-//        downloadHelper.updateVideoStatus(com.brightcove.player.network.DownloadStatus.STATUS_COMPLETE, video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadCanceled(@androidx.annotation.NonNull Video video) {
-//        Logger.e(TAG, "onDownloadCanceled");
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
-//            downloadHelper = new DownloadHelper(this, this, AppConstants.ContentType.VIDEO.name());
-//        }
-//    }
-//
-//    @Override
-//    public void onDownloadDeleted(@androidx.annotation.NonNull Video video) {
-//        Logger.e(TAG, "onDownloadDeleted--->>" + 1);
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
-//            downloadHelper = new DownloadHelper(this, this, AppConstants.ContentType.VIDEO.name());
-//            downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
-//        }
-//    }
-//
-//    @Override
-//    public void onDownloadFailed(@androidx.annotation.NonNull Video
-//                                         video, @androidx.annotation.NonNull com.brightcove.player.network.DownloadStatus
-//                                         downloadStatus) {
-//        Logger.e(TAG, "onDownloadFailed");
-//        try {
-//            if (downloadHelper!=null){
-//                downloadHelper.cancelVideo(downloadAbleVideo.getId());
-//            }
-//        }catch (Exception ignored){
-//
-//        }
-//    }
-//
-//    @Override
-//    public void downloadVideo(@androidx.annotation.NonNull Video video) {
-//
-//    }
-//
-//    @Override
-//    public void pauseVideoDownload(Video video) {
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-//        }
-//    }
-//
-//    @Override
-//    public void resumeVideoDownload(Video video) {
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.PAUSE);
-//        }
-//    }
-//
-//    @Override
-//    public void deleteVideo(@androidx.annotation.NonNull Video video) {
-//        Logger.e(TAG, "onDownloadDeleted--->>" + 2);
-//    }
-//
-//    @Override
-//    public void alreadyDownloaded(@androidx.annotation.NonNull Video video) {
-//        if (userInteractionFragment != null) {
-//            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADED);
-//            Logger.e("License", "Expiry" + video.getLicenseExpiryDate());
-//            isOfflineAvailable = true;
-//        }
-//    }
-//
-//    @Override
-//    public void downloadedVideos(@org.jetbrains.annotations.Nullable List<? extends
-//            Video> p0) {
-//
-//    }
-//
-//    @Override
-//    public void videoFound(Video video) {
-//        this.downloadAbleVideo = video;
-//        if (userInteractionFragment != null) {
-//            Log.e("Download", "Video Found=>" + video.toString());
-//            if (SDKConfig.getInstance().isDownloadEnable()){
-//                if (videoDetails!=null){
-//                    if (MediaTypeCheck.isMediaTypeSupported(videoDetails.getAssetType())){
-//                        userInteractionFragment.setDownloadable(downloadAbleVideo.isOfflinePlaybackAllowed());
-//                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void downloadStatus(String videoId, DownloadStatus downloadStatus) {
-//        Logger.e(TAG, "DownloadStatus" + downloadStatus.getCode());
-//    }
 
     @Override
     public void onDownloadDeleted(@NotNull String videoId, @NotNull Object source) {
@@ -1982,17 +1702,20 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         }
     }
 
-    //    @Override
-//    public void onEvent(PlayerEvent.StateChanged event) {
-//        if (event.newState == PlayerState.READY) {
-//            getBinding().playerImage.setVisibility(View.GONE);
-//            getBinding().pBar.setVisibility(View.GONE);
-//        } else if (event.newState == PlayerState.BUFFERING) {
-//            getBinding().pBar.setVisibility(View.VISIBLE);
-//        } else if (event.newState == PlayerState.LOADING) {
-//        }
-//        Logger.e("PLAYER_STATE", "State changed from " + event.oldState + " to " + event.newState);
-//    }
-
+    @Override
+    public void onAssetDownloadFailed(@NonNull @NotNull String assetId, Exception e) {
+        if (NetworkConnectivity.isOnline(this)) {
+            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            userInteractionFragment.setDownloadProgress(0);
+        }else {
+            OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetId);
+            if (info!=null){
+                downloadHelper.pauseVideo(assetId);
+               // userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(OfflineManager.AssetDownloadState.paused));
+            }else {
+                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            }
+        }
+    }
 
 }
