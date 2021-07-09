@@ -186,7 +186,6 @@ public class EnveuVideoItemBean implements Serializable {
             //series realated data
             this.vodCount = 0;
             this.seasonNumber = details.getData().getSeasonNumber() == null ? "" : details.getData().getSeasonNumber().toString().replaceAll("\\.0*$", "");
-            Logger.e("SELECTED_SERIES_1", new Gson().toJson(details));
             if (details.getData().getSeasons() != null) {
                 ArrayList arrayList = (ArrayList) details.getData().getSeasons();
                 this.seasons = arrayList;
@@ -310,7 +309,6 @@ public class EnveuVideoItemBean implements Serializable {
 
 
             //series realated data
-            Logger.e("SELECTED_SERIES_2", new Gson().toJson(details));
             if (details.getSeasons() != null) {
                 ArrayList arrayList = (ArrayList) details.getSeasons();
                 this.seasons = arrayList;
@@ -435,7 +433,6 @@ public class EnveuVideoItemBean implements Serializable {
             }
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
-            Logger.e("SELECTED_SERIES_3", new Gson().toJson(details));
             if (details.getSeasons() != null) {
                 ArrayList arrayList = (ArrayList) details.getSeasons();
                 this.seasons = arrayList;
@@ -566,7 +563,6 @@ public class EnveuVideoItemBean implements Serializable {
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
             //series realated data
-            Logger.e("SELECTED_SERIES_4", new Gson().toJson(details));
             if (details.getSeasons() != null) {
                 ArrayList arrayList = (ArrayList) details.getSeasons();
                 this.seasons = arrayList;

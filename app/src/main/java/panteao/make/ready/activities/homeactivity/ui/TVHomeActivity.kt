@@ -112,7 +112,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         super.onCreate(savedInstanceState)
         connectionObserver()
         uichanged(1)
-        player = AppCommonMethod.loadPlayer(this, binding.playerRoot)
+//        player = AppCommonMethod.loadPlayer(this, binding.playerRoot)
     }
 
     override fun onBackPressed() {
@@ -133,14 +133,18 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 
     override fun onPause() {
         binding.menuItems.clearFocus()
-        player?.stop()
         super.onPause()
+        player?.stop()
+        player?.destroy()
     }
 
     override fun onStop() {
         super.onStop()
         binding.menuItems.clearFocus()
         Constants.DRAWER_OPEN = false
+
+        player?.stop()
+        player?.destroy()
     }
 
     private fun connectionValidation(boolean: Boolean) {

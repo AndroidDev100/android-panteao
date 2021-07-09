@@ -6,15 +6,18 @@ import android.util.Log
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.*
 import androidx.lifecycle.Observer
+import com.google.gson.Gson
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.cardlayout.cardpresenter.EpisodeCardPresenter
+import panteao.make.ready.cardlayout.cardpresenter.InstructorCardPresenter
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
+import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 
 
-class EpisodesFragment : VerticalGridSupportFragment(), OnItemViewClickedListener,
+class InstructorFragment : VerticalGridSupportFragment(), OnItemViewClickedListener,
     OnItemViewSelectedListener {
     private lateinit var railInjectionHelper: RailInjectionHelper
     private lateinit var seasonEpisodeData: ArrayList<EnveuVideoItemBean>
@@ -26,11 +29,11 @@ class EpisodesFragment : VerticalGridSupportFragment(), OnItemViewClickedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         railCommonData =
-            arguments?.getParcelable<RailCommonData>(AppConstants.BUNDLE_SELECTED_SEASON)!!
+            arguments?.getParcelable(AppConstants.BUNDLE_SELECTED_SEASON)!!
+        Logger.e("RAIL_COMMON_DATA", Gson().toJson(railCommonData))
         pageNumber = railCommonData.pageNumber
         totalPages = railCommonData.pageTotal
         seasonEpisodeData = (railCommonData.enveuVideoItemBeans as ArrayList<EnveuVideoItemBean>?)!!
-        seriesId = arguments?.getInt(AppConstants.BUNDLE_SERIES_ID)!!
         setupFragment()
     }
 
@@ -41,14 +44,13 @@ class EpisodesFragment : VerticalGridSupportFragment(), OnItemViewClickedListene
         val gridPresenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_NONE, false)
         gridPresenter.numberOfColumns = NUM_COLUMNS
         setGridPresenter(gridPresenter)
-        mAdapter = ArrayObjectAdapter(EpisodeCardPresenter())
+        mAdapter = ArrayObjectAdapter(InstructorCardPresenter(0))
         mAdapter.addAll(0, seasonEpisodeData)
         adapter = mAdapter
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "Resumed")
     }
 
 
@@ -80,7 +82,7 @@ class EpisodesFragment : VerticalGridSupportFragment(), OnItemViewClickedListene
     companion object {
 
         private val TAG = "VerticalEpisodeFragment"
-        private val NUM_COLUMNS = 1
+        private val NUM_COLUMNS = 3
     }
 
     override fun onItemSelected(

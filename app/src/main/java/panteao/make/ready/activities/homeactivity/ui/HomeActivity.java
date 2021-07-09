@@ -192,10 +192,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
             setTheme(R.style.MyMaterialTheme_Base_Dark);
 
         }
-
-
-
-
         preference = KsPreferenceKeys.getInstance();
         callBinding();
         ApplicationUpdateManager.getInstance(getApplicationContext()).setAppUpdateCallBack(this);
