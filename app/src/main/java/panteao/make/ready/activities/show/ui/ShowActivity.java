@@ -991,7 +991,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                userInteractionFragment.setDownloadable(true);
+                userInteractionFragment.setDownloadable(false);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
