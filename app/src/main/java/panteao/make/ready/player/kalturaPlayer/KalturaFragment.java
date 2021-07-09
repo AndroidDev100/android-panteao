@@ -619,9 +619,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         super.onActivityCreated(savedInstanceState);
         try {
             mListener = (OnPlayerInteractionListener) getActivity();
-
         } catch (Exception ignored) {
-
+            ignored.printStackTrace();
         }
 
     }

@@ -114,11 +114,11 @@
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -162,7 +162,11 @@
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
-
+        <activity
+            android:name=".activities.detailspage.activity.TVInstructorDetailsActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme" />
         <activity
             android:name=".activities.usermanagment.ui.TVLoginActivity"
             android:screenOrientation="landscape"

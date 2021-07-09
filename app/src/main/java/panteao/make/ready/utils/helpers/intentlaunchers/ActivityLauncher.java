@@ -195,15 +195,11 @@ public class ActivityLauncher {
         intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
         preference.setAppPrefAssetId(0);
-        Logger.e("JSON SENT",new Gson().toJson(args));
         if (ADHelper.getInstance(activity).getPipAct()!=null){
             ADHelper.getInstance(activity).getPipAct().moveTaskToBack(false);
             ADHelper.getInstance(activity).getPipAct().finish();
-           // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         }
         activity.startActivity(intent);
-
-
     }
     public void ShowScreenBrightCove(Activity source, Class<ShowActivity> destination, String videoId, int id, String duration, boolean isPremium, String detailType) {
         Bundle args = new Bundle();

@@ -26,6 +26,8 @@ import androidx.appcompat.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,6 +48,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import panteao.make.ready.activities.KalturaPlayerActivity;
+import panteao.make.ready.activities.detailspage.activity.TVInstructorDetailsActivity;
+import panteao.make.ready.activities.detailspage.activity.TVSeriesDetailActivity;
+import panteao.make.ready.activities.detailspage.activity.VideoDetailActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
@@ -64,8 +69,10 @@ import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
+import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.tarcker.EventConstant;
 import panteao.make.ready.tarcker.FCMEvents;
+import panteao.make.ready.tvBaseModels.basemodels.TVBaseActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.bean.ConfigBean;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -73,9 +80,11 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.ImageHelper;
+import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
+import panteao.make.ready.utils.helpers.intentlaunchers.TvActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
@@ -620,11 +629,6 @@ public class AppCommonMethod {
         long hours = TimeUnit.SECONDS.toHours(milliseconds);
         long minute = TimeUnit.SECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
         long second = TimeUnit.SECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
-
-        Log.w("episodeTiming", minute + " " + second);
-
-        Log.w("episodeTiming", String.format("%02d", minute));
-
         String strHour = String.format("%02d", hours);
         String strSecond = String.format("%02d", second);
         if (second >= 30) {
@@ -648,29 +652,29 @@ public class AppCommonMethod {
     }
 
     public static String calculateTime(long milliseconds) {
-
-        if (milliseconds % 1000 > 0) {
-            milliseconds = milliseconds + (milliseconds % 1000);
-        }
-
-        long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
-        long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
-        long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
-
-
-        String strHour = String.format("%02d", hours);
-        String strMinute = String.format("%02d", minute);
-        String strSecond = String.format("%02d", second);
-
-        String showTime = minute + ":" + strSecond;
-
-        if (hours > 0)
-            showTime = strHour + ":" + strMinute + ":" + strSecond;
-        else if (minute > 0)
-            showTime = strMinute + ":" + strSecond;
-        else if (second >= 0)
-            showTime = "00:" + strSecond;
-        return showTime;
+Logger.e("MIILLSSS", String.valueOf(milliseconds));
+//        if (milliseconds % 1000 > 0) {
+//            milliseconds = milliseconds + (milliseconds % 1000);
+//        }
+        long minute = Math.round(TimeUnit.SECONDS.toMinutes(milliseconds));
+//        long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
+//        long minute = TimeUnit.MILLISECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
+//        long second = TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
+//
+//
+//        String strHour = String.format("%02d", hours);
+//        String strMinute = String.format("%02d", minute);
+//        String strSecond = String.format("%02d", second);
+//
+//        String showTime = minute + ":" + strSecond;
+//
+//        if (hours > 0)
+//            showTime = strHour + ":" + strMinute + ":" + strSecond;
+//        else if (minute > 0)
+//            showTime = strMinute + ":" + strSecond;
+//        else if (second >= 0)
+//            showTime = "00:" + strSecond;
+        return minute + " minutes";
     }
 
     public static String getDuration(long milliseconds) {
@@ -919,6 +923,72 @@ public class AppCommonMethod {
         return setImage(posterURL, w + "x" + h);
     }
 
+    public static void launchDetailScreen(
+            Context context,
+            Long videoId,
+            String screenType,
+            int id,
+            String series,
+            String season,
+            String duration,
+            Boolean isPremium,EnveuVideoItemBean asset
+    ) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+        if (screenType.equalsIgnoreCase(
+                MediaTypeConstants.getInstance().getSeries()
+        ) || screenType.equalsIgnoreCase(
+                MediaTypeConstants.getInstance().getTutorial()
+        )
+        ) {
+            TvActivityLauncher.Companion.getInstance().seriesDetailScreen(
+                    (TVBaseActivity) context,
+                    id
+            );
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
+            TvActivityLauncher.Companion.getInstance().detailScreenBrightCove(
+                    (TVBaseActivity) context,
+                    id,
+                    series,
+                    season,
+                    isPremium,
+                    AppConstants.MOVIE_ENVEU
+            );
+        } else if (screenType.toUpperCase().equalsIgnoreCase(
+                MediaTypeConstants.getInstance().getEpisode()
+        ) || screenType.toUpperCase().equalsIgnoreCase(
+                MediaTypeConstants.getInstance().getChapter()
+        ) || screenType.toUpperCase().equalsIgnoreCase(
+                MediaTypeConstants.getInstance().getTrailor()
+        )
+        ) {
+            RailInjectionHelper railInjectionHelper = ViewModelProviders.of((TVBaseActivity) context).get(RailInjectionHelper.class);
+            railInjectionHelper.getAssetDetailsV2(String.valueOf(id))
+                    .observe((TVBaseActivity) context, new Observer<ResponseModel>() {
+                        @Override
+                        public void onChanged(ResponseModel responseModel) {
+                            if (responseModel != null && responseModel.getBaseCategory() != null) {
+                                RailCommonData railCommonData = (RailCommonData) responseModel.getBaseCategory();
+                                Intent playerIntent =
+                                        new Intent(context, KalturaPlayerActivity.class);
+                                playerIntent.putExtra(
+                                        "EntryId",
+                                        railCommonData.getEnveuVideoItemBeans().get(0).getkEntryId()
+                                );
+                                context.startActivity(playerIntent);
+                            }
+                        }
+                    });
+        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
+            TvActivityLauncher.Companion.getInstance().instructorDetailsScreen(
+                    (TVBaseActivity) context,
+                    asset
+            );
+        }
+    }
+
     public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
             return;
@@ -940,7 +1010,7 @@ public class AppCommonMethod {
             if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
-               // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
+                // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
@@ -1642,7 +1712,7 @@ public class AppCommonMethod {
         try {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
             //  Log.e("FinalUrl-->>in", imageURL);
-           // Log.e("ImageUrl-->>in", imgUrl);
+            // Log.e("ImageUrl-->>in", imgUrl);
             String uri = createURI(title, assetId, assetType, imgUrl, activity);
 
 
@@ -1670,7 +1740,7 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                               // Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                // Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
@@ -1703,7 +1773,7 @@ public class AppCommonMethod {
             shortLinkTask.toString();
 
         } catch (Exception ignored) {
-           Log.w("appcrashOnShare",ignored.getMessage());
+            Log.w("appcrashOnShare", ignored.getMessage());
         }
     }
 
@@ -1778,7 +1848,7 @@ public class AppCommonMethod {
             if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
-               // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
+                // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
@@ -1842,15 +1912,14 @@ public class AppCommonMethod {
 
 
     public static DownloadStatus getDownloadStatus(OfflineManager.AssetDownloadState downloadState) {
-        if (downloadState==null){
+        if (downloadState == null) {
             return DownloadStatus.START;
         }
-        if (downloadState.name().equalsIgnoreCase("paused")){
+        if (downloadState.name().equalsIgnoreCase("paused")) {
             return panteao.make.ready.enums.DownloadStatus.PAUSE;
-        }else if (downloadState.name().equalsIgnoreCase("started")){
+        } else if (downloadState.name().equalsIgnoreCase("started")) {
             return DownloadStatus.DOWNLOADING;
-        }
-        else if (downloadState.name().equalsIgnoreCase("completed")){
+        } else if (downloadState.name().equalsIgnoreCase("completed")) {
             return DownloadStatus.DOWNLOADED;
         }
         return DownloadStatus.START;

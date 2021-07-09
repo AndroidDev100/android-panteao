@@ -48,12 +48,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
     DataLoadingListener, OnTabBaseFragmentListener {
     private var windowFocus: Boolean = false
     private val log = PKLog.get("MainActivity")
-    private val START_POSITION = 0L // position for start playback in msec.
     private var player: KalturaPlayer? = null
-    private val ENTRY_ID = "0_ugsfd90i"
-    private var isFullScreen: Boolean = false
-    private var playerState: PlayerState? = null
-
     private var firstTime: Boolean = true
     private var currentCardPosition: Int = -1
     private var prevPosition: Int = 1
@@ -71,7 +66,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         R.drawable.ic_search,
         R.drawable.ic_home,
         R.drawable.ic_instructor,
-        R.drawable.ic_watch_list,
+        R.drawable.ic_home_premium,
         R.drawable.membership_icon,
         R.drawable.ic_watch_list,
         R.drawable.ic_watch_list,

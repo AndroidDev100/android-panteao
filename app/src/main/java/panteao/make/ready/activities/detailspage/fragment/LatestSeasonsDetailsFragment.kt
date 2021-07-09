@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.activities.detailspage.SeasonSelectionManager
 import panteao.make.ready.activities.detailspage.SeriesDetailManager
@@ -18,8 +21,10 @@ import panteao.make.ready.beanModel.selectedSeason.SelectedSeasonModel
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.FragmentLatestSeasonDetailsBinding
 import panteao.make.ready.fragments.common.NoInternetFragment
+import panteao.make.ready.networking.apistatus.APIStatus
 import panteao.make.ready.tvBaseModels.basemodels.TVBaseActivity
 import panteao.make.ready.utils.constants.AppConstants
+import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 
@@ -70,7 +75,6 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
             seasonList?.add(SelectedSeasonModel(getString(R.string.all_episode), 0, true))
             seasonList?.let { showSeasonList(it, selectedSeasonId) }
         }
-        connectionObserver()
     }
 
     private fun prepareSeasonList() {
@@ -108,13 +112,11 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
             if (seasonCount > 0) {
                 getSeasonEpisodes()
             } else {
-                //here -1 indicates not to send seasonNumber key
                 getAllEpisodes()
             }
         } else {
             val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
             fragmentTransaction?.replace(android.R.id.content, NoInternetFragment())?.commit()
-
         }
     }
 
@@ -123,30 +125,55 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
         fragmentSeasonDetailsBinding.progressBar.visibility = View.VISIBLE
         activity?.findViewById<Button>(R.id.button_play)?.text = getString(R.string.loading)
         selectedSeasonId?.let { it ->
-//            railInjectionHelper.getEpisodeNoSeason(selectedSeries.id, 0, 10, it)
-//                .observe(this, Observer {
-//                    if (it != null && it.getEnveuVideoItemBeans()!!.size > 0) {
-//                        activity?.findViewById<Button>(R.id.button_play)?.text =
-//                            getString(R.string.play) + " S$selectedSeasonId: EP. 1"
-//                        setVerticalEpisodeGridFragment(
-//                            activity as BaseActivity,
-//                            it,
-//                            it.getEnveuVideoItemBeans() as ArrayList<EnveuVideoItemBean>
-//                        )
-//                    } else {
-//                        activity?.findViewById<Button>(R.id.button_play)
-//                            ?.setCompoundDrawables(null, null, null, null)
-//                        activity?.findViewById<Button>(R.id.button_play)?.text =
-//                            getString(R.string.new_episodes_added_soon)
-//                        activity?.findViewById<Button>(R.id.button_episodes)?.visibility = View.GONE
-//                        fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
-//                    }
-//                })
+            railInjectionHelper.getEpisodeNoSeasonV2(
+                selectedSeries.id,
+                0,
+                AppConstants.PAGE_SIZE,
+                it
+            )
+                .observe(requireActivity(), Observer {
+                    when (it.status) {
+                        APIStatus.SUCCESS.name -> {
+                            val railCommonData = it.baseCategory as RailCommonData;
+                            if (it != null && railCommonData.enveuVideoItemBeans!!.size > 0) {
+                                activity?.findViewById<Button>(R.id.button_play)?.text =
+                                    getString(R.string.play) + " S$selectedSeasonId: EP. 1"
+                                setVerticalEpisodeGridFragment(
+                                    activity as TVBaseActivity,
+                                    railCommonData,
+                                    railCommonData.enveuVideoItemBeans as ArrayList<EnveuVideoItemBean>
+                                )
+                            } else {
+                                activity?.findViewById<Button>(R.id.button_play)
+                                    ?.setCompoundDrawables(null, null, null, null)
+                                activity?.findViewById<Button>(R.id.button_play)?.text =
+                                    getString(R.string.new_episodes_added_soon)
+                                activity?.findViewById<Button>(R.id.button_episodes)?.visibility =
+                                    View.GONE
+                                fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
+                            }
+                        }
+                        APIStatus.ERROR.name, APIStatus.FAILURE.name
+                        -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                })
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        connectionObserver()
     }
 
     private fun setVerticalEpisodeGridFragment(
@@ -178,30 +205,45 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
     private fun getAllEpisodes() {
         fragmentSeasonDetailsBinding.progressBar.visibility = View.VISIBLE
         activity?.findViewById<Button>(R.id.button_play)?.text = getString(R.string.loading)
-//        railInjectionHelper.getEpisodeNoSeason(selectedSeries.id, 0, AppConstants.PAGE_SIZE, -1)
-//            .observe(activity!!, Observer<RailCommonData> { response ->
-//                if (response != null) {
-//                    if (response.getEnveuVideoItemBeans()!!.size > 0) {
-//                        activity?.findViewById<Button>(R.id.button_play)?.text =
-//                            getString(R.string.play) + " EP. 1"
-//                        activity?.let {
-//                            setVerticalEpisodeGridFragment(
-//                                activity as BaseActivity,
-//                                response,
-//                                response.getEnveuVideoItemBeans() as ArrayList<EnveuVideoItemBean>
-//                            )
-//                        }
-//                    } else {
-//                        activity?.findViewById<Button>(R.id.button_play)
-//                            ?.setCompoundDrawables(null, null, null, null)
-//                        activity?.findViewById<Button>(R.id.button_play)?.text =
-//                            getString(R.string.new_episodes_added_soon)
-//                        activity?.findViewById<Button>(R.id.button_episodes)?.visibility = View.GONE
-//                        fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
-//                    }
-//                }
-//            })
+        railInjectionHelper.getEpisodeNoSeasonV2(
+            selectedSeries.id,
+            0,
+            AppConstants.PAGE_SIZE,
+            -1
+        )
+            .observe(requireActivity(), Observer {
+                when (it.status) {
+                    APIStatus.SUCCESS.name -> {
+                        val railCommonData = it.baseCategory as RailCommonData;
+                        if (it != null && railCommonData.enveuVideoItemBeans!!.size > 0) {
+                            activity?.findViewById<Button>(R.id.button_play)?.text =
+                                getString(R.string.play) + " S$selectedSeasonId: EP. 1"
+                            setVerticalEpisodeGridFragment(
+                                requireActivity() as TVBaseActivity,
+                                railCommonData,
+                                railCommonData.enveuVideoItemBeans as ArrayList<EnveuVideoItemBean>
+                            )
+                        } else {
+                            activity?.findViewById<Button>(R.id.button_play)
+                                ?.setCompoundDrawables(null, null, null, null)
+                            activity?.findViewById<Button>(R.id.button_play)?.text =
+                                getString(R.string.new_episodes_added_soon)
+                            activity?.findViewById<Button>(R.id.button_episodes)?.visibility =
+                                View.GONE
+                            fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
+                        }
+                    }
+                    APIStatus.ERROR.name, APIStatus.FAILURE.name
+                    -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
 
+            })
     }
 
 

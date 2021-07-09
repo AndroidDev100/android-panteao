@@ -33,7 +33,7 @@ import kotlin.collections.ArrayList
 
 
 class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedListener,
-        DataUpdateCallBack, NoInternetFragment.OnFragmentInteractionListener {
+    DataUpdateCallBack, NoInternetFragment.OnFragmentInteractionListener {
 
     private var count = 0
     private val totalCount = 0
@@ -137,43 +137,48 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
                         gridRowAdapter = ArrayObjectAdapter(mGridPresenter)
                         gridRowAdapter?.addAll(0, it.get(i).getEnveuVideoItemBeans())
                         var headerText = "";
-                        when (it[i].enveuVideoItemBeans!![0].assetType) {
-                            MediaTypeConstants.getInstance().movie
-                            -> {
-                                headerText = getString(R.string.heading_movies);
-                            }
-                            MediaTypeConstants.getInstance().series
-                            -> {
-                                headerText = getString(R.string.heading_series);
-                            }
-                            MediaTypeConstants.getInstance().episode
-                            -> {
-                                headerText = getString(R.string.heading_episodes);
-                            }
-                            MediaTypeConstants.getInstance().live
-                            -> {
-                                headerText = getString(R.string.heading_live);
-                            }
-                            MediaTypeConstants.getInstance().instructor
-                            -> {
-                                headerText = MediaTypeConstants.getInstance().instructor;
-                            }
-                            MediaTypeConstants.getInstance().trailor
-                            -> {
-                                headerText = MediaTypeConstants.getInstance().trailor;
-                            }
-                            MediaTypeConstants.getInstance().chapter
-                            -> {
-                                headerText = MediaTypeConstants.getInstance().chapter;
-                            }
-                            MediaTypeConstants.getInstance().tutorial
-                            -> {
-                                headerText = MediaTypeConstants.getInstance().tutorial
-                            }
-                        }
+                        headerText = it[i].enveuVideoItemBeans!![0].assetType
+//                        when (it[i].enveuVideoItemBeans!![0].assetType) {
+//                            MediaTypeConstants.getInstance().movie
+//                            -> {
+//                                headerText = getString(R.string.heading_movies);
+//                            }
+//                            MediaTypeConstants.getInstance().series
+//                            -> {
+//                                headerText = getString(R.string.heading_series);
+//                            }
+//                            MediaTypeConstants.getInstance().episode
+//                            -> {
+//                                headerText = getString(R.string.heading_episodes);
+//                            }
+//                            MediaTypeConstants.getInstance().live
+//                            -> {
+//                                headerText = getString(R.string.heading_live);
+//                            }
+//                            MediaTypeConstants.getInstance().instructor
+//                            -> {
+//                                headerText = MediaTypeConstants.getInstance().instructor;
+//                            }
+//                            MediaTypeConstants.getInstance().trailor
+//                            -> {
+//                                headerText = MediaTypeConstants.getInstance().trailor;
+//                            }
+//                            MediaTypeConstants.getInstance().chapter
+//                            -> {
+//                                headerText = MediaTypeConstants.getInstance().chapter;
+//                            }
+//                            MediaTypeConstants.getInstance().tutorial
+//                            -> {
+//                                headerText = MediaTypeConstants.getInstance().tutorial
+//                            }
+//                            MediaTypeConstants.getInstance().show
+//                            -> {
+//                                headerText = MediaTypeConstants.getInstance().show
+//                            }
+//                        }
                         val gridHeader = HeaderItem(
-                                index.toLong(),
-                                headerText
+                            index.toLong(),
+                            headerText
                         )
                         gridHeader.contentDescription = channelId.toString()
                         val listRow = ListRow(gridHeader, gridRowAdapter)
@@ -194,9 +199,9 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
                 activity?.applicationContext?.let {
                     if (!NetworkConnectivity.isOnline(it)) {
                         Toast.makeText(
-                                activity,
-                                resources.getString(R.string.no_connection),
-                                Toast.LENGTH_SHORT
+                            activity,
+                            resources.getString(R.string.no_connection),
+                            Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -231,27 +236,27 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
 
 
     override fun onItemClicked(
-            p0: Presenter.ViewHolder?,
-            asset: Any?,
-            p2: RowPresenter.ViewHolder?,
-            p3: Row?
+        p0: Presenter.ViewHolder?,
+        asset: Any?,
+        p2: RowPresenter.ViewHolder?,
+        p3: Row?
     ) {
-        Toast.makeText(requireActivity(),"HELLO",Toast.LENGTH_LONG).show()
-        Logger.e("CONTENT_ITEM", Gson().toJson(asset))
-//        if (asset is EnveuVideoItemBean) {
-//            context?.let { context ->
-//                if (asset.assetType == MediaTypeConstants.getInstance().series) {
-//                    AppCommonMethod.launchDetailScreen(
-//                            context,
-//                            0L,
-//                            AppConstants.Series,
-//                            asset.id,
-//                            "",
-//                            "",
-//                            "0",
-//                            false
-//                    )
-//                } else if (asset.assetType == MediaTypeConstants.getInstance().episode) {
+        if (asset is EnveuVideoItemBean) {
+            context?.let { context ->
+                AppCommonMethod.launchDetailScreen(
+                    context,
+                    0L,
+                    asset.assetType,
+                    asset.id,
+                    "",
+                    "",
+                    "0",
+                    false,
+                    asset
+                )
+            }
+        }
+        //                else if (asset.assetType == MediaTypeConstants.getInstance().episode) {
 //                    railInjectionHelper.getAssetDetails((asset as EnveuVideoItemBean).id.toString())
 //                            .observe(this, Observer {
 //                                if (it != null && it.getEnveuVideoItemBeans()!!.size > 0) {
@@ -360,9 +365,9 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         inflater.context.setTheme(R.style.CustomBrowseTheme)
         val view = super.onCreateView(inflater, container, savedInstanceState)
@@ -388,7 +393,8 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
 
     fun onUpKeyClicked() {
         if (selectedRowViewHolder != null && selectedRowViewHolder.row.id.toInt() == 1) {
-            requireActivity().findViewById<FrameLayout>(R.id.recent_searches_layout).requestFocus()
+            requireActivity().findViewById<FrameLayout>(R.id.recent_searches_layout)
+                .requestFocus()
         }
     }
 }

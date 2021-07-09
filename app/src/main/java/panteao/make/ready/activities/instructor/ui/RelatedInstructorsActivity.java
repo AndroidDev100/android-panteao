@@ -116,7 +116,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener {
+public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
@@ -1658,6 +1658,16 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
         lWindowParams.width = WindowManager.LayoutParams.MATCH_PARENT; // this is where the magic happens
         lWindowParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         alertDialog.getWindow().setAttributes(lWindowParams);
+
+    }
+
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
 
     }
 

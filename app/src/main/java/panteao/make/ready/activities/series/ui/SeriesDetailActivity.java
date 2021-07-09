@@ -316,7 +316,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
                         if (response.getBaseCategory() != null) {
                             RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
-                            // enveuCommonResponse.getEnveuVideoItemBeans().get(0).getAssetCast();
                             parseSeriesData(enveuCommonResponse);
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {

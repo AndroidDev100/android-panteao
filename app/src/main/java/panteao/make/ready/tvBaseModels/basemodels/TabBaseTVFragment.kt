@@ -325,7 +325,6 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         p3: Row?
     ) {
         if (contentItem is EnveuVideoItemBean) {
-            Logger.e("CLICKED_ITEM", Gson().toJson(contentItem))
             context?.let {
                 if (contentItem.assetType.equals(
                         MediaTypeConstants.getInstance().series,

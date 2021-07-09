@@ -1873,18 +1873,9 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onPlayerStart() {
         try {
-            Log.w("onPlayerStart", "");
             getBinding().backButton.setVisibility(View.GONE);
             getBinding().playerImage.setVisibility(View.GONE);
             getBinding().pBar.setVisibility(View.GONE);
-            String name = "";
-            String mediaType = "";
-            if (videoDetails.getTitle() != null) {
-                name = videoDetails.getTitle();
-            }
-            if (videoDetails.getAssetType() != null) {
-                mediaType = videoDetails.getAssetType();
-            }
             if (playerfragment != null && seasonEpisodesList != null && seasonEpisodesList.size() > 0) {
                 playerfragment.totalEpisodes(seasonEpisodesList.size());
                 for (int i = 0; i < seasonEpisodesList.size(); i++) {

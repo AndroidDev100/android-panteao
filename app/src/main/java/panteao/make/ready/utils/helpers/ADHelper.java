@@ -3,9 +3,7 @@ package panteao.make.ready.utils.helpers;
 import android.app.Activity;
 import android.content.Context;
 
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
-//import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
 public class ADHelper {
 

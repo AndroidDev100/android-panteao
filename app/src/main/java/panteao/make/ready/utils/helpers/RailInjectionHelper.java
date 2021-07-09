@@ -513,7 +513,6 @@ public class RailInjectionHelper extends AndroidViewModel {
     public LiveData<ResponseModel> getEpisodeNoSeasonV2(int seriesId, int pageNo, int size, int seasonNumber) {
         MutableLiveData liveData=new MutableLiveData();
         if (seasonNumber == -1) {
-
             SeasonEpisodesList.getInstance().getAllEpisodesV2(seriesId, pageNo, size, new ApiResponseModel<RailCommonData>() {
                 @Override
                 public void onStart() {

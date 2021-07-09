@@ -417,5 +417,6 @@
     <string name="video_quality">Video Quality</string>
     <string name="title_video_quality">Select Video Quality</string>
     <string name="no_tracks_available">No tracks available</string>
+    <string name="new_episodes_added_soon">New Episodes will be added soon</string>
 
 </resources>

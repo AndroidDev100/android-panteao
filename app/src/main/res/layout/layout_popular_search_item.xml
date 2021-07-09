@@ -50,7 +50,7 @@
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:text="@{contentsItem.title}"
-            android:textColor="@color/dialog_green_color"
+            android:textColor="@color/colorPrimary"
             android:textSize="10sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
