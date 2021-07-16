@@ -153,8 +153,8 @@ public interface AppConstants {
 
     String HOME_ENVEU = "0";
     String ORIGINAL_ENVEU = "1";
-    String PREMIUM_ENVEU = "2";
-    String SINETRON_ENVEU = "3";
+    String PREMIUM_ENVEU = "1";
+    String SINETRON_ENVEU = "2";
     String EPISODE_ENVEU = "4";
     String SHOW_ENVEU = "5";
     String MOVIE_ENVEU = "6";
