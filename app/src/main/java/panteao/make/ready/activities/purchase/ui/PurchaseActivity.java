@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -259,7 +260,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             } else if (selectedPlanName.equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())) {
                 if (!isAlreadySubscribed) {
                     //   bp.purchase(PurchaseActivity.this, clickedModel.getIdentifier(), "DEVELOPER PAYLOAD HERE");
-                    bp.purchase(PurchaseActivity.this, clickedModel.getIdentifier(), "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                    bp.purchase(PurchaseActivity.this, initiateSKU, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                 }
                 // bp.subscribe(PurchaseActivity.this, clickedModel.getIdentifier(), "DEVELOPER PAYLOAD HERE");
                 else {
@@ -318,18 +319,25 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         return data;
     }
 
-
+    List<String> subSkuList;
+    List<String> productSkuList;
     @Override
     public void onBillingInitialized() {
-        List<String> subSkuList = new ArrayList<>();
-        List<String> productSkuList = new ArrayList<>();
+        subSkuList = new ArrayList<>();
+        productSkuList = new ArrayList<>();
         if (bp!=null) {
             if (responseEntitlementModel.getData().getPurchaseAs().size() > 0 && responseEntitlementModel.getData().getPurchaseAs() != null) {
                 for (int i = 0; i < responseEntitlementModel.getData().getPurchaseAs().size(); i++) {
                     if (responseEntitlementModel.getData().getPurchaseAs().get(i).getOfferType().contains(VodOfferType.RECURRING_SUBSCRIPTION​.name())) {
-                        subSkuList.add(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                        String identifier=responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier();
+                        String s=identifier.replace("svod_","");
+                        String v=s.replace("_",".");
+                        subSkuList.add(v);
                     }else {
-                        productSkuList.add(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                        String identifier=responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier();
+                        String s=identifier.replace("svod_","");
+                        String v=s.replace("_",".");
+                        productSkuList.add(v);
                     }
                 }
 
@@ -370,8 +378,18 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         }
 
     }
-
+    String purchasedSKU="";
     private void handlePurchase(Purchase purchase) {
+        try {
+            // String[] strArray = new String[] {strName};
+            Log.w("purchasedSKU",purchase.getSku());
+            purchasedSKU= Base64.encodeToString(purchase.getSku().getBytes(),Base64.NO_WRAP);
+            Log.w("purchasedSKU",purchasedSKU);
+
+        }catch (Exception ignored){
+
+        }
+
         try {
             updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId);
         }catch (Exception ignored){
@@ -693,7 +711,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     // skuDetails = bp.getSubscriptionListingDetails("vod_285ce97b_a26c_482b_b0b3_0777b411310c_tvod_price");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.WEEKLY.name());
@@ -715,7 +733,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     // skuDetails = bp.getSubscriptionListingDetails("svod_my_monthly_pack_with_trail");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.MONTHLY.name());
@@ -737,7 +755,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     //skuDetails = bp.getSubscriptionListingDetails("svod_my_quaterly_pack_recurring");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.QUARTERLY.name());
@@ -758,7 +776,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             } else if (responseEntitlementModel.getData().getPurchaseAs().get(i).getRecurringOffer().getOfferPeriod().contains(VodOfferType.HALF_YEARLY.name())) {
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.HALF_YEARLY.name());
@@ -779,7 +797,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             } else if (responseEntitlementModel.getData().getPurchaseAs().get(i).getRecurringOffer().getOfferPeriod().contains(VodOfferType.ANNUAL.name())) {
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.ANNUAL.name());
@@ -824,7 +842,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
 
     private void updatePayment(String billingError,String paymentStatus,String purchaseToken, String paymentId) {
-        viewModel.updatePurchase(billingError,paymentStatus,strToken, purchaseToken, paymentId, orderId, clickedModel).observe(PurchaseActivity.this, new Observer<PurchaseResponseModel>() {
+        viewModel.updatePurchase(billingError,paymentStatus,strToken, purchaseToken, paymentId, orderId, clickedModel,purchasedSKU).observe(PurchaseActivity.this, new Observer<PurchaseResponseModel>() {
             @Override
             public void onChanged(@Nullable PurchaseResponseModel responseCancelPurchase) {
                 showLoading(getBinding().progressBar, false);
@@ -1078,11 +1096,15 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
 
     PurchaseModel clickedModel;
-
+    String initiateSKU="";
     @Override
     public void onPurchaseCardClick(boolean click, PurchaseModel model) {
+        try {
         if (click) {
             String selectedPlanName = model.getPurchaseOptions();
+            String idSKU=model.getIdentifier();
+            String s=idSKU.replace("svod_","");
+            initiateSKU=s.replace("_",".");
             clickedModel = model;
             if (isAlreadySubscribed) {
                 if (selectedPlanName.equalsIgnoreCase(VodOfferType.PERPETUAL.name())) {
@@ -1138,7 +1160,9 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             getBinding().btnBuy.setEnabled(false);
             getBinding().btnBuy.setClickable(false);
         }
+        }catch (Exception ignored){
 
+        }
     }
 
     @Override

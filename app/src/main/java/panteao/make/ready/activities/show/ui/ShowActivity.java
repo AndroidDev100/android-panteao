@@ -99,6 +99,8 @@ import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.utils.helpers.downloads.VideoListListener;
+import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
+import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -208,6 +210,16 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
                 tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
                 downloadHelper = new KTDownloadHelper(this,this);
+                DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (downloadHelper.getAllAssetFromDB()!=null && downloadHelper.getAllAssetFromDB().size()>0){
+                            Log.w("sizeOfDB",downloadHelper.getAllAssetFromDB().size()+" "+downloadHelper.getAllAssetFromDB().get(0).getName()+" "+downloadHelper.getAllAssetFromDB().get(0).getEntryId());
+                        }
+                    }
+                });
+
+
                 //downloadHelper.startDownload();
                //x downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
             }
@@ -991,7 +1003,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                userInteractionFragment.setDownloadable(false);
+                userInteractionFragment.setDownloadable(true);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1484,6 +1496,24 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+//        GoogleCastComponent.setUpMediaRouteButton(this, menu);
+        return true;
+    }
+
+    @Override
+    public void bingeWatchCall(String entryID) {
+
+    }
+
+    @Override
+    public void onPlayerStart() {
+
+    }
+
+
     boolean isPlayerError = false;
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
@@ -1542,7 +1572,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             if (videoDetails!=null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                downloadHelper.startDownload(position,videoDetails.getkEntryId(),videoDetails.getTitle());
+                downloadHelper.startDownload(position,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId());
             }
         });
     }
@@ -1618,22 +1648,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //        }
 //    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-//        GoogleCastComponent.setUpMediaRouteButton(this, menu);
-        return true;
-    }
-
-    @Override
-    public void bingeWatchCall(String entryID) {
-
-    }
-
-    @Override
-    public void onPlayerStart() {
-
-    }
 
 
 //    @Override

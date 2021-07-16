@@ -32,16 +32,29 @@ import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.databinding.LayoutDownloadQualityBottomSheetBinding;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
+import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
+import panteao.make.ready.utils.helpers.downloads.db.DownloadDataBase;
+import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 
 public class KTDownloadHelper {
     Activity zContext;
     private OfflineManager manager;
     KTDownloadEvents ktDownloadEvents;
+    DownloadDataBase db;
+
+    public KTDownloadHelper(Activity zContext) {
+        this.zContext=zContext;
+        db=DownloadDataBase.getInstance(zContext);
+        init(zContext);
+    }
+
     public KTDownloadHelper(Activity zContext,KTDownloadEvents ktDownloadEvents) {
         this.zContext=zContext;
         this.ktDownloadEvents=ktDownloadEvents;
+        db=DownloadDataBase.getInstance(zContext);
         init(zContext);
     }
 
@@ -128,10 +141,15 @@ public class KTDownloadHelper {
                     }
 
                     //return String.format(Locale.ROOT, "%.3f", (Float.valueOf(sizeBytes) / (1000*1000))) + "mb";
+                    if (ktDownloadEvents!=null){
+                        ktDownloadEvents.onStateChanged(assetInfo.getState());
+                    }
 
-                    ktDownloadEvents.onStateChanged(assetInfo.getState());
                 }else {
-                    ktDownloadEvents.onStateChanged(null);
+                    if (ktDownloadEvents!=null){
+                        ktDownloadEvents.onStateChanged(null);
+                    }
+
                 }
                /* toast("onStateChanged");
                 updateItemStatus(assetId);*/
@@ -149,13 +167,15 @@ public class KTDownloadHelper {
             long progress=bytesDownloaded/1000;
            // Log.e("",""[progress] " + assetId +": " + (bytesDownloaded / 1000) + "/" + (totalBytesEstimated / 1000));
             Log.e("progress",percentDownloaded+"  "+progress);
-            ktDownloadEvents.setDownloadProgressListener(percentDownloaded,assetId);
+            if (ktDownloadEvents!=null){
+                ktDownloadEvents.setDownloadProgressListener(percentDownloaded,assetId);
+            }
         });
 
 
     }
     OfflineManager.AssetInfo assetInf;
-    public void startDownload(int position,String kentryid,String title) {
+    public void startDownload(int position,String kentryid,String title,String assetType,String seriesID) {
         manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
         manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
 
@@ -164,6 +184,7 @@ public class KTDownloadHelper {
             public void onPrepared(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo, @Nullable Map<OfflineManager.TrackType, List<OfflineManager.Track>> selected) {
                 assetInf=assetInfo;
                 manager.startAssetDownload(assetInfo);
+                storeAssetInDB(title,kentryid,assetType,seriesID);
                /* item.setAssetInfo(assetInfo);
                 runOnUiThread(() -> {
                     Snackbar.make(assetListView, "Prepared", Snackbar.LENGTH_LONG).setDuration(5000).setAction("Start", v -> doStart(item)).show();
@@ -199,6 +220,18 @@ public class KTDownloadHelper {
         OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,title);
         manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
 
+    }
+
+    private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID) {
+        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
+            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                    "",seriesID,"");
+            db.downloadDao().insertDownloadItem(downloadItemEntity);
+        }else {
+            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                    "","","");
+            db.downloadDao().insertDownloadItem(downloadItemEntity);
+        }
     }
 
     private OfflineManager.SelectionPrefs createUserPrefrences(int position) {
@@ -271,6 +304,7 @@ public class KTDownloadHelper {
     public void cancelVideo(String entryId) {
         if (entryId != null && !entryId.equalsIgnoreCase("")) {
             getManager().removeAsset(entryId);
+            removeFromDB(entryId);
         }
 
     }
@@ -300,4 +334,82 @@ public class KTDownloadHelper {
             }
         }
     }
+
+    public DownloadItemEntity getAssetFromDB(String kentryid) {
+            if (db!=null) {
+                List<DownloadItemEntity> downloadItemEntity = db.downloadDao().loadAllDownloads();
+                if (downloadItemEntity.size() > 0) {
+                    for (int i = 0; i < downloadItemEntity.size(); i++) {
+                        String entryId = downloadItemEntity.get(i).getEntryId();
+                        if (entryId != null && entryId.equalsIgnoreCase(kentryid)) {
+                            return downloadItemEntity.get(i);
+                        } else {
+                            return null;
+                        }
+                    }
+                } else {
+                    return null;
+                }
+            }else {
+                return null;
+            }
+        return null;
+    }
+
+    public List<DownloadItemEntity> getAllAssetFromDB() {
+        if (db!=null) {
+            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadAllDownloads();
+            if (downloadItemEntityList.size() > 0) {
+              return downloadItemEntityList;
+            } else {
+                return null;
+            }
+        }else {
+            return null;
+        }
+    }
+
+    public List<DownloadItemEntity> getAllEpisodesFromDB(String seriesId) {
+        if (db!=null) {
+            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId);
+            Log.w("databasesize",downloadItemEntityList.size()+"");
+            if (downloadItemEntityList.size() > 0) {
+                return downloadItemEntityList;
+            } else {
+                return null;
+            }
+        }else {
+            return null;
+        }
+    }
+
+
+    private void removeFromDB(String entryId) {
+        if (db!=null){
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (db!=null) {
+                        List<DownloadItemEntity> downloadItemEntity = db.downloadDao().loadAllDownloads();
+                        if (downloadItemEntity.size() > 0) {
+                            for (int i = 0; i < downloadItemEntity.size(); i++) {
+                                String entryId = downloadItemEntity.get(i).getEntryId();
+                                if (entryId != null && entryId.equalsIgnoreCase(entryId)) {
+                                    db.downloadDao().deleteDownloadItem(downloadItemEntity.get(i));
+                                    break;
+                                } else {
+                                    Log.w("Dowmload","entryid not exists in DB");
+                                }
+                            }
+                        }
+                    }else {
+                        Log.w("Dowmload","DB instance is null");
+                    }
+                }
+            });
+
+        }
+    }
+
+
 }

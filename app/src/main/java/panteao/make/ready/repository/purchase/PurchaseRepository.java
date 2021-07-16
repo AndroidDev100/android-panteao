@@ -276,7 +276,8 @@ public class PurchaseRepository {
         return liveDataPurchaseResponse;
     }
 
-    public LiveData<PurchaseResponseModel> updatePurchase(String billingError,String paymentStatus,String token,String purchaseToken,String paymentId,String orderId,PurchaseModel purchaseModel) {
+    public LiveData<PurchaseResponseModel> updatePurchase(String billingError,String paymentStatus,String token,String purchaseToken,String paymentId,
+                                                          String orderId,PurchaseModel purchaseModel,String purchasedSKU) {
 
         MutableLiveData<PurchaseResponseModel> liveDataPurchaseResponse = new MutableLiveData<>();
 
@@ -297,6 +298,7 @@ public class PurchaseRepository {
                 jsonObject1.put("exception",billingError);
             }else {
                 jsonObject1.put("googleIAPPurchaseToken", purchaseToken);
+                jsonObject1.put("playStoreProductId",purchasedSKU);
             }
 
             if (purchaseModel!=null){

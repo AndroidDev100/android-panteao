@@ -4,6 +4,7 @@ package panteao.make.ready.activities.membershipplans.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -351,11 +352,21 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         }
 
     }
-
+    String purchasedSKU="";
     private void handlePurchase(Purchase purchase) {
         try {
-            updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId);
+           // String[] strArray = new String[] {strName};
+            Log.w("purchasedSKU",purchase.getSku());
+            purchasedSKU= Base64.encodeToString(purchase.getSku().getBytes(),Base64.NO_WRAP);
+            Log.w("purchasedSKU",purchasedSKU);
+
         }catch (Exception ignored){
+
+        }
+
+        try {
+            updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId);
+        }catch (Exception e){
 
         }
     }
@@ -636,7 +647,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
 
 
     private void updatePayment(String billinhError, String paymentStatus, String purchaseToken, String paymentId) {
-        viewModel.updatePurchase(billingError, paymentStatus, strToken, purchaseToken, paymentId, orderId, model).observe(MemberShipPlanActivity.this, new Observer<PurchaseResponseModel>() {
+        viewModel.updatePurchase(billingError, paymentStatus, strToken, purchaseToken, paymentId, orderId, model,purchasedSKU).observe(MemberShipPlanActivity.this, new Observer<PurchaseResponseModel>() {
             @Override
             public void onChanged(@Nullable PurchaseResponseModel responseCancelPurchase) {
                 showLoading(getBinding().progressBar, false);
