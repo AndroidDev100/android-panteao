@@ -325,9 +325,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
     private void setPlayerFragment(){
         Bundle args = new Bundle();
-        if (videoDetails != null) {
-            args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
-            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+        if (videoDetails != null && !Entryid.equalsIgnoreCase("")) {
+            args.putString(AppConstants.ENTRY_ID, Entryid);
+           // Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         playerfragment = new KalturaFragment();
@@ -512,8 +512,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         // playPlayerWhenShimmer();
     }
 
-    public void playPlayerWhenShimmer() {
-        getBinding().pBar.setVisibility(View.VISIBLE);
+        public void playPlayerWhenShimmer() {
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
@@ -523,80 +522,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }
                 transaction = getSupportFragmentManager().beginTransaction();
-//                playerFragment = new BrightcovePlayerFragment();
-                Logger.e(TAG, String.valueOf(isOfflineAvailable));
-                if (isOfflineAvailable) {
-//                    long bookmarkPosition2 = bookmarkPosition;
-//                    downloadHelper.findOfflineVideoById(String.valueOf(brightCoveVideoId), new OfflineCallback<Video>() {
-//                        @Override
-//                        public void onSuccess(Video video) {
-//                            if (!video.isClearContent()) {
-//                                if (video.getLicenseExpiryDate().getTime() >= System.currentTimeMillis()) {
-//                                    Logger.e("License", "Expiry" + video.getLicenseExpiryDate());
-//                                    setPlayerFragment(video, true, bookmarkPosition2);
-//                                } else {
-//                                    downloadHelper.deleteVideo(video);
-//                                    setPlayerFragment(null, false, bookmarkPosition2);
-//                                }
-//                            } else {
-//                                setPlayerFragment(video, true, bookmarkPosition2);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Throwable throwable) {
-//
-//                        }
-//                    });
-                } else {
-//                    setPlayerFragment(null, false, bookmarkPosition);
-
-                }
+                setPlayerFragment();
             }
         });
-
-        try {
-//            downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
-        }catch (Exception ignored){
-
-        }
     }
 
-//    private void setPlayerFragment(Video video, boolean isOffline, Long bookmarkPosition) {
-//        Bundle args = new Bundle();
-//        if (isOffline) {
-//            args.putBoolean("isOffline", isOfflineAvailable);
-//            args.putParcelable(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, video);
-//        } else {
-//            args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, String.valueOf(brightCoveVideoId));
-//        }
-//        args.putLong(AppConstants.BOOKMARK_POSITION, bookmarkPosition);
-//        args.putString("selected_track", KsPreferenceKeys.getInstance().getQualityName());
-//        args.putString("selected_lang", KsPreferenceKeys.getInstance().getAppLanguage());
-//        args.putBoolean("ads_visibility", isAdShowingToUser);
-//        if (videoDetails != null) {
-//            args.putString("vast_tag", videoDetails.getVastTag());
-//        }
-//        if (videoDetails.getAssetType() != null) {
-//            args.putString("assetType", videoDetails.getAssetType());
-//        }
-//
-//        args.putString("config_vast_tag", SDKConfig.getInstance().getConfigVastTag());
-//        args.putBoolean("binge_watch", SDKConfig.getInstance().getBingeWatchingEnabled());
-//        args.putInt("binge_watch_timer", SDKConfig.getInstance().getTimer());
-//        args.putBoolean("from_binge", fromBingWatch);
-//        args.putInt("player_orientation", playerOrientation);
-//        setArgsForEvent(args);
-//
-//        if (videoDetails.isPremium() && videoDetails.getThumbnailImage() != null) {
-//            args.putString(AppConstants.BUNDLE_BANNER_IMAGE, videoDetails.getThumbnailImage());
-//        }
-//        playerFragment.setArguments(args);
-//        transaction.replace(R.id.player_frame, playerFragment, "PlayerFragment");
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-//        getBinding().pBar.setVisibility(View.VISIBLE);
-//    }
 
     private void setArgsForEvent(Bundle args) {
         try {
@@ -905,7 +835,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     }
-
+    private String Entryid="";
     private void parseVideoDetails(EnveuVideoItemBean videoDetails) {
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
@@ -930,7 +860,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             hitApiEntitlement(videoDetails.getSku());
 
         } else {
-            if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+            if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
+                Entryid=videoDetails.getkEntryId();
                 isLogin = preference.getAppPrefLoginStatus();
                 if (isLogin) {
                     if (!preference.getEntitlementStatus()) {
@@ -982,7 +913,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
 
         setUI(videoDetails);
-        setPlayerFragment();
+        //setPlayerFragment();
 
     }
     //***********************^||||call episode data from above API\\\\\^***************************************//
@@ -1150,7 +1081,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        //brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                        Entryid = responseEntitlement.getData().getBrightcoveVideoId();
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -1193,7 +1124,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (seriesDetailBean != null) {
 
             downloadHelper = new KTDownloadHelper(this,this);
-            if (videoDetails != null) {
+            if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
                 downloadHelper.getAssetInfo(videoDetails.getkEntryId());
             }
 

@@ -250,7 +250,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
        transaction.replace(R.id.player_root, playerfragment);
        transaction.addToBackStack(null);
        transaction.commit();
-       if (videoDetails != null) {
+       if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
            downloadHelper.getAssetInfo(videoDetails.getkEntryId());
        }
 
@@ -310,7 +310,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     public void playPlayerWhenShimmer() {
-        getBinding().pBar.setVisibility(View.VISIBLE);
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
@@ -320,92 +319,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }
                 transaction = getSupportFragmentManager().beginTransaction();
-
-
-//                playerFragment = new BrightcovePlayerFragment();
-                if (isOfflineAvailable) {
-//                    long bookmarkPosition2 = bookmarkPosition;
-//                    downloadHelper.findOfflineVideoById(String.valueOf(brightCoveVideoId), new OfflineCallback<Video>() {
-//                        @Override
-//                        public void onSuccess(Video video) {
-//                            if (!video.isClearContent()) {
-//
-//                                if (video.getLicenseExpiryDate().getTime() >= System.currentTimeMillis()) {
-//                                    Logger.e("License", "Expiry" + video.getLicenseExpiryDate());
-//                                    setPlayerFragment(video, true, bookmarkPosition2);
-//                                } else {
-//                                    downloadHelper.deleteVideo(video);
-//                                    setPlayerFragment(null, false, bookmarkPosition2);
-//                                }
-//                            } else {
-//                                setPlayerFragment(video, true, bookmarkPosition2);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Throwable throwable) {
-//
-//                        }
-//                    });
-                } else {
-//                    setPlayerFragment(null, false, bookmarkPosition);
-
-                }
-//                Bundle args = new Bundle();
-//                args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, String.valueOf(brightCoveVideoId));
-//                args.putLong(AppConstants.BOOKMARK_POSITION, bookmarkPosition);
-//
-//                if (videoDetails.isPremium() && videoDetails.getThumbnailImage() != null) {
-//                    args.putString(AppConstants.BUNDLE_BANNER_IMAGE, videoDetails.getThumbnailImage());
-//                }
-//                playerFragment.setArguments(args);
-//                transaction.replace(R.id.player_frame, playerFragment);
-//                transaction.commit();
-//                getBinding().pBar.setVisibility(View.GONE);
-
+                setPlayerFragment();
             }
         });
-
-        try {
-//            downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
-        } catch (Exception ignored) {
-
-        }
     }
-
-//    private void setPlayerFragment(Video video, boolean isOffline, Long bookmarkPosition) {
-//        Bundle args = new Bundle();
-//        if (isOffline) {
-//            args.putBoolean("isOffline", isOfflineAvailable);
-//            args.putParcelable(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, video);
-//        } else {
-//            args.putString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, String.valueOf(brightCoveVideoId));
-//        }
-//        args.putLong(AppConstants.BOOKMARK_POSITION, bookmarkPosition);
-//        args.putString("selected_track", KsPreferenceKeys.getInstance().getQualityName());
-//        args.putBoolean("ads_visibility", isAdShowingToUser);
-//        args.putString("selected_lang", KsPreferenceKeys.getInstance().getAppLanguage());
-//        if (videoDetails != null) {
-//            args.putString("vast_tag", videoDetails.getVastTag());
-//        }
-//        if (videoDetails.getAssetType() != null) {
-//            args.putString("assetType", videoDetails.getAssetType());
-//        }
-//        args.putString("config_vast_tag", SDKConfig.getInstance().getConfigVastTag());
-//
-//        setArgsForEvent(args);
-//
-//        if (videoDetails.isPremium() && videoDetails.getThumbnailImage() != null) {
-//            args.putString(AppConstants.BUNDLE_BANNER_IMAGE, videoDetails.getThumbnailImage());
-//        }
-////        playerFragment.setArguments(args);
-////        transaction.replace(R.id.player_frame, playerFragment, "PlayerFragment");
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-//        getBinding().pBar.setVisibility(View.VISIBLE);
-//
-//    }
-
 
     private void setArgsForEvent(Bundle args) {
         try {
@@ -771,7 +688,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
-            setPlayerFragment();
             if (videoDetails.getDescription()!=null){
                 if (videoDetails.getDescription().equalsIgnoreCase("")){
                     getBinding().descriptionText.setVisibility(View.GONE);
@@ -801,7 +717,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 }
             } else {
                 getBinding().pBar.setVisibility(View.VISIBLE);
-                if (AppCommonMethod.getCheckBCID(videoDetails.getBrightcoveVideoId())) {
+                if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
                     isLogin = preference.getAppPrefLoginStatus();
 
 

@@ -17,7 +17,7 @@ public class Data implements Serializable {
     @SerializedName("entitledAs")
     @Expose
     private List<EntitledAs> entitledAs;
-    @SerializedName("brightcoveVideoId")
+    @SerializedName("kEntryId")
     @Expose
     private String brightcoveVideoId;
     @SerializedName("entitled")
