@@ -1138,7 +1138,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    userInteractionFragment.setDownloadable(true);
+                    userInteractionFragment.setDownloadable(false);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
