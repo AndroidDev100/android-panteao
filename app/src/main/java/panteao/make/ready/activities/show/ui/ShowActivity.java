@@ -241,8 +241,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
    private void setPlayerFragment(){
        Bundle args = new Bundle();
        if (videoDetails != null) {
-            args.putString(AppConstants.ENTRY_ID, videoDetails.getkEntryId());
-            Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
+            args.putString(AppConstants.ENTRY_ID, Entryid);
+            Logger.d("ENTRY_ID",Entryid+"");
         }
        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
        playerfragment = new KalturaFragment();
@@ -682,7 +682,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     boolean isAdShowingToUser = true;
-
+    private String Entryid="";
     private void parseAssetDetails(ResponseModel assetResponse) {
         RailCommonData enveuCommonResponse = (RailCommonData) assetResponse.getBaseCategory();
 
@@ -700,6 +700,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             getBinding().descriptionText.setEllipsize(TextUtils.TruncateAt.END);
             ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             if (videoDetails.isPremium()) {
+                Entryid="";
                 isPremium = true;
                 ImageHelper.getInstance(ShowActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
                 getBinding().tvPurchased.setVisibility(View.GONE);
@@ -718,6 +719,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             } else {
                 getBinding().pBar.setVisibility(View.VISIBLE);
                 if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
+                    Entryid=videoDetails.getkEntryId();
                     isLogin = preference.getAppPrefLoginStatus();
 
 
@@ -888,7 +890,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                       // brightCoveVideoId = Long.parseLong(responseEntitlement.getData().getBrightcoveVideoId());
+                        Entryid = responseEntitlement.getData().getBrightcoveVideoId();
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);

@@ -857,6 +857,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             getBinding().tvBuyNow.setVisibility(View.VISIBLE);
             getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
             getBinding().backButton.setVisibility(View.VISIBLE);
+            Entryid="";
             hitApiEntitlement(videoDetails.getSku());
 
         } else {
