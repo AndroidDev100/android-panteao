@@ -1,7 +1,7 @@
 <resources>
 
     <!--Production ID-->
-    <string name="facebook_app_id">1907725549359053</string>
+    <string name="facebook_app_id">199207785291668</string>
     <string name="branch_key">key_live_egG0oap83Po2jiMG3GGEXhmorrpmtOVA</string>
     <string name="branch_key_test">key_test_pnO3bgp87Ma6jkQI9UUzZdjfqthasVGG</string>
     <string name="branch_host">share.mvhub.com</string>
