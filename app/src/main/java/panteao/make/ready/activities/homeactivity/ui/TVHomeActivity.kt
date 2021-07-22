@@ -184,30 +184,30 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
             menuModel.menuId = index
             buttons.add(menuModel)
         }
-        binding.menuItems?.adapter = TvMenuAdapter(buttons, this)
+        binding.menuItems.adapter = TvMenuAdapter(buttons, this)
         binding.menuItems.onItemClickListener = this
-        binding.menuItems?.onItemSelectedListener = this
-        binding.menuItems?.setOnKeyListener(object : View.OnKeyListener {
+        binding.menuItems.onItemSelectedListener = this
+        binding.menuItems.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event?.action == KeyEvent.ACTION_DOWN) {
                     if (Constants.DRAWER_OPEN) {
                         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-//                            return if (binding.menuItems?.selectedItemPosition == 9) {
-//                                binding.menuItems?.setSelection(11)
-//                                true
-//                            } else {
-//                                false
-//                            }
+    //                            return if (binding.menuItems?.selectedItemPosition == 9) {
+    //                                binding.menuItems?.setSelection(11)
+    //                                true
+    //                            } else {
+    //                                false
+    //                            }
                         } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
                             if (binding.menuItems?.selectedItemPosition == 2) {
                                 return true
                             } else {
-//                                return if (binding.menuItems?.selectedItemPosition == 11) {
-//                                    binding.menuItems?.setSelection(9)
-//                                    true
-//                                } else {
-//                                    false
-//                                }
+    //                                return if (binding.menuItems?.selectedItemPosition == 11) {
+    //                                    binding.menuItems?.setSelection(9)
+    //                                    true
+    //                                } else {
+    //                                    false
+    //                                }
                             }
                         }
                     }
@@ -399,23 +399,14 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 binding.noDataFragment?.visibility = View.GONE
             }
             6 -> {
-                drawerSelected(position)
-                homeFragment = TVHomeFragment()
-                homeFragment?.let {
-                    onLoaded(it)
-                    bundle.putString(AppConstants.TAB_ID, SDKConfig.getInstance().fourthTabId)
-                    it.arguments = bundle
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.home_fragment, it, "FreeFragment")
-                        .commit()
-                    active?.let { it1 ->
-                        fragmentManager.beginTransaction().hide(it1).show(it).commit()
-                    }
-                    active = it
+                if (UserPreference.instance.isLogin) {
+//                    val userWatchListActivity =
+//                        Intent(this@TVHomeActivity, UserWatchHistoryActivity::class.java)
+//                    startActivity(userWatchListActivity)
+                } else {
+                    val loginActivity = Intent(this@TVHomeActivity, TVLoginActivity::class.java)
+                    startActivity(loginActivity)
                 }
-                showProgressBarLayout(false)
-                binding.noDataFragment?.visibility = View.GONE
-
             }
             7 -> {
                 if (UserPreference.instance.isLogin) {
@@ -428,43 +419,43 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
                 }
             }
 
-//            8 -> {
-//                if (UserPreference.instance.isLogin) {
+            8 -> {
+                if (UserPreference.instance.isLogin) {
 //                    val userWatchListActivity =
-//                            Intent(this@HomeActivity, UserWatchListActivity::class.java)
+//                            Intent(this, UserWatchListActivity::class.java)
 //                    startActivity(userWatchListActivity)
-//                } else {
-//                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
-//                    startActivity(loginActivity)
-//                }
-//            }
-//            9 -> {
-//                if (UserPreference.instance.isLogin) {
+                } else {
+                    val loginActivity = Intent(this, LoginActivity::class.java)
+                    startActivity(loginActivity)
+                }
+            }
+            9 -> {
+                if (UserPreference.instance.isLogin) {
 //                    val userWatchListActivity =
 //                            Intent(this@HomeActivity, MyProfileAcitivity::class.java)
 //                    startActivity(userWatchListActivity)
+                } else {
+                    val loginActivity = Intent(this, LoginActivity::class.java)
+                    startActivity(loginActivity)
+                }
+            }
+            10 -> {
+//                val settingActivity = Intent(this@HomeActivity, SettingActivity::class.java)
+//                startActivity(settingActivity)
+            }
+//            getString(R.string.membership_plan) -> {
+//                if (UserPreference.instance.isLogin) {
+//                    val userWatchListActivity =
+//                        Intent(this@HomeActivity, MembershipPlans::class.java)
+//                    startActivity(userWatchListActivity)
 //                } else {
 //                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
 //                    startActivity(loginActivity)
 //                }
 //            }
-//            10 -> {
-//                val settingActivity = Intent(this@HomeActivity, SettingActivity::class.java)
-//                startActivity(settingActivity)
-//            }
-////            getString(R.string.membership_plan) -> {
-////                if (UserPreference.instance.isLogin) {
-////                    val userWatchListActivity =
-////                        Intent(this@HomeActivity, MembershipPlans::class.java)
-////                    startActivity(userWatchListActivity)
-////                } else {
-////                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
-////                    startActivity(loginActivity)
-////                }
-////            }
-//            12 -> {
-//                this.finishAffinity();
-//            }
+            11 -> {
+                this.finishAffinity();
+            }
         }
         closeDrawer();
     }
@@ -550,13 +541,9 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
             if (Constants.DRAWER_OPEN) {
                 closeDrawer()
+                return true
             }
         }
         return super.onKeyDown(keyCode, event)
-    }
-
-    companion object {
-        val PARTNER_ID = 3181353
-        val SERVER_URL = "https://cdnapisec.kaltura.com"
     }
 }

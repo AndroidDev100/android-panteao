@@ -139,7 +139,7 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
                                 activity?.findViewById<Button>(R.id.button_play)?.text =
                                     getString(R.string.play) + " S$selectedSeasonId: EP. 1"
                                 setVerticalEpisodeGridFragment(
-                                    activity as TVBaseActivity,
+                                    requireActivity() as TVBaseActivity,
                                     railCommonData,
                                     railCommonData.enveuVideoItemBeans as ArrayList<EnveuVideoItemBean>
                                 )
