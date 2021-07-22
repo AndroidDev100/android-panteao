@@ -61,12 +61,6 @@
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintBottom_toTopOf="@id/rootScroll">
 
-                <FrameLayout
-                    android:id="@+id/player_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </FrameLayout>
 
                 <ImageView
                     android:id="@+id/playerImage"
@@ -74,10 +68,15 @@
                     placeholder="@{@drawable/placeholder_landscape}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder_landscape"/>
 
+                <FrameLayout
+                    android:id="@+id/player_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </FrameLayout>
                 <panteao.make.ready.utils.CustomProgressBar
                     android:id="@+id/pBar"
                     style="@style/Widget.AppCompat.ProgressBar"

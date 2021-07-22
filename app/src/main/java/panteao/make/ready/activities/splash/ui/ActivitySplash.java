@@ -71,6 +71,7 @@ import panteao.make.ready.utils.helpers.AnalyticsController;
 import panteao.make.ready.utils.helpers.ForceUpdateHandler;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -137,6 +138,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
         dtgPrefrencesProvider.saveExpiryDays(3);
+        KTDownloadHelper downloadHelper = new KTDownloadHelper(this);
 //        DownloadHelper downloadHelper = new DownloadHelper(this);
 //        downloadHelper.deleteAllExpiredVideos();
 

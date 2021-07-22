@@ -73,7 +73,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean isSelected = false;
     private boolean isDialogShowing = false;
     private PlayerCallbacks playerCallbacks;
-    private Boolean skipIntroEnable = true;
+    private Boolean skipIntroEnable = false;
     private boolean IsbingeWatch = false;
     private int bingeWatchTimer = 0;
     ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
@@ -97,10 +97,13 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private FrameLayout container;
     CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
         public void onTick(long millisUntilFinished) {
+            Logger.e("TICKING", "TRUE");
         }
 
         public void onFinish() {
+            Logger.e("TICKING", "FINISH");
             playerControlsFragment.hideControls();
+            countDownTimer.start();
         }
     };
 
@@ -165,7 +168,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 public void onClick(View v) {
                     if (playerControlsFragment != null) {
                         playerControlsFragment.sendTapCallBack(true);
-                        playerControlsFragment.callAnimation();
                     }
                 }
             });
@@ -256,6 +258,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 playerLayout.setVisibility(View.VISIBLE);
                 mListener.onPlayerStart();
                 countDownTimer.start();
+                playerControlsFragment.showControls();
             }
         });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
@@ -335,14 +338,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 if (AppCommonMethod.isTV(requireActivity()))
                     id.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_pause));
                 else
-                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
                 player.pause();
             } else {
                 countDownTimer.start();
                 if (AppCommonMethod.isTV(requireActivity()))
                     id.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_play));
                 else
-                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
                 player.play();
             }
         }

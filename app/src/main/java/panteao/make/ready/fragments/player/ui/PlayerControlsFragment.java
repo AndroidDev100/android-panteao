@@ -80,7 +80,6 @@ public class PlayerControlsFragment extends Fragment {
     private DefaultTimeBar seekBar;
     private long playbackDuration, playbackCurrentPosition;
     private boolean isOffline = false;
-    private RelativeLayout relativeLayout;
     private LinearLayout seekbarLayout;
     private ViewGroup childControls;
     public Button skipBtn;
@@ -193,14 +192,6 @@ public class PlayerControlsFragment extends Fragment {
 
 
     }
-    public void callAnimation() {
-//        if (timer) {
-//            if (viewHideShowTimeHandler != null) {
-//                viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
-//            }
-//        }
-//        ShowAndHideView();
-    }
 
     private void ShowAndHideView() {
         try {
@@ -243,10 +234,10 @@ public class PlayerControlsFragment extends Fragment {
                 }
             });
 
-            if (relativeLayout.getVisibility() == View.VISIBLE) {
-                relativeLayout.startAnimation(animationFadeOut);
+            if (childControls.getVisibility() == View.VISIBLE) {
+                childControls.startAnimation(animationFadeOut);
 //                    backArrow.setVisibility(View.GONE);
-                relativeLayout.setVisibility(View.GONE);
+                childControls.setVisibility(View.GONE);
 
 
                 timer = true;
@@ -255,14 +246,14 @@ public class PlayerControlsFragment extends Fragment {
             } else {
 
                 Log.w("IMATAG", "handler");
-                relativeLayout.setVisibility(View.VISIBLE);
+                childControls.setVisibility(View.VISIBLE);
 //                    backArrow.setVisibility(View.VISIBLE);
 //                    if (videoType.equalsIgnoreCase("1")) {
 //                        hideControlsForLive();
 //                    } else {
 //
 //                    }
-                relativeLayout.startAnimation(animationFadeIn);
+                childControls.startAnimation(animationFadeIn);
             }
 
 
@@ -280,7 +271,11 @@ public class PlayerControlsFragment extends Fragment {
 
     public void sendTapCallBack(boolean b) {
         mFlag = b;
-        playerCallbacks.playPause(btnPause);
+        if (childControls.getVisibility() == View.VISIBLE) {
+            hideControls();
+        } else {
+            showControls();
+        }
     }
 
     private void performClick() {
@@ -357,28 +352,11 @@ public class PlayerControlsFragment extends Fragment {
                         playerCallbacks.finishPlayer();
                     }
                     playerCallbacks.checkOrientation(backArrow);
-                }else{
+                } else {
                     getActivity().finish();
                 }
             }
         });
-        relativeLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
-
-                if (!mFlag)
-                    return false;
-//                if (replay.getVisibility() == View.VISIBLE) {
-//                    childControl.setVisibility(View.GONE);
-//                } else {
-                callAnimation();
-//                }
-
-                return false;
-            }
-        });
-
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -576,12 +554,11 @@ public class PlayerControlsFragment extends Fragment {
         btnPause = (ImageView) view.findViewById(R.id.pause);
         btnForward = (ImageView) view.findViewById(R.id.forward);
         btnRewind = (ImageView) view.findViewById(R.id.rew);
-        relativeLayout = view.findViewById(R.id.control_layout);
         seekBar = view.findViewById(R.id.exo_progress);
         currentPosition = view.findViewById(R.id.exo_position);
         totalDuration = view.findViewById(R.id.exo_duration);
         seekbarLayout = view.findViewById(R.id.seekbar_ll);
-        childControls = view.findViewById(R.id.childControls);
+        childControls = view.findViewById(R.id.control_layout);
         seekBarControl = (View) view.findViewById(R.id.seekbarLayout);
         backArrow = (ImageView) view.findViewById(R.id.backArrow);
         fullscreen = (ImageView) view.findViewById(R.id.fullscreen);
@@ -594,7 +571,6 @@ public class PlayerControlsFragment extends Fragment {
         } else {
             Logger.e("IS_TV", "FALSE");
         }
-        hideControls();
     }
 
     @Override

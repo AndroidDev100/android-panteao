@@ -95,6 +95,8 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private void setTabId() {
 
         try {
+            //shows=Premium
+            //Movie=instructor
             if (AppCommonMethod.getConfigResponse()!=null && AppCommonMethod.getConfigResponse().getData()!=null
                     && AppCommonMethod.getConfigResponse().getData().getAppConfig()!=null
                     && AppCommonMethod.getConfigResponse().getData().getAppConfig().getNavScreens()!=null){
@@ -104,9 +106,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 else if (viewModel instanceof NewsFragmentViewModel) {
                     tabId = SDKConfig.getInstance().getSecondTabId();
                 } else if (viewModel instanceof ShowsFragmentViewModel) {
-                    tabId = SDKConfig.getInstance().getThirdTabId();
+                    tabId = SDKConfig.getInstance().getSecondTabId();
                 } else if (viewModel instanceof MovieFragmentViewModel) {
-                    tabId = SDKConfig.getInstance().getFourthTabId();
+                    tabId = SDKConfig.getInstance().getThirdTabId();
                 } else {
                     tabId = SDKConfig.getInstance().getFirstTabId();
                 }

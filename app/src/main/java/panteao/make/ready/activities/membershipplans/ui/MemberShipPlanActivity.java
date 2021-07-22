@@ -4,6 +4,7 @@ package panteao.make.ready.activities.membershipplans.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -351,11 +352,21 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         }
 
     }
-
+    String purchasedSKU="";
     private void handlePurchase(Purchase purchase) {
         try {
-            updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId);
+           // String[] strArray = new String[] {strName};
+            Log.w("purchasedSKU",purchase.getSku());
+            purchasedSKU= Base64.encodeToString(purchase.getSku().getBytes(),Base64.NO_WRAP);
+            Log.w("purchasedSKU",purchasedSKU);
+
         }catch (Exception ignored){
+
+        }
+
+        try {
+            updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId);
+        }catch (Exception e){
 
         }
     }
@@ -379,7 +390,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
     private void getPlansApi() {
         String token = preference.getAppPrefAccessToken();
         if (!StringUtils.isNullOrEmptyOrZero(token)) {
-            viewModel.getPlans(token).observe(MemberShipPlanActivity.this, new Observer<ResponseMembershipAndPlan>() {
+            viewModel.getNewPlans(token).observe(MemberShipPlanActivity.this, new Observer<ResponseMembershipAndPlan>() {
                 @Override
                 public void onChanged(@Nullable ResponseMembershipAndPlan responseMembershipAndPlan) {
                     Logger.e("MemberShipPlanActivity", "ResponseMembershipAndPlan" + responseMembershipAndPlan.toString());
@@ -392,7 +403,10 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                             subSkuList.clear();
                             for (int i = 0; i < responseMembershipAndPlan.getData().size(); i++) {
                                 if (responseMembershipAndPlan.getData().get(i).getOfferType().contains(VodOfferType.RECURRING_SUBSCRIPTION​.name())) {
-                                    callPlaystorePlans(responseMembershipAndPlan.getData().get(i).getIdentifier());
+                                    String identifier=responseMembershipAndPlan.getData().get(i).getIdentifier();
+                                    String s=identifier.replace("svod_","");
+                                    String v=s.replace("_",".");
+                                    callPlaystorePlans(v);
                                 }
                             }
                             if (subSkuList!=null && subSkuList.size()>0){
@@ -506,7 +520,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     // skuDetails = bp.getSubscriptionListingDetails("vod_285ce97b_a26c_482b_b0b3_0777b411310c_tvod_price");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,planResponse.getData().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.WEEKLY.name());
@@ -528,7 +542,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     // skuDetails = bp.getSubscriptionListingDetails("svod_my_monthly_pack_with_trail");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,planResponse.getData().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     Log.w("priceofPlan",skuDetails.getPrice()+"");
                     purchaseModel.setPurchaseOptions(subscriptionType);
@@ -551,7 +565,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
                     //skuDetails = bp.getSubscriptionListingDetails("svod_my_quaterly_pack_recurring");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,planResponse.getData().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.QUARTERLY.name());
@@ -572,7 +586,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
             } else if (planResponse.getData().get(i).getRecurringOffer().getOfferPeriod().contains(VodOfferType.HALF_YEARLY.name())) {
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,planResponse.getData().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.HALF_YEARLY.name());
@@ -593,7 +607,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
             } else if (planResponse.getData().get(i).getRecurringOffer().getOfferPeriod().contains(VodOfferType.ANNUAL.name())) {
                 try {
                     // skuDetails = bp.getSubscriptionListingDetails("monthly");
-                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,planResponse.getData().get(i).getIdentifier());
+                    skuDetails = bp.getLocalSubscriptionSkuDetail(MemberShipPlanActivity.this,subSkuList.get(i));
                     purchaseModel.setPrice("" + skuDetails.getPrice());
                     purchaseModel.setPurchaseOptions(subscriptionType);
                     purchaseModel.setOfferPeriod(VodOfferType.ANNUAL.name());
@@ -633,7 +647,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
 
 
     private void updatePayment(String billinhError, String paymentStatus, String purchaseToken, String paymentId) {
-        viewModel.updatePurchase(billingError, paymentStatus, strToken, purchaseToken, paymentId, orderId, model).observe(MemberShipPlanActivity.this, new Observer<PurchaseResponseModel>() {
+        viewModel.updatePurchase(billingError, paymentStatus, strToken, purchaseToken, paymentId, orderId, model,purchasedSKU).observe(MemberShipPlanActivity.this, new Observer<PurchaseResponseModel>() {
             @Override
             public void onChanged(@Nullable PurchaseResponseModel responseCancelPurchase) {
                 showLoading(getBinding().progressBar, false);
@@ -714,9 +728,13 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
     }
 
 
+    String initiateSKU="";
     @Override
     public void onPurchaseCardClick(boolean click, int poss, String planName, PurchaseModel purchaseModel) {
         if (isCardClickable) {
+            String idSKU=purchaseModel.getIdentifier();
+            String s=idSKU.replace("svod_","");
+            initiateSKU=s.replace("_",".");
             model = purchaseModel;
             selectedPurchaseOption = planName;
             final int sdk = android.os.Build.VERSION.SDK_INT;
@@ -786,7 +804,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
             if (model.getPurchaseOptions().equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())) {
                 if (model.isSelected()) {
                    // bp.subscribe(MemberShipPlanActivity.this, model.getIdentifier(), "DEVELOPER PAYLOAD HERE");
-                    bp.purchase(MemberShipPlanActivity.this, model.getIdentifier(), "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                    bp.purchase(MemberShipPlanActivity.this, initiateSKU, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
                 } else {
                     Toast.makeText(MemberShipPlanActivity.this, getResources().getString(R.string.already_subscriber), Toast.LENGTH_SHORT).show();
                 }

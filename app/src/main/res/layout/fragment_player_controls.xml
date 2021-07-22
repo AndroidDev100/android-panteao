@@ -65,6 +65,7 @@
                 android:layout_height="43dp"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
+                android:src="@drawable/ic_baseline_pause_24"
                 android:visibility="gone" />
 
             <ImageView

@@ -105,7 +105,7 @@ public interface APIDetails {
     Call<ResponseWatchHistory> getWatchHistory(@Query("pageNo") int pageNo, @Query("length") int length);
 
     @Headers("x-platform: android")
-    @GET("v2/subscription/checkEntitlement")
+    @GET("v4/subscription/checkEntitlement")
     Call<ResponseEntitle> checkEntitlement(@Query("vodSKU") String sku);
 
 
