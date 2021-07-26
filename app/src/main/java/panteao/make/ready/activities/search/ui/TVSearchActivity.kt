@@ -15,6 +15,7 @@ import android.widget.EditText
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.SearchBar
+import androidx.leanback.widget.SearchEditText
 import androidx.leanback.widget.SpeechOrbView
 import panteao.make.ready.activities.search.ui.fragment.KeyWordSearchFragment
 import panteao.make.ready.R
@@ -31,8 +32,8 @@ import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.SharedPrefHelper
 
 class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.OnClickListener,
-        NoInternetFragment.OnFragmentInteractionListener, OnKeywordSearchFragmentListener,
-        OnPopularSearchInteractionListener, AdapterView.OnItemClickListener {
+    NoInternetFragment.OnFragmentInteractionListener, OnKeywordSearchFragmentListener,
+    OnPopularSearchInteractionListener, AdapterView.OnItemClickListener {
     private var dataUpdateCallBack: DataUpdateCallBack? = null
     var keyWordSearchFragment = KeyWordSearchFragment()
     private var popularSearchFragment = PopularSearchFragment()
@@ -57,38 +58,42 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
     private fun connectionValidation(aBoolean: Boolean) {
         if (aBoolean) {
             val mSpeechOrbView: SpeechOrbView =
-                    binding.searchView.findViewById(R.id.lb_search_bar_speech_orb)
-            mSpeechOrbView.setOnClickListener {
-                if (ContextCompat.checkSelfPermission(
-                                this,
-                                Manifest.permission.RECORD_AUDIO
-                        ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                            this, arrayOf(Manifest.permission.RECORD_AUDIO),
-                            10001
-                    );
-                } else {
-                    binding.searchView.startRecognition()
-                }
-            }
+                binding.searchView.findViewById(R.id.lb_search_bar_speech_orb)
+            mSpeechOrbView.visibility = View.INVISIBLE
+            val searchEditText: SearchEditText =
+                binding.searchView.findViewById(R.id.lb_search_text_editor)
+            searchEditText.requestFocus()
+//            mSpeechOrbView.setOnClickListener {
+//                if (ContextCompat.checkSelfPermission(
+//                                this,
+//                                Manifest.permission.RECORD_AUDIO
+//                        ) != PackageManager.PERMISSION_GRANTED
+//                ) {
+//                    ActivityCompat.requestPermissions(
+//                            this, arrayOf(Manifest.permission.RECORD_AUDIO),
+//                            10001
+//                    );
+//                } else {
+//                    binding.searchView.startRecognition()
+//                }
+//            }
             supportFragmentManager.beginTransaction()
-                    .add(R.id.recent_searches_layout, recentSearchesFragment, "RecentSearches")
-                    .commit()
+                .add(R.id.recent_searches_layout, recentSearchesFragment, "RecentSearches")
+                .commit()
             binding.searchView.setSpeechRecognizer(
-                    SpeechRecognizer.createSpeechRecognizer(
-                            this
-                    )
+                SpeechRecognizer.createSpeechRecognizer(
+                    this
+                )
             )
             binding.searchView.setSearchBarListener(object :
-                    SearchBar.SearchBarListener {
+                SearchBar.SearchBarListener {
                 override fun onSearchQueryChange(query: String?) {
 
                 }
 
                 override fun onSearchQuerySubmit(query: String?) {
                     startSearching(query!!)
-                     SharedPrefHelper(this@TVSearchActivity).addRecentSearch(query)
+                    SharedPrefHelper(this@TVSearchActivity).addRecentSearch(query)
                     items.clear()
                     SharedPrefHelper(this@TVSearchActivity).recentSearches?.let {
                         items.addAll(it)
@@ -107,10 +112,10 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
             loadDataFromModel()
         } else {
             addFragment(
-                    noInternetFragment,
-                    android.R.id.content,
-                    true,
-                    AppConstants.TAG_NO_INTERNET_FRAGMENT
+                noInternetFragment,
+                android.R.id.content,
+                true,
+                AppConstants.TAG_NO_INTERNET_FRAGMENT
             )
         }
     }
@@ -150,18 +155,18 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
 
     private fun loadDataFromModel() {
         addFragment(
-                keyWordSearchFragment,
-                R.id.keyword_search_result_fragment,
-                true,
-                AppConstants.KEYWORD_SEARCH,
-                true
+            keyWordSearchFragment,
+            R.id.keyword_search_result_fragment,
+            true,
+            AppConstants.KEYWORD_SEARCH,
+            true
         )
         addFragment(
-                popularSearchFragment,
-                R.id.search_result_fragment,
-                true,
-                AppConstants.POPULAR_SEARCH,
-                true
+            popularSearchFragment,
+            R.id.search_result_fragment,
+            true,
+            AppConstants.POPULAR_SEARCH,
+            true
         )
         binding.popularSearches.visibility = View.VISIBLE
         hideFragment(keyWordSearchFragment, AppConstants.KEYWORD_SEARCH)
@@ -176,6 +181,7 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
             binding.recentSearchesLayout.visibility = View.GONE
         }
     }
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
             if (binding.recentSearchesLayout.focusedChild != null || binding.recentSearchesLayout.hasFocus()) {
@@ -211,7 +217,7 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
             binding.recentSearchesText.visibility = View.GONE
         } else {
             binding.searchView.findViewById<EditText>(R.id.lb_search_text_editor)
-                    .setText(recentSearchText)
+                .setText(recentSearchText)
             startSearching(recentSearchText)
         }
     }
@@ -251,6 +257,7 @@ class TVSearchActivity : TvBaseBindingActivity<ActivityTVSearchBinding>(), View.
 //        startSearching(getBinding().searchEditText.text.toString())
 
     }
+
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityTVSearchBinding {
         return ActivityTVSearchBinding.inflate(inflater)
     }

@@ -17,25 +17,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent">
+        android:background="@drawable/background_gradient_leftside">
 
         <ImageView
             android:id="@+id/instructor_image"
-            errorImage="@{@drawable/placeholder_landscape}"
-            imageUrl="@{contentsItem.posterURL}"
-            placeholder="@{@drawable/placeholder_landscape}"
+            errorImage="@{@drawable/placeholder_potrait}"
+            imageUrl="@{contentsItem.thumbnailImage}"
+            placeholder="@{@drawable/placeholder_potrait}"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="38dp"
-            app:layout_constraintDimensionRatio="W,9:16"
+            android:scaleType="fitXY"
+            android:src="@drawable/placeholder_potrait"
+            app:layout_constraintDimensionRatio="W,12:16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_gradient_leftside" />
 
         <TextView
             android:id="@+id/movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/roboto_medium"
             android:maxLines="1"
             android:text="@{contentsItem.title}"
@@ -45,17 +53,36 @@
             app:layout_constraintStart_toEndOf="@id/instructor_image"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/movie_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:maxLines="5"
+            android:text="@{contentsItem.description}"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/instructor_image"
+            app:layout_constraintTop_toBottomOf="@id/movie_title" />
 
         <panteao.make.ready.utils.helpers.PersistentFocusWrapper
             android:id="@+id/persist"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="end"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/instructor_image"
+            app:layout_constraintStart_toEndOf="@id/instructor_image"
+            app:layout_constraintTop_toBottomOf="@id/movie_description"
             app:layout_constraintVertical_bias="0.0" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"

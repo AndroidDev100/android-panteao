@@ -34,6 +34,7 @@ import panteao.make.ready.cardlayout.cardpresenter.SquareCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
 import panteao.make.ready.utils.MediaTypeConstants
+import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -265,7 +266,10 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                 .observe(this, Observer {
                     if (it != null && it.baseCategory != null) {
                         val railCommonData = it.baseCategory as RailCommonData
-                        dataLoadingListener.onCardSelected(cardRowAdapterSelected.indexOf(item), railCommonData.enveuVideoItemBeans[0])
+                        dataLoadingListener.onCardSelected(
+                            cardRowAdapterSelected.indexOf(item),
+                            railCommonData.enveuVideoItemBeans[0]
+                        )
                     }
                 })
             dataLoadingListener.onDataLoading(item, true)
@@ -320,54 +324,20 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
 
     override fun onItemClicked(
         p0: Presenter.ViewHolder?,
-        contentItem: Any?,
+        asset: Any?,
         p2: RowPresenter.ViewHolder?,
         p3: Row?
     ) {
-        if (contentItem is EnveuVideoItemBean) {
-            context?.let {
-                if (contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().series,
-                        true
-                    ) || contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().tutorial,
-                        true
-                    )
-                ) {
-//                    val intent = Intent(requireActivity(), TVSeriesDetailActivity::class.java)
-//                    intent.putExtra(AppConstants.SELECTED_ITEM, contentItem.id)
-//                    activity?.startActivity(intent)
-                } else if (contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().episode,
-                        true
-                    ) || contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().chapter,
-                        true
-                    ) || contentItem.assetType.equals(
-                        MediaTypeConstants.getInstance().trailor,
-                        true
-                    )
-                ) {
-                    railInjectionHelper.getAssetDetailsV2(contentItem.id.toString())
-                        .observe(this, Observer {
-                            if (it != null && it.baseCategory != null) {
-                                val railCommonData = it.baseCategory as RailCommonData
-                                val playerIntent =
-                                    Intent(requireActivity(), KalturaPlayerActivity::class.java)
-                                playerIntent.putExtra(
-                                    "EntryId",
-                                    railCommonData.enveuVideoItemBeans[0].getkEntryId()
-                                )
-                                startActivity(playerIntent)
-                            }
-                        })
-                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().instructor)) {
-                } else if (contentItem.assetType.equals(MediaTypeConstants.getInstance().show)) {
-                    val intent = Intent(requireActivity(), VideoDetailActivity::class.java)
-                    intent.putExtra(AppConstants.SELECTED_ITEM, contentItem.id)
-                    activity?.startActivity(intent)
-                }
-            }
+        if (asset is EnveuVideoItemBean) {
+            AppCommonMethod.launchDetailScreen(
+                context,
+                asset.assetType,
+                asset.id,
+                "",
+                "",
+                false,
+                asset
+            )
         }
     }
 

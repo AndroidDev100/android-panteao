@@ -144,7 +144,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private FragmentTransaction transaction;
     private String sharingUrl;
     private String detailType;
-    private PlayerControlsFragment playerControlsFragment;
     private AlertDialogSingleButtonFragment errorDialog;
     private boolean errorDialogShown = false;
     private BookmarkingViewModel bookmarkingViewModel;
@@ -281,13 +280,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     private void stopShimmer() {
         Logger.e("stopShimmer", String.valueOf(brightCoveVideoId));
-
-        if (brightCoveVideoId!=null && !brightCoveVideoId.equalsIgnoreCase("")) {
-            //  getBinding().playerImage.setVisibility(View.GONE);
-        } else {
-            //  getBinding().playerImage.setVisibility(View.VISIBLE);
-        }
-
         getBinding().seriesShimmer.setVisibility(View.GONE);
         getBinding().llParent.setVisibility(View.VISIBLE);
         getBinding().noConnectionLayout.setVisibility(View.GONE);

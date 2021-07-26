@@ -53,7 +53,6 @@ public class ImageLayer {
         } catch (Exception ignored) {
 
         }
-               // Logger.e("IMAGE_TYPE", imageType + " " + finalUrl);
         return finalUrl;
     }
 

@@ -104,6 +104,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.ADHelper;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
+import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
@@ -839,7 +840,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private void parseVideoDetails(EnveuVideoItemBean videoDetails) {
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
-//        ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+        ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
         if (videoDetails.isPremium()) {
             isPremium=true;
             try {
@@ -1410,7 +1411,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         if (isPlayerError) {
             getBinding().playerImage.setVisibility(View.VISIBLE);
-//            ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+            ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             isPlayerError = false;
 
         } else {

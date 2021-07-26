@@ -4,20 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import panteao.make.ready.R
+import panteao.make.ready.activities.detailspage.fragment.InstructorFragment
 import panteao.make.ready.activities.detailspage.fragment.LatestSeasonsDetailsFragment
 import panteao.make.ready.activities.detailspage.fragment.SeasonsDetailsFragment
 import panteao.make.ready.activities.detailspage.fragment.SeriesDetailFragment
 import panteao.make.ready.activities.detailspage.listeners.OnKeyEventListener
 import panteao.make.ready.activities.detailspage.listeners.SeriesDetailsListener
+import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.ActivityTvInstructorBinding
-import panteao.make.ready.databinding.ActivityTvSeriesDetailsBinding
 import panteao.make.ready.fragments.common.NoInternetFragment
+import panteao.make.ready.networking.apistatus.APIStatus
 import panteao.make.ready.tvBaseModels.basemodels.TvBaseBindingActivity
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.cropImage.helpers.Logger
@@ -45,7 +48,6 @@ class TVInstructorDetailsActivity : TvBaseBindingActivity<ActivityTvInstructorBi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         railInjectionHelper = RailInjectionHelper(this.application)
-        initialization()
         connectionObserver()
     }
 
@@ -60,7 +62,7 @@ class TVInstructorDetailsActivity : TvBaseBindingActivity<ActivityTvInstructorBi
     private fun connectionValidation(boolean: Boolean) {
         if (boolean) {
             binding?.progressBar?.visibility = View.VISIBLE
-            callDetailPageApi(instructorDetails.id, type)
+            initialization()
         } else {
             addFragment(
                 noInternetFragment,
@@ -93,7 +95,21 @@ class TVInstructorDetailsActivity : TvBaseBindingActivity<ActivityTvInstructorBi
         railInjectionHelper.getInstructorRelatedContent(id, 0, AppConstants.PAGE_SIZE, -1)
             .observe(this,
                 { response ->
-                    if (response != null) {
+                    if (response != null && response.status.equals(APIStatus.SUCCESS.name, true)) {
+                        val instructorFragment = InstructorFragment()
+                        val bundle = Bundle()
+                        bundle.putParcelable(
+                            AppConstants.BUNDLE_SELECTED_SEASON,
+                            response.baseCategory as RailCommonData
+                        )
+                        instructorFragment.arguments = bundle
+                        addFragment(
+                            instructorFragment,
+                            R.id.persist,
+                            false,
+                            AppConstants.SEASON_DETAIL
+                        )
+                        binding.progressBar.visibility = View.GONE
                         Logger.e("INSTRUCTOR_RESPONSE", Gson().toJson(response));
                     }
                 })
@@ -107,12 +123,8 @@ class TVInstructorDetailsActivity : TvBaseBindingActivity<ActivityTvInstructorBi
     override fun onResume() {
         super.onResume()
         if (supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) != null) {
-            if (supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) is LatestSeasonsDetailsFragment)
-                seasonDetailsFragment =
-                    supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) as LatestSeasonsDetailsFragment
-            else
-                seasonDetailsFragment =
-                    supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) as SeasonsDetailsFragment
+            seasonDetailsFragment =
+                supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) as InstructorFragment
 
             if (seasonDetailsFragment.view != null)
                 seasonDetailsFragment.view?.requestFocus()

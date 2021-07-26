@@ -245,12 +245,10 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
             context?.let { context ->
                 AppCommonMethod.launchDetailScreen(
                     context,
-                    0L,
                     asset.assetType,
                     asset.id,
                     "",
                     "",
-                    "0",
                     false,
                     asset
                 )

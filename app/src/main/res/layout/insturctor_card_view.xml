@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="panteao.make.ready.utils.MediaTypeConstants" />
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_field"
+        android:layout_width="160dp"
+        android:layout_height="120dp">
+
+        <ImageView
+            android:id="@+id/imgViewCard"
+            errorImage="@{@drawable/placeholder_landscape}"
+            imageUrl="@{playlistItem.posterURL}"
+            placeholder="@{@drawable/placeholder_landscape}"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/placeholder_landscape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text="@{playlistItem.title}"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgViewCard" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.vipImageDrawable}'
+            android:visibility='@{playlistItem.isVIP.equals("true") ?View.VISIBLE:View.GONE }'
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) ? playlistItem.newSeriesImageDrawable :playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())? playlistItem.newMoviesDrawable:null}'
+            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())?playlistItem.episodeImageDrawable:null}'
+            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintDimensionRatio="H,120:24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/continueWatching"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/continue_watching_play_icon"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/imgViewCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/pbProcessing"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/continue_watching_progress_height"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:indeterminateOnly="false"
+            android:progress="10"
+            android:progressDrawable="@drawable/progress_continue_watching"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/imgViewCard"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

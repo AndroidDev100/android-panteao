@@ -1415,7 +1415,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         if (isPlayerError) {
             getBinding().playerImage.setVisibility(View.VISIBLE);
-//            ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+            ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
             isPlayerError = false;
 
         } else {

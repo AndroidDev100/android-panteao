@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -112,6 +113,7 @@ import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.LinkProperties;
 import retrofit2.Response;
 
+import static android.content.pm.PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH;
 import static android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_ADD_TO_WATCHLIST;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_COMPLETED;
@@ -652,7 +654,7 @@ public class AppCommonMethod {
     }
 
     public static String calculateTime(long milliseconds) {
-Logger.e("MIILLSSS", String.valueOf(milliseconds));
+        Logger.e("MIILLSSS", String.valueOf(milliseconds));
 //        if (milliseconds % 1000 > 0) {
 //            milliseconds = milliseconds + (milliseconds % 1000);
 //        }
@@ -925,13 +927,11 @@ Logger.e("MIILLSSS", String.valueOf(milliseconds));
 
     public static void launchDetailScreen(
             Context context,
-            Long videoId,
             String screenType,
             int id,
             String series,
             String season,
-            String duration,
-            Boolean isPremium,EnveuVideoItemBean asset
+            Boolean isPremium, EnveuVideoItemBean asset
     ) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
             return;
@@ -1799,8 +1799,7 @@ Logger.e("MIILLSSS", String.valueOf(milliseconds));
     }
 
     public static boolean isTV(Context context) {
-        Configuration config = context.getResources().getConfiguration();
-        return config.uiMode == UI_MODE_TYPE_TELEVISION;
+        return !context.getPackageManager().hasSystemFeature(FEATURE_TOUCHSCREEN_MULTITOUCH);
     }
 
     public static float dptoPx(Context context, int i) {

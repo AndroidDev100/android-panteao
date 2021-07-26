@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -94,6 +95,17 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private String mParam1;
     private String mParam2;
     private FrameLayout container;
+    CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+        public void onTick(long millisUntilFinished) {
+            Logger.e("TICKING", "TRUE");
+        }
+
+        public void onFinish() {
+            Logger.e("TICKING", "FINISH");
+            playerControlsFragment.hideControls();
+            countDownTimer.start();
+        }
+    };
 
     public KalturaFragment() {
         // Required empty public constructor
@@ -133,23 +145,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     }
 
-    private final Runnable updateTimeTask = new Runnable() {
-        public void run() {
-            playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
-            if (player.getCurrentPosition() >= 15000) {
-                playerControlsFragment.showControls();
-                playerControlsFragment.hideSkipIntro();
-            } else {
-                if (skipIntroEnable)
-                    playerControlsFragment.showSkipButton();
-                playerControlsFragment.hideControls();
-            }
-            mHandler.postDelayed(this, 100);
-
-
-        }
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -157,50 +152,41 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
 
         findViewById(view);
-        // Inflate the layout for this fragment
-
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
-
-
         callPlayerControlsFragment();
         startPlayer();
         setPlayerListner();
         performClick();
-//        bottomMargin = (int) getResources().getDimension(R.dimen.caption_margin);
-
         return view;
 
     }
 
     private void performClick() {
-        playerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playerControlsFragment != null) {
-                    playerControlsFragment.sendTapCallBack(true);
-                    playerControlsFragment.callAnimation();
+        if (!AppCommonMethod.isTV(requireContext())) {
+            playerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (playerControlsFragment != null) {
+                        playerControlsFragment.sendTapCallBack(true);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void callPlayerControlsFragment() {
-
-
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         if (playerControlsFragment == null) {
             try {
+
                 playerControlsFragment = new PlayerControlsFragment();
                 transaction.add(R.id.playerRoot, playerControlsFragment, "PlayerControlsFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
                 playerControlsFragment.setPlayerCallBacks(this);
-//                playerControlsFragment.setVideoType(videoType);
-//                playerControlsFragment.setPlayerCallBacks(this);
             } catch (Exception ignored) {
 
             }
-
         }
     }
 
@@ -225,38 +211,54 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     private void setPlayerListner() {
-
         player.addListener(this, PlayerEvent.stateChanged, this::onEvent);
+        player.addListener(this, PlayerEvent.playheadUpdated, new PKEvent.Listener<PlayerEvent.PlayheadUpdated>() {
+            @Override
+            public void onEvent(PlayerEvent.PlayheadUpdated event) {
+                playerControlsFragment.setCurrentPosition((int) player.getCurrentPosition(), (int) player.getDuration());
+                if (player.getCurrentPosition() >= 15000 && skipIntroEnable) {
+                    playerControlsFragment.showControls();
+                    playerControlsFragment.hideSkipIntro();
+                    skipIntroEnable = false;
+                } else {
+                    if (skipIntroEnable) {
+                        playerControlsFragment.showSkipButton();
+                        playerControlsFragment.hideControls();
+                    }
+                }
+                if (IsbingeWatch && bingeWatchTimer > 0) {
+                    int currentPosition = (int) player.getCurrentPosition();
+                    if (currentPosition >= bingeWatchTimer) {
+                        showBingeWatchControls = true;
+                        playerControlsFragment.showBingeWatch();
+                        countDownTimer.cancel();
+                    }
+                }
+            }
+        });
         player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
-                mHandler.postDelayed(updateTimeTask, 100);
                 if (playerControlsFragment != null) {
+
                     if (!isBingeWatchTimeCalculate) {
                         int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         if (timeCalculation > bingeWatchTimer) {
                             isBingeWatchTimeCalculate = true;
                             bingeWatchTimer = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         }
+                    }
 
-                    }
-                    playerControlsFragment.sendTapCallBack(true);
-                    playerControlsFragment.startHandler();
-                    if (IsbingeWatch && bingeWatchTimer > 0) {
-                        int currentPosition = (int) player.getCurrentPosition();
-                        if (currentPosition >= bingeWatchTimer) {
-                            showBingeWatchControls = true;
-                            playerControlsFragment.showBingeWatch();
-                        }
-                    }
                 }
             }
         });
         player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
-                Logger.e("BINGE_WATCH", "METADATA LOADED");
+                playerLayout.setVisibility(View.VISIBLE);
                 mListener.onPlayerStart();
+                countDownTimer.start();
+                playerControlsFragment.showControls();
             }
         });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
@@ -266,13 +268,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     player.stop();
                     showBingeWatchControls = false;
                     playerControlsFragment.hideControls();
-                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
+                    if (playerControlsFragment.bingeBtn.getVisibility() == View.VISIBLE) {
                         playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
                     }
                 }
                 if (mHandler != null) {
                     finishPlayer();
-                    mHandler.removeCallbacks(updateTimeTask);
                 }
                 if (IsbingeWatch) {
                     isBingeWatchTimeCalculate = false;
@@ -303,8 +304,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         playerLayout = (FrameLayout) view.findViewById(R.id.playerRoot);
         progressbar = (ProgressBar) view.findViewById(R.id.pBar);
         container = view.findViewById(R.id.container);
-
-
+        playerLayout.setVisibility(View.GONE);
+        progressbar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -322,7 +323,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 //            getBinding().playerImage.setVisibility(View.GONE);
             progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
-            playerControlsFragment.hideControls();
             progressbar.setVisibility(View.VISIBLE);
         } else if (event.newState == PlayerState.LOADING) {
         }
@@ -334,22 +334,21 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void playPause(ImageView id) {
         if (player != null) {
             if (player.isPlaying()) {
-                id.setBackgroundResource(R.color.transparent);
-                id.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
-
+                countDownTimer.cancel();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_pause));
+                else
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
                 player.pause();
-//                playerControlsFragment.showControls();
             } else {
-                id.setBackgroundResource(R.color.transparent);
-
-                id.setBackgroundResource(R.drawable.ic_baseline_pause_24);
-
+                countDownTimer.start();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_play));
+                else
+                    id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
                 player.play();
-
             }
-
         }
-
     }
 
     @Override
@@ -495,7 +494,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     private void chooseVideoquality() {
         final RecyclerView recycleview;
-//        playerControlsFragment.callHandler();
         videodialog = new Dialog(getActivity(), R.style.AppAlertTheme);
         videodialog.setContentView(R.layout.list_layout);
         videodialog.setTitle(getString(R.string.title_video_quality));
@@ -580,11 +578,20 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         skipIntroEnable = skipIntro;
     }
 
+    public void onKeyDown(int keyCode) {
+        countDownTimer.cancel();
+        countDownTimer.start();
+        if (playerControlsFragment != null) {
+            playerControlsFragment.onKeyDown(keyCode);
+        } else {
+            player.stop();
+            player.destroy();
+            requireActivity().finish();
+        }
+    }
 
     public interface OnPlayerInteractionListener {
-        default void bingeWatchCall(String entryID) {
-
-        }
+        void bingeWatchCall(String entryID);
 
         void onPlayerStart();
     }
@@ -688,5 +695,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        countDownTimer.cancel();
+    }
 }
