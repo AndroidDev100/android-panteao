@@ -265,6 +265,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             getBinding().comingSoon.setVisibility(View.VISIBLE);
                             getBinding().seriesRecyclerView.setVisibility(View.GONE);
                             getBinding().seasonMore.setVisibility(View.GONE);
+                            hideProgressBar();
                         }
 
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
@@ -273,6 +274,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                         getBinding().progressBar.setVisibility(View.GONE);
                         getBinding().seriesRecyclerView.setVisibility(View.GONE);
                         getBinding().seasonMore.setVisibility(View.GONE);
+                        hideProgressBar();
                     }
 
                 }

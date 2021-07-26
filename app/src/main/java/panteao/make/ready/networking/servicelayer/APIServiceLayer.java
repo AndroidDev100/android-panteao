@@ -23,7 +23,9 @@ import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
 import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
+import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.errormodel.ApiErrorModel;
+import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -245,14 +247,21 @@ public class APIServiceLayer {
     private void parseResponseAsRailCommonData(Response<EnveuCommonResponse> response) {
         if (response.body() != null && response.body().getData() != null) {
             RailCommonData railCommonData = new RailCommonData(response.body().getData());
-            railCommonData.setStatus(true);
             try {
-                railCommonData.setTotalCount(response.body().getData().getTotalElements());
-                railCommonData.setPageTotal(response.body().getData().getTotalPages());
+                if (railCommonData.getEnveuVideoItemBeans()!=null && railCommonData.getEnveuVideoItemBeans().size()>0){
+                    railCommonData.setStatus(true);
+                    railCommonData.setTotalCount(response.body().getData().getTotalElements());
+                    railCommonData.setPageTotal(response.body().getData().getTotalPages());
+                    callBack.onSuccess(railCommonData);
+                }else {
+                    ApiErrorModel errorModel = new ApiErrorModel(response.code(), "something went wrong");
+                    callBack.onFailure(errorModel);
+                }
+
             } catch (Exception ignore) {
 
             }
-            callBack.onSuccess(railCommonData);
+
         } else {
             ApiErrorModel errorModel = new ApiErrorModel(response.code(), response.message());
             callBack.onError(errorModel);
