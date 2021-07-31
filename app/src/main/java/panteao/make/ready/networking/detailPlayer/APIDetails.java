@@ -105,7 +105,7 @@ public interface APIDetails {
     Call<ResponseWatchHistory> getWatchHistory(@Query("pageNo") int pageNo, @Query("length") int length);
 
     @Headers("x-platform: android")
-    @GET("v4/subscription/checkEntitlement")
+    @GET("v5/subscription/checkEntitlement")
     Call<ResponseEntitle> checkEntitlement(@Query("vodSKU") String sku);
 
 
@@ -139,7 +139,7 @@ public interface APIDetails {
     Call<PurchaseResponseModel> updatePurchase(@Path("paymentId") String paymentId , @Body JsonObject data);
 
     @Headers("x-platform: android")
-    @GET("v2/subscription/getPlans")
+    @GET("v5/subscription/getPlans")
     Call<ResponseMembershipAndPlan> getPlans(@Query("subscriptionOfferType") String a, @Query("subscriptionCheckEntitlement") boolean b);
 
     @Headers("x-platform: android")

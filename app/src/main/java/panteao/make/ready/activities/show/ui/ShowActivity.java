@@ -291,7 +291,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 @Override
                 public void run() {
                     if (isPremium) {
-                        showPremiumPopup();
+                       // showPremiumPopup();
                     }
                 }
             }, 1000);

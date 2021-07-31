@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "733183392315-j0qoqgicnrdef0bqnjdpodcmnslmd2lv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "panteao.make.ready",
+            "certificate_hash": "efaecd361a5a1db6eb439822ce6873784b3a0198"
+          }
+        },
+        {
           "client_id": "733183392315-4j0vctai0pnjm9ves9ucra2s3mqdjejp.apps.googleusercontent.com",
           "client_type": 3
         }

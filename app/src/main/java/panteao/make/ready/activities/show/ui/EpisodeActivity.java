@@ -307,7 +307,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             args.putBoolean("binge_watch", SDKConfig.getInstance().getBingeWatchingEnabled());
             args.putInt("binge_watch_timer", SDKConfig.getInstance().getTimer());
             args.putBoolean("from_binge", fromBingWatch);
-            Logger.d("ENTRY_ID", videoDetails.getkEntryId() + "");
+            Logger.d("ENTRY_ID", Entryid + "");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         playerfragment = new KalturaFragment();

@@ -52,13 +52,13 @@ public class PurchaseRepository {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
+                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
                 jsonObject1.put("enveuSMSOfferContentSKU", sku);
             }else {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSSubscriptionOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
+                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
             }
 
 
@@ -72,7 +72,7 @@ public class PurchaseRepository {
 
 
         String planName=model.getIdentifier()+"_PLAN/";
-        String paymentURL=SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/offer/"+planName;
+        String paymentURL=SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/offer/"+planName;
         APIDetails endpoint = RequestConfig.paymentClient(token,paymentURL).create(APIDetails.class);
         Call<PurchaseResponseModel> call = endpoint.getCreateNewPurchase(gsonObject);
         call.enqueue(new Callback<PurchaseResponseModel>() {
@@ -122,7 +122,7 @@ public class PurchaseRepository {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject)jsonParser.parse(jsonObject.toString());
 
-        String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/order/"+orderID+"/";
+        String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/order/"+orderID+"/";
 
         APIDetails endpoint = RequestConfig.paymentClient(token,initiateURL).create(APIDetails.class);
         Call<PurchaseResponseModel> call = endpoint.initiatePurchase(gsonObject);
@@ -303,7 +303,7 @@ public class PurchaseRepository {
 
             if (purchaseModel!=null){
                 jsonObject1.put("purchasePrice", purchaseModel.getPrice());
-                jsonObject1.put("purchaseCurrency", "USD");
+                jsonObject1.put("purchaseCurrency", purchaseModel.getCurrency());
             }else {
                 jsonObject1.put("purchasePrice", "");
                 jsonObject1.put("purchaseCurrency", "");
@@ -318,7 +318,7 @@ public class PurchaseRepository {
         JsonObject gsonObject = (JsonObject)jsonParser.parse(jsonObject.toString());
 
 
-        String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/order/"+orderId+"/";
+        String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/order/"+orderId+"/";
 
         APIDetails endpoint = RequestConfig.paymentClient(token,initiateURL).create(APIDetails.class);
         Call<PurchaseResponseModel> call = endpoint.updatePurchase(paymentId,gsonObject);

@@ -10,8 +10,9 @@
     <string name="playstore_subscription_weekly">weekly</string>
     <string name="enter_valid_coupon_code">Please enter a coupon code</string>
 
-    <string name="fcm_prefix_link" translatable="false">panteaoproductions.page.link</string>
-    <string name="fcm_prefix" translatable="false">/panteaoproductions</string>
+    //https://link.panteao.com
+    <string name="fcm_prefix_link" translatable="false">link.panteao.com</string>
+    <string name="fcm_prefix" translatable="false">/link</string>
     <string name="fcm_host" translatable="false">www.panteao.com</string>
     <string name="fcm_host_link" translatable="false">www.panteao.com/link</string>
 
