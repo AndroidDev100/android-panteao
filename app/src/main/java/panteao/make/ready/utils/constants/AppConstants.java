@@ -296,11 +296,7 @@ public interface AppConstants {
     String KEYWORD_SEARCH = "KeywordSearch";
     String SEARCH_STRING_KEY = "SearchStringKey";
 
-// FireBaseLinks
-String FIREBASE_DPLNK_URL = "https://www.panteao.com/";
-    String FIREBASE_DPLNK_PREFIX = "https://panteaoproductions.page.link/";
-   String FIREBASE_IOS_PACKAGE = "com.panteaoproductions.mobile.dev";
-  String FIREBASE_ANDROID_PACKAGE = "panteao.make.ready.dev";
+
 
     String WIDTH = "/width/";
     String HEIGHT = "/height/";

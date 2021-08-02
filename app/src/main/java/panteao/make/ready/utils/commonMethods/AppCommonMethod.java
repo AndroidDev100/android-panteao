@@ -48,6 +48,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import panteao.make.ready.FirebaseConstants;
 import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.detailspage.activity.TVInstructorDetailsActivity;
 import panteao.make.ready.activities.detailspage.activity.TVSeriesDetailActivity;
@@ -355,13 +356,13 @@ public class AppCommonMethod {
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     //.setDomainUriPrefix("https://stagingsott.page.link/")
                     .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
+                    .setDomainUriPrefix(FirebaseConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(FirebaseConstants.FIREBASE_ANDROID_PACKAGE)
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder(FirebaseConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(title)
@@ -1717,15 +1718,15 @@ public class AppCommonMethod {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    .setDomainUriPrefix("https://link.panteao.com")
+                   // .setDomainUriPrefix("https://link.panteao.com")
                     .setLink(Uri.parse(uri))
-                    //.setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
+                    .setDomainUriPrefix(FirebaseConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("panteao.make.ready")
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(FirebaseConstants.FIREBASE_ANDROID_PACKAGE)
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.panteaoproductions.mobile").build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder(FirebaseConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(title)
@@ -1740,7 +1741,7 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                // Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                 Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
@@ -1782,13 +1783,13 @@ public class AppCommonMethod {
         try {
             String assetId1 = assetId + "";
             String assetType1 = assetType + "";
-            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
+            uri = Uri.parse(FirebaseConstants.FIREBASE_DPLNK_URL)
                     .buildUpon()
                     .appendQueryParameter("id", assetId1)
                     .appendQueryParameter("mediaType", assetType1)
                     .appendQueryParameter("image", imgUrl1)
                     .appendQueryParameter("name", title)
-                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .appendQueryParameter("apn", FirebaseConstants.FIREBASE_ANDROID_PACKAGE)
                     .build().toString();
 
         } catch (Exception ignored) {
