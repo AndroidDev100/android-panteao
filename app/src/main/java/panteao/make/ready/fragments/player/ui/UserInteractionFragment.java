@@ -198,7 +198,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         @Override
         public void onLongPress(MotionEvent event) {
             super.onLongPress(event);
-            copyShareURL();
+           // copyShareURL();
         }
 
         @Override

@@ -1717,15 +1717,15 @@ public class AppCommonMethod {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                    //.setDomainUriPrefix("https://stagingsott.page.link/")
+                    .setDomainUriPrefix("https://link.panteao.com")
                     .setLink(Uri.parse(uri))
-                    .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
+                    //.setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
                     .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
                             .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("panteao.make.ready")
                             .build())
-                    .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
+                    .setIosParameters(new DynamicLink.IosParameters.Builder("com.panteaoproductions.mobile").build())
                     .setSocialMetaTagParameters(
                             new DynamicLink.SocialMetaTagParameters.Builder()
                                     .setTitle(title)
