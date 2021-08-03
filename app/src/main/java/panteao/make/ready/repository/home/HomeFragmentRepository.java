@@ -1,6 +1,7 @@
 package panteao.make.ready.repository.home;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -641,6 +642,7 @@ public class HomeFragmentRepository {
 
     public LiveData<ResponseIsLike> hitApiIsLike(String token, int seriesId) {
         MutableLiveData<ResponseIsLike> responseData = new MutableLiveData<>();
+
 
         ApiInterface endpoint = RequestConfig.getUserInteration(token).create(ApiInterface.class);
         endpoint.getIsLikeVod(seriesId).enqueue(new Callback<ResponseIsLike>() {

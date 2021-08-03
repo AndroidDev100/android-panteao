@@ -160,10 +160,11 @@ public class PlayerControlsFragment extends Fragment {
         totalDuration.setText(stringForTime(duration));
         updateSeekbar(currentposition);
         playbackCurrentPosition = currentposition;
-//        controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
+//       controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
     }
 
     private void updateSeekbar(int currentposition) {
+
         seekBar.setPosition(currentposition);
     }
 
@@ -172,9 +173,9 @@ public class PlayerControlsFragment extends Fragment {
         seekBar.setPosition(playerCurrentPosition);
         if (playerCurrentPosition > playbackDuration) {
             currentPosition.setText(stringForTime(playbackDuration));
-//////            if (videoType.equalsIgnoreCase("1")) {
-//////                hideControlsForLive();
-////            } else {
+//            if (videoType.equalsIgnoreCase("1")) {
+//                hideControlsForLive();
+//            } else {
 //                forward.setVisibility(View.GONE);
 //                rewind.setVisibility(View.VISIBLE);
 //            }

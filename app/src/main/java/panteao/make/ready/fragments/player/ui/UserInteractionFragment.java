@@ -525,6 +525,18 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             title = seriesDetailBean.getTitle();
             assetType = seriesDetailBean.getAssetType();
 
+        } else if (context instanceof TutorialActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = seriesDetailBean.getAssetType();
+
+        } else if (context instanceof ChapterActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = seriesDetailBean.getAssetType();
+
         } else if (context instanceof ArticleActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();

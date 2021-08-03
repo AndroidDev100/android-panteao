@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -202,7 +203,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEntryLoadComplete(PKMediaEntry entry, ErrorElement loadError) {
                 if (loadError != null) {
-                    Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG).show();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast toast =  Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    });
+
                 } else {
                     Logger.d("OVPMedia onEntryLoadComplete  entry = ", entry.getId());
                 }

@@ -112,6 +112,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             currentAssetId = bundle.getInt(AppConstants.BUNDLE_CURRENT_ASSET_ID);
             if (seasonCount > 0) {
                 seasonList = new ArrayList<>();
+        //        Log.d("adi", "" + seasonList.size());
                 selectedSeason = 1;
                 int tempSeaon = bundle.getInt(AppConstants.BUNDLE_SELECTED_SEASON);
                 if (context instanceof RelatedInstructorsActivity && tempSeaon > 0)

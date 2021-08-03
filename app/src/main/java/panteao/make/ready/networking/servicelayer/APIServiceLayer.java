@@ -202,7 +202,7 @@ public class APIServiceLayer {
     }
 
     public void getInstructorRelatedContent(int seriesId, int pageNumber,
-                                 int size, ApiResponseModel listener) {
+                                            int size, ApiResponseModel listener) {
         this.callBack = listener;
         callBack.onStart();
         languageCode = LanguageLayer.getCurrentLanguageCode();
@@ -470,7 +470,7 @@ public class APIServiceLayer {
                                             String tmp = gson.toJson(videoItem);
                                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
                                             enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem, ImageType.LDS.name()));
-                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem,ImageType.LDS.name()));
+                                            enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem, ImageType.LDS.name()));
                                             enveuVideoItemBeans.add(enveuVideoItemBean);
                                         }
                                         railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
@@ -545,7 +545,7 @@ public class APIServiceLayer {
                                 enveuVideoItemBeans = new ArrayList<>();
                                 for (panteao.make.ready.beanModelV3.searchV2.ItemsItem videoItem : itemsItem) {
                                     EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem);
-                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem,ImageType.LDS.name()));
+                                    enveuVideoItemBean.setPosterURL(ImageLayer.getInstance().getPosterImageUrl(videoItem, ImageType.LDS.name()));
                                     if (type.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) && videoItem.getSeasons() != null)
                                         enveuVideoItemBean.setSeasonCount(videoItem.getSeasons().size());
 

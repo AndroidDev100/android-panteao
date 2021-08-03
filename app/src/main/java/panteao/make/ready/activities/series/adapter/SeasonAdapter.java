@@ -139,6 +139,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 String minutes=AppCommonMethod.calculateTimeinMinutes((x));
                 if (!minutes.equalsIgnoreCase("")){
                     minutes=minutes+" "+context.getResources().getString(R.string.minutes);
+                    Log.d("time",minutes);
                     holder.itemBinding.duration.setText(minutes);
                 }
 

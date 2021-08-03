@@ -164,6 +164,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private void setCircleData(CircleItemRowHolder viewHolder, int position) {
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
+
+
         viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position), position));
 
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {

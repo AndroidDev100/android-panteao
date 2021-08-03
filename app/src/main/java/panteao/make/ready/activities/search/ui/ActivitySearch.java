@@ -215,19 +215,15 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
                                     if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
                                         temp.setLayoutType(0);
-                                    }else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
                                         temp.setLayoutType(1);
-                                    }
-                                    else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
                                         temp.setLayoutType(2);
-                                    }
-                                    else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
                                         temp.setLayoutType(3);
-                                    }
-                                    else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
                                         temp.setLayoutType(4);
-                                    }
-                                    else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
+                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                                         temp.setLayoutType(5);
                                     }
                                     /*if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {

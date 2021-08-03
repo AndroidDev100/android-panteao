@@ -73,6 +73,8 @@
                     android:layout_height="match_parent"
                     android:visibility="visible"
                     android:scaleType="fitXY"
+
+
                     />
 
                 <panteao.make.ready.utils.CustomProgressBar

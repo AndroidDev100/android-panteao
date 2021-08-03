@@ -103,7 +103,10 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        >
 
                         <ImageView
                             android:id="@+id/sliderImage"
@@ -113,8 +116,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/placeholder_landscape"
-                            android:contentDescription="Shimmer Crousel "
-                            android:scaleType="centerCrop" />
+                            android:scaleType="fitXY"
+
+                            />
 
                         <RelativeLayout
                             android:layout_width="match_parent"

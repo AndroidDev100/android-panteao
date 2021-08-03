@@ -268,7 +268,12 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                     bookmarkingViewModel.getContinueWatchingData(token, counter, AppConstants.PAGE_SIZE).observe(this, getContinueWatchingBean -> {
                         getBinding().transparentLayout.setVisibility(View.GONE);
                         String videoIds = "";
-                        List<ContinueWatchingBookmark> continueWatchingBookmarkLists = getContinueWatchingBean.getData().getContinueWatchingBookmarks();
+                        List<ContinueWatchingBookmark> continueWatchingBookmarkLists= new ArrayList<>();
+                        if (getContinueWatchingBean != null){
+                            continueWatchingBookmarkLists = getContinueWatchingBean.getData().getContinueWatchingBookmarks();
+
+                        }
+
                         List<ContinueWatchingBookmark> continueWatchingBookmarkList =  removeDuplicates(continueWatchingBookmarkLists);
                         for (ContinueWatchingBookmark continueWatchingBookmark : continueWatchingBookmarkList
                         ) {
