@@ -790,7 +790,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     }
 
     private void openShareDialogue() {
-        //   String imgUrl = AppCommonMethod.urlPoints + AppConstants.SERIES_IMAGES_BASE_KEY + seriesDetailBean..getPicture();
+          //String imgUrl = AppCommonMethod.urlPoints + AppConstants.SERIES_IMAGES_BASE_KEY + seriesDetailBean.getPicture();
         String imgUrl = seriesDetailBean.getPosterURL();
         int id = seriesDetailBean.getId();
         String title = seriesDetailBean.getTitle();

@@ -2,6 +2,8 @@ package panteao.make.ready.beanModel.enveuCommonRailData;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageSource;
@@ -322,6 +324,7 @@ public class RailCommonData implements Parcelable {
                 enveuVideoItemBean.setThumbnailImage(seriesItem.getPosterImage());
             }
             enveuVideoItemBean.setTitle(seriesItem.getName());
+            Log.d("testseries",seriesItem.getName());
             enveuVideoItemBean.setBrightcoveVideoId(seriesItem.getBrightcoveSeriesId());
             enveuVideoItemBeans.add(enveuVideoItemBean);
         }

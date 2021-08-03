@@ -381,7 +381,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         try {
             ((HomeFragment)homeFragment).updateAdList();
         }catch (Exception e){
-
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class IRecommendationRailFragment extends BaseBindingFragment<DetailFooterFragmentBinding> implements CommonRailtItemClickListner, MoreClickListner {
@@ -72,7 +74,9 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
         try {
             getVideoRails(getArguments());
         } catch (Exception e) {
+
         }
+
     }
 
 
@@ -100,6 +104,10 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                 if (item instanceof RailCommonData) {
                     RailCommonData railCommonData = (RailCommonData) item;
                     railCommonDataList.add(railCommonData);
+
+
+                    Log.d("adi", "" + railCommonDataList.get(0).getScreenWidget().getName());
+
                     AppCommonMethod.isSeasonCount = false;
                     if (adapterDetailRail == null) {
                         getBinding().rlFooter.setVisibility(View.VISIBLE);
@@ -107,6 +115,7 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                         //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
                         adapterDetailRail = new CommonAdapterNew(getActivity(), railCommonDataList, IRecommendationRailFragment.this::railItemClick, IRecommendationRailFragment.this::moreRailClick);
                         getBinding().recyclerView.setAdapter(adapterDetailRail);
+
 
                     } else {
                         synchronized (railCommonDataList) {

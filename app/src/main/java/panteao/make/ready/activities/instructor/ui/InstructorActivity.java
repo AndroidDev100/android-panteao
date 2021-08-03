@@ -629,11 +629,15 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
             });
 
             getBinding().interactionSection.shareWith.setOnClickListener(view -> {
+                Logger.e("share","share1");
                 showLoading(getBinding().progressBar, false);
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 900) {
+                    Logger.e("share","share2");
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+
+
 
                 openShareDialogue();
             });
@@ -759,6 +763,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
     public void setLike() {
         likeCounter = 1;
 
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             // Do something for lollipop and above versions
             ImageViewCompat.setImageTintList(getBinding().interactionSection.likeIcon, ColorStateList.valueOf(getResources().getColor(R.color.dialog_green_color)));
@@ -787,6 +792,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
     }
 
     private void openShareDialogue() {
+        Logger.e("share","share3");
         //   String imgUrl = AppCommonMethod.urlPoints + AppConstants.SERIES_IMAGES_BASE_KEY + seriesDetailBean..getPicture();
         String imgUrl = seriesDetailBean.getPosterURL();
         int id = seriesDetailBean.getId();
@@ -1446,6 +1452,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
                     seasonTabFragment.setSelectedSeason(list.get(position).getSelectedId());
                     showLoading(getBinding().progressBar, true);
                     seasonTabFragment.getSeasonEpisodes();
+
                 }
 
             });
