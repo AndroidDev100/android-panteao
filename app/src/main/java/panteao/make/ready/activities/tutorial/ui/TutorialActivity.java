@@ -197,10 +197,10 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     public void numberOfEpisodes(int size) {
         if (size == 1) {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episode));
+            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.chapter));
             // getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episode));
         } else {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episodes));
+            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.chapters));
             //getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episodes));
         }
     }

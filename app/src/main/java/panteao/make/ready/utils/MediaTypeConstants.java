@@ -38,10 +38,12 @@ public class MediaTypeConstants {
     }
 
     public String getTutorial() {
+
         return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getTutorial();
     }
 
     public String getChapter() {
+
         return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getChapter();
     }
 
