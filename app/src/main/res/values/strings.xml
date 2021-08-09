@@ -265,6 +265,8 @@
 
 
     <string name="episodes">Episodes</string>
+    <string name="chapter">Chapter</string>
+    <string name="chapters">Chapters</string>
     <string name="seasons">Seasons</string>
     <string name="season">Season</string>
     <string name="episode">Episode</string>
