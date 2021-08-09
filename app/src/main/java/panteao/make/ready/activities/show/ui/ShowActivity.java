@@ -209,16 +209,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 brightCoveVideoId = Objects.requireNonNull(extras).getString(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE);
                 tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
                 downloadHelper = new KTDownloadHelper(this,this);
-                DBExecuter.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (downloadHelper.getAllAssetFromDB()!=null && downloadHelper.getAllAssetFromDB().size()>0){
-                            Log.w("sizeOfDB",downloadHelper.getAllAssetFromDB().size()+" "+downloadHelper.getAllAssetFromDB().get(0).getName()+" "+downloadHelper.getAllAssetFromDB().get(0).getEntryId());
-                        }
-                    }
-                });
-
-
                 //downloadHelper.startDownload();
                //x downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
             }
@@ -743,7 +733,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     getBinding().pBar.setVisibility(View.GONE);
                 }
             }
-            setUserInteractionFragment(assestId);
+            setUserInteractionFragment(assestId,isPremium);
             stopShimmer();
             setUI(videoDetails);
         }
@@ -883,6 +873,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
                         Entryid = responseEntitlement.getData().getBrightcoveVideoId();
+                        if(userInteractionFragment!=null) {
+                            userInteractionFragment.setDownloadable(true);
+                            initDownload(Entryid);
+                        }
                     }
                     isAdShowingToUser = false;
                     preference.setEntitlementState(true);
@@ -900,7 +894,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
 
-    public void setUserInteractionFragment(int id) {
+    public void setUserInteractionFragment(int id,boolean isVideoPremium) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
@@ -910,13 +904,24 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         transaction.replace(R.id.fragment_user_interaction, userInteractionFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        if(userInteractionFragment!=null && !isVideoPremium) {
+            initDownload(videoDetails.getkEntryId());
+        }
+
+    }
+
+    private void initDownload(String kEntryId) {
+        if (kEntryId!=null && !kEntryId.equalsIgnoreCase("")) {
+            downloadHelper.getAssetInfo(kEntryId);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                userInteractionFragment.setDownloadable(false);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        userInteractionFragment.setDownloadable(true);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -927,9 +932,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
                     }
                 });
-               // downloadHelper.startDownload();
             }
         },1500);
+
     }
 
 
@@ -1479,10 +1484,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     private void selectDownloadVideoQuality() {
         downloadHelper.selectVideoQuality(position -> {
-            if (videoDetails!=null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")){
+            if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                downloadHelper.startDownload(position,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId());
+                downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL());
             }
         });
     }
@@ -1492,12 +1497,12 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         AppCommonMethod.showPopupMenu(this, view, R.menu.download_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.cancel_download:
-                    downloadHelper.cancelVideo(videoDetails.getkEntryId());
+                    downloadHelper.cancelVideo(Entryid);
                     break;
                 case R.id.pause_download:
                     Log.w("pauseVideo", "pop");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                    downloadHelper.pauseVideo(videoDetails.getkEntryId());
+                    downloadHelper.pauseVideo(Entryid);
                     break;
             }
             return false;
@@ -1509,7 +1514,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         AppCommonMethod.showPopupMenu(this, view, R.menu.delete_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.delete_download:
-                    downloadHelper.cancelVideo(videoDetails.getkEntryId());
+                    if (userInteractionFragment!=null){
+                        userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+                    }
+                    downloadHelper.cancelVideo(Entryid);
                     break;
                 case R.id.my_Download:
                     new ActivityLauncher(this).launchMyDownloads();
@@ -1527,14 +1535,14 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                     Log.w("pauseClicked", "in3");
                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                    downloadHelper.resumeDownload(videoDetails.getkEntryId());
+                    downloadHelper.resumeDownload(Entryid);
                 } else {
                     //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                 }
             } else {
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
                 Log.w("pauseClicked", "in4");
-                downloadHelper.resumeDownload(videoDetails.getkEntryId());
+                downloadHelper.resumeDownload(Entryid);
             }
         } else {
             Toast.makeText(this, getResources().getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
@@ -1570,7 +1578,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (videoDetails!=null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("") && videoDetails.getkEntryId().equalsIgnoreCase(assetId)){
+                    if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("") && Entryid.equalsIgnoreCase(assetId)){
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
                         userInteractionFragment.setDownloadProgress((int)progress);
                     }

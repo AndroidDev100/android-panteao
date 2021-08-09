@@ -389,6 +389,8 @@
         <meta-data
             android:name="com.brightcove.cast.DefaultOptionsProvider.NOTIFICATION_TARGET_ACTIVITY_CLASS_NAME"
             android:value="com.brightcove.cast.DefaultExpandedControllerActivity" />
+
+        <activity android:name=".utils.helpers.downloads.downloadListing.MyDownloadsNewActivity" android:screenOrientation="locked"></activity>
     </application>
 
 </manifest>

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,7 @@ import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
 import panteao.make.ready.utils.helpers.downloads.db.DownloadDataBase;
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.DownloadStateListener;
 
 public class KTDownloadHelper {
     Activity zContext;
@@ -91,7 +94,10 @@ public class KTDownloadHelper {
             @Override
             public void onAssetDownloadComplete(@NonNull String assetId) {
                 Log.w("downloadStatus",assetId+" "+"onAssetDownloadComplete");
-                ktDownloadEvents.onDownloadPaused(assetId);
+                Log.w("downloadVideo 6",assetId);
+                if (ktDownloadEvents!=null){
+                    ktDownloadEvents.onDownloadPaused(assetId);
+                }
                /* log.d("onAssetDownloadComplete");
                 log.d("onAssetDownloadComplete:" + (SystemClock.elapsedRealtimeNanos() - startTime));
                 toast("Complete");
@@ -100,13 +106,14 @@ public class KTDownloadHelper {
 
             @Override
             public void onAssetDownloadPending(@NonNull String assetId) {
-                Log.w("downloadStatus",assetId+" "+"onAssetDownloadPending");
+                Log.w("downloadStatus 5",assetId+" "+"onAssetDownloadPending");
                // updateItemStatus(assetId);
             }
 
             @Override
             public void onAssetDownloadPaused(@NonNull String assetId) {
                 Log.w("downloadStatus",assetId+" "+"onAssetDownloadPaused");
+                Log.w("downloadVideo 4",assetId);
                 ktDownloadEvents.onDownloadPaused(assetId);
                 /*toast("Paused");
                 updateItemStatus(assetId);*/
@@ -129,6 +136,7 @@ public class KTDownloadHelper {
             @Override
             public void onStateChanged(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo) {
                 Log.w("downloadStatus",assetId+" "+"onStateChanged"+"  "+assetInfo.getState());
+                Log.w("downloadVideo 3",assetId);
                 if (assetInfo!=null && assetInfo.getState()!=null){
                     Long sizeBytes=assetInfo.getEstimatedSize();
 
@@ -158,6 +166,7 @@ public class KTDownloadHelper {
             @Override
             public void onAssetRemoved(@NonNull String assetId) {
                 Log.w("downloadStatus",assetId+" "+"onAssetRemoved");
+                Log.w("downloadVideo 2",assetId);
                /* toast("onAssetRemoved");
                 updateItemStatus(assetId);*/
             }
@@ -166,8 +175,9 @@ public class KTDownloadHelper {
         manager.setDownloadProgressListener((assetId, bytesDownloaded, totalBytesEstimated, percentDownloaded) -> {
             long progress=bytesDownloaded/1000;
            // Log.e("",""[progress] " + assetId +": " + (bytesDownloaded / 1000) + "/" + (totalBytesEstimated / 1000));
-            Log.e("progress",percentDownloaded+"  "+progress);
+            Log.e("progress 1",percentDownloaded+"  "+progress);
             if (ktDownloadEvents!=null){
+                Log.e("progress 2",percentDownloaded+"  "+progress);
                 ktDownloadEvents.setDownloadProgressListener(percentDownloaded,assetId);
             }
         });
@@ -175,16 +185,21 @@ public class KTDownloadHelper {
 
     }
     OfflineManager.AssetInfo assetInf;
-    public void startDownload(int position,String kentryid,String title,String assetType,String seriesID) {
+    public void startDownload(int position,String kentryid,String title,String assetType,String seriesID,String seriesName,String imageURL) {
         manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
         manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
 
         OfflineManager.PrepareCallback prepareCallback = new OfflineManager.PrepareCallback() {
             @Override
             public void onPrepared(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo, @Nullable Map<OfflineManager.TrackType, List<OfflineManager.Track>> selected) {
+                /*for (int i = 0;i<selected.size();i++){
+                    for (int j = 0;j<selected.size();j++){
+                        Log.w("trackSelected",selected.get(i).get(j).toString());
+                    }
+                }*/
                 assetInf=assetInfo;
                 manager.startAssetDownload(assetInfo);
-                storeAssetInDB(title,kentryid,assetType,seriesID);
+                storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL);
                /* item.setAssetInfo(assetInfo);
                 runOnUiThread(() -> {
                     Snackbar.make(assetListView, "Prepared", Snackbar.LENGTH_LONG).setDuration(5000).setAction("Start", v -> doStart(item)).show();
@@ -222,14 +237,14 @@ public class KTDownloadHelper {
 
     }
 
-    private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID) {
+    private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID,String seriesName,String imageURL) {
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
             DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
-                    "",seriesID,"");
+                    "",seriesID,"",seriesName,imageURL);
             db.downloadDao().insertDownloadItem(downloadItemEntity);
         }else {
-            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
-                    "","","");
+            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"20","",kentryid,
+                    "","","",seriesName,imageURL);
             db.downloadDao().insertDownloadItem(downloadItemEntity);
         }
     }
@@ -238,15 +253,15 @@ public class KTDownloadHelper {
         Log.w("qualityPosition",position+"");
         OfflineManager.SelectionPrefs defaultPrefs = new OfflineManager.SelectionPrefs();
         if (position==0){
-            defaultPrefs.videoBitrate = 1000000;
+            defaultPrefs.videoBitrate = 2000000;
         }else if (position==1){
-            defaultPrefs.videoBitrate = 600000;
+            defaultPrefs.videoBitrate = 1000000;
         }else if (position==2){
-            defaultPrefs.videoBitrate = 450000;
+            defaultPrefs.videoBitrate = 600000;
         }else if (position==3){
-            defaultPrefs.videoBitrate = 450000;
+            defaultPrefs.videoBitrate = 100000;
         }else {
-            defaultPrefs.videoBitrate = 150000;
+            defaultPrefs.videoBitrate = 60000;
         }
 
         defaultPrefs.allAudioLanguages = true;
@@ -256,6 +271,7 @@ public class KTDownloadHelper {
     }
 
     int selectedVideoQualityPosition=0;
+    int clicked=-1;
     public void selectVideoQuality(VideoQualitySelectedListener videoQualitySelectedListener) {
         LayoutDownloadQualityBottomSheetBinding binding = DataBindingUtil.inflate(zContext.getLayoutInflater(), R.layout.layout_download_quality_bottom_sheet, null,false);
         BottomSheetDialog dialog = new BottomSheetDialog(zContext);
@@ -274,21 +290,28 @@ public class KTDownloadHelper {
 
 
         selectedVideoQualityPosition=0;
+        clicked=-1;
         SelectDownloadQualityAdapter downloadQualityAdapter=new SelectDownloadQualityAdapter(zContext, stringList, new VideoQualitySelectedListener() {
             @Override
             public void videoQualitySelected(int position) {
                 selectedVideoQualityPosition=position;
+                clicked=position;
             }
         });
 
         binding.btnStartDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.checkboxMakeDefault.isChecked()){
-                    new SharedPrefHelper(zContext).setInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, selectedVideoQualityPosition);
+                if (clicked>-1){
+                    if (binding.checkboxMakeDefault.isChecked()){
+                        new SharedPrefHelper(zContext).setInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, selectedVideoQualityPosition);
+                    }
+                    videoQualitySelectedListener.videoQualitySelected(selectedVideoQualityPosition);
+                    dialog.dismiss();
+                }else {
+                    zContext.runOnUiThread(() -> { Toast.makeText(zContext, "Selection Required!", Toast.LENGTH_LONG).show();});
                 }
-                videoQualitySelectedListener.videoQualitySelected(selectedVideoQualityPosition);
-                dialog.dismiss();
+
             }
         });
 
@@ -302,18 +325,28 @@ public class KTDownloadHelper {
     }
 
     public void cancelVideo(String entryId) {
-        if (entryId != null && !entryId.equalsIgnoreCase("")) {
-            getManager().removeAsset(entryId);
-            removeFromDB(entryId);
-        }
-
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (entryId != null && !entryId.equalsIgnoreCase("")) {
+                    Log.w("downloadVideo 1",entryId);
+                    getManager().removeAsset(entryId);
+                    removeFromDB(entryId);
+                }
+            }
+        });
     }
 
     public void pauseVideo(String entryId) {
-        if (entryId != null && !entryId.equalsIgnoreCase("")) {
-            manager.pauseAssetDownload(entryId);
-            updateItemStatus(entryId);
-        }
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (entryId != null && !entryId.equalsIgnoreCase("")) {
+                    manager.pauseAssetDownload(entryId);
+                    updateItemStatus(entryId);
+                }
+            }
+        });
     }
 
     private void updateItemStatus(String entryId) {
@@ -356,17 +389,24 @@ public class KTDownloadHelper {
         return null;
     }
 
-    public List<DownloadItemEntity> getAllAssetFromDB() {
-        if (db!=null) {
-            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadAllDownloads();
-            if (downloadItemEntityList.size() > 0) {
-              return downloadItemEntityList;
-            } else {
-                return null;
+    public MutableLiveData<List<DownloadItemEntity>> getAllAssetFromDB() {
+        MutableLiveData<List<DownloadItemEntity>> allDataFromDB=new MutableLiveData<>();
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (db!=null) {
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadAllDownloads();
+                    if (downloadItemEntityList.size() > 0) {
+                        allDataFromDB.postValue(downloadItemEntityList);
+                    } else {
+                        allDataFromDB.postValue(new ArrayList<>());
+                    }
+                }else {
+                    allDataFromDB.postValue(new ArrayList<>());
+                }
             }
-        }else {
-            return null;
-        }
+        });
+       return allDataFromDB;
     }
 
     public List<DownloadItemEntity> getAllEpisodesFromDB(String seriesId) {
@@ -384,7 +424,7 @@ public class KTDownloadHelper {
     }
 
 
-    private void removeFromDB(String entryId) {
+    private void removeFromDB(String entryIds) {
         if (db!=null){
             DBExecuter.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -394,7 +434,7 @@ public class KTDownloadHelper {
                         if (downloadItemEntity.size() > 0) {
                             for (int i = 0; i < downloadItemEntity.size(); i++) {
                                 String entryId = downloadItemEntity.get(i).getEntryId();
-                                if (entryId != null && entryId.equalsIgnoreCase(entryId)) {
+                                if (entryId != null && entryId.equalsIgnoreCase(entryIds)) {
                                     db.downloadDao().deleteDownloadItem(downloadItemEntity.get(i));
                                     break;
                                 } else {
@@ -408,6 +448,30 @@ public class KTDownloadHelper {
                 }
             });
 
+        }
+    }
+    DownloadStateListener listener;
+    public void getAssetDownloadState(String kentry, KTDownloadHelper downloadHelper,DownloadStateListener listener) {
+        this.listener=listener;
+        if (manager!=null && ktDownloadEvents!=null){
+            OfflineManager.AssetInfo assetInfo=manager.getAssetInfo(kentry);
+            if (assetInfo!=null){
+                if (assetInfo.getState()!=null){
+                    Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
+                    long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
+                    Log.d("stateOfAsset",percentage+"%");
+                    float per=percentage;
+                    Log.d("stateOfAsset",percentage+"%");
+                    listener.downloadState(assetInfo.getState().name(),per);
+                }else {
+                    Log.d("stateOfAsset","null");
+                }
+            }else {
+                Log.d("stateOfAsset","null");
+                if (downloadHelper!=null){
+                    downloadHelper.removeFromDB(kentry);
+                }
+            }
         }
     }
 

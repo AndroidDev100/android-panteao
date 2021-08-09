@@ -796,7 +796,11 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             }else if (downloadStatus==DownloadStatus.DOWNLOADING){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }else if (downloadStatus==DownloadStatus.DOWNLOADED){
+            }else if (downloadStatus==DownloadStatus.STARTED){
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+            }
+            else if (downloadStatus==DownloadStatus.DOWNLOADED){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
             }

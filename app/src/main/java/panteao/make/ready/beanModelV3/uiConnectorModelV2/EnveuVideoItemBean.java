@@ -119,6 +119,9 @@ public class EnveuVideoItemBean implements Serializable {
             this.season = "";
             if (details.getData().getLinkedContent() != null) {
                 this.seriesId = String.valueOf(details.getData().getLinkedContent().getId());
+                if (details.getData().getLinkedContent().getContentType()!=null && !details.getData().getLinkedContent().getContentType().equalsIgnoreCase("")){
+                    this.name = String.valueOf(details.getData().getLinkedContent().getTitle());
+                }
             }
             this.sku = details.getData().getSku() == null ? "" : details.getData().getSku();
             this.id = details.getData().getId();

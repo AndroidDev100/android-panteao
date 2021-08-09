@@ -85,6 +85,7 @@ import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
+import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.intentlaunchers.TvActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -95,6 +96,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -1923,5 +1925,37 @@ public class AppCommonMethod {
             return DownloadStatus.DOWNLOADED;
         }
         return DownloadStatus.START;
+    }
+
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getSortedList(@NotNull List<? extends DownloadItemEntity> it) {
+        ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        for (int i=0;i<it.size();i++){
+            if (list.size()>0) {
+                DownloadItemEntity value = it.get(i);
+                Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries());
+                if (value.isSeries()) {
+                    String seriesId = value.getSeriesId();
+                    Log.w("CheckingCondition 2","seriesid-->>"+value.getSeriesId());
+                    for (int j = 0; j < list.size(); j++) {
+                        DownloadItemEntity value2 = list.get(j);
+                        String seriesId2 = value2.getSeriesId();
+                        Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2);
+                        if (value2.isSeries()) {
+                            if (!seriesId.equalsIgnoreCase(seriesId2)) {
+                                Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2);
+                                list.add(value);
+                                break;
+                            }
+                        }
+                    }
+                }else {
+                    list.add(value);
+                }
+            }else {
+                list.add(it.get(0));
+            }
+        }
+        return list;
     }
 }

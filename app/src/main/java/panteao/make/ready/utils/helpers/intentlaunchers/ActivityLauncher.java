@@ -32,6 +32,7 @@ import panteao.make.ready.beanModel.responseModels.SignUp.DataModel;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ADHelper;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsNewActivity;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
 
@@ -414,6 +415,6 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
     public void launchMyDownloads(){
-//        this.activity.startActivity(new Intent(this.activity, MyDownloads.class));
+        this.activity.startActivity(new Intent(this.activity, MyDownloadsNewActivity.class));
     }
 }

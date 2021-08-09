@@ -188,7 +188,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }
 
         //using for logged-in and logged-out user
-        if (SDKConfig.getInstance().isDownloadEnable()){
+        if (!SDKConfig.getInstance().isDownloadEnable()){
             label2 = getActivity().getResources().getStringArray(R.array.more_with_login_download);
             label3= getActivity().getResources().getStringArray(R.array.more_logout_download);
         }else {

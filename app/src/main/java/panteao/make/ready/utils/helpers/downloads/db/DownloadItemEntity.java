@@ -18,10 +18,12 @@ public class DownloadItemEntity {
     String seasonNumber;
     String seriesId;
     String episodeNumber;
+    String seriesName;
+    String imageURL;
 
     @Ignore
     public DownloadItemEntity(String name, String assetType, boolean isSeries, String downloadSize, String expiryDate,String entryId,
-                              String seasonNumber,String seriesId,String episodeNumber) {
+                              String seasonNumber,String seriesId,String episodeNumber,String seriesName,String imageURL) {
         this.name = name;
         this.assetType = assetType;
         this.isSeries = isSeries;
@@ -29,10 +31,13 @@ public class DownloadItemEntity {
         this.expiryDate = expiryDate;
         this.entryId=entryId;
         this.seriesId=seriesId;
+        this.seriesName=seriesId;
+        this.seriesName=seriesName;
+        this.imageURL=imageURL;
     }
 
     public DownloadItemEntity(int id, String name, String assetType, boolean isSeries, String downloadSize, String expiryDate,String entryId,
-    String seasonNumber,String seriesId,String episodeNumber) {
+    String seasonNumber,String seriesId,String episodeNumber,String seriesName,String imageURL) {
         this.id = id;
         this.name = name;
         this.assetType = assetType;
@@ -41,6 +46,8 @@ public class DownloadItemEntity {
         this.expiryDate = expiryDate;
         this.entryId=entryId;
         this.seriesId=seriesId;
+        this.seriesName=seriesName;
+        this.imageURL=imageURL;
     }
 
     public int getId() {
@@ -105,5 +112,21 @@ public class DownloadItemEntity {
 
     public String getSeriesId() {
         return seriesId;
+    }
+
+    public String getSeriesName() {
+        return seriesName;
+    }
+
+    public void setSeriesName(String seriesName) {
+        this.seriesName = seriesName;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 }
