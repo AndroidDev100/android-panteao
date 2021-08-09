@@ -400,10 +400,14 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             }
 
         } else if (caption.equalsIgnoreCase(getActivity().getResources().getString(R.string.setting_title))) {
+            if(loginStatus){
 
-            Intent intent = new Intent(getActivity(), ActivitySettings.class);
-            startActivity(intent);
-            AppCommonMethod.trackFcmEvent("Settings","", getContext(),0);
+                Intent intent = new Intent(getActivity(), ActivitySettings.class);
+                startActivity(intent);
+                AppCommonMethod.trackFcmEvent("Settings","", getContext(),0);
+
+            }  else
+                mListener.onLoginClicked();
 
         }
 

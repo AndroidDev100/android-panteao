@@ -390,11 +390,7 @@
                             >
 
                         </com.google.android.material.tabs.TabLayout>
-                        <View
-                            android:background="@color/description_grey"
-                            android:layout_width="match_parent"
-                            android:layout_alignBottom="@+id/tabLayout"
-                            android:layout_height="1dp" />
+
 
                     </RelativeLayout>
 
