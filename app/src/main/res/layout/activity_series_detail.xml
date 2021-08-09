@@ -382,10 +382,7 @@
                         app:tabTextColor="?attr/cancel_text_color"
 
                         />
-                    <ImageView
-                        android:background="@color/description_grey"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp" />
+
 
                     <panteao.make.ready.utils.helpers.WrappingViewPager
                         android:id="@+id/viewPager"
