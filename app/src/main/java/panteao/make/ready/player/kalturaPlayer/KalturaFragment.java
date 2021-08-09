@@ -1,5 +1,6 @@
 package panteao.make.ready.player.kalturaPlayer;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -671,7 +672,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ViewHolder1 holder, final int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder1 holder, @SuppressLint("RecyclerView") final int position) {
 
             if (KsPreferenceKeys.getInstance().getQualityName().equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
                 holder.tick.setBackgroundResource(R.drawable.tick);
