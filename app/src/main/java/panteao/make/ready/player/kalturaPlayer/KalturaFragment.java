@@ -46,6 +46,7 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
@@ -503,60 +504,31 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     private void chooseVideoquality() {
-
-
-//        callHandler();
-//        dialogQuality = new Dialog(getActivity());
-//        dialogQuality.setContentView(R.layout.layout_dialog_settings);
-//        dialogQuality.setTitle("Video Quality");
-//        recycleview = dialogQuality.findViewById(R.id.recycleview);
-//        recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        playerCallbacks.bitRateRequest();
-//        TextView titleView = dialogQuality.findViewById(R.id.title_video);
-//        titleView.setText(getString(R.string.select_video_quality));
-//        Button closeButton = dialogQuality.findViewById(R.id.close);
-//        closeButton.setText(getString(R.string.cancel));
-//        closeButton.setOnClickListener(v -> dialogQuality.cancel());
+        trackItemList.clear();
+        if (tracks.getVideoTracks().size() > 0) {
+            setVideoQuality();
+            trackItemList = AppCommonMethod.createTrackList(tracks,getActivity());
+        }else {
+            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
+        }
 
         final RecyclerView recycleview;
         videodialog = new Dialog(getActivity());
         videodialog.setContentView(R.layout.list_layout);
         videodialog.setTitle(getString(R.string.title_video_quality));
-//        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.47);
-//        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.65);
-//        videodialog.getWindow().setLayout(width, height);
-        videodialog.show();
         recycleview = videodialog.findViewById(R.id.recycler_view_quality);
         Button closeButton = videodialog.findViewById(R.id.close);
         closeButton.setOnClickListener(v -> videodialog.cancel());
-        if (recycleview != null) {
+        if (trackItemList.size()>0) {
             VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList);
             recycleview.setAdapter(trackItemAdapter);
             recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
-            trackItemAdapter.notifyDataSetChanged();
+            videodialog.show();
+            //trackItemAdapter.notifyDataSetChanged();
         } else {
-//            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
+            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
         }
-        trackItemList.clear();
-        if (tracks.getVideoTracks().size() > 0) {
-            for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
 
-                VideoTrack videoTrackInfo = tracks.getVideoTracks().get(i);
-                setVideoQuality();
-                if (videoTrackInfo.isAdaptive()) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
-                } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
-                } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000)) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
-                } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000) {
-
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
-                }
-            }
-        } else {
-            Logger.d("tracksSize", tracks.getVideoTracks().size() + "");
-        }
 
     }
 

@@ -35,6 +35,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.kaltura.playkit.player.PKTracks;
+import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.playkit.providers.ovp.OVPMediaAsset;
 import com.kaltura.tvplayer.KalturaOvpPlayer;
 import com.kaltura.tvplayer.OVPMediaOptions;
@@ -72,6 +74,7 @@ import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
+import panteao.make.ready.player.tracks.TracksItem;
 import panteao.make.ready.tarcker.EventConstant;
 import panteao.make.ready.tarcker.FCMEvents;
 import panteao.make.ready.tvBaseModels.basemodels.TVBaseActivity;
@@ -1923,5 +1926,27 @@ public class AppCommonMethod {
             return DownloadStatus.DOWNLOADED;
         }
         return DownloadStatus.START;
+    }
+    static boolean track1,track2,track3=false;
+    public static ArrayList<TracksItem> createTrackList(PKTracks tracks, FragmentActivity activity) {
+        track1=false;
+        track2=false;
+        track3=false;
+        ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
+        for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
+
+            VideoTrack videoTrackInfo = tracks.getVideoTracks().get(i);
+            if (videoTrackInfo.isAdaptive()) {
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
+            } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000 && !track1) {
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
+            } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000) && !track2) {
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
+            } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000 && !track3) {
+
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
+            }
+        }
+        return trackItemList;
     }
 }
