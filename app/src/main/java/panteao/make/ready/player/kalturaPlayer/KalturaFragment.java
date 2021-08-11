@@ -186,6 +186,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 transaction.addToBackStack(null);
                 transaction.commit();
                 playerControlsFragment.setPlayerCallBacks(this);
+                playerControlsFragment.sendPortraitCallback();
             } catch (Exception ignored) {
 
             }
@@ -502,13 +503,28 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     private void chooseVideoquality() {
+
+
+//        callHandler();
+//        dialogQuality = new Dialog(getActivity());
+//        dialogQuality.setContentView(R.layout.layout_dialog_settings);
+//        dialogQuality.setTitle("Video Quality");
+//        recycleview = dialogQuality.findViewById(R.id.recycleview);
+//        recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        playerCallbacks.bitRateRequest();
+//        TextView titleView = dialogQuality.findViewById(R.id.title_video);
+//        titleView.setText(getString(R.string.select_video_quality));
+//        Button closeButton = dialogQuality.findViewById(R.id.close);
+//        closeButton.setText(getString(R.string.cancel));
+//        closeButton.setOnClickListener(v -> dialogQuality.cancel());
+
         final RecyclerView recycleview;
-        videodialog = new Dialog(getActivity(), R.style.AppAlertTheme);
+        videodialog = new Dialog(getActivity());
         videodialog.setContentView(R.layout.list_layout);
         videodialog.setTitle(getString(R.string.title_video_quality));
-        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.47);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.65);
-        videodialog.getWindow().setLayout(width, height);
+//        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.47);
+//        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.65);
+//        videodialog.getWindow().setLayout(width, height);
         videodialog.show();
         recycleview = videodialog.findViewById(R.id.recycler_view_quality);
         Button closeButton = videodialog.findViewById(R.id.close);

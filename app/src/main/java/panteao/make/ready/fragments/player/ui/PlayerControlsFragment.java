@@ -376,14 +376,14 @@ public class PlayerControlsFragment extends Fragment {
             }
         });
 
-        skipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playerCallbacks != null) {
-                    playerCallbacks.skipIntro();
-                }
-            }
-        });
+//        skipBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (playerCallbacks != null) {
+//                    playerCallbacks.skipIntro();
+//                }
+//            }
+//        });
 
         //Replay video event
 //        replay.setOnClickListener(new View.OnClickListener() {
@@ -401,7 +401,7 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showControls() {
-        if (childControls.getVisibility() == View.GONE && skipBtn.getVisibility() != View.VISIBLE && bingeBtn.getVisibility() != View.VISIBLE) {
+        if (childControls.getVisibility() == View.GONE && bingeBtn.getVisibility() != View.VISIBLE) {
             childControls.animate().alpha(1.0f).setDuration(1000)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -470,8 +470,12 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void sendPortraitCallback() {
-        qualitySettings.setVisibility(View.GONE);
+
+        qualitySettings.setVisibility(View.VISIBLE);
+
         fullscreen.setBackgroundResource(R.drawable.full_screen);
+        setParamstoQualityinPortrait(qualitySettings);
+        setParamstoBackbuttoninProtrait(backArrow);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -500,6 +504,8 @@ public class PlayerControlsFragment extends Fragment {
 
         }
 
+
+
     }
 
     public void sendLandscapeCallback() {
@@ -523,7 +529,19 @@ public class PlayerControlsFragment extends Fragment {
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(7, 65, 0, 0);
+        params.setMargins(30, 65, 0, 0);
+
+
+        btnback.setLayoutParams(params);
+
+    }
+
+    public static void setParamstoBackbuttoninProtrait(View btnback) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(35, 0, 0, 0);
 
 
         btnback.setLayoutParams(params);
@@ -536,6 +554,17 @@ public class PlayerControlsFragment extends Fragment {
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(0, 65, 15, 0);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        quality.setLayoutParams(params);
+
+    }
+    public static void setParamstoQualityinPortrait(View quality) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 8, 15, 0);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         quality.setLayoutParams(params);
@@ -564,7 +593,7 @@ public class PlayerControlsFragment extends Fragment {
         backArrow = (ImageView) view.findViewById(R.id.backArrow);
         fullscreen = (ImageView) view.findViewById(R.id.fullscreen);
         bingeBtn = view.findViewById(R.id.bingeBtn);
-        skipBtn = view.findViewById(R.id.skipBtn);
+       // skipBtn = view.findViewById(R.id.skipBtn);
         qualitySettings = (ImageView) view.findViewById(R.id.iv_quality);
         if (AppCommonMethod.isTV(getActivity())) {
             Logger.e("IS_TV", "TRUE");
@@ -587,13 +616,13 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showSkipButton() {
-        skipBtn.setVisibility(View.VISIBLE);
-        skipBtn.requestFocus();
+//        skipBtn.setVisibility(View.VISIBLE);
+//        skipBtn.requestFocus();
     }
 
     public void hideSkipIntro() {
-        if (skipBtn.getVisibility() == View.VISIBLE)
-            skipBtn.setVisibility(View.GONE);
+//        if (skipBtn.getVisibility() == View.VISIBLE)
+//            skipBtn.setVisibility(View.GONE);
     }
 
     public void onKeyDown(int keyCode) {
