@@ -156,6 +156,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         findViewById(view);
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
+        setVideoQuality();
         callPlayerControlsFragment();
         startPlayer();
         setPlayerListner();
@@ -499,14 +500,13 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void QualitySettings() {
-        isDialogShowing = true;
+
         chooseVideoquality();
     }
 
     private void chooseVideoquality() {
         trackItemList.clear();
         if (tracks.getVideoTracks().size() > 0) {
-            setVideoQuality();
             trackItemList = AppCommonMethod.createTrackList(tracks,getActivity());
         }else {
             ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
@@ -518,16 +518,22 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         videodialog.setTitle(getString(R.string.title_video_quality));
         recycleview = videodialog.findViewById(R.id.recycler_view_quality);
         Button closeButton = videodialog.findViewById(R.id.close);
-        closeButton.setOnClickListener(v -> videodialog.cancel());
+        closeButton.setOnClickListener(v -> {
+            videodialog.cancel();
+            isDialogShowing = false;
+        });
         if (trackItemList.size()>0) {
-            VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList);
+            VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList,videodialog);
             recycleview.setAdapter(trackItemAdapter);
             recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
             videodialog.show();
+            isDialogShowing = true;
             //trackItemAdapter.notifyDataSetChanged();
         } else {
             ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
         }
+
+
 
 
     }
@@ -644,10 +650,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     class VideoTracksAdapter extends RecyclerView.Adapter<ViewHolder1> {
         final ArrayList<TracksItem> tracks;
+        final Dialog videoDialog;
 
 
-        private VideoTracksAdapter(ArrayList<TracksItem> videoTracks) {
+        private VideoTracksAdapter(ArrayList<TracksItem> videoTracks, Dialog videodialog) {
             this.tracks = videoTracks;
+            this.videoDialog = videodialog;
 
 
         }
@@ -662,7 +670,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder1 holder, @SuppressLint("RecyclerView") final int position) {
 
-            if (KsPreferenceKeys.getInstance().getQualityName().equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
+            if (trackName.equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
                 holder.tick.setBackgroundResource(R.drawable.tick);
             } else {
                 holder.tick.setBackgroundResource(0);
@@ -672,11 +680,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 @Override
                 public void onClick(View v) {
 
-                    KsPreferenceKeys.getInstance().setQualityPosition(position);
-                    KsPreferenceKeys.getInstance().setQualityName(trackItemList.get(position).getTrackName());
+//                    KsPreferenceKeys.getInstance().setQualityPosition(position);
+//                    KsPreferenceKeys.getInstance().setQualityName(trackItemList.get(position).getTrackName());
 
                     trackName = trackItemList.get(position).getTrackName();
                     player.changeTrack(tracks.get(position).getUniqueId());
+                    if (videoDialog!=null){
+                        videodialog.cancel();
+                    }
 
                     notifyDataSetChanged();
 

@@ -13,12 +13,18 @@
             android:id="@+id/title_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
             android:text="@string/select_video_quality"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
-            android:layout_marginStart="8dp" />
+            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/black"
+            android:layout_below="@+id/title_video"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_quality"
