@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="downloadStatus"
+            type="panteao.make.ready.enums.DownloadStatus" />
+
+        <import type="android.view.View" />
+        <import type="panteao.make.ready.enums.DownloadStatus" />
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRoot"
         android:layout_width="match_parent"
@@ -115,6 +126,7 @@
                 android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/NontonSize8"
+                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
                 app:background_progressbar_color="@android:color/darker_gray"
                 app:progressbar_color="@color/moretitlecolor"
                 />
@@ -124,8 +136,20 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/NontonSize8"
                 android:contentDescription="TODO"
+                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
                 app:srcCompat="@drawable/download_icon"
                 android:id="@+id/video_downloaded"/>
+
+            <ImageView
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                android:visibility="gone"
+                app:srcCompat="@drawable/more_arrow"
+                android:id="@+id/arrow_icon"/>
+
             <ImageView
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
@@ -133,6 +157,7 @@
                 android:layout_margin="@dimen/NontonSize8"
                 android:contentDescription="TODO"
                 app:srcCompat="?attr/pause_download"
+                android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
                 android:id="@+id/pause_download"/>
 
             <ProgressBar
@@ -140,6 +165,7 @@
                 android:layout_width="@dimen/watch_ListWidth"
                 android:layout_height="@dimen/watch_ListWidth"
                 android:layout_margin="@dimen/NontonSize8"
+                android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}'
                 />
 
 

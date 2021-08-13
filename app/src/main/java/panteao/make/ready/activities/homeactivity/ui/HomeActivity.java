@@ -38,6 +38,8 @@ import panteao.make.ready.utils.helpers.AnalyticsController;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToolBarHandler;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsFragment;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsNewActivity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -80,11 +82,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
                     return true;
                 case R.id.navigation_originals:
 
-                    if (active instanceof NewsFragment)
+                    if (active instanceof MyDownloadsFragment)
                         return true;
 
                     if (originalFragment == null) {
-                        originalFragment = new NewsFragment();
+                        originalFragment = new MyDownloadsFragment();
                         fragmentManager.beginTransaction().add(R.id.content_frame, originalFragment, "3").hide(originalFragment).commit();
                         switchToOriginalFragment();
                     } else {

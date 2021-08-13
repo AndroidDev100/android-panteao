@@ -580,8 +580,17 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             AppCommonMethod.callSocialAction(preference, userInteractionFragment);
         }
 
-    }
+        try {
+             downloadHelper = new KTDownloadHelper(this,this);
 
+        if (KsPreferenceKeys.getInstance().getVideoDownloadAction()==3){
+            videoDeletedFromList();
+        }
+        }catch (Exception ignored){
+
+        }
+
+    }
 
     public void requestAudioFocus() {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -813,6 +822,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
 
                                 videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
+                                Log.w("store_seriesid 2",videoDetails.getSeriesId());
                                 parseVideoDetails(videoDetails);
 
 
@@ -1932,7 +1942,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL());
+                Log.w("store_seriesid 3",videoDetails.getSeriesId());
+                downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
             }
         });
     }
@@ -2017,7 +2028,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //    @Override
     @Override
     public void setDownloadProgressListener(float progress,String assetId) {
-        Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress);
+        Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress+"   "+assetId);
         if (userInteractionFragment != null) {
           //  String string = String.format(Locale.ROOT, "%.1f", progress);
            // Log.e("finalPer",string);
@@ -2098,6 +2109,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }else {
                 userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
             }
+        }
+    }
+
+    private void videoDeletedFromList() {
+        if (userInteractionFragment!=null){
+            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            KsPreferenceKeys.getInstance().setVideoDownloadAction(-1);
         }
     }
 

@@ -165,4 +165,21 @@ public class ImageLayer {
                // Logger.e("IMAGE_TYPE", imageType + " " + finalUrl);
         return finalUrl;
     }
+
+    public String getSeriesPosterImageUrl(EnveuVideoDetails videoItem, String imageType) {
+        String finalUrl = "";
+        try {
+            if (videoItem.getLinkedContent().getImages() != null && videoItem.getLinkedContent().getImages().containsKey(imageType)) {
+                finalUrl = videoItem.getLinkedContent().getImages().get(imageType).getSources().get(0).getSrc();
+            } else {
+                Map.Entry<String, Thumbnail> entry = videoItem.getLinkedContent().getImages().entrySet().iterator().next();
+                finalUrl = videoItem.getLinkedContent().getImages().get(entry.getKey()).getSources().get(0).getSrc();
+            }
+        } catch (Exception ignored) {
+
+        }
+         Logger.e("IMAGE_TYPE", imageType + " " + finalUrl);
+        return finalUrl;
+    }
+
 }

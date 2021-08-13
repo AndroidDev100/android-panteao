@@ -1,7 +1,12 @@
 package panteao.make.ready.beanModelV3.videoDetailsV2;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.networking.bean.CustomFields;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class LinkedContent{
@@ -37,6 +42,15 @@ public class LinkedContent{
 	private Object cuePoints;
 	private long publishedDate;
 	private String status;
+	private HashMap<String, Thumbnail> images;
+
+	public HashMap<String, Thumbnail> getImages() {
+		return images;
+	}
+
+	public void setImages(HashMap<String, Thumbnail> images) {
+		this.images = images;
+	}
 
 	public void setLongDescription(String longDescription){
 		this.longDescription = longDescription;

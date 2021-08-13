@@ -6,15 +6,16 @@ import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.kaltura.tvplayer.OfflineManager
 import kotlinx.android.synthetic.main.activity_my_downloads.*
 import panteao.make.ready.R
-import panteao.make.ready.baseModels.BaseBindingActivity
+import panteao.make.ready.baseModels.BaseBindingFragment
 import panteao.make.ready.databinding.ActivityMyDownloadsBinding
+import panteao.make.ready.databinding.FragmentMyDownloadsBinding
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents
@@ -22,26 +23,46 @@ import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
-class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>(), KTDownloadEvents {
+class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), KTDownloadEvents {
 
-    private lateinit var downloadHelper:KTDownloadHelper
-    private lateinit var downloadsAdapter:MyDownloadsNewAdapter
-    private var seriesID : String? = ""
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityMyDownloadsBinding {
-        return ActivityMyDownloadsBinding.inflate(inflater)
+    private lateinit var downloadHelper: KTDownloadHelper
+    private lateinit var downloadsAdapter:MyDownloadsFragmentAdapter
+    override fun inflateBindingLayout(inflater: LayoutInflater): FragmentMyDownloadsBinding {
+        return FragmentMyDownloadsBinding.inflate(inflater)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //setupToolBar();
+        try {
+            fetchdataBaseValues();
+        }catch (exception : java.lang.Exception){
+
+        }
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        seriesID=intent.getStringExtra("series_id")
-        setupToolBar();
-        fetchdataBaseValues();
+
     }
 
     private fun fetchdataBaseValues() {
-        downloadHelper= KTDownloadHelper(this,this)
+        downloadHelper= KTDownloadHelper(activity,this)
         progress_bar.visibility = View.VISIBLE
-        downloadHelper.getAllEpisodesFromDB(seriesID).observe(this, Observer {
+        downloadHelper.getAllAssetFromDB().observe(requireActivity(), Observer {
             if(it!==null && it.size>0){
                 noDownloadedData(2)
                 createUniqueList(it)
@@ -66,19 +87,16 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     var included : Boolean?=false
     private fun createUniqueList(it: List<DownloadItemEntity>) {
-        var listNew=AppCommonMethod.getEpisodesSortedList(it)
+        var sortedListByTimeStamp = AppCommonMethod.getSortedListByTimeStamp(it)
+        var listNew= AppCommonMethod.getSortedList(sortedListByTimeStamp)
         populateAdapter(listNew)
     }
 
     private fun populateAdapter(it: ArrayList<DownloadItemEntity>) {
-        downloadsAdapter = MyDownloadsNewAdapter(this, it, this)
-        downloaded_recycler_view.layoutManager = LinearLayoutManager(this)
+        downloadsAdapter = MyDownloadsFragmentAdapter(requireActivity(), it, this)
+        downloaded_recycler_view.layoutManager = LinearLayoutManager(requireActivity())
         downloaded_recycler_view.setHasFixedSize(true)
-        //(binding.downloadedRecyclerView.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
-       // downloaded_recycler_view.getItemAnimator().setSupportsChangeAnimations(false);
-       // downloaded_recycler_view.itemAnimator = null
-        downloaded_recycler_view.itemAnimator = DefaultItemAnimator()
-        downloaded_recycler_view.getItemAnimator()?.changeDuration = 0
+        (binding.downloadedRecyclerView.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
         downloaded_recycler_view.adapter = downloadsAdapter
         nodatafounmd.visibility = View.GONE
         downloaded_recycler_view.visibility = View.VISIBLE
@@ -87,25 +105,25 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     }
 
     private fun setupToolBar() {
-            if (KsPreferenceKeys.getInstance().getCurrentTheme() == (AppConstants.LIGHT_THEME)) {
-                binding.noData.setBackgroundResource(R.drawable.ic_no_data);
-            } else {
-                binding.noData.setBackgroundResource(R.drawable.ic_no_data);
-            }
-            binding.toolbar.llSearchIcon.visibility = View.GONE
-            binding.toolbar.backLayout.visibility = View.VISIBLE
-            binding.toolbar.homeIcon.visibility = View.GONE
-            binding.toolbar.titleText.visibility = View.VISIBLE
-            binding.toolbar.screenText.text = resources.getString(R.string.my_downloads)
-            binding.toolbar.backLayout.setOnClickListener { onBackPressed() }
+        if (KsPreferenceKeys.getInstance().getCurrentTheme() == (AppConstants.LIGHT_THEME)) {
+            binding.noData.setBackgroundResource(R.drawable.ic_no_data);
+        } else {
+            binding.noData.setBackgroundResource(R.drawable.ic_no_data);
         }
+        binding.toolbar.llSearchIcon.visibility = View.GONE
+        binding.toolbar.backLayout.visibility = View.VISIBLE
+        binding.toolbar.homeIcon.visibility = View.GONE
+        binding.toolbar.titleText.visibility = View.VISIBLE
+        binding.toolbar.screenText.text = resources.getString(R.string.my_downloads)
+        binding.toolbar.backLayout.setOnClickListener {  }
+    }
 
     override fun setDownloadProgressListener(progress: Float, assetId: String?) {
-            Log.e("activityProgress new",progress.toString())
-            if(::downloadsAdapter.isInitialized){
-                binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
+        Log.w("activityProgress 1",progress.toString())
+        if(::downloadsAdapter.isInitialized){
+            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
 
-            }
+        }
     }
 
     override fun onDownloadPaused(assetId: String) {
@@ -122,7 +140,8 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     override fun onAssetDownloadComplete(assetId: String) {
         if(::downloadsAdapter.isInitialized){
-            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemWhenResumed(assetId) })
+            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
+
         }
     }
 

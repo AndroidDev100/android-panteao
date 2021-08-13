@@ -1,6 +1,7 @@
 package panteao.make.ready.beanModelV3.uiConnectorModelV2;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -12,6 +13,7 @@ import panteao.make.ready.beanModelV3.continueWatching.DataItem;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -34,6 +36,7 @@ public class EnveuVideoItemBean implements Serializable {
     private List<String> assetCast;
     private boolean premium;
     private String posterURL;
+    private String seriesImageURL;
     private Object price;
     private List<String> assetGenres;
     private String season;
@@ -48,6 +51,8 @@ public class EnveuVideoItemBean implements Serializable {
     private String brightcoveVideoId;
     private String series;
     private String seriesId;
+    private String downloadSeriesId;
+    private String tutorialId;
     private Object plans;
     private long publishedDate;
     private String status;
@@ -117,11 +122,19 @@ public class EnveuVideoItemBean implements Serializable {
             this.posterURL = ImageLayer.getInstance().getPosterImageUrl(details.getData(), imageType);
 
             this.season = "";
+           // Log.w("store_seriesid -2",getSeriesId());
             if (details.getData().getLinkedContent() != null) {
+                Log.w("store_seriesid -2","in");
                 this.seriesId = String.valueOf(details.getData().getLinkedContent().getId());
                 if (details.getData().getLinkedContent().getContentType()!=null && !details.getData().getLinkedContent().getContentType().equalsIgnoreCase("")){
                     this.name = String.valueOf(details.getData().getLinkedContent().getTitle());
                 }
+                if (details.getData().getLinkedContent().getContentType() != null && !details.getData().getLinkedContent().getContentType().equalsIgnoreCase("")) {
+                    if (details.getData().getLinkedContent().getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                        this.tutorialId = String.valueOf(details.getData().getLinkedContent().getId());
+                    }
+                }
+                this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(details.getData(), imageType);
             }
             this.sku = details.getData().getSku() == null ? "" : details.getData().getSku();
             this.id = details.getData().getId();
@@ -131,7 +144,7 @@ public class EnveuVideoItemBean implements Serializable {
             this.brightcoveVideoId = details.getData().getBrightcoveContentId() == null ? "" : details.getData().getBrightcoveContentId();
             this.series = String.valueOf(details.getData().getId());
             this.status = details.getData().getStatus() == null ? "" : details.getData().getStatus();
-
+            //Log.w("store_seriesid -1",getSeriesId());
             Object customeFiled = details.getData().getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
             if (t != null) {
@@ -195,7 +208,7 @@ public class EnveuVideoItemBean implements Serializable {
                 this.seasonCount = arrayList.size();
             }
             this.duration = details.getData().getDuration();
-
+           // Log.w("store_seriesid 1",getSeriesId());
         } catch (Exception e) {
             Logger.e("parsing error", e.getMessage());
         }
@@ -876,6 +889,14 @@ public class EnveuVideoItemBean implements Serializable {
         this.seriesId = seriesId;
     }
 
+    public String getTutorialId() {
+        return tutorialId;
+    }
+
+    public void setTutorialId(String tutorialId) {
+        this.tutorialId = tutorialId;
+    }
+
     public Object getPlans() {
         return plans;
     }
@@ -986,6 +1007,14 @@ public class EnveuVideoItemBean implements Serializable {
 
     public void setGetWidevineURL(String getWidevineURL) {
         this.getWidevineURL = getWidevineURL;
+    }
+
+    public void setSeriesImageURL(String seriesImageURL) {
+        this.seriesImageURL = seriesImageURL;
+    }
+
+    public String getSeriesImageURL() {
+        return seriesImageURL;
     }
 
     @Override

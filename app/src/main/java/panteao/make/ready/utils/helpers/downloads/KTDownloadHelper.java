@@ -35,6 +35,7 @@ import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.databinding.LayoutDownloadQualityBottomSheetBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
+import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
@@ -97,11 +98,8 @@ public class KTDownloadHelper {
                 Log.w("downloadVideo 6",assetId);
                 if (ktDownloadEvents!=null){
                     ktDownloadEvents.onDownloadPaused(assetId);
+                    ktDownloadEvents.onAssetDownloadComplete(assetId);
                 }
-               /* log.d("onAssetDownloadComplete");
-                log.d("onAssetDownloadComplete:" + (SystemClock.elapsedRealtimeNanos() - startTime));
-                toast("Complete");
-                updateItemStatus(assetId);*/
             }
 
             @Override
@@ -137,30 +135,58 @@ public class KTDownloadHelper {
             public void onStateChanged(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo) {
                 Log.w("downloadStatus",assetId+" "+"onStateChanged"+"  "+assetInfo.getState());
                 Log.w("downloadVideo 3",assetId);
-                if (assetInfo!=null && assetInfo.getState()!=null){
-                    Long sizeBytes=assetInfo.getEstimatedSize();
+                try {
+                    if (assetInfo!=null && assetInfo.getState()!=null){
+                        Long sizeBytes=assetInfo.getEstimatedSize();
 
-                    if (sizeBytes == null ||sizeBytes <= 0) {
+                        if (sizeBytes == null ||sizeBytes <= 0) {
 
-                    }else {
-                       Float v= (Float.valueOf(sizeBytes) / (1000*1000));
-                        String formattedString = String.format("%.01f", v);
-                       Log.w("sizeOfAsset",formattedString+" "+"MB");
+                        }else {
+                            Float v= (Float.valueOf(sizeBytes) / (1000*1000));
+                            String formattedString = String.format("%.01f", v);
+                            if (formattedString!=null && !formattedString.equalsIgnoreCase("")){
+                                Log.w("sizeOfAsset",formattedString+" "+"MB");
+                                double val=Double.parseDouble(formattedString);
+                                Log.w("sizeOfAsset",val+" "+"MB");
+                                if (val>1024){
+                                    double val2=val/1024;
+                                    Float v2= (float)val2;
+                                    // String gbValue=String.valueOf(val2);
+                                    String fva=String.format("%.01f", v2);
+                                    Log.w("sizeOfAsset",fva+" "+"GB");
+                                }else {
+                                    Log.w("sizeOfAsset",formattedString+" "+"MB");
+                                }
+
+                            }
+
+                        }
+
                     }
-
-                    //return String.format(Locale.ROOT, "%.3f", (Float.valueOf(sizeBytes) / (1000*1000))) + "mb";
-                    if (ktDownloadEvents!=null){
-                        ktDownloadEvents.onStateChanged(assetInfo.getState());
-                    }
-
-                }else {
-                    if (ktDownloadEvents!=null){
-                        ktDownloadEvents.onStateChanged(null);
-                    }
+                }catch (Exception e){
 
                 }
+
+                try {
+                    if (assetInfo!=null && assetInfo.getState()!=null){
+
+                        //return String.format(Locale.ROOT, "%.3f", (Float.valueOf(sizeBytes) / (1000*1000))) + "mb";
+                        if (ktDownloadEvents!=null){
+                            ktDownloadEvents.onStateChanged(assetInfo.getState());
+                        }
+
+                    }else {
+                        if (ktDownloadEvents!=null){
+                            ktDownloadEvents.onStateChanged(null);
+                        }
+
+                    }
                /* toast("onStateChanged");
                 updateItemStatus(assetId);*/
+                }catch (Exception ignored){
+
+                }
+
             }
 
             @Override
@@ -185,26 +211,16 @@ public class KTDownloadHelper {
 
     }
     OfflineManager.AssetInfo assetInf;
-    public void startDownload(int position,String kentryid,String title,String assetType,String seriesID,String seriesName,String imageURL) {
+    public void startDownload(int position,String kentryid,String title,String assetType,String seriesID,String seriesName,String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
         manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
         manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
 
         OfflineManager.PrepareCallback prepareCallback = new OfflineManager.PrepareCallback() {
             @Override
             public void onPrepared(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo, @Nullable Map<OfflineManager.TrackType, List<OfflineManager.Track>> selected) {
-                /*for (int i = 0;i<selected.size();i++){
-                    for (int j = 0;j<selected.size();j++){
-                        Log.w("trackSelected",selected.get(i).get(j).toString());
-                    }
-                }*/
                 assetInf=assetInfo;
                 manager.startAssetDownload(assetInfo);
-                storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL);
-               /* item.setAssetInfo(assetInfo);
-                runOnUiThread(() -> {
-                    Snackbar.make(assetListView, "Prepared", Snackbar.LENGTH_LONG).setDuration(5000).setAction("Start", v -> doStart(item)).show();
-                    assetListView.invalidateViews();
-                });*/
+                storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
             }
 
             @Override
@@ -237,16 +253,105 @@ public class KTDownloadHelper {
 
     }
 
-    private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID,String seriesName,String imageURL) {
+    private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID,String seriesName,String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
-            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
-                    "",seriesID,"",seriesName,imageURL);
-            db.downloadDao().insertDownloadItem(downloadItemEntity);
+            if (seriesID!=null && !seriesID.equalsIgnoreCase("")){
+                checkSeriesEpisodes(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+            }else {
+                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"20","",kentryid,
+                        -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),"",count);
+                db.downloadDao().insertDownloadItem(downloadItemEntity);
+            }
+
+        }else   if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+            if (seriesID!=null && !seriesID.equalsIgnoreCase("")){
+               // int episodesCount=numberOfEpisodes(seriesID);
+                checkTutorialChapters(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+            }else {
+                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                        -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
+                db.downloadDao().insertDownloadItem(downloadItemEntity);
+            }
+
         }else {
             DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"20","",kentryid,
-                    "","","",seriesName,imageURL);
+                    -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),"",count);
             db.downloadDao().insertDownloadItem(downloadItemEntity);
         }
+    }
+
+    private void checkTutorialChapters(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (db!=null) {
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
+                    if (downloadItemEntityList.size() > 0) {
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                                -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,downloadItemEntityList.size()+1);
+                        db.downloadDao().insertDownloadItem(downloadItemEntity);
+                    } else {
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                                -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
+                        db.downloadDao().insertDownloadItem(downloadItemEntity);
+                    }
+                }else {
+                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                            -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
+                    db.downloadDao().insertDownloadItem(downloadItemEntity);
+                }
+            }
+        });
+
+
+    }
+
+
+    private void checkSeriesEpisodes(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (db!=null) {
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
+                   Log.w("numberOfEpisodes",downloadItemEntityList.size()+"");
+                    if (downloadItemEntityList.size() > 0) {
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                                seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,downloadItemEntityList.size()+1);
+                        db.downloadDao().insertDownloadItem(downloadItemEntity);
+                    } else {
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                                seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
+                        db.downloadDao().insertDownloadItem(downloadItemEntity);
+                    }
+                }else {
+                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                            seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
+                    db.downloadDao().insertDownloadItem(downloadItemEntity);
+                }
+            }
+        });
+
+
+    }
+    int count=0;
+    public int numberOfEpisodes(String seriesID) {
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (db!=null) {
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
+                    Log.w("episodeCount",downloadItemEntityList.size()+"");
+                    if (downloadItemEntityList.size() > 0) {
+                        count=downloadItemEntityList.size();
+                    } else {
+                        count=0;
+                    }
+                }else {
+                    count=0;
+                }
+            }
+        });
+       return count;
     }
 
     private OfflineManager.SelectionPrefs createUserPrefrences(int position) {
@@ -286,7 +391,7 @@ public class KTDownloadHelper {
 
         String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
         List<String> stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
-        stringList.remove(4);
+        stringList.remove(3);
 
 
         selectedVideoQualityPosition=0;
@@ -409,19 +514,27 @@ public class KTDownloadHelper {
        return allDataFromDB;
     }
 
-    public List<DownloadItemEntity> getAllEpisodesFromDB(String seriesId) {
-        if (db!=null) {
-            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId);
-            Log.w("databasesize",downloadItemEntityList.size()+"");
-            if (downloadItemEntityList.size() > 0) {
-                return downloadItemEntityList;
-            } else {
-                return null;
+    public MutableLiveData<List<DownloadItemEntity>> getAllEpisodesFromDB(String seriesId) {
+        MutableLiveData<List<DownloadItemEntity>> allDataFromDB=new MutableLiveData<>();
+        DBExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (db!=null) {
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId);
+                    if (downloadItemEntityList.size() > 0) {
+                        allDataFromDB.postValue(downloadItemEntityList);
+                    } else {
+                        allDataFromDB.postValue(new ArrayList<>());
+                    }
+                }else {
+                    allDataFromDB.postValue(new ArrayList<>());
+                }
             }
-        }else {
-            return null;
-        }
+        });
+        return allDataFromDB;
     }
+
+
 
 
     private void removeFromDB(String entryIds) {
@@ -462,7 +575,7 @@ public class KTDownloadHelper {
                     Log.d("stateOfAsset",percentage+"%");
                     float per=percentage;
                     Log.d("stateOfAsset",percentage+"%");
-                    listener.downloadState(assetInfo.getState().name(),per);
+                    listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
                 }else {
                     Log.d("stateOfAsset","null");
                 }
@@ -473,6 +586,38 @@ public class KTDownloadHelper {
                 }
             }
         }
+    }
+
+    private String getDownloadedSize(long estimatedSize) {
+        String size="";
+        try {
+            Long sizeBytes=estimatedSize;
+
+            if (sizeBytes == null ||sizeBytes <= 0) {
+
+            }else {
+                Float v = (Float.valueOf(sizeBytes) / (1000 * 1000));
+                String sizeM = String.format("%.01f", v);
+
+                double val = Double.parseDouble(sizeM);
+                Log.w("sizeOfAsset", val + " " + "MB");
+                if (val > 1024) {
+                    double val2 = val / 1024;
+                    Float v2 = (float) val2;
+                    // String gbValue=String.valueOf(val2);
+                    String fva = String.format("%.01f", v2);
+                    size=fva+" GB";
+                    Log.w("sizeOfAsset", fva + " " + "GB");
+                    Log.w("sizeOfAsset", size + " " + "MB");
+                }else {
+                    size=sizeM +" MB";
+                }
+            }
+        }catch (Exception ignored){
+
+        }
+
+        return size;
     }
 
 

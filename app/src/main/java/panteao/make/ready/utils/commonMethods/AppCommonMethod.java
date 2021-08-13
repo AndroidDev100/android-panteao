@@ -104,6 +104,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -1927,10 +1929,12 @@ public class AppCommonMethod {
         return DownloadStatus.START;
     }
 
+
     @NotNull
     public static ArrayList<DownloadItemEntity> getSortedList(@NotNull List<? extends DownloadItemEntity> it) {
         ArrayList<DownloadItemEntity> list=new ArrayList<>();
         for (int i=0;i<it.size();i++){
+            boolean notFound=false;
             if (list.size()>0) {
                 DownloadItemEntity value = it.get(i);
                 Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries());
@@ -1940,14 +1944,16 @@ public class AppCommonMethod {
                     for (int j = 0; j < list.size(); j++) {
                         DownloadItemEntity value2 = list.get(j);
                         String seriesId2 = value2.getSeriesId();
-                        Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2);
-                        if (value2.isSeries()) {
-                            if (!seriesId.equalsIgnoreCase(seriesId2)) {
+                        Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
+                       // if (value2.isSeries()) {
+                            if (seriesId.equalsIgnoreCase(seriesId2)) {
                                 Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2);
-                                list.add(value);
-                                break;
+                                notFound=true;
                             }
-                        }
+                       // }
+                    }
+                    if (!notFound){
+                        list.add(value);
                     }
                 }else {
                     list.add(value);
@@ -1956,6 +1962,42 @@ public class AppCommonMethod {
                 list.add(it.get(0));
             }
         }
+        return getSortedList(list);
+    }
+
+    private static ArrayList<DownloadItemEntity> getSortedList(ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
+            }
+        });
+      //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
+        return list;
+    }
+
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getEpisodesSortedList(@NotNull List<? extends DownloadItemEntity> it) {
+        ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        for (int i=0;i<it.size();i++){
+            if (list.size()>0) {
+                DownloadItemEntity value = it.get(i);
+                list.add(value);
+            }else {
+                list.add(it.get(0));
+            }
+        }
+        return getSortedList(list);
+    }
+
+    @NotNull
+    public static List<DownloadItemEntity> getSortedListByTimeStamp(@NotNull List<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
+            }
+        });
         return list;
     }
 }

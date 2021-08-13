@@ -361,7 +361,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }
         else if (caption.equals(getString(R.string.my_downloads))) {
             if (loginStatus)
-                new ActivityLauncher(getActivity()).launchMyDownloads();
+                new ActivityLauncher(getActivity()).launchMyDownloads("");
             else
                 mListener.onLoginClicked();
         }

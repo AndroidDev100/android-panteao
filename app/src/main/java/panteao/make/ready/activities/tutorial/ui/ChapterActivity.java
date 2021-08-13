@@ -580,6 +580,15 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             AppCommonMethod.callSocialAction(preference, userInteractionFragment);
         }
 
+        try {
+            downloadHelper = new KTDownloadHelper(this,this);
+            if (KsPreferenceKeys.getInstance().getVideoDownloadAction()==3){
+                videoDeletedFromList();
+            }
+        }catch (Exception e){
+
+        }
+
     }
 
 
@@ -1842,7 +1851,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL());
+                downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getTutorialId(),videoDetails.getName(),videoDetails.getPosterURL(),"",-1,videoDetails.getSeriesImageURL());
             }
         });
     }
@@ -2009,6 +2018,14 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
         }
     }
+
+    private void videoDeletedFromList() {
+        if (userInteractionFragment!=null){
+            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            KsPreferenceKeys.getInstance().setVideoDownloadAction(-1);
+        }
+    }
+
 
 }
 
