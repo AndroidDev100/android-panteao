@@ -240,7 +240,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
             
             viewHolder?.itemBinding?.clRoot?.setOnClickListener { v ->
                 if (currentVideoItem.isSeries){
-                    ActivityLauncher(context).launchMyDownloads(currentVideoItem.seriesId)
+                    ActivityLauncher(context).launchMyDownloads(currentVideoItem.seriesId,currentVideoItem.seasonNumber)
                 }else{
                     ActivityLauncher(context).launchOfflinePlayer(currentVideoItem.entryId)
                 }

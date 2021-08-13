@@ -26,5 +26,8 @@ public interface DownloadDao {
     DownloadItemEntity loadDownloadItemById(int id);
 
     @Query("SELECT * FROM ASSETDOWNLOAD WHERE seriesId = :seriesId")
-    List<DownloadItemEntity> loadEpisodesBySeriesID(String seriesId);
+    List<DownloadItemEntity> loadChaptersByTID(String seriesId);
+
+    @Query("SELECT * FROM ASSETDOWNLOAD WHERE seriesId = :seriesId AND seasonNumber = :seasonNumber")
+    List<DownloadItemEntity> loadEpisodesBySeriesID(String seriesId,int seasonNumber);
 }

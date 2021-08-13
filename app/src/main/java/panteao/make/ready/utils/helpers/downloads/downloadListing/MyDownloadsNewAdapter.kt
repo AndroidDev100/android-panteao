@@ -18,10 +18,11 @@ import panteao.make.ready.utils.helpers.ImageHelper
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity
+import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
 class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDownloadEvents {
-    private lateinit var context : Context
+    private lateinit var context : Activity
     private lateinit var downloadHelper:KTDownloadHelper
     private lateinit var itemList: ArrayList<DownloadItemEntity>
     private lateinit var listener: KTDownloadEvents
@@ -201,6 +202,16 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
                 viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name
             }
+
+            viewHolder?.itemBinding?.clRoot?.setOnClickListener { v ->
+               /* if (currentVideoItem.isSeries){
+                    ActivityLauncher(context).launchMyDownloads(currentVideoItem.seriesId,currentVideoItem.seasonNumber)
+                }else{
+
+                }*/
+                ActivityLauncher(context!!).launchOfflinePlayer(currentVideoItem.entryId)
+            }
+
 
         }catch (exception : Exception){
             Log.d("imageURL",exception.toString())

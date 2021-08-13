@@ -285,7 +285,7 @@ public class KTDownloadHelper {
             @Override
             public void run() {
                 if (db!=null) {
-                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadChaptersByTID(seriesID);
                     if (downloadItemEntityList.size() > 0) {
                         DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
                                 -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,downloadItemEntityList.size()+1);
@@ -312,7 +312,7 @@ public class KTDownloadHelper {
             @Override
             public void run() {
                 if (db!=null) {
-                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
+                   List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID,seasonNumber);
                    Log.w("numberOfEpisodes",downloadItemEntityList.size()+"");
                     if (downloadItemEntityList.size() > 0) {
                         DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
@@ -338,17 +338,7 @@ public class KTDownloadHelper {
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (db!=null) {
-                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID);
-                    Log.w("episodeCount",downloadItemEntityList.size()+"");
-                    if (downloadItemEntityList.size() > 0) {
-                        count=downloadItemEntityList.size();
-                    } else {
-                        count=0;
-                    }
-                }else {
-                    count=0;
-                }
+
             }
         });
        return count;
@@ -514,13 +504,13 @@ public class KTDownloadHelper {
        return allDataFromDB;
     }
 
-    public MutableLiveData<List<DownloadItemEntity>> getAllEpisodesFromDB(String seriesId) {
+    public MutableLiveData<List<DownloadItemEntity>> getAllEpisodesFromDB(String seriesId,int seasonNumber) {
         MutableLiveData<List<DownloadItemEntity>> allDataFromDB=new MutableLiveData<>();
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 if (db!=null) {
-                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId);
+                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId,seasonNumber);
                     if (downloadItemEntityList.size() > 0) {
                         allDataFromDB.postValue(downloadItemEntityList);
                     } else {

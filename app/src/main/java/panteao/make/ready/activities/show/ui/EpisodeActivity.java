@@ -822,7 +822,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
 
                                 videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
-                                Log.w("store_seriesid 2",videoDetails.getSeriesId());
+                               // Log.w("store_seriesid 2",videoDetails.getSeriesId());
                                 parseVideoDetails(videoDetails);
 
 
@@ -1938,14 +1938,19 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
     private void selectDownloadVideoQuality() {
-        downloadHelper.selectVideoQuality(position -> {
+        try {
+             downloadHelper.selectVideoQuality(position -> {
             if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                Log.w("store_seriesid 3",videoDetails.getSeriesId());
+                //Log.w("store_seriesid 3",videoDetails.getSeriesId());
                 downloadHelper.startDownload(position,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
             }
         });
+        }catch (Exception ignored){
+
+        }
+
     }
 
     @Override

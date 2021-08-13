@@ -418,9 +418,10 @@ public class ActivityLauncher {
         // activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(source).toBundle());
         activity.startActivity(intent);
     }
-    public void launchMyDownloads(String seriesId){
+    public void launchMyDownloads(String seriesId,int seasonNumber){
         Intent intent = new Intent(this.activity, MyDownloadsNewActivity.class);
         intent.putExtra("series_id", seriesId);
+        intent.putExtra("season_number", seasonNumber);
         activity.startActivity(intent);
     }
 

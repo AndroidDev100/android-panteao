@@ -3,11 +3,14 @@ package panteao.make.ready.utils.helpers.downloads.offlinePlayer
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.POWER_SERVICE
+import android.content.Context.TELEPHONY_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PowerManager
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,11 +23,13 @@ import com.kaltura.playkit.PlayerEvent
 import com.kaltura.tvplayer.KalturaBasicPlayer
 import com.kaltura.tvplayer.OfflineManager
 import com.kaltura.tvplayer.PlayerInitOptions
+import kotlinx.android.synthetic.main.offline_player_fragment.*
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.baseModels.BaseBindingFragment
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack
 import panteao.make.ready.databinding.OfflinePlayerFragmentBinding
+import panteao.make.ready.utils.helpers.PhoneStateListenerHelper
 import java.util.*
 
 
@@ -109,9 +114,29 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
             requireActivity().onBackPressed()
         })
 
+        binding.backward.setOnClickListener(View.OnClickListener {
+          backwardFunction()
+        })
+
+        binding.forward.setOnClickListener(View.OnClickListener {
+            forwardFunction()
+        })
+
         binding.quality.visibility = View.INVISIBLE
         seekBarListener(player)
 
+    }
+
+    private fun forwardFunction() {
+        if (player != null) {
+            player!!.seekTo(player!!.currentPosition + 10000)
+        }
+    }
+
+    private fun backwardFunction() {
+        if (player != null) {
+            player!!.seekTo(player!!.currentPosition - 10000)
+        }
     }
 
     private fun seekBarListener(player: KalturaBasicPlayer) {
@@ -156,12 +181,6 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
         //binding.playButton.setImageDrawable(next)
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (player!=null){
-            player?.pause()
-        }
-    }
 
     fun destroyPlayer() {
         if (player!=null){
@@ -215,12 +234,38 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
         }
     }
 
-    override fun onCallStateRinging() {
+    override fun onPause() {
+        super.onPause()
+        if (player!=null){
+            player?.pause()
+            binding.playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24))
+        }
+    }
 
+    override fun onCallStateRinging() {
+        if(player!==null){
+            player!!.pause()
+            binding.playButton.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24))
+        }
     }
 
     override fun onCallStateIdle(state: Int) {
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            if (wakeLock != null) {
+                wakeLock!!.acquire()
+            }
+            val mgr = requireActivity()!!.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+            mgr?.listen(
+                PhoneStateListenerHelper.getInstance(requireActivity()),
+                PhoneStateListener.LISTEN_CALL_STATE
+            )
+        } catch (ignored: java.lang.Exception) {
+        }
     }
 
 }

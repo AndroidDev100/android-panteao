@@ -1940,13 +1940,15 @@ public class AppCommonMethod {
                 Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries());
                 if (value.isSeries()) {
                     String seriesId = value.getSeriesId();
+                    int seasonNumber = value.getSeasonNumber();
                     Log.w("CheckingCondition 2","seriesid-->>"+value.getSeriesId());
                     for (int j = 0; j < list.size(); j++) {
                         DownloadItemEntity value2 = list.get(j);
                         String seriesId2 = value2.getSeriesId();
+                        int seasonNumber2 = value2.getSeasonNumber();
                         Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
                        // if (value2.isSeries()) {
-                            if (seriesId.equalsIgnoreCase(seriesId2)) {
+                            if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
                                 Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2);
                                 notFound=true;
                             }
@@ -1964,6 +1966,18 @@ public class AppCommonMethod {
         }
         return getSortedList(list);
     }
+
+    private static ArrayList<DownloadItemEntity> getSortedListBasedOnepisodeNo(ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return o1.getEpisodeNumber().compareTo(o2.getEpisodeNumber());
+            }
+        });
+        //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
+        return list;
+    }
+
 
     private static ArrayList<DownloadItemEntity> getSortedList(ArrayList<DownloadItemEntity> list) {
         Collections.sort(list, new Comparator<DownloadItemEntity>() {
@@ -1987,7 +2001,7 @@ public class AppCommonMethod {
                 list.add(it.get(0));
             }
         }
-        return getSortedList(list);
+        return getSortedListBasedOnepisodeNo(list);
     }
 
     @NotNull

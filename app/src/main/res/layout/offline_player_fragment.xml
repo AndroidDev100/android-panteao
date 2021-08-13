@@ -68,7 +68,7 @@
                         android:layout_marginLeft="@dimen/player_forward_margin_right"
                         android:background="@drawable/forward_icon"
                         android:contentDescription="@string/image_description"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <ImageButton
                         android:id="@+id/backward"
@@ -79,12 +79,12 @@
                         android:layout_marginRight="@dimen/player_backward_margin_left"
                         android:background="@drawable/backward_icon"
                         android:contentDescription="@string/image_description"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/play_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
                         android:layout_centerInParent="true"
                         android:contentDescription="@string/image_description"
                         android:visibility="visible" />

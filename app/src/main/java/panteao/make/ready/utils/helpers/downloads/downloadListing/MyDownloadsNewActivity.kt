@@ -27,6 +27,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     private lateinit var downloadHelper:KTDownloadHelper
     private lateinit var downloadsAdapter:MyDownloadsNewAdapter
     private var seriesID : String? = ""
+    private var sesonNumber : Int? = 0
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityMyDownloadsBinding {
         return ActivityMyDownloadsBinding.inflate(inflater)
     }
@@ -34,6 +35,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         seriesID=intent.getStringExtra("series_id")
+        sesonNumber=intent.getIntExtra("season_number",0)
         setupToolBar();
         fetchdataBaseValues();
     }
@@ -41,7 +43,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     private fun fetchdataBaseValues() {
         downloadHelper= KTDownloadHelper(this,this)
         progress_bar.visibility = View.VISIBLE
-        downloadHelper.getAllEpisodesFromDB(seriesID).observe(this, Observer {
+        downloadHelper.getAllEpisodesFromDB(seriesID,sesonNumber!!).observe(this, Observer {
             if(it!==null && it.size>0){
                 noDownloadedData(2)
                 createUniqueList(it)
