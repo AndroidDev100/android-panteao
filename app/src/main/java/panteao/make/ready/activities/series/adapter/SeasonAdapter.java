@@ -12,6 +12,10 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
+import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.utils.config.ImageLayer;
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -126,6 +130,9 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             holder.itemBinding.titleWithSerialNo.setText(videoItemBeans.get(position).getTitle());
 
         }
+        HashMap<String, Thumbnail> crousalImages = videoItemBeans.get(position).getImages();
+        KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+        videoItemBeans.get(position).setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 640, 360));
         ImageHelper.getInstance(context).loadListImage(holder.itemBinding.episodeImage, videoItemBeans.get(position).getPosterURL());
 
         holder.itemBinding.description.setText(videoItemBeans.get(position).getDescription());

@@ -5,10 +5,13 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.LinkedTreeMap;
 
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
@@ -20,6 +23,7 @@ import panteao.make.ready.utils.CustomeFields;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EnveuVideoItemBean implements Serializable {
@@ -75,6 +79,15 @@ public class EnveuVideoItemBean implements Serializable {
     private String islivedrm = "false";
     private String kEntryId = "";
     public boolean isContinueWatching = false;
+    private HashMap<String, Thumbnail> images;
+
+    public HashMap<String, Thumbnail> getImages() {
+        return images;
+    }
+
+    public void setImages(HashMap<String, Thumbnail> images) {
+        this.images = images;
+    }
 
     public String getIslivedrm() {
         return islivedrm;

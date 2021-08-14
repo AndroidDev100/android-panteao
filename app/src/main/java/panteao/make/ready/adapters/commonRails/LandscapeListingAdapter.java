@@ -21,15 +21,19 @@ import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
 import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
 import panteao.make.ready.R;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.LandscapeListingItemBinding;
+import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListingAdapter.SingleItemRowHolder> {
@@ -112,6 +116,9 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
 
             EnveuVideoItemBean contentsItem = itemsList.get(i);
             if (contentsItem != null) {
+                HashMap<String, Thumbnail> crousalImages = itemsList.get(i).getImages();
+                KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+                contentsItem.setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 320, 180));
 
                 holder.landscapeItemBinding.setPlaylistItem(contentsItem);
 //                if (contentsItem.isPremium()) {

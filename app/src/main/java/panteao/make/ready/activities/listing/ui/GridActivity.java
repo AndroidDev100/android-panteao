@@ -424,6 +424,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
             mIsLoading = true;
             int num = 3;
             if (playlistRailData != null) {
+           Logger.e("GRID_TYPE",baseCategory.getContentImageType());
                 if (baseCategory.getReferenceName() != null && (baseCategory.getReferenceName().equalsIgnoreCase(AppConstants.ContentType.CONTINUE_WATCHING.name()) || baseCategory.getReferenceName().equalsIgnoreCase("special_playlist"))) {
                     if (commonPosterLandscapeAdapter == null) {
                         new RecyclerAnimator(this).animate(getBinding().listRecyclerview);

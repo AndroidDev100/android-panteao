@@ -158,7 +158,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         if (aBoolean) {
             getBinding().swipeContainer.setRefreshing(true);
             UIinitialization();
-            loadDataFromModel();
         } else {
             noConnectionLayout();
         }
@@ -216,7 +215,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
             public void onSuccess(Object item) {
-
                 if (item instanceof RailCommonData) {
                     RailCommonData railCommonData = (RailCommonData) item;
                     railCommonDataList.add(railCommonData);
@@ -243,7 +241,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     getBinding().noResultLayout.setVisibility(View.VISIBLE);
 
                 }
-
             }
 
             @Override
@@ -339,23 +336,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         getBinding().connection.retryTxt.setOnClickListener(view -> connectionObserver());
 
     }
-
-    private void loadDataFromModel() {
-
-        if (getActivity() != null && swipeToRefresh != 1) {
-            viewModel.getAllCategories().observe(getActivity(), assetCommonBean -> {
-                if (assetCommonBean != null) {
-                    //dtChannelsList = assetCommonBean.getDTChannelList();
-                    //   callRailAPI(dtChannelsList);
-                } else {
-                    getBinding().myRecyclerView.setVisibility(View.GONE);
-                    getBinding().noResultLayout.setVisibility(View.VISIBLE);
-                }
-
-            });
-        }
-    }
-
     private void swipeToRefresh() {
         getBinding().swipeContainer.setOnRefreshListener(() -> {
             if (NetworkConnectivity.isOnline(getBaseActivity()) && swipeToRefresh == 1) {

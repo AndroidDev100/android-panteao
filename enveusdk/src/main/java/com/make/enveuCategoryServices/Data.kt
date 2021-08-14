@@ -1,6 +1,7 @@
-package com.watcho.enveu.bean
+package com.make.enveuCategoryServices
 
 import com.google.gson.annotations.SerializedName
+import com.make.enveuCategoryServices.WidgetsItem
 
 data class Data(
 

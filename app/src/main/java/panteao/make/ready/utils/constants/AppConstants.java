@@ -18,8 +18,8 @@ public interface AppConstants {
     String SERIES_IMAGES_BASE_KEY = "/cms/images/library/series/";
     String VIDEO_IMAGE_BASE_KEY = "/cms/images/library/video/";
     String SEASON_IMAGES_BASE_KEY = "/cms/images/library/season/";
-    String VIDEO_CLOUD_FRONT_URL = "https://d228i5jh7v5l96.cloudfront.net/";
-    String FILTER_PLAYER_BANNER = "/640x360/filters:format(jpeg):quality(100)";
+    String VIDEO_CLOUD_FRONT_URL = "https://d3uz5dkbsevwkn.cloudfront.net/adaptive-fit-in/";
+    String FILTER_PLAYER_BANNER = "/filters:fill(auto):format(webp):quality(60)";
     String FILTER = "/filters:";
     String LINE_URI = "https://line.me/R/oaMessage/@mvhub";
 

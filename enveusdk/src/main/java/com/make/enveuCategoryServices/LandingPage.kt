@@ -1,29 +1,28 @@
 package com.make.enveuCategoryServices
 
 import com.google.gson.annotations.SerializedName
-import com.watcho.enveu.bean.Playlist
 
 data class LandingPage (
 
-        @field:SerializedName("landingPageTitle")
+    @field:SerializedName("landingPageTitle")
         val landingPageTitle: String? = null,
 
-        @field:SerializedName("assetId")
+    @field:SerializedName("assetId")
         val assetID: String? = null,
 
-        @field:SerializedName("isProgram")
+    @field:SerializedName("isProgram")
         val isProgram: Boolean? = null,
 
-        @field:SerializedName("link")
+    @field:SerializedName("link")
         val link: String? = null,
 
-        @field:SerializedName("type")
+    @field:SerializedName("type")
         val type: String? = null,
 
-        @field:SerializedName("playlist")
+    @field:SerializedName("playlist")
         val playlist: Playlist? = null,
 
-        @field:SerializedName("target")
+    @field:SerializedName("target")
         val target: String? = null
 
 )

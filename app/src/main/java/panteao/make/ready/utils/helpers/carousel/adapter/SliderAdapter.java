@@ -3,6 +3,7 @@ package panteao.make.ready.utils.helpers.carousel.adapter;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.google.gson.Gson;
+
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
+import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.utils.Utils;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.BR;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class SliderAdapter extends PagerAdapter {
@@ -44,7 +53,7 @@ public class SliderAdapter extends PagerAdapter {
         this.listner = listner;
         this.viewType = viewType;
         this.videos = items.getEnveuVideoItemBeans();
-        this.pos=position;
+        this.pos = position;
     }
 
     @Override
@@ -86,8 +95,12 @@ public class SliderAdapter extends PagerAdapter {
             default:
                 viewDataBinding = DataBindingUtil.inflate(layoutInflater, R.layout.layout_carousal_landscape_item, container, false);
                 break;
-
         }
+
+        HashMap<String, Thumbnail> crousalImages = videos.get(position).getImages();
+        KalturaImageType imageType=KalturaImageType.LANDSCAPE;
+        videos.get(position).setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 800, 450));
+
         viewDataBinding.setVariable(BR.assetItem, videos.get(position));
         viewDataBinding.setVariable(BR.adapter, this);
         viewDataBinding.setVariable(BR.position, position);
@@ -102,8 +115,8 @@ public class SliderAdapter extends PagerAdapter {
         mLastClickTime = SystemClock.elapsedRealtime();
         listner.railItemClick(items, position);
 
-        AppCommonMethod.trackFcmEvent("Content Screen","",context,0);
-        AppCommonMethod.trackFcmCustomEvent(context, AppConstants.CONTENT_SELECT,videos.get(position).getAssetType(),items.getScreenWidget().getContentID(),items.getScreenWidget().getName()+"",pos,videos.get(position).getTitle(),position,videos.get(position).getId()+"",0,0,"","","","");
+        AppCommonMethod.trackFcmEvent("Content Screen", "", context, 0);
+        AppCommonMethod.trackFcmCustomEvent(context, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), items.getScreenWidget().getContentID(), items.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
 
 
     }

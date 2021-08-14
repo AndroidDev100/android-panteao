@@ -50,6 +50,7 @@ object Utils {
             android.view.WindowManager.LayoutParams.MATCH_PARENT
     }
 
+
     fun stringForTime(timeMs: Long): String {
         var formatBuilder = StringBuilder()
         var formatter = Formatter(formatBuilder, Locale.getDefault())
@@ -92,12 +93,15 @@ object Utils {
         return px
     }
 
+    fun getFilteredUrl(imageUrl: String, width: Int, Height: Int): String {
+        return AppConstants.VIDEO_CLOUD_FRONT_URL + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
+    }
 
     var track1 = false
     var track2 = false
     var track3 = false
 
-//    fun createTrackList(
+    //    fun createTrackList(
 //        videoTrackArray: List<Format>,
 //        context: Activity
 //    ): ArrayList<TrackItem>? {
@@ -161,5 +165,6 @@ object Utils {
 //        }
 //        return arrayList
 //    }
+
 
 }

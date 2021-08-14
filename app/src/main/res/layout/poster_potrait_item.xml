@@ -42,7 +42,7 @@
                     android:layout_width="@dimen/NontonSize120"
                     android:layout_height="@dimen/NontonSize180"
                     android:contentDescription="TODO"
-                    android:scaleType="fitXY" />
+                     />
 
                 <FrameLayout
                     android:id="@+id/flNew"

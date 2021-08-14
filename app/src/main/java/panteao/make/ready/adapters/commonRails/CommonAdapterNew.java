@@ -129,30 +129,35 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void posterPotraitRail(PosterPotraitHolder viewHolder, int position) {
+    Logger.e("RAIL_TYPE","PosterPortrait");
         RecyclerView recyclerView = viewHolder.itemBinding.recyclerViewList2;
         CommonPosterPotrailRailAdapter adapter = new CommonPosterPotrailRailAdapter(mContext, mList.get(position),position, listner,mList.get(position).getScreenWidget());
         setCommonRailAdapter(viewHolder.itemBinding.titleHeading, recyclerView, position, adapter);
     }
 
     private void LandscapeRail(LandscapeHolder viewHolder, int position) {
+        Logger.e("RAIL_TYPE","Landscape");
         RecyclerView recyclerView = viewHolder.landscapeRecyclerItemBinding.recyclerViewList3;
         CommonLandscapeRailAdapter adapter = new CommonLandscapeRailAdapter(mContext, mList.get(position),position, listner,mList.get(position).getScreenWidget());
         setCommonRailAdapter(viewHolder.landscapeRecyclerItemBinding.titleHeading, recyclerView, position, adapter);
     }
 
     private void potraitRail(PortraitHolder viewHolder, int position) {
+        Logger.e("RAIL_TYPE","Portrait");
         RecyclerView recyclerView = viewHolder.potraitRecyclerItemBinding.recyclerViewList4;
         CommonPotraitRailAdapter adapter = new CommonPotraitRailAdapter(mContext, mList.get(position),position, listner,mList.get(position).getScreenWidget());
         setCommonRailAdapter(viewHolder.potraitRecyclerItemBinding.titleHeading, recyclerView, position, adapter);
     }
 
     private void squareRail(SquareHolder viewHolder, int position) {
+        Logger.e("RAIL_TYPE","Square");
         RecyclerView recyclerView = viewHolder.squareRecyclerItemBinding.recyclerViewList2;
         CommonSquareRailAdapter commonSquareRailAdapter = new CommonSquareRailAdapter(mContext, mList.get(position), listner,mList.get(position).getScreenWidget());
         setCommonRailAdapter(viewHolder.squareRecyclerItemBinding.titleHeading, recyclerView, position, commonSquareRailAdapter);
     }
 
     private void circularRail(CircleHolder viewHolder, int position) {
+        Logger.e("RAIL_TYPE","Circle");
         RecyclerView recyclerView = viewHolder.circularRecyclerItemBinding.recyclerViewList1;
         CommonCircleRailAdapter commonCircleAdapter = new CommonCircleRailAdapter(mContext, mList.get(position),position, listner,mList.get(position).getScreenWidget());
         setCommonRailAdapter(viewHolder.circularRecyclerItemBinding.titleHeading, recyclerView, position, commonCircleAdapter);
@@ -339,69 +344,6 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class CarouselViewHolder extends RecyclerView.ViewHolder {
-        /*HeaderRecyclerItemBinding itemBinding;
-
-        CarouselViewHolder(HeaderRecyclerItemBinding flightItemLayoutBinding, int viewType) {
-            super(flightItemLayoutBinding.getRoot());
-            itemBinding = flightItemLayoutBinding;
-            LinearLayout.LayoutParams layoutParams = null;
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity) itemBinding.slider.getContext()).getWindowManager()
-                    .getDefaultDisplay()
-                    .getMetrics(displayMetrics);
-            int width = displayMetrics.widthPixels;
-            boolean isTablet = false;
-
-            if (itemBinding.constraintLayout.getResources().getBoolean(R.bool.isTablet))
-                isTablet = true;
-
-            switch (viewType) {
-                case CAROUSEL_LDS_LANDSCAPE: {
-                    int height = (int) (width / 1.80);
-                   *//* if (isTablet)
-                        height = (int) (height / 1.7);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
-                    layoutParams.height = (int) (height + (itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_landscape_indicator_padding)));*//*
-                    if (isTablet) {
-                        if (itemBinding.slider.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            height = (int) (height / 1.70);
-                        } else {
-                            height = height + AppCommonMethod.convertDpToPixel(10);
-                        }
-                    }
-
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
-                    layoutParams.height = (int) (height + (itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_landscape_indicator_padding)));
-
-                }
-                break;
-                case CAROUSEL_PR_POTRAIT: {
-                    int height = (int) (width * 1.77);
-                    if (isTablet)
-                        height = (int) (height / 4.3);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
-                    layoutParams.height = (int) (height + itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_potrait_indicator_padding));
-                    break;
-                }
-                case CAROUSEL_SQR_SQUARE: {
-                    int height = width;
-                    if (isTablet)
-                        height = (int) (height / 2.65);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
-                    layoutParams.height = (int) (height + itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_square_indicator_padding));
-                    break;
-                }
-                case CAROUSEL_CIR_CIRCLE: {
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, (int) itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_square_height));
-                    break;
-                }
-
-            }
-            if (layoutParams != null)
-                itemBinding.constraintLayout.setLayoutParams(layoutParams);
-
-        }*/
-
         HeaderRecyclerItemBinding itemBinding;
 
         CarouselViewHolder(HeaderRecyclerItemBinding flightItemLayoutBinding, int viewType) {
