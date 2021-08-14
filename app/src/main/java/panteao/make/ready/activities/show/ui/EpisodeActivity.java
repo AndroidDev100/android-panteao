@@ -1870,7 +1870,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     playerfragment.bingeWatchStatus(false);
                 }
             }
-            playerfragment.skipIntroStatus(skipIntro);
+            playerfragment.skipIntroStatus(false);
         } catch (Exception e) {
             e.printStackTrace();
         }

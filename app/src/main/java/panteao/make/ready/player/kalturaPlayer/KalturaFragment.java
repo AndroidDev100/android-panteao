@@ -46,6 +46,7 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.player.ui.PlayerCallbacks;
@@ -155,6 +156,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         findViewById(view);
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
+        setVideoQuality();
         callPlayerControlsFragment();
         startPlayer();
         setPlayerListner();
@@ -186,6 +188,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 transaction.addToBackStack(null);
                 transaction.commit();
                 playerControlsFragment.setPlayerCallBacks(this);
+                playerControlsFragment.sendPortraitCallback();
             } catch (Exception ignored) {
 
             }
@@ -497,50 +500,41 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void QualitySettings() {
-        isDialogShowing = true;
+
         chooseVideoquality();
     }
 
     private void chooseVideoquality() {
-        final RecyclerView recycleview;
-        videodialog = new Dialog(getActivity(), R.style.AppAlertTheme);
-        videodialog.setContentView(R.layout.list_layout);
-        videodialog.setTitle(getString(R.string.title_video_quality));
-        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.47);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.65);
-        videodialog.getWindow().setLayout(width, height);
-        videodialog.show();
-        recycleview = videodialog.findViewById(R.id.recycler_view_quality);
-        Button closeButton = videodialog.findViewById(R.id.close);
-        closeButton.setOnClickListener(v -> videodialog.cancel());
-        if (recycleview != null) {
-            VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList);
-            recycleview.setAdapter(trackItemAdapter);
-            recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
-            trackItemAdapter.notifyDataSetChanged();
-        } else {
-//            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
-        }
         trackItemList.clear();
         if (tracks.getVideoTracks().size() > 0) {
-            for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
-
-                VideoTrack videoTrackInfo = tracks.getVideoTracks().get(i);
-                setVideoQuality();
-                if (videoTrackInfo.isAdaptive()) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
-                } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
-                } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000)) {
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
-                } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000) {
-
-                    trackItemList.add(new TracksItem(getActivity().getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
-                }
-            }
-        } else {
-            Logger.d("tracksSize", tracks.getVideoTracks().size() + "");
+            trackItemList = AppCommonMethod.createTrackList(tracks,getActivity());
+        }else {
+            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
         }
+
+        final RecyclerView recycleview;
+        videodialog = new Dialog(getActivity());
+        videodialog.setContentView(R.layout.list_layout);
+        videodialog.setTitle(getString(R.string.title_video_quality));
+        recycleview = videodialog.findViewById(R.id.recycler_view_quality);
+        Button closeButton = videodialog.findViewById(R.id.close);
+        closeButton.setOnClickListener(v -> {
+            videodialog.cancel();
+            isDialogShowing = false;
+        });
+        if (trackItemList.size()>0) {
+            VideoTracksAdapter trackItemAdapter = new VideoTracksAdapter(trackItemList,videodialog);
+            recycleview.setAdapter(trackItemAdapter);
+            recycleview.setLayoutManager(new LinearLayoutManager(getActivity()));
+            videodialog.show();
+            isDialogShowing = true;
+            //trackItemAdapter.notifyDataSetChanged();
+        } else {
+            ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
+        }
+
+
+
 
     }
 
@@ -656,10 +650,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     class VideoTracksAdapter extends RecyclerView.Adapter<ViewHolder1> {
         final ArrayList<TracksItem> tracks;
+        final Dialog videoDialog;
 
 
-        private VideoTracksAdapter(ArrayList<TracksItem> videoTracks) {
+        private VideoTracksAdapter(ArrayList<TracksItem> videoTracks, Dialog videodialog) {
             this.tracks = videoTracks;
+            this.videoDialog = videodialog;
 
 
         }
@@ -674,7 +670,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder1 holder, @SuppressLint("RecyclerView") final int position) {
 
-            if (KsPreferenceKeys.getInstance().getQualityName().equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
+            if (trackName.equalsIgnoreCase(trackItemList.get(position).getTrackName())) {
                 holder.tick.setBackgroundResource(R.drawable.tick);
             } else {
                 holder.tick.setBackgroundResource(0);
@@ -684,11 +680,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 @Override
                 public void onClick(View v) {
 
-                    KsPreferenceKeys.getInstance().setQualityPosition(position);
-                    KsPreferenceKeys.getInstance().setQualityName(trackItemList.get(position).getTrackName());
+//                    KsPreferenceKeys.getInstance().setQualityPosition(position);
+//                    KsPreferenceKeys.getInstance().setQualityName(trackItemList.get(position).getTrackName());
 
                     trackName = trackItemList.get(position).getTrackName();
                     player.changeTrack(tracks.get(position).getUniqueId());
+                    if (videoDialog!=null){
+                        videodialog.cancel();
+                    }
 
                     notifyDataSetChanged();
 
