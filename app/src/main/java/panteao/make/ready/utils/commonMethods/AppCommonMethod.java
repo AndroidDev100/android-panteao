@@ -1088,6 +1088,12 @@ public class AppCommonMethod {
                 requestParam.addProperty(EventConstant.ContentType, assetType);
             } else if (assetType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
                 requestParam.addProperty(EventConstant.ContentType, assetType);
+            } else if (assetType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
+                requestParam.addProperty(EventConstant.ContentType, assetType);
+            } else if (assetType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+                requestParam.addProperty(EventConstant.ContentType, assetType);
+            } else if (assetType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                requestParam.addProperty(EventConstant.ContentType, assetType);
             } else {
                 requestParam.addProperty(EventConstant.ContentType, "");
             }
@@ -1628,6 +1634,7 @@ public class AppCommonMethod {
             jsonObject.put("contentType", mediaType);
             jsonObject.put("id", id);
         } catch (Exception ignored) {
+            ignored.printStackTrace();
 
         }
 
