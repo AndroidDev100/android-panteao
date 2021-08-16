@@ -1,12 +1,16 @@
 package panteao.make.ready.player.kalturaPlayer;
 
 import static android.content.Context.TELEPHONY_SERVICE;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,6 +54,7 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
 import panteao.make.ready.player.PhoneStateListenerHelper;
 import panteao.make.ready.utils.helpers.ToastHandler;
@@ -67,7 +72,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack {
+public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack, NetworkChangeReceiver.ConnectivityReceiverListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -582,7 +587,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void onFinishDialog() {
-
+        if (player!=null){
+            player.stop();
+            player.destroy();
+            requireActivity().finish();
+        }
     }
 
     public void skipIntroStatus(boolean skipIntro) {
@@ -613,6 +622,16 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void onCallStateIdle(int state) {
         if (player!=null){
             player.play();
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            if (player != null) {
+                player.pause();
+                //showErrorDialog(getString(R.string.no_internet));
+            }
         }
     }
 
@@ -654,6 +673,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             player.play();
         }
         super.onResume();
+        requestAudioFocus();
 
     }
 
@@ -764,4 +784,47 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         } catch (Exception e) {
         }
     }
+
+    private void requestAudioFocus() {
+
+        AudioManager mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        AudioAttributes mAudioAttributes =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mAudioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+        }
+        AudioFocusRequest mAudioFocusRequest =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mAudioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(mAudioAttributes)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                        @Override
+                        public void onAudioFocusChange(int i) {
+                            if (i == AUDIOFOCUS_LOSS) {
+                                if (player!=null) {
+                                    player.pause();
+                                }
+                            }
+                        }
+                    }) // Need to implement listener
+                    .build();
+        }
+        int focusRequest = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            focusRequest = mAudioManager.requestAudioFocus(mAudioFocusRequest);
+        }
+        switch (focusRequest) {
+            case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
+                // don’t start playback
+            case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
+                // actually start playback
+        }
+
+    }
+
 }
