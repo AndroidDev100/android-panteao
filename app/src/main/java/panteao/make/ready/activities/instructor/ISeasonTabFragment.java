@@ -387,7 +387,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
                 AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
 
         }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
@@ -399,17 +399,32 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
         }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
             if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
                 AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
 
         }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
             if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             } else {
                 AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
             }
+
+        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())){
+            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getShow(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            } else {
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getShow(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            }
+        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())){
+            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getSeries(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            } else {
+                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
+            }
+
+
 
 
 

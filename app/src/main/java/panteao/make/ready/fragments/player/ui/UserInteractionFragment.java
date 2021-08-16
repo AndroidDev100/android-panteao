@@ -231,11 +231,23 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             title = seriesDetailBean.getTitle();
             assetType = MediaTypeConstants.getInstance().getEpisode();
 
+        } else if (context instanceof TutorialActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = MediaTypeConstants.getInstance().getTutorial();
+
+        } else if (context instanceof ChapterActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = MediaTypeConstants.getInstance().getChapter();
+
         } else if (context instanceof InstructorActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getInstructor();
 
         } else if (context instanceof ArticleActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
@@ -523,19 +535,19 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getInstructor();
 
         } else if (context instanceof TutorialActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getTutorial();
 
         } else if (context instanceof ChapterActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getChapter();
 
         } else if (context instanceof ArticleActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
