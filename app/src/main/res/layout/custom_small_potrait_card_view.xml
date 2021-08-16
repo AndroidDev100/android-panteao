@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="panteao.make.ready.utils.MediaTypeConstants" />
+
+        <variable
+            name="playlistItem"
+            type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_lay"
+        android:layout_width="90dp"
+        android:layout_height="160dp">
+
+        <ImageView
+            android:id="@+id/imgViewCard"
+            errorImage="@{@drawable/placeholder_potrait}"
+            imageUrl="@{playlistItem.posterURL}"
+            placeholder="@{@drawable/placeholder_potrait}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/placeholder_potrait"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/player_fragme"
+            android:layout_width="490dp"
+            android:layout_height="275dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@{playlistItem.vipImageDrawable}"
+            android:visibility='@{playlistItem.isVIP.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) ? playlistItem.newSeriesImageDrawable : playlistItem.newMoviesDrawable}'
+            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,120:87"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!--        <ImageView-->
+        <!--            android:layout_width="60dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginTop="2dp"-->
+        <!--            android:layout_marginEnd="4dp"-->
+        <!--            android:padding="0dp"-->
+        <!--            android:scaleType="fitXY"-->
+        <!--            android:src='@{playlistItem.assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) ? playlistItem.episodeImageDrawable : ""}'-->
+        <!--            android:visibility='@{playlistItem.isNewS.equals("true") ? View.VISIBLE : View.GONE}'-->
+        <!--            app:layout_constraintDimensionRatio="H,120:24"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

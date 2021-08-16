@@ -15,6 +15,7 @@ import panteao.make.ready.R
 import panteao.make.ready.activities.videoquality.bean.TrackItem
 import panteao.make.ready.utils.constants.AppConstants
 import java.text.Format
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -95,6 +96,13 @@ object Utils {
 
     fun getFilteredUrl(imageUrl: String, width: Int, Height: Int): String {
         return AppConstants.VIDEO_CLOUD_FRONT_URL + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
+    }
+
+    fun getDateDDMMMYYYY(milliSeconds: Long): String? {
+        val formatter = SimpleDateFormat("dd-MM-yyyy")
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
     }
 
     var track1 = false

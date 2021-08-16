@@ -2,7 +2,6 @@ package panteao.make.ready.tvBaseModels.basemodels
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,8 +19,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.make.enums.Layouts
 import panteao.make.ready.R
-import panteao.make.ready.activities.KalturaPlayerActivity
-import panteao.make.ready.activities.detailspage.activity.VideoDetailActivity
 import panteao.make.ready.activities.homeactivity.ui.TVHomeActivity
 import panteao.make.ready.baseModels.HomeBaseViewModel
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
@@ -33,7 +30,6 @@ import panteao.make.ready.cardlayout.cardpresenter.PotraitCardPresenter
 import panteao.make.ready.cardlayout.cardpresenter.SquareCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.CustomListRowPresenter
-import panteao.make.ready.utils.MediaTypeConstants
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.config.bean.ConfigBean
 import panteao.make.ready.utils.constants.AppConstants
@@ -131,19 +127,21 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                 override fun onSuccess(item: Any?) {
                     if (item is RailCommonData) {
                         if (item.screenWidget?.layout!!.equals(Layouts.HRO.name, true)) {
-                            val enveuVideoItemBeanList =
-                                ArrayList<EnveuVideoItemBean>()
-                            val enveuVideoItemBean =
-                                EnveuVideoItemBean()
-                            if (item.screenWidget?.landingPageAssetId != null) {
-                                enveuVideoItemBean.id =
-                                    item.screenWidget?.landingPageAssetId!!.toInt()
-                            }
-                            enveuVideoItemBean.assetType = item.assetType
-                            enveuVideoItemBean.thumbnailImage =
-                                item.enveuVideoItemBeans[0].thumbnailImage
-                            enveuVideoItemBeanList.add(enveuVideoItemBean)
-                            item.enveuVideoItemBeans = enveuVideoItemBeanList
+                            Logger.e("HERO_ASSET", Gson().toJson(item))
+//                            val enveuVideoItemBeanList =
+//                                ArrayList<EnveuVideoItemBean>()
+//                            val enveuVideoItemBean =
+//                                EnveuVideoItemBean()
+//                            if (item.screenWidget?.landingPageAssetId != null) {
+//                                enveuVideoItemBean.id =
+//                                    item.screenWidget?.landingPageAssetId!!.toInt()
+//                            }
+//                            enveuVideoItemBean.images = item.enveuVideoItemBeans[0].images
+//                            enveuVideoItemBean.assetType = item.assetType
+//                            enveuVideoItemBean.thumbnailImage =
+//                                item.enveuVideoItemBeans[0].thumbnailImage
+//                            enveuVideoItemBeanList.add(enveuVideoItemBean)
+//                            item.enveuVideoItemBeans = enveuVideoItemBeanList
                         }
                         setRows(
                             item.enveuVideoItemBeans!!,
@@ -204,22 +202,29 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         when (contentType) {
             AppConstants.CAROUSEL_LDS_LANDSCAPE,
             AppConstants.HORIZONTAL_LDS_LANDSCAPE -> {
-                mGridPresenter = AssetCardPresenter(contentType)
+                mGridPresenter =
+                    AssetCardPresenter(contentType, item.screenWidget.widgetImageType.toString())
             }
             AppConstants.CAROUSEL_PR_POSTER,
             AppConstants.CAROUSEL_PR_POTRAIT,
             AppConstants.HORIZONTAL_PR_POSTER,
             AppConstants.HORIZONTAL_PR_POTRAIT -> {
-                mGridPresenter = PotraitCardPresenter(contentType, activity)
+                mGridPresenter = PotraitCardPresenter(
+                    contentType,
+                    activity,
+                    item.screenWidget.widgetImageType.toString()
+                )
 
             }
             AppConstants.CAROUSEL_SQR_SQUARE,
             AppConstants.HORIZONTAL_SQR_SQUARE,
             AppConstants.HORIZONTAL_CIR_CIRCLE -> {
-                mGridPresenter = SquareCardPresenter(contentType)
+                mGridPresenter =
+                    SquareCardPresenter(contentType, item.screenWidget.widgetImageType.toString())
             }
             AppConstants.HERO_LDS_LANDSCAPE -> {
-                mGridPresenter = HeroCardPresenter(contentType)
+                mGridPresenter =
+                    HeroCardPresenter(contentType, item.screenWidget.widgetImageType.toString())
             }
         }
         gridRowAdapter = ArrayObjectAdapter(mGridPresenter)

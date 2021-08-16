@@ -47,6 +47,21 @@ class SeriesDetailFragment : Fragment(), View.OnClickListener {
         mListener = context as SeriesDetailsListener
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (requireActivity().supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) == null) {
+            seasonDetailsFragment =
+                LatestSeasonsDetailsFragment();
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.persist,
+                    seasonDetailsFragment,
+                    AppConstants.SEASON_DETAIL
+                ).commit()
+            if (seasonDetailsFragment.view != null)
+                seasonDetailsFragment.view?.requestFocus()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,18 +88,7 @@ class SeriesDetailFragment : Fragment(), View.OnClickListener {
             seriesDetailsFragmentBinding.lnCastHeadline.visibility = View.VISIBLE
             seriesDetailsFragmentBinding.lnDirectorHeadline.visibility = View.VISIBLE
         }
-        if (requireActivity().supportFragmentManager.findFragmentByTag(AppConstants.SEASON_DETAIL) == null) {
-            seasonDetailsFragment =
-                LatestSeasonsDetailsFragment();
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(
-                    R.id.persist,
-                    seasonDetailsFragment,
-                    AppConstants.SEASON_DETAIL
-                ).commit()
-            if (seasonDetailsFragment.view != null)
-                seasonDetailsFragment.view?.requestFocus()
-        }
+
         seriesDetailsFragmentBinding.buttonPlay.setOnClickListener(this)
         seriesDetailsFragmentBinding.buttonWatchlist.setOnClickListener(this)
         seriesDetailsFragmentBinding.buttonFollow.setOnClickListener(this)

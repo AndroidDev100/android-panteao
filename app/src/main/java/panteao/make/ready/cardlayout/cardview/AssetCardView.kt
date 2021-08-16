@@ -8,10 +8,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.leanback.widget.BaseCardView
 import panteao.make.ready.R
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.CustomAssetCardViewBinding
+import panteao.make.ready.enums.KalturaImageType
 import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.helpers.ImageHelper
+import java.util.*
 
 
 @SuppressLint("ViewConstructor")
@@ -54,7 +57,7 @@ open class AssetCardView : BaseCardView {
         super.onDetachedFromWindow()
     }
 
-    fun setRailCommonDataModel(enveuVideoItemBean: EnveuVideoItemBean) {
+    fun setRailCommonDataModel(enveuVideoItemBean: EnveuVideoItemBean,widgetImageType: String) {
         if (enveuVideoItemBean.isContinueWatching) {
             if (enveuVideoItemBean.videoPosition > 0) {
                 customMenuCardViewBinding?.continueWatching?.visibility = View.VISIBLE
@@ -69,6 +72,14 @@ open class AssetCardView : BaseCardView {
                 customMenuCardViewBinding?.pbProcessing?.visibility = View.GONE
             }
         }
+
+        val crousalImages: HashMap<String, Thumbnail> = enveuVideoItemBean.getImages()
+        var imageType = KalturaImageType.LANDSCAPE
+        if (widgetImageType.equals("9x16", ignoreCase = true)) {
+            imageType = KalturaImageType.PORTRAIT
+        }
+        enveuVideoItemBean.posterURL =
+            ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 640, 450)
 
         customMenuCardViewBinding?.playlistItem = enveuVideoItemBean
         customMenuCardViewBinding?.let {

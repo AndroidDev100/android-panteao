@@ -18,4 +18,6 @@ public interface CustomeFields {
     String WIDEVINE_URL="widevine_content_url";
     String WIDEVINE_LICENCE="widevine_content_license_url";
     String ISLIVEDRM = "islivedrm";
+    String ExternalURLLink = "ExternalURLLink";
+    String LinkedPlaylistId = "LinkedPlaylistId";
 }

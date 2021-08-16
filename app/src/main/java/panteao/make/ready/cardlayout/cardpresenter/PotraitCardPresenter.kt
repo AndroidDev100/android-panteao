@@ -11,22 +11,28 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.leanback.widget.BaseCardView
 import androidx.leanback.widget.Presenter
 import panteao.make.ready.R
 import panteao.make.ready.cardlayout.cardview.PotraitCardView
+import panteao.make.ready.cardlayout.cardview.SmallPotraitCardView
 
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
-class PotraitCardPresenter(var contentType: Int, activity: FragmentActivity?) : Presenter() {
+class PotraitCardPresenter(
+    var contentType: Int,
+    activity: FragmentActivity?,
+    var widgetImageType: String
+) : Presenter() {
 
 
     private var mDefaultCardImage: Drawable? = null
     private var fragmentActivity: FragmentActivity? = null
     private var brightcoveId = "6081939248001"
-
+private lateinit var cardView: BaseCardView
     init {
         fragmentActivity = activity
     }
@@ -40,14 +46,27 @@ class PotraitCardPresenter(var contentType: Int, activity: FragmentActivity?) : 
         mDefaultCardImage =
             ContextCompat.getDrawable(parent.context, R.drawable.placeholder_landscape)
         val textView = TextView(parent.context)
-        val cardView = object : PotraitCardView(parent.context, contentType) {
-            override fun setSelected(selected: Boolean) {
-                if (selected)
-                    this.background = sSelectedBackgroundDrawable
-                else
-                    this.background = sDefaultBackgroundDrawable
+        if(contentType ==100){
+             cardView = object : SmallPotraitCardView(parent.context, contentType) {
+                override fun setSelected(selected: Boolean) {
+                    if (selected)
+                        this.background = sSelectedBackgroundDrawable
+                    else
+                        this.background = sDefaultBackgroundDrawable
 
-                super.setSelected(selected)
+                    super.setSelected(selected)
+                }
+            }
+        }else {
+             cardView = object : PotraitCardView(parent.context, contentType) {
+                override fun setSelected(selected: Boolean) {
+                    if (selected)
+                        this.background = sSelectedBackgroundDrawable
+                    else
+                        this.background = sDefaultBackgroundDrawable
+
+                    super.setSelected(selected)
+                }
             }
         }
         view = cardView
@@ -65,14 +84,21 @@ class PotraitCardPresenter(var contentType: Int, activity: FragmentActivity?) : 
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         if (item is panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean) {
-            val cardView = viewHolder.view as PotraitCardView
-            brightcoveId = item.brightcoveVideoId!!
-            cardView.setRailCommonDataModel(item)
+            if (contentType == 100) {
+                val cardView = viewHolder.view as SmallPotraitCardView
+                brightcoveId = item.brightcoveVideoId!!
+                cardView.setRailCommonDataModel(item, widgetImageType)
+            } else {
+                val cardView = viewHolder.view as PotraitCardView
+                brightcoveId = item.brightcoveVideoId!!
+                cardView.setRailCommonDataModel(item, widgetImageType)
+            }
         }
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
-        val cardView = viewHolder.view as PotraitCardView
+
+//        val cardView = viewHolder.view as PotraitCardView
         // Remove references to images so that the garbage collector can free up memory
 
     }
@@ -153,8 +179,7 @@ class PotraitCardPresenter(var contentType: Int, activity: FragmentActivity?) : 
         private val ACCOUNT_ID = "5854923532001"
         private val POLICY_KEY =
             "BCpkADawqM1eQgw1AYFQOUXoNSPw_rzWhyBPlA-s-FXA5HLM5PxfY7B5JA-fgES-HUj3a4WafkLDIiQYmRZMrpe_oOfuY_KGj1EGRz9e-v7a8LI6sKhZmd3s3CAY1VlLNP9eCQz1OAMHAfUi"
-//        var brightcovePlayerFragment: BrightcoveExoPlayerVideoView? = null
-        private lateinit var view: PotraitCardView
+        private lateinit var view: BaseCardView
 
     }
 }

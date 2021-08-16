@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/imageView3"
             errorImage="@{@drawable/placeholder_landscape}"
-            imageUrl='@{contentsItem.thumbnailImage.equalsIgnoreCase("") ? contentsItem.posterURL : contentsItem.thumbnailImage}'
+            imageUrl='@{contentsItem.posterURL}'
             placeholder="@{@drawable/placeholder_landscape}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,20 +38,17 @@
 
         <TextView
             android:id="@+id/episode_title"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_margin="-50dp"
-            android:background="#AD000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/above_shado"
             android:ellipsize="marquee"
-            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-            android:gravity="center_vertical"
-            android:lineHeight="1.5dp"
-            android:lineSpacingExtra="1.25dp"
+            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+            android:gravity="center"
             android:paddingLeft="8dp"
             android:singleLine="true"
             android:text="@{contentsItem.title}"
-            android:textColor="@color/colorPrimary"
-            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -22,6 +22,7 @@ import com.make.constants.Constants
 import com.make.enums.ImageType
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
+import panteao.make.ready.activities.myprofile.TVMyProfileAcitivity
 import panteao.make.ready.activities.search.ui.TVSearchActivity
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity
 import panteao.make.ready.activities.usermanagment.ui.TVLoginActivity
@@ -425,17 +426,17 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 //                            Intent(this, UserWatchListActivity::class.java)
 //                    startActivity(userWatchListActivity)
                 } else {
-                    val loginActivity = Intent(this, LoginActivity::class.java)
+                    val loginActivity = Intent(this, TVLoginActivity::class.java)
                     startActivity(loginActivity)
                 }
             }
             9 -> {
                 if (UserPreference.instance.isLogin) {
-//                    val userWatchListActivity =
-//                            Intent(this@HomeActivity, MyProfileAcitivity::class.java)
-//                    startActivity(userWatchListActivity)
+                    val userWatchListActivity =
+                        Intent(this@TVHomeActivity, TVMyProfileAcitivity::class.java)
+                    startActivity(userWatchListActivity)
                 } else {
-                    val loginActivity = Intent(this, LoginActivity::class.java)
+                    val loginActivity = Intent(this, TVLoginActivity::class.java)
                     startActivity(loginActivity)
                 }
             }
@@ -449,7 +450,7 @@ class TVHomeActivity : TvBaseBindingActivity<ActivityTvMainBinding>(), Changable
 //                        Intent(this@HomeActivity, MembershipPlans::class.java)
 //                    startActivity(userWatchListActivity)
 //                } else {
-//                    val loginActivity = Intent(this@HomeActivity, LoginActivity::class.java)
+//                    val loginActivity = Intent(this@HomeActivity, TVLoginActivity::class.java)
 //                    startActivity(loginActivity)
 //                }
 //            }

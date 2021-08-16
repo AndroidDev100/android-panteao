@@ -420,5 +420,17 @@
     <string name="title_video_quality">Select Video Quality</string>
     <string name="no_tracks_available">No tracks available</string>
     <string name="new_episodes_added_soon">New Episodes will be added soon</string>
+    <string name="log_in_with_facebook">Sign in with Facebook</string>
+    <string name="facebook_com_device">facebook.com/device</string>
+    <string name="on_your_smart_phone_or_computer">on your smartphone or computer</string>
+    <string name="and_enter_this_code">and enter this code:</string>
+    <string name="code_expire_in">Code Expire In :</string>
+    <string name="next_visit">Next, visit</string>
+    <string name="success">Success!</string>
+    <string name="you_are_now_logged_in">You are now logged in.</string>
+    <string name="blank"></string>
+    <string name="guidedstep_ok">Ok</string>
+    <string name="guidedstep_cancel">Cancel</string>
+    <string name="start_watching">Start Watching</string>
 
 </resources>

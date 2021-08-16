@@ -14,7 +14,6 @@ import panteao.make.ready.callbacks.commonCallbacks.OnPopularSearchInteractionLi
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.activities.search.ui.TVSearchActivity
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.cardlayout.cardpresenter.PopularSearchCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.utils.helpers.NetworkConnectivity
@@ -27,7 +26,7 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
 
     private var mOnPopularSearchInteractionListener: OnPopularSearchInteractionListener? = null
     var channelId: String? = null
-    private lateinit var railInjectionHelper:RailInjectionHelper
+    private lateinit var railInjectionHelper: RailInjectionHelper
 //    private lateinit var viewModel: SearchViewModel
 
     companion object {
@@ -38,7 +37,7 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mOnPopularSearchInteractionListener = context as TVSearchActivity
-        railInjectionHelper=RailInjectionHelper(requireActivity().application)
+        railInjectionHelper = RailInjectionHelper(requireActivity().application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,8 +91,8 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
         setGridPresenter(gridPresenter)
         mOnPopularSearchInteractionListener?.showNoDataFoundView(false, "")
         mOnPopularSearchInteractionListener?.showProgressBarView(true)
-        val mAdapter = ArrayObjectAdapter(PopularSearchCardPresenter())
-        activity?.let { fragmentActivity ->
+        val mAdapter = ArrayObjectAdapter(PopularSearchCardPresenter("16x9"))
+                activity ?. let { fragmentActivity ->
             railInjectionHelper.getPlayListDetailsWithPagination(
                 fragmentActivity,
                 SDKConfig.getInstance().popularSearchId,
@@ -127,7 +126,7 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
 
         }
 
-        adapter = mAdapter
+                adapter = mAdapter
     }
 
     override fun onItemClicked(

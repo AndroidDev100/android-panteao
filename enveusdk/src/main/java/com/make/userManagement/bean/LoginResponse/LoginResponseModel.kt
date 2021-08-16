@@ -10,7 +10,7 @@ class LoginResponseModel {
     var isStatus: Boolean = false
     private var debugMessage: String? = null
 
-    fun getDebugMessage(): Any? {
+    fun getDebugMessage(): String? {
         return debugMessage
     }
 

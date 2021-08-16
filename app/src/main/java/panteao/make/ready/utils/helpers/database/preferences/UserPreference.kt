@@ -36,6 +36,7 @@ class UserPreference private constructor() :
      */
     private interface Keys {
         companion object {
+            val USER_PROFILE = "userProfile"
             val SELECTED_VIDEO_QUALITY = "video_quality"
             val SELECTED_LANGUAGE_POSITION = "selected_language_position"
             val USER_NAME = "user_name"
@@ -158,5 +159,7 @@ class UserPreference private constructor() :
     override fun clear() {
         super.clear()
     }
-
+    var userProfile: String?
+        get() = getString(Keys.USER_PROFILE, "")
+        set(isLogin) = setString(Keys.USER_PROFILE, isLogin)
 }

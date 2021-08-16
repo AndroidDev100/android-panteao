@@ -49,7 +49,6 @@ public class VideoDetailLayer {
                     if (response.body().getData() != null) {
                         RailCommonData railCommonData = new RailCommonData();
                         AppCommonMethod.getAssetDetail(railCommonData, response);
-                        Logger.e("ASSET_DETAILS", new Gson().toJson(railCommonData));
                         callBack.onSuccess(railCommonData);
                     }
 

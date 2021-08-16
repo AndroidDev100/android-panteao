@@ -14,7 +14,7 @@ import panteao.make.ready.cardlayout.cardview.AssetCardView
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
-class AssetCardPresenter(var contentType: Int) : Presenter() {
+class AssetCardPresenter(var contentType: Int,var widgetImageType:String) : Presenter() {
     private var mDefaultCardImage: Drawable? = null
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
@@ -51,7 +51,7 @@ class AssetCardPresenter(var contentType: Int) : Presenter() {
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         if (item is panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean) {
             val cardView = viewHolder.view as AssetCardView
-            cardView.setRailCommonDataModel(item)
+            cardView.setRailCommonDataModel(item,widgetImageType)
         }
     }
 

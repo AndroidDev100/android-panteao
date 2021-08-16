@@ -56,6 +56,7 @@ import panteao.make.ready.activities.detailspage.activity.TVInstructorDetailsAct
 import panteao.make.ready.activities.detailspage.activity.TVSeriesDetailActivity;
 import panteao.make.ready.activities.detailspage.activity.VideoDetailActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.internalpages.CustomInternalPage;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.live.LiveActivity;
@@ -941,6 +942,7 @@ public class AppCommonMethod {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
+        Logger.e("CLICKED_DETAILS", screenType + " " + new Gson().toJson(asset));
         if (screenType.equalsIgnoreCase(
                 MediaTypeConstants.getInstance().getSeries()
         ) || screenType.equalsIgnoreCase(
@@ -990,6 +992,14 @@ public class AppCommonMethod {
                     (TVBaseActivity) context,
                     asset
             );
+        } else if (screenType.equalsIgnoreCase("CUSTOM INTERNAL PAGE")) {
+            Intent playerIntent =
+                    new Intent(context, CustomInternalPage.class);
+            playerIntent.putExtra(
+                    "asset",
+                    asset
+            );
+            context.startActivity(playerIntent);
         }
     }
 
@@ -1357,7 +1367,7 @@ public class AppCommonMethod {
 //                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getPoster().getSources().get(0).getSrc());
 //            }
 //        }
-        // enveuVideoItemBean.setPosterURL(enveuVideoDetails.getPosterImage());
+        enveuVideoItemBean.setImages(enveuVideoDetails.getImages());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
@@ -1721,7 +1731,7 @@ public class AppCommonMethod {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                   // .setDomainUriPrefix("https://link.panteao.com")
+                    // .setDomainUriPrefix("https://link.panteao.com")
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(FirebaseConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
@@ -1744,7 +1754,7 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                 Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
@@ -1927,11 +1937,13 @@ public class AppCommonMethod {
         }
         return DownloadStatus.START;
     }
-    static boolean track1,track2,track3=false;
+
+    static boolean track1, track2, track3 = false;
+
     public static ArrayList<TracksItem> createTrackList(PKTracks tracks, FragmentActivity activity) {
-        track1=false;
-        track2=false;
-        track3=false;
+        track1 = false;
+        track2 = false;
+        track3 = false;
         ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
         for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
 

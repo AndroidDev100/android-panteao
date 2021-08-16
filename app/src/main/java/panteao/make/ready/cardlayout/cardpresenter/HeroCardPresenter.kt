@@ -6,16 +6,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.Presenter
+import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.cardlayout.cardview.HeroCardView
-import panteao.make.ready.utils.commonMethods.AppCommonMethod
+import panteao.make.ready.utils.cropImage.helpers.Logger
 
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
-class HeroCardPresenter(var contentType: Int) : Presenter() {
+class HeroCardPresenter(var contentType: Int,var widgetImageType: String) : Presenter() {
     private var mDefaultCardImage: Drawable? = null
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
@@ -51,8 +52,9 @@ class HeroCardPresenter(var contentType: Int) : Presenter() {
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         if (item is panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean) {
+            Logger.e("HERO_PRESENTER", Gson().toJson(item))
             val cardView = viewHolder.view as HeroCardView
-            cardView.setRailCommonDataModel(item)
+            cardView.setRailCommonDataModel(item,widgetImageType)
 //
         }
     }

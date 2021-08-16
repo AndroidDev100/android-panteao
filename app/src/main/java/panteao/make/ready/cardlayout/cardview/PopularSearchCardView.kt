@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.leanback.widget.BaseCardView
+import com.google.gson.Gson
 import panteao.make.ready.R
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.LayoutPopularSearchItemBinding
+import panteao.make.ready.enums.KalturaImageType
+import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.cropImage.helpers.Logger
+import java.util.HashMap
 
 
 open class PopularSearchCardView : BaseCardView {
@@ -52,8 +57,17 @@ open class PopularSearchCardView : BaseCardView {
         super.onDetachedFromWindow()
     }
 
-    fun setMenuModel(itemsItem: EnveuVideoItemBean) {
-
+    fun setMenuModel(itemsItem: EnveuVideoItemBean,widgetImageType:String) {
+        Logger.e("SEARCH_ASSET_DETAILS", Gson().toJson(itemsItem))
+        if (itemsItem.images != null) {
+            val crousalImages: HashMap<String, Thumbnail> = itemsItem.images
+            var imageType = KalturaImageType.LANDSCAPE
+            if (widgetImageType.equals("9x16", ignoreCase = true)) {
+                imageType = KalturaImageType.PORTRAIT
+            }
+            itemsItem.posterURL =
+                ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 640, 450)
+        }
         customMenuCardViewBinding?.contentsItem = itemsItem
 
     }

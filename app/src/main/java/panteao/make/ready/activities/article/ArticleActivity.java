@@ -45,7 +45,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
     public long videoPos = 0;
     private KsPreferenceKeys preference;
     private RailInjectionHelper railInjectionHelper;
-    EnveuVideoItemBean videoDetails;
+    private EnveuVideoItemBean videoDetails;
 
     @Override
     public ArticleActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -209,7 +209,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, assestId);
-        args.putSerializable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
+        args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
         UserInteractionFragment userInteractionFragment = new UserInteractionFragment();
         userInteractionFragment.setArguments(args);
         transaction.replace(R.id.fragment_user_interaction, userInteractionFragment);

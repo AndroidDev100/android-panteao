@@ -373,7 +373,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putSerializable(AppConstants.BUNDLE_SERIES_DETAIL, seriesDetailBean);
+        args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, seriesDetailBean);
 
         userInteractionFragment = new UserInteractionFragment();
         userInteractionFragment.setArguments(args);
