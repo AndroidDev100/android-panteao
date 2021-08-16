@@ -59,6 +59,7 @@ import panteao.make.ready.R;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.player.BackPressCallBack;
 import panteao.make.ready.player.PhoneStateListenerHelper;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -75,7 +76,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack, NetworkChangeReceiver.ConnectivityReceiverListener {
+public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack, NetworkChangeReceiver.ConnectivityReceiverListener, BackPressCallBack {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -656,6 +657,27 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         });
 
         errorDialog.show(fm, "fragment_alert");
+    }
+
+    @Override
+    public void BackPressClicked(int value) {
+        checkBackButtonOrientation(value);
+
+    }
+
+    private void checkBackButtonOrientation(int value) {
+        FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams) container.getLayoutParams();
+        captionParams.bottomMargin = (int) 0;
+        captionParams.topMargin = (int) 0;
+        container.setLayoutParams(captionParams);
+        if (value == 2) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        } else {
+            if (player != null) {
+                player.stop();
+                getActivity().finish();
+            }
+        }
     }
 
     public interface OnPlayerInteractionListener {
