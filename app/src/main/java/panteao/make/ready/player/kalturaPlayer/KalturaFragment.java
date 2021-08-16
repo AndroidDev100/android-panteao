@@ -1,10 +1,16 @@
 package panteao.make.ready.player.kalturaPlayer;
 
+import static android.content.Context.TELEPHONY_SERVICE;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +54,9 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
+import panteao.make.ready.player.PhoneStateListenerHelper;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -61,7 +72,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener {
+public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack, NetworkChangeReceiver.ConnectivityReceiverListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +104,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean isOfflineVideo = false;
     private PlayerControlsFragment playerControlsFragment;
     private Handler mHandler = new Handler();
+    private ImageView play_pause;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -345,6 +357,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     @Override
     public void playPause(ImageView id) {
         if (player != null) {
+            this.play_pause = id;
             if (player.isPlaying()) {
                 countDownTimer.cancel();
                 if (AppCommonMethod.isTV(requireActivity()))
@@ -574,7 +587,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void onFinishDialog() {
-
+        if (player!=null){
+            player.stop();
+            player.destroy();
+            requireActivity().finish();
+        }
     }
 
     public void skipIntroStatus(boolean skipIntro) {
@@ -593,6 +610,31 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
+    @Override
+    public void onCallStateRinging() {
+        if (player!=null){
+            player.pause();
+        }
+
+    }
+
+    @Override
+    public void onCallStateIdle(int state) {
+        if (player!=null){
+            player.play();
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            if (player != null) {
+                player.pause();
+                //showErrorDialog(getString(R.string.no_internet));
+            }
+        }
+    }
+
     public interface OnPlayerInteractionListener {
         void bingeWatchCall(String entryID);
 
@@ -604,7 +646,15 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         super.onPause();
         if (player != null) {
             stopPosition = (int) player.getCurrentPosition();
+            if (play_pause!=null) {
+                countDownTimer.cancel();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_pause));
+                else
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+            }
             player.pause();
+
         }
     }
 
@@ -613,9 +663,17 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         if (player != null) {
             player.seekTo(stopPosition);
+            if (play_pause!=null) {
+                countDownTimer.start();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_play));
+                else
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
+            }
             player.play();
         }
         super.onResume();
+        requestAudioFocus();
 
     }
 
@@ -707,5 +765,66 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void onStop() {
         super.onStop();
         countDownTimer.cancel();
+
+        TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+        if (mgr != null) {
+            mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
+        }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        try {
+            TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+            if (mgr != null) {
+                mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_CALL_STATE);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void requestAudioFocus() {
+
+        AudioManager mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        AudioAttributes mAudioAttributes =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mAudioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+        }
+        AudioFocusRequest mAudioFocusRequest =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mAudioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(mAudioAttributes)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                        @Override
+                        public void onAudioFocusChange(int i) {
+                            if (i == AUDIOFOCUS_LOSS) {
+                                if (player!=null) {
+                                    player.pause();
+                                }
+                            }
+                        }
+                    }) // Need to implement listener
+                    .build();
+        }
+        int focusRequest = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            focusRequest = mAudioManager.requestAudioFocus(mAudioFocusRequest);
+        }
+        switch (focusRequest) {
+            case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
+                // don’t start playback
+            case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
+                // actually start playback
+        }
+
+    }
+
 }
