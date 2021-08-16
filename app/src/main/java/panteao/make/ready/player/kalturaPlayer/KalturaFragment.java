@@ -111,6 +111,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private ImageView play_pause;
     private AlertDialogSingleButtonFragment errorDialog;
     private NetworkChangeReceiver receiver = null;
+    private boolean isFirstCalled = true;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -228,8 +229,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast toast =  Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG);
-                            toast.show();
+//                            Toast toast =  Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG);
+//                            toast.show();
+                            showErrorDialog(loadError.getMessage());
                         }
                     });
 
@@ -256,11 +258,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         playerControlsFragment.hideControls();
                     }
                 }
+
+                Log.w("progressValuess", IsbingeWatch + " " + player.getCurrentPosition() + " " + bingeWatchTimer + "  " + player.getDuration());
                 if (IsbingeWatch && bingeWatchTimer > 0) {
                     int currentPosition = (int) player.getCurrentPosition();
                     if (currentPosition >= bingeWatchTimer) {
                         showBingeWatchControls = true;
-                        playerControlsFragment.showBingeWatch();
+                        playerControlsFragment.showBingeWatch((int) (player.getDuration() - player.getCurrentPosition()),isFirstCalled);
+                        isFirstCalled = false;
                         countDownTimer.cancel();
                     }
                 }
@@ -270,7 +275,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
-
+                    Log.d("ffrrrfrrfr",isBingeWatchTimeCalculate+"");
                     if (!isBingeWatchTimeCalculate) {
                         int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         if (timeCalculation > bingeWatchTimer) {
@@ -286,6 +291,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 playerLayout.setVisibility(View.VISIBLE);
+                isFirstCalled = true;
                 mListener.onPlayerStart();
                 countDownTimer.start();
                 playerControlsFragment.showControls();
@@ -298,7 +304,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     player.stop();
                     showBingeWatchControls = false;
                     playerControlsFragment.hideControls();
-                    if (playerControlsFragment.bingeBtn.getVisibility() == View.VISIBLE) {
+                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
                         playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
                     }
                 }
@@ -363,7 +369,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     @Override
     public void playPause(ImageView id) {
         if (player != null) {
-            this.play_pause = id;
             if (player.isPlaying()) {
                 countDownTimer.cancel();
                 if (AppCommonMethod.isTV(requireActivity()))
@@ -476,6 +481,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void bingeWatch() {
+        isBingeWatchTimeCalculate = false;
         mListener.bingeWatchCall(entryID);
     }
 
@@ -580,6 +586,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     @Override
     public void showPlayerController(boolean isVisible) {
 
+    }
+
+    @Override
+    public void sendPlayPauseId(ImageView id) {
+        this.play_pause = id;
     }
 
     @Override
@@ -836,6 +847,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (mgr != null) {
             mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
         }
+
+        if (player!=null){
+            finishPlayer();
+        }
     }
 
     @Override
@@ -872,9 +887,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         @Override
                         public void onAudioFocusChange(int i) {
                             if (i == AUDIOFOCUS_LOSS) {
-                                if (player!=null) {
-                                    player.pause();
-                                }
+//                                if (player!=null) {
+//                                    player.pause();
+//                                }
                             }
                         }
                     }) // Need to implement listener
