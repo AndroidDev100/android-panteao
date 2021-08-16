@@ -75,7 +75,7 @@
                 android:paddingTop="@dimen/_26sdp"
                 android:paddingBottom="@dimen/_70sdp"
                 android:text="@string/coming_soon"
-                android:textColor="@color/moretitlecolor"
+                android:textColor="@color/white"
                 android:textSize="@dimen/coming_soon_text_size"
                 android:visibility="gone" />
 
