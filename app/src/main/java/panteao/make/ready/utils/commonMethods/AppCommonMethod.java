@@ -104,6 +104,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -2038,5 +2039,63 @@ public class AppCommonMethod {
             }
         });
         return list;
+    }
+
+    private static String formattedDate;
+    public static String getCurrentDateTimeStamp(int type) {
+        Calendar calendar = Calendar.getInstance();
+
+        Date today = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_YEAR, 6);
+        Date tomorrow = calendar.getTime();
+
+        if (type == 1) {
+            SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+            formattedDate = df.format(today);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+        } else {
+            SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+            formattedDate = df.format(tomorrow);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+
+        }
+        calendar.clear();
+        return getTimeStamp(formattedDate, type);
+    }
+    private static final String startTime = " 00:00:00 AM";
+    private static String getTimeStamp(String todayDate, int type) {
+        long timestamp = 0;
+        String dateStr;
+        if (type == 1) {
+            dateStr = todayDate + startTime;
+        } else {
+            dateStr = todayDate + startTime;
+        }
+
+        DateFormat readFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+        DateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = readFormat.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String formattedDate = "";
+        if (date != null) {
+            formattedDate = writeFormat.format(date);
+        }
+
+        if (date == null) {
+
+        } else {
+            long output = date.getTime() / 1000L;
+            String str = Long.toString(output);
+            timestamp = Long.parseLong(str);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>" + timestamp);
+            System.out.println(formattedDate);
+        }
+        return String.valueOf(timestamp);
     }
 }

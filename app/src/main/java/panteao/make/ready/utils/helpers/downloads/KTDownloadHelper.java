@@ -22,6 +22,7 @@ import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OfflineManager;
 import com.kaltura.tvplayer.offline.OfflineManagerSettings;
 
+import java.io.IOException;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +48,18 @@ public class KTDownloadHelper {
     Activity zContext;
     private OfflineManager manager;
     KTDownloadEvents ktDownloadEvents;
+    ManagerStart managerStartListener;
     DownloadDataBase db;
 
     public KTDownloadHelper(Activity zContext) {
         this.zContext=zContext;
+        db=DownloadDataBase.getInstance(zContext);
+        init(zContext);
+    }
+
+    public KTDownloadHelper(Activity zContext,ManagerStart managerStart) {
+        this.zContext=zContext;
+        this.managerStartListener=managerStart;
         db=DownloadDataBase.getInstance(zContext);
         init(zContext);
     }
@@ -69,12 +78,21 @@ public class KTDownloadHelper {
         startManager(manager);
     }
 
-    private void startManager(OfflineManager manager) {
+    public void startManager(OfflineManager manager) {
         try {
             manager.start(new OfflineManager.ManagerStartCallback() {
                 @Override
                 public void onStarted() {
-                    Log.e("started-->>","Manager start");
+                    try {
+                        if (managerStartListener!=null){
+                            if (manager!=null){
+                                managerStartListener.managerStarted();
+                            }
+                        }
+                        Log.e("started-->>","Manager start");
+                    }catch (Exception e){
+
+                    }
                 }
             });
         }catch (Exception e){
@@ -86,7 +104,9 @@ public class KTDownloadHelper {
         manager.setAssetStateListener(new OfflineManager.AssetStateListener() {
             @Override
             public void onAssetDownloadFailed(@NonNull String assetId, @NonNull Exception error) {
-                ktDownloadEvents.onAssetDownloadFailed(assetId,error);
+                if (ktDownloadEvents!=null){
+                    ktDownloadEvents.onAssetDownloadFailed(assetId,error);
+                }
                 Log.w("downloadStatus",assetId+" "+"onAssetDownloadFailed "+error.toString());
                // toastLong("Download of" + error + "failed:" + error);
                // updateItemStatus(assetId);
@@ -112,7 +132,10 @@ public class KTDownloadHelper {
             public void onAssetDownloadPaused(@NonNull String assetId) {
                 Log.w("downloadStatus",assetId+" "+"onAssetDownloadPaused");
                 Log.w("downloadVideo 4",assetId);
-                ktDownloadEvents.onDownloadPaused(assetId);
+                if (ktDownloadEvents!=null){
+                    ktDownloadEvents.onDownloadPaused(assetId);
+                }
+
                 /*toast("Paused");
                 updateItemStatus(assetId);*/
             }
@@ -254,11 +277,13 @@ public class KTDownloadHelper {
     }
 
     private void storeAssetInDB(String title, String kentryid, String assetType,String seriesID,String seriesName,String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+        String expiryTimeStamp=AppCommonMethod.getCurrentDateTimeStamp(2);
+        Log.w("expiryTimeStamp",expiryTimeStamp);
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
             if (seriesID!=null && !seriesID.equalsIgnoreCase("")){
-                checkSeriesEpisodes(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+                checkSeriesEpisodes(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL,expiryTimeStamp);
             }else {
-                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"20","",kentryid,
+                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"",expiryTimeStamp,kentryid,
                         -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),"",count);
                 db.downloadDao().insertDownloadItem(downloadItemEntity);
             }
@@ -266,37 +291,37 @@ public class KTDownloadHelper {
         }else   if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
             if (seriesID!=null && !seriesID.equalsIgnoreCase("")){
                // int episodesCount=numberOfEpisodes(seriesID);
-                checkTutorialChapters(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+                checkTutorialChapters(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL,expiryTimeStamp);
             }else {
-                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                         -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
                 db.downloadDao().insertDownloadItem(downloadItemEntity);
             }
 
         }else {
-            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"20","",kentryid,
+            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"",expiryTimeStamp,kentryid,
                     -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),"",count);
             db.downloadDao().insertDownloadItem(downloadItemEntity);
         }
     }
 
-    private void checkTutorialChapters(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+    private void checkTutorialChapters(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL,String expiryTimeStamp) {
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 if (db!=null) {
                     List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadChaptersByTID(seriesID);
                     if (downloadItemEntityList.size() > 0) {
-                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                                 -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,downloadItemEntityList.size()+1);
                         db.downloadDao().insertDownloadItem(downloadItemEntity);
                     } else {
-                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                                 -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
                         db.downloadDao().insertDownloadItem(downloadItemEntity);
                     }
                 }else {
-                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                             -1,seriesID,"",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
                     db.downloadDao().insertDownloadItem(downloadItemEntity);
                 }
@@ -307,7 +332,7 @@ public class KTDownloadHelper {
     }
 
 
-    private void checkSeriesEpisodes(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+    private void checkSeriesEpisodes(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL,String expiryTimeStamp) {
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -315,16 +340,16 @@ public class KTDownloadHelper {
                    List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesID,seasonNumber);
                    Log.w("numberOfEpisodes",downloadItemEntityList.size()+"");
                     if (downloadItemEntityList.size() > 0) {
-                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                                 seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,downloadItemEntityList.size()+1);
                         db.downloadDao().insertDownloadItem(downloadItemEntity);
                     } else {
-                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                        DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                                 seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
                         db.downloadDao().insertDownloadItem(downloadItemEntity);
                     }
                 }else {
-                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"20","",kentryid,
+                    DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                             seasonNumber,seriesID,episodeNumber,seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
                     db.downloadDao().insertDownloadItem(downloadItemEntity);
                 }
@@ -611,4 +636,46 @@ public class KTDownloadHelper {
     }
 
 
+    public void deleteAllExpiredVideos() {
+        try {
+            ArrayList<DownloadItemEntity> idsForRemove=new ArrayList<DownloadItemEntity>();
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (db!=null) {
+                        List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadAllDownloads();
+                        if (downloadItemEntityList.size() > 0) {
+                            for (int i=0;i<downloadItemEntityList.size();i++){
+                                if (downloadItemEntityList.get(i).getExpiryDate()!=null && !downloadItemEntityList.get(i).getExpiryDate().equalsIgnoreCase("")){
+                                    String currentTimeStamp=downloadItemEntityList.get(i).getExpiryDate();
+                                    long DBexpiry=Long.parseLong(currentTimeStamp);
+                                    Long expiryTimeStamp=AppCommonMethod.getCurrentTimeStamp();
+                                    Log.w("timestamps",expiryTimeStamp+"  "+DBexpiry);
+                                    if (expiryTimeStamp>DBexpiry){
+                                        Log.w("removeIds",downloadItemEntityList.get(i).getEntryId());
+                                        try {
+                                            if (manager!=null){
+                                                manager.removeAsset(downloadItemEntityList.get(i).getEntryId());
+                                            }
+                                        }catch (Exception e){
+
+                                        }
+
+                                        idsForRemove.add(downloadItemEntityList.get(i));
+                                    }
+                                }
+                            }
+                            db.downloadDao().deleteExpireIDs(idsForRemove);
+                        } else {
+
+                        }
+                    }else {
+
+                    }
+                }
+            });
+        }catch (Exception ignored){
+
+        }
+    }
 }

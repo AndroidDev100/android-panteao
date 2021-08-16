@@ -72,6 +72,7 @@ import panteao.make.ready.utils.helpers.ForceUpdateHandler;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
+import panteao.make.ready.utils.helpers.downloads.ManagerStart;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -82,10 +83,11 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
 
-public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener {
+public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener, ManagerStart {
     private final String TAG = this.getClass().getSimpleName();
     @Inject
     DTGPrefrencesProvider dtgPrefrencesProvider;
+    KTDownloadHelper downloadHelper;
     private ForceUpdateHandler forceUpdateHandler;
     private KsPreferenceKeys session;
     private PanteaoApplication appState;
@@ -138,9 +140,9 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
         dtgPrefrencesProvider.saveExpiryDays(3);
-        KTDownloadHelper downloadHelper = new KTDownloadHelper(this);
+        downloadHelper = new KTDownloadHelper(this,this);
 //        DownloadHelper downloadHelper = new DownloadHelper(this);
-//        downloadHelper.deleteAllExpiredVideos();
+
 
         notificationCheck();
 
@@ -150,6 +152,13 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         Logger.e("IntentData", new Gson().toJson(this.getIntent().getData()));
         printHashKey();
 
+    }
+
+    @Override
+    public void managerStarted() {
+        if (downloadHelper!=null){
+            downloadHelper.deleteAllExpiredVideos();
+        }
     }
 
     private void printHashKey() {
