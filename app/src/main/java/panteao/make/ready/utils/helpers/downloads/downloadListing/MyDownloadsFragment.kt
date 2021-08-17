@@ -171,4 +171,13 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
 
     }
 
+    fun clickEvent() {
+        try {
+            Log.d("secondclick","in")
+            fetchdataBaseValues();
+        }catch (exception : java.lang.Exception){
+            Log.d("secondclick",exception.toString())
+        }
+    }
+
 }

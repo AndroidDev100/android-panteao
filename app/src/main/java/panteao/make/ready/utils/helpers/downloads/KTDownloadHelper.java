@@ -480,16 +480,46 @@ public class KTDownloadHelper {
     }
 
     public void cancelVideo(String entryId) {
-        DBExecuter.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (entryId != null && !entryId.equalsIgnoreCase("")) {
-                    Log.w("downloadVideo 1",entryId);
-                    getManager().removeAsset(entryId);
-                    removeFromDB(entryId);
+        try {
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (entryId != null && !entryId.equalsIgnoreCase("")) {
+                       // Log.w("sortedChapters",entryId+" ");
+                       // Log.w("downloadVideo 1",entryId);
+                        getManager().removeAsset(entryId);
+                        removeFromDB(entryId);
+                    }
                 }
-            }
-        });
+            });
+
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+        try {
+            updateDataBase(entryId);
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+
+    }
+
+    private void updateDataBase(String entryId) {
+        try {
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    DownloadItemEntity entity=getAssetFromDB(entryId);
+                   // Log.w("sortedChapters",entity.isSeries()+" ");
+                    if (entity.isSeries()){
+                        getAllEpdFromDB(entity.getSeriesId(),entity.getSeasonNumber());
+                    }
+                }
+            });
+
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
     }
 
     public void pauseVideo(String entryId) {
@@ -510,6 +540,26 @@ public class KTDownloadHelper {
 
     public void resumeDownload(String entryId) {
         manager.startAssetDownload(manager.getAssetInfo(entryId));
+    }
+
+    public void updateDownload(List<? extends DownloadItemEntity> it) {
+        try {
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (it != null && it.size()>0) {
+                        if (db!=null){
+                            DownloadItemEntity entity=it.get(0);
+                            //Log.w("sortedChapters",entity.getEpisodesCount()+" ");
+                            entity.setEpisodesCount(it.size());
+                            db.downloadDao().updateDownloadItem(entity);
+                        }
+                    }
+                }
+            });
+        }catch (Exception ignored){
+
+        }
     }
 
     public void getAssetInfo(String kentry) {
@@ -713,4 +763,34 @@ public class KTDownloadHelper {
 
         }
     }
+
+    public void getAllEpdFromDB(String seriesId,int seasonNumber) {
+        try {
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (db!=null) {
+                        List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId,seasonNumber);
+                        //Log.w("sortedChapters",downloadItemEntityList.size()+" ");
+                        if (downloadItemEntityList.size() > 0) {
+                          //  Log.w("sortedChapters",downloadItemEntityList.get(0).getAssetType()+" ");
+                            if (!downloadItemEntityList.get(0).getAssetType().equalsIgnoreCase("chapter")){
+                                updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
+                            }else {
+                                updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
+                            }
+                        } else {
+
+                        }
+                    }else {
+
+                    }
+                }
+            });
+
+        }catch (Exception ignored){
+
+        }
+    }
+
 }

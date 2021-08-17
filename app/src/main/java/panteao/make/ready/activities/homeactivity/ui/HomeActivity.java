@@ -90,6 +90,11 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
                         fragmentManager.beginTransaction().add(R.id.content_frame, originalFragment, "3").hide(originalFragment).commit();
                         switchToOriginalFragment();
                     } else {
+                        try {
+                            ((MyDownloadsFragment)originalFragment).clickEvent();
+                        }catch (Exception e){
+
+                        }
                         switchToOriginalFragment();
                         try {
                             if (originalFragmentClick != null)

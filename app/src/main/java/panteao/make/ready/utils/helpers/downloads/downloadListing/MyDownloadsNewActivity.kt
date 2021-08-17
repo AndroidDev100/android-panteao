@@ -73,8 +73,39 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     var included : Boolean?=false
     private fun createUniqueList(it: List<DownloadItemEntity>) {
-        var listNew=AppCommonMethod.getEpisodesSortedList(it)
-        populateAdapter(listNew)
+        if (it.size>0){
+            if (!it.get(0).assetType.equals("chapter", ignoreCase = true)){
+                var listNew=AppCommonMethod.getEpisodesSortedList(it)
+                populateAdapter(listNew)
+                try {
+                    if (downloadHelper!=null){
+                        if (downloadHelper.manager!=null){
+                            if (listNew.size>0){
+                                downloadHelper.updateDownload(listNew)
+                            }
+                        }
+                    }
+                }catch (ignored : Exception){
+
+                }
+            }else{
+                var listNew=AppCommonMethod.getSortedChapters(ArrayList<DownloadItemEntity>(it))
+                populateAdapter(listNew)
+                try {
+                    if (downloadHelper!=null){
+                        if (downloadHelper.manager!=null){
+                            if (listNew.size>0){
+                                downloadHelper.updateDownload(listNew)
+                            }
+                        }
+                    }
+                }catch (ignored : Exception){
+
+                }
+            }
+
+        }
+
     }
 
     private fun populateAdapter(it: ArrayList<DownloadItemEntity>) {
@@ -147,7 +178,8 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
         if (type==1){
             binding.progressBar.visibility = View.VISIBLE
             Handler(Looper.getMainLooper()).postDelayed({
-                downloadHelper.getAllAssetFromDB().observe(this, Observer {
+                                                        fetchdataBaseValues()
+                /*downloadHelper.getAllAssetFromDB().observe(this, Observer {
                     binding.progressBar.visibility = View.GONE
                     if(it!==null && it.size>0){
                         noDownloadedData(2)
@@ -156,7 +188,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
                     }else{
                         noDownloadedData(1)
                     }
-                })
+                })*/
             }, 1500)
         }else{
             noDownloadedData(1)
