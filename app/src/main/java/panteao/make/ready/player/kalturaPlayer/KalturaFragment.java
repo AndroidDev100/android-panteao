@@ -308,9 +308,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         playerControlsFragment.showReplayVisibility();
                     }
                 }
-                if (mHandler != null) {
-                    finishPlayer();
-                }
+//                if (mHandler != null) {
+//                    finishPlayer();
+//                }
                 if (IsbingeWatch) {
                     if (totalEpisodes == runningEpisodes){
                         player.stop();
@@ -541,7 +541,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             player.seekTo(0);
             startPlayer();
             countDownTimer.start();
-            playerControlsFragment.showControls();
+           // playerControlsFragment.showControls();
         }
     }
 
@@ -869,10 +869,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
         if (mgr != null) {
             mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
-        }
-
-        if (player!=null){
-            finishPlayer();
         }
     }
 
