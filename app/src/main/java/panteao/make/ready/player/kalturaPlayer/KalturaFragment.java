@@ -207,7 +207,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 transaction.addToBackStack(null);
                 transaction.commit();
                 playerControlsFragment.setPlayerCallBacks(this);
-                playerControlsFragment.sendPortraitCallback();
+                int orientation = getResources().getConfiguration().orientation;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    if (playerControlsFragment!=null){
+                        playerControlsFragment.sendLandscapeCallback();
+                    }
+                }else {
+                    playerControlsFragment.sendPortraitCallback();
+                }
             } catch (Exception ignored) {
 
             }
@@ -539,8 +546,17 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void replay() {
         if (player!=null){
             player.seekTo(0);
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (playerControlsFragment!=null){
+                    playerControlsFragment.sendLandscapeCallback();
+                }
+            }else {
+                playerControlsFragment.sendPortraitCallback();
+            }
             startPlayer();
             countDownTimer.start();
+
            // playerControlsFragment.showControls();
         }
     }
