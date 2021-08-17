@@ -356,6 +356,15 @@ public class KsPreferenceKeys extends SharedPrefHelper {
         return getInt(SharedPrefesConstants.DOWNLOAD_OVER_WIFI, 1);
     }
 
+    public void setFromOfflineClick(Integer value) {
+        setInt(SharedPrefesConstants.FROM_OFFLINE_DOWNLOAD, value);
+    }
+
+    public int getFromOfflineClick() {
+        return getInt(SharedPrefesConstants.FROM_OFFLINE_DOWNLOAD, 1);
+    }
+
+
     public void setEntitlementState(boolean status) {
         setBoolean(ENTITLEMENT_STATUS, status);
     }

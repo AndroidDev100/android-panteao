@@ -150,7 +150,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         connectionObserver();
         getBinding().noConnectionLayout.retryTxt.setOnClickListener(view -> connectionObserver());
-        getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
+        //getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
         Logger.e("IntentData", new Gson().toJson(this.getIntent().getData()));
         printHashKey();
 
@@ -695,15 +695,39 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.GONE);
             loadAnimations();
         } else {
-            getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.VISIBLE);
-            getBinding().noConnectionLayout.noConnectionLayout.bringToFront();
-            configBean=AppCommonMethod.getConfigResponse();
-            if (configBean!=null){
-                getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
-                new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
-                finish();
+            try {
+                getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.VISIBLE);
+                getBinding().noConnectionLayout.noConnectionLayout.bringToFront();
+                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                configBean=AppCommonMethod.getConfigResponse();
+                if (configBean!=null){
+                    AppCommonMethod.setConfigConstant(configBean, isTablet);
+                    String API_KEY = "";
+                    String DEVICE_TYPE = "";
+                    if (isTablet) {
+                        API_KEY = SDKConfig.API_KEY_TAB;
+                        DEVICE_TYPE = BaseDeviceType.tablet.name();
+                    } else {
+                        API_KEY = SDKConfig.API_KEY_MOB;
+                        DEVICE_TYPE = BaseDeviceType.mobile.name();
+                    }
+                    BaseClient client = new BaseClient(ActivitySplash.this, BaseGateway.ENVEU, SDKConfig.getInstance().getBASE_URL(), SDKConfig.getInstance().getSUBSCRIPTION_BASE_URL(), DEVICE_TYPE, API_KEY, BasePlatform.android.name(), isTablet, AppCommonMethod.getDeviceId(getContentResolver()));
+                    BaseConfiguration.Companion.getInstance().clientSetup(client);
+                    getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
+
+                    getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            KsPreferenceKeys.getInstance().setFromOfflineClick(2);
+                            new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
+                            finish();
+                        }
+                    });
+
+                }
+            }catch (Exception ignored){
+
             }
-            /*  showDialog(ActivitySplash.this.getResources().getString(R.string.error),getResources().getString(R.string.no_connection)); */
         }
     }
 

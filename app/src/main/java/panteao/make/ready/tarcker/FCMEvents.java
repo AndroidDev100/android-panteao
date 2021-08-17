@@ -62,60 +62,60 @@ public class FCMEvents {
                         Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_FIREBASE_SCREEN:
-                TrackerUtil.getInstance(context).track(TrackerEvent.screen_track, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.screen_track, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_GALLERY_SELECT:
-                TrackerUtil.getInstance(context).track(TrackerEvent.gallery_select, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+               /* TrackerUtil.getInstance(context).track(TrackerEvent.gallery_select, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_CONTENT_SELECT:
-                TrackerUtil.getInstance(context).track(TrackerEvent.content_select, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.content_select, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_CONTENT_PLAY:
-                TrackerUtil.getInstance(context).track(TrackerEvent.content_play, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.content_play, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_CONTENT_COMPLETED:
-                TrackerUtil.getInstance(context).track(TrackerEvent.content_completed, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.content_completed, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_CONTENT_EXIT:
-                TrackerUtil.getInstance(context).track(TrackerEvent.content_exit, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.content_exit, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_SHARE_CONTENT:
-                TrackerUtil.getInstance(context).track(TrackerEvent.share_content, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.share_content, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_ADD_TO_WATCHLIST:
-                TrackerUtil.getInstance(context).track(TrackerEvent.add_to_watchlist, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.add_to_watchlist, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_REMOVE_WATCHLIST:
-                TrackerUtil.getInstance(context).track(TrackerEvent.remove_watchlist, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.remove_watchlist, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_SEARCH:
-                TrackerUtil.getInstance(context).track(TrackerEvent.search, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.search, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_SIGN_IN_SUCCESS:
-                TrackerUtil.getInstance(context).track(TrackerEvent.sign_in_success, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.sign_in_success, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_SIGN_UP_SUCCESS:
-                TrackerUtil.getInstance(context).track(TrackerEvent.sign_up_success, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.sign_up_success, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_LOGOUT:
-                TrackerUtil.getInstance(context).track(TrackerEvent.logout, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.logout, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
             case TRACK_EVENT_SETTINGS_VIDEO_QUALITY:
-                TrackerUtil.getInstance(context).track(TrackerEvent.settings_video_quality, requestParam,
-                        Arrays.asList(PlatformType.FCM));
+                /*TrackerUtil.getInstance(context).track(TrackerEvent.settings_video_quality, requestParam,
+                        Arrays.asList(PlatformType.FCM));*/
                 break;
 
 

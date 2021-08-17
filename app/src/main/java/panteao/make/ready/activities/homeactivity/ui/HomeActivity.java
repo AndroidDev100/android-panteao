@@ -325,10 +325,31 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
-        if (preference == null)
+        if (preference == null){
             preference = KsPreferenceKeys.getInstance();
+        }
 
+        try {
+            if (KsPreferenceKeys.getInstance().getFromOfflineClick()==2){
+                Log.w("redirections",KsPreferenceKeys.getInstance().getFromOfflineClick()+"---->>"+originalFragment);
+                if (originalFragment == null) {
+                    KsPreferenceKeys.getInstance().setFromOfflineClick(1);
+                    originalFragment = new MyDownloadsFragment();
+                    fragmentManager.beginTransaction().add(R.id.content_frame, originalFragment, "3").hide(originalFragment).commit();
+                    switchToOriginalFragment();
+                }
+            }
 
+            removeNavigationShiftMode(navigation);
+            if (active instanceof MyDownloadsFragment) {
+                navigation.getMenu().findItem(R.id.navigation_originals).setChecked(true);
+                navigation.setSelectedItemId(R.id.navigation_originals);
+                navigation.setSelected(true);
+            }
+
+        }catch (Exception e){
+
+        }
     }
 
     @Override
