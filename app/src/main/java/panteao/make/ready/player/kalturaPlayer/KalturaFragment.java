@@ -286,7 +286,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 countDownTimer.start();
                 playerControlsFragment.showControls();
                 if (playerControlsFragment != null) {
-                    Log.d("ffrrrfrrfr",isBingeWatchTimeCalculate+"");
                     if (!isBingeWatchTimeCalculate) {
                         int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         if (timeCalculation > bingeWatchTimer) {
@@ -320,8 +319,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         playerControlsFragment.showReplayVisibility();
 
                     }else {
+                        player.stop();
                         isFirstCalled = true;
                         isBingeWatchTimeCalculate = false;
+                        playerControlsFragment.hideBingeWatch();
                         mListener.bingeWatchCall(entryID);
                     }
                 }

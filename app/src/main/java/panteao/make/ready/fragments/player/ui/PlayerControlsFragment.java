@@ -65,7 +65,7 @@ public class PlayerControlsFragment extends Fragment {
     private Handler viewHideShowTimeHandler;
     private boolean timer = true;
     private boolean mFlag = false;
-    private ImageView qualitySettings;
+    public ImageView qualitySettings;
     private Formatter formatter;
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
@@ -83,7 +83,7 @@ public class PlayerControlsFragment extends Fragment {
     private long playbackDuration, playbackCurrentPosition;
     private boolean isOffline = false;
     private LinearLayout seekbarLayout;
-    private ViewGroup childControls;
+    public ViewGroup childControls;
     public Button skipBtn;
     public LinearLayout bingeBtn;
     private boolean dragging = false;
