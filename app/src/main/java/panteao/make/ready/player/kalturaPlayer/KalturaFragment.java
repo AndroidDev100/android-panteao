@@ -209,9 +209,13 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 playerControlsFragment.setPlayerCallBacks(this);
                 int orientation = getResources().getConfiguration().orientation;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    if (playerControlsFragment!=null){
-                        playerControlsFragment.sendLandscapeCallback();
-                    }
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                playerControlsFragment.sendLandscapeCallback();
+                            }
+                        },1500);
+
                 }else {
                     playerControlsFragment.sendPortraitCallback();
                 }
@@ -310,6 +314,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 if (playerControlsFragment != null) {
                     if (!IsbingeWatch) {
                         player.stop();
+                        player.destroy();
                         showBingeWatchControls = false;
                        // playerControlsFragment.hideControls();
                         playerControlsFragment.showReplayVisibility();
@@ -321,12 +326,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 if (IsbingeWatch) {
                     if (totalEpisodes == runningEpisodes){
                         player.stop();
+                        player.destroy();
                         showBingeWatchControls = false;
                        // playerControlsFragment.hideControls();
                         playerControlsFragment.showReplayVisibility();
 
                     }else {
                         player.stop();
+                        player.destroy();
                         isFirstCalled = true;
                         isBingeWatchTimeCalculate = false;
                         playerControlsFragment.hideBingeWatch();
@@ -464,6 +471,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
             if (player != null) {
                 player.stop();
+                player.destroy();
             }
         }
     }
@@ -501,6 +509,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void bingeWatch() {
         if (playerControlsFragment != null) {
             player.stop();
+            player.destroy();
             showBingeWatchControls = false;
             playerControlsFragment.hideControls();
         }
@@ -546,18 +555,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void replay() {
         if (player!=null){
             player.seekTo(0);
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if (playerControlsFragment!=null){
-                    playerControlsFragment.sendLandscapeCallback();
-                }
-            }else {
-                playerControlsFragment.sendPortraitCallback();
-            }
             startPlayer();
             countDownTimer.start();
-
-           // playerControlsFragment.showControls();
+            playerControlsFragment.showControls();
         }
     }
 
@@ -724,6 +724,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         } else {
             if (player != null) {
                 player.stop();
+                player.destroy();
                 finishPlayer();
                 getActivity().finish();
             }

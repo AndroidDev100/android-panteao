@@ -489,7 +489,9 @@ public class PlayerControlsFragment extends Fragment {
         try {
             qualitySettings.setVisibility(View.VISIBLE);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
+            Log.d("frfjghjghj","EnterHere5");
             if (!getResources().getBoolean(R.bool.isTablet)) {
+                Log.d("frfjghjghj","EnterHere4");
                 setParamstoSeekBarControl(seekBarControl);
                 setParamstoBackbutton(backArrow);
                 setParamstoQuality(qualitySettings);
