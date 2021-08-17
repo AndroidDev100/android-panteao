@@ -51,12 +51,14 @@ import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
+import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.adapters.commonRails.CommonAdapterNew;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -1446,12 +1448,17 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
-                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                        if (videoQuality != 4) {
+                        if (videoQuality != 3) {
                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                            downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
+                            if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                                String[] array = getResources().getStringArray(R.array.download_quality);
+                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                int pos =  new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                                downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL(),"",-1,"");
+                            }
                         } else {
                             selectDownloadVideoQuality();
                         }
@@ -1461,9 +1468,14 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    if (videoQuality != 4) {
+                    if (videoQuality != 3) {
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                        downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
+                        if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                            String[] array = getResources().getStringArray(R.array.download_quality);
+                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            int pos =  new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                            downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL(),"",-1,"");
+                        }
                     } else {
                         selectDownloadVideoQuality();
                     }
@@ -1474,21 +1486,24 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
 
     private void showWifiSettings(int videoQuality) {
-//        downloadHelper.changeWifiSetting(new WifiPreferenceListener() {
-//            @Override
-//            public void actionP(int value) {
-//                if (value == 0) {
-//                    if (downloadHelper.getCatalog() != null) {
-//                        downloadHelper.allowedMobileDownload();
-//                        if (videoQuality != 4) {
-//                            downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
-//                        } else {
-//                            selectDownloadVideoQuality();
-//                        }
-//                    }
-//                }
-//            }
-//        });
+        downloadHelper.changeWifiSetting(new WifiPreferenceListener() {
+            @Override
+            public void actionP(int value) {
+                if (value == 0) {
+                    if (videoQuality != 3) {
+                        if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                            String[] array = getResources().getStringArray(R.array.download_quality);
+                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            int pos =  new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                            downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL(),"",-1,"");
+                        }
+
+                    } else {
+                        selectDownloadVideoQuality();
+                    }
+                }
+            }
+        });
     }
 
     private void selectDownloadVideoQuality() {

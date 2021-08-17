@@ -60,7 +60,9 @@ import java.util.concurrent.TimeUnit;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
+import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.listing.listui.ListActivity;
@@ -1796,54 +1798,68 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
      @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
-        if (source instanceof UserInteractionFragment) {
-            boolean loginStatus = preference.getAppPrefLoginStatus();
-            if (!loginStatus)
-                new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
-            else {
-                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
-                if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
-                    if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                        if (videoQuality != 4) {
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                            downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
-                        } else {
-                            selectDownloadVideoQuality();
-                        }
-                    } else {
-                        showWifiSettings(videoQuality);
+         if (source instanceof UserInteractionFragment) {
+             boolean loginStatus = preference.getAppPrefLoginStatus();
+             if (!loginStatus)
+                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
+             else {
+                 int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
+                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
+                         if (videoQuality != 3) {
+                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                             if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                                 String[] array = getResources().getStringArray(R.array.download_quality);
+                                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                 int pos =  new SharedPrefHelper(ChapterActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                                 downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
+                             }
+                         } else {
+                             selectDownloadVideoQuality();
+                         }
+                     } else {
+                         showWifiSettings(videoQuality);
 //                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
-                        //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    if (videoQuality != 4) {
-                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-//                        downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
+                         //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
+                     }
+                 } else {
+                     if (videoQuality != 3) {
+                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                         if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                             String[] array = getResources().getStringArray(R.array.download_quality);
+                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                             int pos =  new SharedPrefHelper(ChapterActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                             downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
+                         }
+                     } else {
+                         selectDownloadVideoQuality();
+                     }
+                 }
+             }
+         }
+    }
+
+
+    private void showWifiSettings(int videoQuality) {
+        downloadHelper.changeWifiSetting(new WifiPreferenceListener() {
+            @Override
+            public void actionP(int value) {
+                if (value == 0) {
+                    if (videoQuality != 3) {
+                        if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                            String[] array = getResources().getStringArray(R.array.download_quality);
+                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            int pos =  new SharedPrefHelper(ChapterActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                            downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
+                        }
+
                     } else {
                         selectDownloadVideoQuality();
                     }
                 }
             }
-        }
-    }
+        });
 
-
-    private void showWifiSettings(int videoQuality) {
-//        downloadHelper.changeWifiSetting(new WifiPreferenceListener() {
-//            @Override
-//            public void actionP(int value) {
-//                if (value == 0) {
-//                    if (downloadHelper.getCatalog() != null) {
-//                        downloadHelper.allowedMobileDownload();
-//                        if (videoQuality != 4) {
-//                            downloadHelper.startVideoDownload(downloadAbleVideo, videoQuality);
-//                        } else {
-//                            selectDownloadVideoQuality();
-//                        }
-//                    }
-//                }
-//            }
-//        });
     }
 
     private void selectDownloadVideoQuality() {

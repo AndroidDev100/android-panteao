@@ -34,7 +34,9 @@ import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
+import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.databinding.LayoutDownloadQualityBottomSheetBinding;
+import panteao.make.ready.databinding.WifiDialogBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
@@ -43,6 +45,7 @@ import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
 import panteao.make.ready.utils.helpers.downloads.db.DownloadDataBase;
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 import panteao.make.ready.utils.helpers.downloads.downloadListing.DownloadStateListener;
+import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class KTDownloadHelper {
     Activity zContext;
@@ -439,6 +442,38 @@ public class KTDownloadHelper {
         dialog.show();
 
     }
+
+    public void changeWifiSetting(WifiPreferenceListener videoQualitySelectedListener) {
+        WifiDialogBinding binding = DataBindingUtil.inflate(zContext.getLayoutInflater(), R.layout.wifi_dialog, null,false);
+        BottomSheetDialog dialog = new BottomSheetDialog(zContext);
+        dialog.setContentView(binding.getRoot());
+
+        String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
+        List<String> stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+        stringList.remove(3);
+
+        if (KsPreferenceKeys.getInstance().getDownloadOverWifi()==1){
+            binding.switchDownload.setChecked(true);
+        }
+
+        binding.btnStartDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.switchDownload.isChecked()) {
+                    KsPreferenceKeys.getInstance().setDownloadOverWifi(1);
+                }else {
+                    KsPreferenceKeys.getInstance().setDownloadOverWifi(0);
+                }
+
+                videoQualitySelectedListener.actionP(KsPreferenceKeys.getInstance().getDownloadOverWifi());
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
 
     public OfflineManager getManager() {
         return manager;

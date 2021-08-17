@@ -112,6 +112,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -1959,6 +1960,8 @@ public class AppCommonMethod {
     @NotNull
     public static ArrayList<DownloadItemEntity> getSortedList(@NotNull List<? extends DownloadItemEntity> it) {
         ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        int temp = 1;
+        HashMap map=new HashMap();
         for (int i=0;i<it.size();i++){
             boolean notFound=false;
             if (list.size()>0) {
@@ -1975,7 +1978,7 @@ public class AppCommonMethod {
                         Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
                        // if (value2.isSeries()) {
                             if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
-                                Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2);
+                                Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
                                 notFound=true;
                             }
                        // }
@@ -1983,13 +1986,17 @@ public class AppCommonMethod {
                     if (!notFound){
                         list.add(value);
                     }
+
+
                 }else {
                     list.add(value);
                 }
             }else {
                 list.add(it.get(0));
             }
+
         }
+
         return getSortedList(list);
     }
 
