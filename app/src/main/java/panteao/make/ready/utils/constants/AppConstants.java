@@ -3,7 +3,7 @@ package panteao.make.ready.utils.constants;
 import org.jetbrains.annotations.NotNull;
 
 public interface AppConstants {
-    String MY_MVHUB_ENCRYPTION_KEY="MYMVHUB$KEY";
+    String MY_MVHUB_ENCRYPTION_KEY = "MYMVHUB$KEY";
     String ENVEU_CONFIG = "enveuConfig";
     String IMAGE_TYPE_THUMBNAIL = "THUMBNAIL";
     String IMAGE_TYPE_POSTER = "POSTER";
@@ -18,8 +18,8 @@ public interface AppConstants {
     String SERIES_IMAGES_BASE_KEY = "/cms/images/library/series/";
     String VIDEO_IMAGE_BASE_KEY = "/cms/images/library/video/";
     String SEASON_IMAGES_BASE_KEY = "/cms/images/library/season/";
-    String VIDEO_CLOUD_FRONT_URL = "https://d228i5jh7v5l96.cloudfront.net/";
-    String FILTER_PLAYER_BANNER = "/640x360/filters:format(jpeg):quality(100)";
+    String VIDEO_CLOUD_FRONT_URL = "https://d3uz5dkbsevwkn.cloudfront.net/fit-in/";
+    String FILTER_PLAYER_BANNER = "/filters:fill(auto):format(webp):quality(60)";
     String FILTER = "/filters:";
     String LINE_URI = "https://line.me/R/oaMessage/@mvhub";
 
@@ -92,7 +92,7 @@ public interface AppConstants {
     String RESPONSE_CODE_SIGNUP = "2001";
     String RESPONSE_CODE_SIGNUP_ALREADY = "409";
     int RESPONSE_CODE_REGISTER = 200;
-    int RESPONSE_CODE_LOGOUT=401;
+    int RESPONSE_CODE_LOGOUT = 401;
     int RESPONSE_CODE_ERROR = 500;
     int REQUEST_PICK_IMAGE = 1003;
     int REQUEST_CODE_CAMERA = 1002;
@@ -204,21 +204,22 @@ public interface AppConstants {
     String BUNDLE_ID_FOR_COMMENTS = "commentId";
     String BUNDLE_BANNER_IMAGE = "bannerImage";
     String BUNDLE_TYPE_FOR_COMMENTS = "type";
-    String BUNDLE_SEASON_COUNT="seasonCount";
-    String BUNDLE_SEASON_ARRAY="seasonArray";
+    String BUNDLE_SEASON_COUNT = "seasonCount";
+    String BUNDLE_SEASON_ARRAY = "seasonArray";
 
-    String BUNDLE_SELECTED_SEASON="selectedSeasonId";
+    String BUNDLE_SELECTED_SEASON = "selectedSeasonId";
     String BUNDLE_DETAIL_TYPE = "detailType";
     String BUNDLE_SERIES_DETAIL = "seriesDetail";
     String BOOKMARK_POSITION = "bookmarkPosition";
     String ASSETTYPE = "assetType";
     String PLAYER_ASSET_TITLE = "playerAssetTitle";
     String PLAYER_ASSET_MEDIATYPE = "playerMediaType";
+    String PLAYLIST_CONTENT = "playListContent";
     int PAGE_SIZE = 20;
     String BUNDLE_ASSET_TYPE = "assetType";
     String BUNDLE_CURRENT_ASSET_ID = "currentAssetId";
-     String TAG_NO_INTERNET_FRAGMENT="NO_INTERNET_CONNECTION";
-    String ENTRY_ID ="entry_id" ;
+    String TAG_NO_INTERNET_FRAGMENT = "NO_INTERNET_CONNECTION";
+    String ENTRY_ID = "entry_id";
 
     enum UserLoginType {
         Manual,
@@ -244,11 +245,12 @@ public interface AppConstants {
         OVP,
         SUBSCRIPTION
     }
-    int BOOKMARK_INTERVAL= 30000; // 30 sec
+
+    int BOOKMARK_INTERVAL = 30000; // 30 sec
 
 
-    String USER_NAME="name";
-    String USER_EMAIL="email";
+    String USER_NAME = "name";
+    String USER_EMAIL = "email";
 
     public static String LIGHT_THEME = "LightTheme";
     public static String DARK_THEME = "DarkTheme";
@@ -258,44 +260,43 @@ public interface AppConstants {
     String FCM_TOKEN = "fcm_token";
 
 
-  String GALLERY_SELECT="gallery_select";
-  String CONTENT_SELECT="content_select";
-  String CONTENT_PLAY="content_play";
-  String CONTENT_COMPLETED="content_completed";
-  String CONTENT_EXIT="content_exit";
-  String SHARE_CONTENT="share_content";
-  String ADD_TO_WATCHLIST="add_to_watchlist";
-  String REMOVE_WATCHLIST="remove_watchlist";
-  String SEARCH ="search";
-  String SIGN_IN_SUCCESS ="sign_in_success";
-  String SIGN_UP_SUCCESS ="sign_up_success";
-  String LOGOUT="logout";
-  String SETTINGS_VIDEO_QUALITY="settings_video_quality";
+    String GALLERY_SELECT = "gallery_select";
+    String CONTENT_SELECT = "content_select";
+    String CONTENT_PLAY = "content_play";
+    String CONTENT_COMPLETED = "content_completed";
+    String CONTENT_EXIT = "content_exit";
+    String SHARE_CONTENT = "share_content";
+    String ADD_TO_WATCHLIST = "add_to_watchlist";
+    String REMOVE_WATCHLIST = "remove_watchlist";
+    String SEARCH = "search";
+    String SIGN_IN_SUCCESS = "sign_in_success";
+    String SIGN_UP_SUCCESS = "sign_up_success";
+    String LOGOUT = "logout";
+    String SETTINGS_VIDEO_QUALITY = "settings_video_quality";
 
     int TRACK_EVENT_FIREBASE_SCREEN = 6;
-   int TRACK_EVENT_GALLERY_SELECT = 7;
+    int TRACK_EVENT_GALLERY_SELECT = 7;
     int TRACK_EVENT_CONTENT_SELECT = 8;
     int TRACK_EVENT_CONTENT_PLAY = 9;
     int TRACK_EVENT_CONTENT_COMPLETED = 10;
-    int TRACK_EVENT_CONTENT_EXIT=11;
-    int TRACK_EVENT_SHARE_CONTENT=12;
-    int TRACK_EVENT_ADD_TO_WATCHLIST=13;
-    int TRACK_EVENT_REMOVE_WATCHLIST=14;
-    int TRACK_EVENT_SEARCH =15;
-    int TRACK_EVENT_SIGN_IN_SUCCESS =16;
-    int TRACK_EVENT_SIGN_UP_SUCCESS =17;
-    int TRACK_EVENT_LOGOUT=18;
-    int TRACK_EVENT_SETTINGS_VIDEO_QUALITY=19;
+    int TRACK_EVENT_CONTENT_EXIT = 11;
+    int TRACK_EVENT_SHARE_CONTENT = 12;
+    int TRACK_EVENT_ADD_TO_WATCHLIST = 13;
+    int TRACK_EVENT_REMOVE_WATCHLIST = 14;
+    int TRACK_EVENT_SEARCH = 15;
+    int TRACK_EVENT_SIGN_IN_SUCCESS = 16;
+    int TRACK_EVENT_SIGN_UP_SUCCESS = 17;
+    int TRACK_EVENT_LOGOUT = 18;
+    int TRACK_EVENT_SETTINGS_VIDEO_QUALITY = 19;
 
-    String MAIN_HOME="Main - Home";
-    String MAIN_TOPHITS="Main – Top Hits";
-    String MAIN_COMINGSOON="Main – Coming Soon";
-    String MAIN_LIVETV="Main – Live TV";
-    String MAIN_MORE="Main - More";
+    String MAIN_HOME = "Main - Home";
+    String MAIN_TOPHITS = "Main – Top Hits";
+    String MAIN_COMINGSOON = "Main – Coming Soon";
+    String MAIN_LIVETV = "Main – Live TV";
+    String MAIN_MORE = "Main - More";
     String POPULAR_SEARCH = "PopularSearch";
     String KEYWORD_SEARCH = "KeywordSearch";
     String SEARCH_STRING_KEY = "SearchStringKey";
-
 
 
     String WIDTH = "/width/";
@@ -314,4 +315,16 @@ public interface AppConstants {
     String VIDEO_DETAIL = "videoDetail";
     String EPISODE_DETAIL = "episode_detail";
     String SEASON_DETAIL = "SeasonDetails";
+    String FACEBOOK_BASE_URL = "https://graph.facebook.com/";
+    String FACEBOOK_ID_ACCESS_TOKEN = "3991362660937190|ed0d96f57393fdd742f6a3b02e60806c";
+    String SCOPE = "public_profile";
+    String FACEBOOK_FIELD = "name,email,first_name,last_name,picture.type(large)";
+    String FB_LOGIN_CALL = "/user/fbLogin";
+    String SOCIAL_LOGIN = "social_login";
+    String MANUAL_LOGIN = "manual_login";
+    String ERROR_MESSAGE = "error_message";
+
+    long GUIDED_EXIT = 10001L;
+    long GUIDED_CANCEL = 10002L;
+    long GUIDED_OK = 10003L;
 }

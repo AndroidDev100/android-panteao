@@ -2,7 +2,6 @@ package panteao.make.ready.activities.search.ui.fragment
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -14,8 +13,6 @@ import androidx.leanback.app.BackgroundManager
 import androidx.leanback.app.HeadersSupportFragment
 import androidx.leanback.widget.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.callbacks.commonCallbacks.DataUpdateCallBack
@@ -23,13 +20,10 @@ import panteao.make.ready.callbacks.commonCallbacks.OnKeywordSearchFragmentListe
 import panteao.make.ready.cardlayout.cardpresenter.PopularSearchCardPresenter
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.tvBaseModels.basemodels.TVBaseFragment
-import panteao.make.ready.utils.MediaTypeConstants
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
-import kotlin.collections.ArrayList
 
 
 class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedListener,
@@ -131,11 +125,11 @@ class KeyWordSearchFragment constructor() : TVBaseFragment(), OnItemViewClickedL
                 mOnFragmentListener?.showNoDataFoundView(false, "")
                 for (i in it.indices) {
                     if (mGridPresenter == null) {
-                        mGridPresenter = PopularSearchCardPresenter()
+                        mGridPresenter = PopularSearchCardPresenter("16x9")
                     }
                     if (it[i].enveuVideoItemBeans!!.size > 0) {
                         gridRowAdapter = ArrayObjectAdapter(mGridPresenter)
-                        gridRowAdapter?.addAll(0, it.get(i).getEnveuVideoItemBeans())
+                        gridRowAdapter?.addAll(0, it[i].enveuVideoItemBeans)
                         var headerText = "";
                         headerText = it[i].enveuVideoItemBeans!![0].assetType
 //                        when (it[i].enveuVideoItemBeans!![0].assetType) {

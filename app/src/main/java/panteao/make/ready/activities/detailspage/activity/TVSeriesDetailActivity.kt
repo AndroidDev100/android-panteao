@@ -149,7 +149,7 @@ class TVSeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBind
         binding.content = videoDetail
         seriesDetailFragment = SeriesDetailFragment.newInstance()
         val bundle = Bundle()
-        bundle.putSerializable(AppConstants.SELECTED_SERIES, videoDetail)
+        bundle.putParcelable(AppConstants.SELECTED_SERIES, videoDetail)
 //        SeriesDetailManager.getInstance().setBookmarks(continueWatchingBookmarkList)
         seriesDetailFragment.arguments = bundle
         addFragment(

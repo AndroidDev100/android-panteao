@@ -317,20 +317,20 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
         if (listData.isSeries() && AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
-            AppCommonMethod.launchDetailScreen(this, getVideoId, MediaTypeConstants.getInstance().getSeries(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, getVideoId, MediaTypeConstants.getInstance().getSeries(), itemValue.getId(), "0", false,itemValue);
         } else {
             if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
                 String getVideoId = itemValue.getkEntryId();
                 if (itemValue.getAssetType() != null) {
-                    AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
                 } else {
-                    AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false,itemValue);
                 }
             } else {
                 if (itemValue.getAssetType() != null) {
-                    AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
                 } else {
-                    AppCommonMethod.launchDetailScreen(this, "", AppConstants.Video, itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, "", AppConstants.Video, itemValue.getId(), "0", false,itemValue);
                 }
             }
         }

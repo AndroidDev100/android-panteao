@@ -53,7 +53,7 @@
                 android:layout_marginEnd="0dp"
                 android:contentDescription="@string/slider_image_content_discription"
                 android:onClick="@{(view) -> adapter.itemClick(position)}"
-                android:scaleType="fitXY" />
+                 />
 
             <TextView
                 android:id="@+id/exclusiveBadge"

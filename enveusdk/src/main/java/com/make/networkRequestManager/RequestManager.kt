@@ -14,7 +14,7 @@ import com.make.userManagement.params.UserManagement
 import com.make.watchHistory.beans.ResponseWatchHistoryAssetList
 import com.make.watchHistory.callbacks.GetWatchHistoryCallBack
 import com.google.gson.JsonObject
-import com.watcho.enveu.bean.EnveuCategory
+import com.make.enveuCategoryServices.EnveuCategory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -317,4 +317,5 @@ class RequestManager {
             }
         })
     }
+
 }

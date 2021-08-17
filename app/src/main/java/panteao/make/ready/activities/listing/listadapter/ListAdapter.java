@@ -11,6 +11,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
+import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.modelClasses.ItemsItem;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
@@ -23,6 +26,7 @@ import panteao.make.ready.databinding.ListPrItemBinding;
 import panteao.make.ready.databinding.ListPrtwoItemBinding;
 import panteao.make.ready.databinding.ListSquareItemBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ImageHelper;
@@ -30,6 +34,7 @@ import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -184,6 +189,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void setLandscapeData(LandscapeItemRowHolder viewHolder, int position) {
+        HashMap<String, Thumbnail> crousalImages = list.get(position).getImages();
+        KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+        list.get(position).setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 640, 360));
+
         viewHolder.itemBinding.setPlaylistItem(list.get(position));
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
 

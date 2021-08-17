@@ -58,7 +58,6 @@ public class RailInjectionHelper extends AndroidViewModel {
     }
 
     public ObservableRxList<RailCommonData> getScreenWidgets(Activity activity, String screenId, CommonApiCallBack commonApiCallBack) {
-
         APIServiceLayer.getInstance().getCategories(screenId).observe((LifecycleOwner) activity, baseCategoriesList -> {
             baseCategories = baseCategoriesList;
             i = 0;

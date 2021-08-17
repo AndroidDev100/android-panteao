@@ -31,45 +31,43 @@
                     android:layout_width="@dimen/NontonSize110"
                     android:layout_height="@dimen/NontonSize165"
                     android:contentDescription="TODO"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY" />
 
-                    />
                 <FrameLayout
                     android:id="@+id/flNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="-2dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="-2dp"
                     android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/vip_badge_width"
                         android:layout_height="@dimen/vip_badge_height"
                         android:src="@{playlistItem.newSeriesImageDrawable, default=@drawable/series_icon_120}"
-                        tools:ignore="ContentDescription"/>
+                        tools:ignore="ContentDescription" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/flNewMovie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="-2dp"
-                    android:layout_marginTop="@dimen/NontonSize55"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/NontonSize55"
+                    android:layout_marginEnd="-2dp"
                     android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/vip_badge_width"
                         android:layout_height="@dimen/vip_badge_height"
                         android:src="@{playlistItem.newMoviesDrawable, default=@drawable/new_movie_120}"
-                        tools:ignore="ContentDescription"/>
+                        tools:ignore="ContentDescription" />
                 </FrameLayout>
 
 
             </RelativeLayout>
-
 
 
             <RelativeLayout
@@ -79,9 +77,9 @@
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvTitle"
@@ -89,28 +87,28 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/NontonSize165"
                         android:ellipsize="end"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:visibility="gone"
-                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
-                        android:paddingTop="@dimen/NontonSize2"
                         android:paddingLeft="@dimen/_3sdp"
+                        android:paddingTop="@dimen/NontonSize2"
                         android:textColor="?attr/watchlist_item_title_color"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:visibility="gone"
-                        android:fontFamily="@font/sarabun_v7_thai_latin_light"
                         android:paddingLeft="@dimen/_3sdp"
                         android:paddingBottom="@dimen/_2sdp"
                         android:textColor="?attr/watchlist_item_title_color"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
@@ -148,10 +146,8 @@
                     android:layout_height="@dimen/episode_badge_height"
                     android:layout_gravity="center"
                     android:src="@{playlistItem.episodeImageDrawable, default=@drawable/episode_icon_120}"
-                    tools:ignore="ContentDescription"/>
+                    tools:ignore="ContentDescription" />
             </FrameLayout>
-
-
 
 
             <ImageView

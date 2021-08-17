@@ -46,6 +46,8 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
+        <activity android:name=".activities.internalpages.TVCustomInternalPage" />
+        <activity android:name=".activities.internalpages.CustomInternalPage" />
         <activity
             android:name=".activities.show.ui.ShowActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -111,16 +113,17 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -153,11 +156,17 @@
             tools:replace="android:theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.homeactivity.ui.TVHomeActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme"
+            tools:replace="android:theme" />
+        <activity
+            android:name=".activities.myprofile.TVMyProfileAcitivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
@@ -176,7 +185,6 @@
             android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme" />
-
         <activity
             android:name=".activities.usermanagment.ui.TVLoginActivity"
             android:screenOrientation="landscape"

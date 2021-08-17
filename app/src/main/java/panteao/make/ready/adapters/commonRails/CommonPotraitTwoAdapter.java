@@ -11,20 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
+
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.R;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.PotraitTwoItemBinding;
+import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitTwoAdapter.SingleItemRowHolder> {
@@ -49,7 +55,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
         this.listener = listener;
         this.contentType = contentType;
         this.continuelist = continuelist;
-        this.baseCategory=baseCat;
+        this.baseCategory = baseCat;
         if (this.continuelist != null) {
             if (this.continuelist.size() > 0)
                 isContinueList = true;
@@ -97,18 +103,18 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
         if (itemsList.size() > 0) {
 
             try {
-                AppCommonMethod.handleTags(itemsList.get(i).getIsVIP(),itemsList.get(i).getIsNewS(),
-                        holder.potraitItemBinding.flExclusive,holder.potraitItemBinding.flNew,holder.potraitItemBinding.flEpisode,holder.potraitItemBinding.flNewMovie,itemsList.get(i).getAssetType());
+                AppCommonMethod.handleTags(itemsList.get(i).getIsVIP(), itemsList.get(i).getIsNewS(),
+                        holder.potraitItemBinding.flExclusive, holder.potraitItemBinding.flNew, holder.potraitItemBinding.flEpisode, holder.potraitItemBinding.flNewMovie, itemsList.get(i).getAssetType());
 
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
             try {
-                AppCommonMethod.handleTitleDesc(holder.potraitItemBinding.titleLayout,holder.potraitItemBinding.tvTitle,holder.potraitItemBinding.tvDescription,baseCategory);
+                AppCommonMethod.handleTitleDesc(holder.potraitItemBinding.titleLayout, holder.potraitItemBinding.tvTitle, holder.potraitItemBinding.tvDescription, baseCategory);
                 holder.potraitItemBinding.tvTitle.setText(itemsList.get(i).getTitle());
                 holder.potraitItemBinding.tvDescription.setText(itemsList.get(i).getDescription());
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
@@ -117,6 +123,10 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
             EnveuVideoItemBean contentsItem = itemsList.get(i);
             if (contentsItem != null) {
 
+                HashMap<String, Thumbnail> crousalImages = itemsList.get(i).getImages();
+                KalturaImageType imageType = KalturaImageType.PORTRAIT_2_3;
+                contentsItem.setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 180, 320));
+                Logger.e("GRID_TYPE", contentsItem.getPosterURL());
                 holder.potraitItemBinding.setPlaylistItem(contentsItem);
 
 //                if (contentsItem.isPremium()) {
@@ -222,7 +232,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
                             } else {
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Video, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
                             }*/
-                            AppCommonMethod.launchDetailScreen(mContext,"",continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
+                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium(),null);
                         }
                     }
                 });
@@ -235,7 +245,6 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
         }
 
     }
-
 
 
     @Override

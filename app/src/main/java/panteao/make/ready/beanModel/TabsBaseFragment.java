@@ -158,7 +158,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         if (aBoolean) {
             getBinding().swipeContainer.setRefreshing(true);
             UIinitialization();
-            loadDataFromModel();
         } else {
             noConnectionLayout();
         }
@@ -216,7 +215,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
             public void onSuccess(Object item) {
-
                 if (item instanceof RailCommonData) {
                     RailCommonData railCommonData = (RailCommonData) item;
                     railCommonDataList.add(railCommonData);
@@ -243,7 +241,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     getBinding().noResultLayout.setVisibility(View.VISIBLE);
 
                 }
-
             }
 
             @Override
@@ -339,23 +336,6 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         getBinding().connection.retryTxt.setOnClickListener(view -> connectionObserver());
 
     }
-
-    private void loadDataFromModel() {
-
-        if (getActivity() != null && swipeToRefresh != 1) {
-            viewModel.getAllCategories().observe(getActivity(), assetCommonBean -> {
-                if (assetCommonBean != null) {
-                    //dtChannelsList = assetCommonBean.getDTChannelList();
-                    //   callRailAPI(dtChannelsList);
-                } else {
-                    getBinding().myRecyclerView.setVisibility(View.GONE);
-                    getBinding().noResultLayout.setVisibility(View.VISIBLE);
-                }
-
-            });
-        }
-    }
-
     private void swipeToRefresh() {
         getBinding().swipeContainer.setOnRefreshListener(() -> {
             if (NetworkConnectivity.isOnline(getBaseActivity()) && swipeToRefresh == 1) {
@@ -410,13 +390,13 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
             if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() == MediaTypeConstants.getInstance().getSeries()) {
                 String videoId = railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId();
-                AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false,railCommonData.getEnveuVideoItemBeans().get(position));
             } else {
                 if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() != null && railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()!=null &&
                         !railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId().equalsIgnoreCase("")) {
-                    AppCommonMethod.launchDetailScreen(getActivity(), railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium(),railCommonData.getEnveuVideoItemBeans().get(position));
                 } else {
-                    AppCommonMethod.launchDetailScreen(getActivity(), "", railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), "", railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium(),railCommonData.getEnveuVideoItemBeans().get(position));
                 }
             }
         }

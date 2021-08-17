@@ -15,6 +15,7 @@ import panteao.make.ready.R
 import panteao.make.ready.activities.videoquality.bean.TrackItem
 import panteao.make.ready.utils.constants.AppConstants
 import java.text.Format
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -49,6 +50,7 @@ object Utils {
         dialog.window?.attributes.let { it }?.height =
             android.view.WindowManager.LayoutParams.MATCH_PARENT
     }
+
 
     fun stringForTime(timeMs: Long): String {
         var formatBuilder = StringBuilder()
@@ -92,12 +94,22 @@ object Utils {
         return px
     }
 
+    fun getFilteredUrl(imageUrl: String, width: Int, Height: Int): String {
+        return AppConstants.VIDEO_CLOUD_FRONT_URL + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
+    }
+
+    fun getDateDDMMMYYYY(milliSeconds: Long): String? {
+        val formatter = SimpleDateFormat("dd-MM-yyyy")
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
+    }
 
     var track1 = false
     var track2 = false
     var track3 = false
 
-//    fun createTrackList(
+    //    fun createTrackList(
 //        videoTrackArray: List<Format>,
 //        context: Activity
 //    ): ArrayList<TrackItem>? {
@@ -161,5 +173,6 @@ object Utils {
 //        }
 //        return arrayList
 //    }
+
 
 }

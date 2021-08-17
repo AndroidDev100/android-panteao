@@ -9,6 +9,15 @@ public class LoginResponseModel {
     private int responseCode;
     private boolean status;
     private String debugMessage;
+    private boolean isSuccessful=false;
+
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(boolean successful) {
+        isSuccessful = successful;
+    }
 
     public boolean isStatus() {
         return status;
@@ -18,7 +27,7 @@ public class LoginResponseModel {
         this.status = status;
     }
 
-    public Object getDebugMessage() {
+    public String getDebugMessage() {
         return debugMessage;
     }
 

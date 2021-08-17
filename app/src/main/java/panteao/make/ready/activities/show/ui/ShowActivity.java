@@ -904,7 +904,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putSerializable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
+        args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
         userInteractionFragment = new UserInteractionFragment();
         userInteractionFragment.setArguments(args);
         transaction.replace(R.id.fragment_user_interaction, userInteractionFragment);
@@ -1317,7 +1317,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         } else {
             if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 String getVideoId = item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId();
-                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false,item.getEnveuVideoItemBeans().get(position));
 
             }
         }

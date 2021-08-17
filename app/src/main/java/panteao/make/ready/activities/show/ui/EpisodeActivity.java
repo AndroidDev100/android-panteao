@@ -1109,7 +1109,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
-        args.putSerializable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
+        args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
         args.putString(AppConstants.BUNDLE_SERIES_ID, seriesId);
 
         userInteractionFragment = new UserInteractionFragment();
@@ -1515,7 +1515,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         } else {
             if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getkEntryId());
-                AppCommonMethod.launchDetailScreen(this, getVideoId.toString(), AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId.toString(), AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false,item.getEnveuVideoItemBeans().get(position));
             }
         }
     }

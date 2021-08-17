@@ -12,7 +12,7 @@ import panteao.make.ready.cardlayout.cardview.PopularSearchCardView
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
-class PopularSearchCardPresenter : Presenter() {
+class PopularSearchCardPresenter(var widgetImageType: String?) : Presenter() {
     private var mDefaultCardImage: Drawable? = null
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
@@ -48,7 +48,7 @@ class PopularSearchCardPresenter : Presenter() {
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
         if (item is EnveuVideoItemBean) {
             val cardView = viewHolder.view as PopularSearchCardView
-            cardView.setMenuModel(item)
+            cardView.setMenuModel(item,widgetImageType.toString())
         }
     }
 

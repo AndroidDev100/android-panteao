@@ -8,7 +8,7 @@ import com.make.userManagement.bean.LoginResponse.LoginResponseModel
 import com.make.userManagement.bean.UserProfile.UserProfileResponse
 import com.make.watchHistory.beans.ResponseWatchHistoryAssetList
 import com.google.gson.JsonObject
-import com.watcho.enveu.bean.EnveuCategory
+import com.make.enveuCategoryServices.EnveuCategory
 import retrofit2.Call
 import retrofit2.http.*
 

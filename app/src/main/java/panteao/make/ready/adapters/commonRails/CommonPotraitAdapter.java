@@ -16,15 +16,19 @@ import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.R;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.PotraitItemBinding;
+import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -117,6 +121,9 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
             holder.potraitItemBinding.ivContinuePlay.setVisibility(View.GONE);
             EnveuVideoItemBean contentsItem = itemsList.get(position);
             if (contentsItem != null) {
+                HashMap<String, Thumbnail> crousalImages = itemsList.get(position).getImages();
+                KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+                contentsItem.setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 320, 180));
 
                 holder.potraitItemBinding.setPlaylistItem(contentsItem);
 
@@ -242,7 +249,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
                             } else {
                                 AppCommonMethod.launchDetailScreen(mContext, 0l, AppConstants.Video, continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium());
                             }*/
-                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(position).getUserAssetDetail().getAssetType(), continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium());
+                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(position).getUserAssetDetail().getAssetType(), continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium(),null);
 
                             AppCommonMethod.trackFcmEvent("Content Screen","", mContext,0);
 

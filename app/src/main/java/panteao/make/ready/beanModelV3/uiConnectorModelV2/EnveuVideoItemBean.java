@@ -1,14 +1,19 @@
 package panteao.make.ready.beanModelV3.uiConnectorModelV2;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.LinkedTreeMap;
 
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
@@ -20,9 +25,10 @@ import panteao.make.ready.utils.CustomeFields;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class EnveuVideoItemBean implements Serializable {
+public class EnveuVideoItemBean implements Parcelable {
     private ArrayList seasons;
     private String description;
     private String longDescription;
@@ -75,6 +81,85 @@ public class EnveuVideoItemBean implements Serializable {
     private String islivedrm = "false";
     private String kEntryId = "";
     public boolean isContinueWatching = false;
+    private HashMap<String, Thumbnail> images;
+
+    public String getCustomLinkDetails() {
+        return customLinkDetails;
+    }
+
+    public void setCustomLinkDetails(String customLinkDetails) {
+        this.customLinkDetails = customLinkDetails;
+    }
+
+    private String customLinkDetails;
+
+    protected EnveuVideoItemBean(Parcel in) {
+        description = in.readString();
+        longDescription = in.readString();
+        assetKeywords = in.createStringArrayList();
+        likeCount = in.readInt();
+        title = in.readString();
+        contentProvider = in.readString();
+        assetCast = in.createStringArrayList();
+        premium = in.readByte() != 0;
+        posterURL = in.readString();
+        assetGenres = in.createStringArrayList();
+        season = in.readString();
+        id = in.readInt();
+        sku = in.readString();
+        isNew = in.readByte() != 0;
+        assetType = in.readString();
+        commentCount = in.readInt();
+        uploadedAssetKey = in.readString();
+        brightcoveVideoId = in.readString();
+        series = in.readString();
+        seriesId = in.readString();
+        publishedDate = in.readLong();
+        status = in.readString();
+        responseCode = in.readInt();
+        duration = in.readLong();
+        name = in.readString();
+        vodCount = in.readInt();
+        seasonCount = in.readInt();
+        thumbnailImage = in.readString();
+        videoPosition = in.readLong();
+        contentOrder = in.readInt();
+        seasonNumber = in.readString();
+        imageType = in.readString();
+        parentalRating = in.readString();
+        widevineLicence = in.readString();
+        getWidevineURL = in.readString();
+        country = in.readString();
+        company = in.readString();
+        year = in.readString();
+        isNewS = in.readString();
+        isVIP = in.readString();
+        VastTag = in.readString();
+        islivedrm = in.readString();
+        kEntryId = in.readString();
+        customLinkDetails=in.readString();
+        isContinueWatching = in.readByte() != 0;
+    }
+
+    public static final Creator<EnveuVideoItemBean> CREATOR = new Creator<EnveuVideoItemBean>() {
+        @Override
+        public EnveuVideoItemBean createFromParcel(Parcel in) {
+            return new EnveuVideoItemBean(in);
+        }
+
+        @Override
+        public EnveuVideoItemBean[] newArray(int size) {
+            return new EnveuVideoItemBean[size];
+        }
+    };
+
+    public HashMap<String, Thumbnail> getImages() {
+        return images;
+    }
+
+    public void setImages(HashMap<String, Thumbnail> images) {
+        this.images = images;
+    }
 
     public String getIslivedrm() {
         return islivedrm;
@@ -181,11 +266,19 @@ public class EnveuVideoItemBean implements Serializable {
                     String isNew = t.get((CustomeFields.IsNew)).toString();
                     this.isNewS = isNew;
                 }
+                if(t.containsKey(CustomeFields.ExternalURLLink)){
+                    this.customLinkDetails=t.get(CustomeFields.ExternalURLLink).toString();
+                }
+                if(t.containsKey(CustomeFields.LinkedPlaylistId)){
+                    this.customLinkDetails=t.get(CustomeFields.LinkedPlaylistId).toString();
+                }
+
             }
             this.longDescription = details.getData().getLongDescription() == null ? "" : details.getData().getLongDescription().toString().trim();
             //series realated data
             this.vodCount = 0;
             this.seasonNumber = details.getData().getSeasonNumber() == null ? "" : details.getData().getSeasonNumber().toString().replaceAll("\\.0*$", "");
+            this.images = details.getData().getImages();
             if (details.getData().getSeasons() != null) {
                 ArrayList arrayList = (ArrayList) details.getData().getSeasons();
                 this.seasons = arrayList;
@@ -1077,5 +1170,58 @@ public class EnveuVideoItemBean implements Serializable {
         } catch (Exception e) {
             return ContextCompat.getDrawable(application, R.drawable.new_movie_120);
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(description);
+        dest.writeString(longDescription);
+        dest.writeStringList(assetKeywords);
+        dest.writeInt(likeCount);
+        dest.writeString(title);
+        dest.writeString(contentProvider);
+        dest.writeStringList(assetCast);
+        dest.writeByte((byte) (premium ? 1 : 0));
+        dest.writeString(posterURL);
+        dest.writeStringList(assetGenres);
+        dest.writeString(season);
+        dest.writeInt(id);
+        dest.writeString(sku);
+        dest.writeByte((byte) (isNew ? 1 : 0));
+        dest.writeString(assetType);
+        dest.writeInt(commentCount);
+        dest.writeString(uploadedAssetKey);
+        dest.writeString(brightcoveVideoId);
+        dest.writeString(series);
+        dest.writeString(seriesId);
+        dest.writeLong(publishedDate);
+        dest.writeString(status);
+        dest.writeInt(responseCode);
+        dest.writeLong(duration);
+        dest.writeString(name);
+        dest.writeInt(vodCount);
+        dest.writeInt(seasonCount);
+        dest.writeString(thumbnailImage);
+        dest.writeLong(videoPosition);
+        dest.writeInt(contentOrder);
+        dest.writeString(seasonNumber);
+        dest.writeString(imageType);
+        dest.writeString(parentalRating);
+        dest.writeString(widevineLicence);
+        dest.writeString(getWidevineURL);
+        dest.writeString(country);
+        dest.writeString(company);
+        dest.writeString(year);
+        dest.writeString(isNewS);
+        dest.writeString(isVIP);
+        dest.writeString(VastTag);
+        dest.writeString(islivedrm);
+        dest.writeString(kEntryId);
+        dest.writeByte((byte) (isContinueWatching ? 1 : 0));
     }
 }

@@ -155,11 +155,13 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
                         }
                         APIStatus.ERROR.name, APIStatus.FAILURE.name
                         -> {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                            ).show()
+                            activity?.findViewById<Button>(R.id.button_play)
+                                ?.setCompoundDrawables(null, null, null, null)
+                            activity?.findViewById<Button>(R.id.button_play)?.text =
+                                getString(R.string.new_episodes_added_soon)
+                            activity?.findViewById<Button>(R.id.button_episodes)?.visibility =
+                                View.GONE
+                            fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
                         }
                     }
 
@@ -235,11 +237,14 @@ class LatestSeasonsDetailsFragment : Fragment(), SeasonsClickListener, OnKeyEven
                     }
                     APIStatus.ERROR.name, APIStatus.FAILURE.name
                     -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        activity?.findViewById<Button>(R.id.button_play)
+                            ?.setCompoundDrawables(null, null, null, null)
+                        activity?.findViewById<Button>(R.id.button_play)?.text =
+                            getString(R.string.new_episodes_added_soon)
+                        activity?.findViewById<Button>(R.id.button_episodes)?.visibility =
+                            View.GONE
+                        fragmentSeasonDetailsBinding.progressBar.visibility = View.GONE
+
                     }
                 }
 

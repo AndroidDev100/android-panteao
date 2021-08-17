@@ -1,4 +1,4 @@
-package com.watcho.enveu.bean
+package com.make.enveuCategoryServices
 
 import com.google.gson.annotations.SerializedName
 

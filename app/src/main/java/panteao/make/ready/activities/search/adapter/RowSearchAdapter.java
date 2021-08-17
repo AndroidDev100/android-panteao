@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
+import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.utils.Utils;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
@@ -20,6 +24,7 @@ import panteao.make.ready.databinding.CommonSearchAdapterBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.SingleItemRowHolder> {
@@ -69,6 +74,10 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
 
     @Override
     public void onBindViewHolder(@NonNull RowSearchAdapter.SingleItemRowHolder viewHolder, final int position) {
+        HashMap<String, Thumbnail> crousalImages = list.get(position).getImages();
+        KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+        if (list.get(position).getImages() != null && list.get(position).getImages().size() > 0)
+            list.get(position).setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, (int) Utils.INSTANCE.dpToPx(128), (int) Utils.INSTANCE.dpToPx(72)));
 
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
         viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position)));
@@ -111,6 +120,7 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
             }
         }
     }
+
     @Override
     public int getItemCount() {
        /* if (isLimit)

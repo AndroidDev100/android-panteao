@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import androidx.databinding.BindingAdapter;
 
 import com.make.enums.ImageType;
+
+import panteao.make.ready.utils.Utils;
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 public class ImageBindingUtils {

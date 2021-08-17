@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -52,13 +51,11 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import panteao.make.ready.FirebaseConstants;
 import panteao.make.ready.activities.KalturaPlayerActivity;
-import panteao.make.ready.activities.detailspage.activity.TVInstructorDetailsActivity;
-import panteao.make.ready.activities.detailspage.activity.TVSeriesDetailActivity;
-import panteao.make.ready.activities.detailspage.activity.VideoDetailActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.internalpages.CustomInternalPage;
+import panteao.make.ready.activities.internalpages.TVCustomInternalPage;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
-import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
@@ -118,7 +115,6 @@ import io.branch.referral.util.LinkProperties;
 import retrofit2.Response;
 
 import static android.content.pm.PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH;
-import static android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_ADD_TO_WATCHLIST;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_COMPLETED;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_EXIT;
@@ -941,6 +937,7 @@ public class AppCommonMethod {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
+        Logger.e("CLICKED_DETAILS", screenType + " " + new Gson().toJson(asset));
         if (screenType.equalsIgnoreCase(
                 MediaTypeConstants.getInstance().getSeries()
         ) || screenType.equalsIgnoreCase(
@@ -990,10 +987,18 @@ public class AppCommonMethod {
                     (TVBaseActivity) context,
                     asset
             );
+        } else if (screenType.equalsIgnoreCase("CUSTOM INTERNAL PAGE")) {
+            Intent playerIntent =
+                    new Intent(context, TVCustomInternalPage.class);
+            playerIntent.putExtra(
+                    "asset",
+                    asset
+            );
+            context.startActivity(playerIntent);
         }
     }
 
-    public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium) {
+    public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium,EnveuVideoItemBean asset) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
             return;
         }
@@ -1030,50 +1035,15 @@ public class AppCommonMethod {
             }
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
             new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
+        }else if (screenType.equalsIgnoreCase("CUSTOM INTERNAL PAGE")) {
+            Intent playerIntent =
+                    new Intent(context, CustomInternalPage.class);
+            playerIntent.putExtra(
+                    "asset",
+                    asset
+            );
+            context.startActivity(playerIntent);
         }
-        // RecoSenceManager.getInstance().sendClickEvent(screenType, id);
-
-/*
-        switch (screenType.toUpperCase()) {
-            case MediaTypeConstants.Show:
-                if (SDKConfig.getInstance().getShowDetailId().equalsIgnoreCase("")){
-                    //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.SHOW_ENVEU);
-                }else {
-                    new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
-                }
-
-                break;
-            case MediaTypeConstants.Episode:
-                new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
-                break;
-            case MediaTypeConstants.Series:
-                new ActivityLauncher((BaseActivity) context).seriesDetailScreen((BaseActivity) context, SeriesDetailActivity.class, id);
-                break;
-            case MediaTypeConstants.Live:
-                if (SDKConfig.getInstance().getMovieDetailId().equalsIgnoreCase("")){
-                   // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-                }else {
-                    new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
-                }
-
-                break;
-            case MediaTypeConstants.Article:
-                if (SDKConfig.getInstance().getMovieDetailId().equalsIgnoreCase("")){
-                   // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-                }else {
-                    new ActivityLauncher((BaseActivity) context).articleScreen((BaseActivity) context, ArticleActivity.class, id, "0", false);
-                }
-
-                break;
-            default:
-                if (SDKConfig.getInstance().getMovieDetailId().equalsIgnoreCase("")){
-                   // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-                }else {
-                    new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
-                }
-                break;
-        }
-*/
     }
 
     public static void trackFcmEvent(String title, String assetType, Context activity, int position) {
@@ -1363,24 +1333,24 @@ public class AppCommonMethod {
 //                enveuVideoItemBean.setPosterURL(enveuVideoDetails.getImages().getPoster().getSources().get(0).getSrc());
 //            }
 //        }
-        // enveuVideoItemBean.setPosterURL(enveuVideoDetails.getPosterImage());
+        enveuVideoItemBean.setImages(enveuVideoDetails.getImages());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
     public static void heroAssetRedirections(RailCommonData railCommonData, Context activity, String videoId, int parseInt, String s, boolean b) {
         try {
             if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getEpisode(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getEpisode(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getSeries(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getSeries(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getMovie(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getMovie(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getShow(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getShow(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(AppConstants.ContentType.ARTICLE.name())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
             }
 
         } catch (Exception ignored) {
@@ -1728,7 +1698,7 @@ public class AppCommonMethod {
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                   // .setDomainUriPrefix("https://link.panteao.com")
+                    // .setDomainUriPrefix("https://link.panteao.com")
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(FirebaseConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
@@ -1751,7 +1721,7 @@ public class AppCommonMethod {
 
                                 dynamicLinkUri = task.getResult().getShortLink();
                                 Uri flowchartLink = task.getResult().getPreviewLink();
-                                 Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
+                                Log.e("dynamicUrl", dynamicLinkUri.toString() + flowchartLink);
                                 // Log.e("flowchartLink", String.valueOf(flowchartLink));
                                 try {
                                     activity.runOnUiThread(new Runnable() {
@@ -1934,11 +1904,13 @@ public class AppCommonMethod {
         }
         return DownloadStatus.START;
     }
-    static boolean track1,track2,track3=false;
+
+    static boolean track1, track2, track3 = false;
+
     public static ArrayList<TracksItem> createTrackList(PKTracks tracks, FragmentActivity activity) {
-        track1=false;
-        track2=false;
-        track3=false;
+        track1 = false;
+        track2 = false;
+        track3 = false;
         ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
         for (int i = 0; i < tracks.getVideoTracks().size(); i++) {
 

@@ -62,9 +62,9 @@ public class ErrorCodesIntercepter {
 
                 responseModel = new SignupResponseAccessToken();
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-                    responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_already_exists​));
+                    responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_already_exists));
                 } else {
-                    responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_already_exists​));
+                    responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_already_exists));
                 }
 
             } catch (Exception e) {

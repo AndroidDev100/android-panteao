@@ -22,7 +22,7 @@
         <ImageView
             android:id="@+id/imgViewCard"
             errorImage="@{@drawable/placeholder_landscape}"
-            imageUrl="@{playlistItem.thumbnailImage}"
+            imageUrl="@{playlistItem.posterURL}"
             placeholder="@{@drawable/placeholder_landscape}"
             android:layout_width="match_parent"
             android:layout_height="0dp"

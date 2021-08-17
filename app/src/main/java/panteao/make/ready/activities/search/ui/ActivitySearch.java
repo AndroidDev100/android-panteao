@@ -226,25 +226,6 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
                                     } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                                         temp.setLayoutType(5);
                                     }
-                                    /*if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-                                        temp.setLayoutType(0);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
-                                        temp.setLayoutType(1);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
-                                        temp.setLayoutType(2);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
-                                        temp.setLayoutType(3);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
-                                        temp.setLayoutType(4);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
-                                        temp.setLayoutType(5);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
-                                        temp.setLayoutType(6);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())) {
-                                        temp.setLayoutType(7);
-                                    } else if (data.get(i).getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
-                                        temp.setLayoutType(8);
-                                    }*/
                                     temp.setSearchKey(searchKeyword);
                                     temp.setTotalCount(data.get(i).getPageTotal());
                                     model.add(temp);
@@ -451,7 +432,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         }
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
-            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         }
     }
 

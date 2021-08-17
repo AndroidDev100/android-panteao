@@ -321,17 +321,17 @@ public class PlayerControlsFragment extends Fragment {
         });
 
         //Replay video event
-        replay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (playerCallbacks != null) {
-                    replay.setVisibility(View.GONE);
-                    seekBar.setPosition(0);
-                    currentPosition.setText("00:00");
-                    playerCallbacks.replay();
-                }
-            }
-        });
+//        replay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (playerCallbacks != null) {
+//                    replay.setVisibility(View.GONE);
+//                    seekBar.setPosition(0);
+//                    currentPosition.setText("00:00");
+//                    playerCallbacks.replay();
+//                }
+//            }
+//        });
 
 
     }

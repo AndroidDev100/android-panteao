@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.callbacks.commonCallbacks.SearchClickCallbacks;
 import panteao.make.ready.utils.MediaTypeConstants;
@@ -100,10 +102,10 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
                 header = context.getString(R.string.heading_episodes);
                 break;
             case 3:
-                header=MediaTypeConstants.getInstance().getTutorial();
+                header = MediaTypeConstants.getInstance().getTutorial();
                 break;
             case 4:
-                header=MediaTypeConstants.getInstance().getChapter();
+                header = MediaTypeConstants.getInstance().getChapter();
                 break;
             case 5:
                 header = context.getString(R.string.heading_shows);
@@ -344,9 +346,9 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
             PrintLogging.printLog("", "SearchAssetType-->>" + itemValue.getAssetType());
-            AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         } else {
-            AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
 
         }
     }

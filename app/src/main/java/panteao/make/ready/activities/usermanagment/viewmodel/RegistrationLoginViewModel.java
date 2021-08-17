@@ -47,9 +47,6 @@ public class RegistrationLoginViewModel extends AndroidViewModel {
         return loginRepository.getChangePwdAPIResponse(email, token,context);
     }
 
-   /* public LiveData<JsonObject> hitApiFbLogin(Context context, String email, String fbToken, String name, String fbId,String pic, boolean isEmail) {
-        return loginRepository.getFbLogin(context, email, fbToken, name, fbId,pic, isEmail);
-    }*/
 
     public LiveData<LoginResponseModel> hitFbLogin(Context context, String email, String fbToken, String name, String fbId,String pic, boolean isEmail) {
         return loginRepository.getFbLogin(context, email, fbToken, name, fbId,pic, isEmail);

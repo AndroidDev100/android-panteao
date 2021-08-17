@@ -45,13 +45,18 @@
         <item name="android:verticalSpacing">@dimen/lb_browse_item_vertical_spacing</item>
         <item name="focusOutFront">false</item>
     </style>
-
+    <style name="InternalPlayListBrowseTheme" parent="@style/Theme.Leanback">
+        <item name="browseRowsMarginTop">10dp</item>
+        <item name="browseRowsMarginStart">40dp</item>
+        <item name="browsePaddingTop">0dp</item>
+        <item name="browsePaddingStart">40dp</item>
+        <item name="rowHeaderStyle">@style/AppTheme.Leanback.Row</item>
+    </style>
     <style name="CustomBrowseTheme" parent="@style/Theme.Leanback">
         <item name="browseRowsMarginTop">30dp</item>
         <item name="browseRowsMarginStart">20dp</item>
         <item name="browsePaddingTop">0dp</item>
         <item name="browsePaddingStart">20dp</item>
-
         <item name="rowHeaderStyle">@style/AppTheme.Leanback.Row</item>
     </style>
     <!--    <style name="ProfileRadioButton" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">-->

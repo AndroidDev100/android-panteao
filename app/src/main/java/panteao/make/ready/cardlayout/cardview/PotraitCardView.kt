@@ -8,7 +8,12 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.leanback.widget.BaseCardView
 import panteao.make.ready.R
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail
+import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.databinding.CustomPotraitCardViewBinding
+import panteao.make.ready.enums.KalturaImageType
+import panteao.make.ready.utils.config.ImageLayer
+import java.util.HashMap
 
 
 @SuppressLint("ViewConstructor")
@@ -51,10 +56,17 @@ open class PotraitCardView : BaseCardView {
         super.onDetachedFromWindow()
     }
 
-    fun setRailCommonDataModel(enveuVideoItemBean: panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean) {
+    fun setRailCommonDataModel(enveuVideoItemBean: EnveuVideoItemBean, widgetImageType: String) {
 
 
         Log.d(TAG, enveuVideoItemBean.toString())
+        val crousalImages: HashMap<String, Thumbnail> = enveuVideoItemBean.getImages()
+        var imageType = KalturaImageType.LANDSCAPE
+        if (widgetImageType.equals("9x16", ignoreCase = true)) {
+            imageType = KalturaImageType.PORTRAIT
+        }
+        enveuVideoItemBean.posterURL =
+            ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 450, 800)
 
         customMenuCardViewBinding?.playlistItem = enveuVideoItemBean
         customMenuCardViewBinding?.let {
