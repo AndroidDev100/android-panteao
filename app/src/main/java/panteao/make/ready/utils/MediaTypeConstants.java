@@ -11,6 +11,11 @@ public class MediaTypeConstants {
     String Series = "SERIES";
     String Video = "VIDEO";
     String Live = "LIVE";
+
+    String Chapter="CHAPTER";
+    String Tutorial="TUTORIAL";
+    String Instructor="INSTRUCTOR";
+
     String Article = "ARTICLE";
     ConfigBean configBean;
     public static String VIDEO="VIDEO";

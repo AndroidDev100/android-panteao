@@ -795,7 +795,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
         int id = seriesDetailBean.getId();
         String title = seriesDetailBean.getTitle();
         Logger.e("openShareDialogue", new Gson().toJson(seriesDetailBean));
-        AppCommonMethod.openShareDialog(TutorialActivity.this, title, id, MediaTypeConstants.getInstance().getSeries(), imgUrl, String.valueOf(seriesId), seriesDetailBean.getSeason());
+        AppCommonMethod.openShareDialog(TutorialActivity.this, title, id, MediaTypeConstants.getInstance().getTutorial(), imgUrl, String.valueOf(seriesId), seriesDetailBean.getSeason());
         new Handler().postDelayed(() -> dismissLoading(getBinding().progressBar), 2000);
     }
 

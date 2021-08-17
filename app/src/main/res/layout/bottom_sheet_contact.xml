@@ -66,6 +66,7 @@
             android:fontFamily="@font/sarabun_v7_thai_latin_regular"
             android:gravity="center"
             android:text="@string/by_line"
+            android:visibility="gone"
             android:textColor="@color/rounded_button_text_color"
             android:textSize="@dimen/font_medium"
 

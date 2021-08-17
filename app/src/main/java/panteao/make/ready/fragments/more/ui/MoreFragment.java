@@ -322,7 +322,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
             }
         //    Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), SampleActivity.class).putExtra("type", "1").putExtra("url",getString(R.string.term_condition)));
-         //   Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
+           Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
         } else if (caption.equals(getString(R.string.privacy_policy))) {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
@@ -336,7 +336,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
-         //   Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
+            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
         } else if (caption.equals(getString(R.string.my_watchlist))) {
 
             if (loginStatus) {

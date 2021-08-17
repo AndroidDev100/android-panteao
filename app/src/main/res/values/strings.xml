@@ -90,14 +90,14 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="password_length">Minimum 6 characters having atleast 1 number</string>
     <string name="valid_email">Invalid Email</string>
-    <string name="empty_password">Please enter Password</string>
-    <string name="empty_string">Please enter Email</string>
+    <string name="empty_password">Please enter a password between 6 to 20 characters</string>
+    <string name="empty_string">Please enter Email Address</string>
     <string name="credential_mismatch">Credentials Mismatch!</string>
     <string name="strong_password_required">Please enter a password between 6 to 20 characters.</string>
-    <string name="email_check_signup">Please enter Email</string>
+    <string name="email_check_signup">Please enter Email Address</string>
 
 
-    <string name="empty_name">Please enter Name</string>
+    <string name="empty_name">Name can not be empty</string>
     <string name="name_validation_profile">Name is required</string>
     <string name="profile_update_successfully">Updated Successfully!</string>
     <string name="profile_registered_successfully">Registered Successfully!</string>

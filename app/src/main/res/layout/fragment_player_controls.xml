@@ -80,7 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <include
                 android:id="@+id/seekbarLayout"
@@ -89,27 +90,95 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bingeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/seekbar_ll"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/skip_intro"
-            android:drawableEnd="@drawable/ic_baseline_play_arrow_24"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingStart="8dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="6dp"
-            android:text="@string/next_episode"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="gone" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bingeLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:id="@+id/bingeBtn"
+                android:layout_width="wrap_content"
+                android:background="@drawable/next_episode"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="12dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="40dp"
+                android:paddingEnd="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/skip_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/videobackicon"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/bingeTxt"
+                        android:text="@string/next_episode"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:src="@drawable/videobackicon"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"/>
+
+                    <ImageView
+                        android:id="@+id/pause_button"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/play"
+                        android:visibility="visible" />
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--        <Button-->
+<!--            android:id="@+id/bingeBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_above="@id/seekbar_ll"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:layout_marginBottom="12dp"-->
+<!--            android:background="@drawable/skip_intro"-->
+<!--            android:drawableEnd="@drawable/ic_baseline_play_arrow_24"-->
+<!--            android:minWidth="0dp"-->
+<!--            android:minHeight="0dp"-->
+<!--            android:paddingStart="8dp"-->
+<!--            android:paddingTop="6dp"-->
+<!--            android:paddingEnd="8dp"-->
+<!--            android:paddingBottom="6dp"-->
+<!--            android:text="@string/next_episode"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp"-->
+<!--            android:visibility="gone" />-->
 
         <Button
             android:id="@+id/skipBtn"

@@ -160,6 +160,31 @@ public class ActivityLauncher {
         activity.startActivity(intent);
     }
 
+
+    public void chapterScreen(Activity source, Class<ChapterActivity> destination, int id, String duration, boolean isPremium) {
+        Bundle args = new Bundle();
+        args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
+        args.putInt(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, id);
+
+        args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, isPremium);
+        if (StringUtils.isNullOrEmpty(duration))
+            args.putString(AppConstants.BUNDLE_DURATION, "0");
+        else
+            args.putString(AppConstants.BUNDLE_DURATION, duration);
+        Intent intent = new Intent(source, destination);
+        intent.putExtra(AppConstants.BUNDLE_ASSET_BUNDLE, args);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
+        preference.setAppPrefAssetId(0);
+        if (ADHelper.getInstance(activity).getPipAct()!=null){
+            ADHelper.getInstance(activity).getPipAct().moveTaskToBack(false);
+            ADHelper.getInstance(activity).getPipAct().finish();
+            // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        }
+        activity.startActivity(intent);
+    }
+
     public void articleScreen(Activity source, Class<ArticleActivity> destination, int id, String duration, boolean isPremium) {
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);

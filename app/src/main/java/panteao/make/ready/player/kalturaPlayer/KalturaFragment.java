@@ -1,15 +1,23 @@
 package panteao.make.ready.player.kalturaPlayer;
 
+import static android.content.Context.TELEPHONY_SERVICE;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +56,11 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
+import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.player.BackPressCallBack;
+import panteao.make.ready.player.PhoneStateListenerHelper;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -61,7 +76,7 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
  * Use the {@link KalturaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener {
+public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEvent.Listener<PlayerEvent.StateChanged>, AlertDialogFragment.AlertDialogListener, PhoneListenerCallBack, NetworkChangeReceiver.ConnectivityReceiverListener, BackPressCallBack {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +108,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean isOfflineVideo = false;
     private PlayerControlsFragment playerControlsFragment;
     private Handler mHandler = new Handler();
+    private ImageView play_pause;
+    private AlertDialogSingleButtonFragment errorDialog;
+    private NetworkChangeReceiver receiver = null;
+    private boolean isFirstCalled = true;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -210,8 +229,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast toast =  Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG);
-                            toast.show();
+//                            Toast toast =  Toast.makeText(getActivity(), loadError.getMessage(), Toast.LENGTH_LONG);
+//                            toast.show();
+                            showErrorDialog(loadError.getMessage());
                         }
                     });
 
@@ -238,11 +258,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         playerControlsFragment.hideControls();
                     }
                 }
+
+                Log.w("progressValuess", IsbingeWatch + " " + player.getCurrentPosition() + " " + bingeWatchTimer + "  " + player.getDuration());
                 if (IsbingeWatch && bingeWatchTimer > 0) {
                     int currentPosition = (int) player.getCurrentPosition();
                     if (currentPosition >= bingeWatchTimer) {
                         showBingeWatchControls = true;
-                        playerControlsFragment.showBingeWatch();
+                        playerControlsFragment.showBingeWatch((int) (player.getDuration() - player.getCurrentPosition()),isFirstCalled);
+                        isFirstCalled = false;
                         countDownTimer.cancel();
                     }
                 }
@@ -252,7 +275,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
-
+                    Log.d("ffrrrfrrfr",isBingeWatchTimeCalculate+"");
                     if (!isBingeWatchTimeCalculate) {
                         int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
                         if (timeCalculation > bingeWatchTimer) {
@@ -268,6 +291,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 playerLayout.setVisibility(View.VISIBLE);
+                isFirstCalled = true;
                 mListener.onPlayerStart();
                 countDownTimer.start();
                 playerControlsFragment.showControls();
@@ -280,7 +304,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     player.stop();
                     showBingeWatchControls = false;
                     playerControlsFragment.hideControls();
-                    if (playerControlsFragment.bingeBtn.getVisibility() == View.VISIBLE) {
+                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
                         playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
                     }
                 }
@@ -457,6 +481,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void bingeWatch() {
+        isBingeWatchTimeCalculate = false;
         mListener.bingeWatchCall(entryID);
     }
 
@@ -564,6 +589,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     @Override
+    public void sendPlayPauseId(ImageView id) {
+        this.play_pause = id;
+    }
+
+    @Override
     public void changeBitRateRequest(String title, int position) {
 
     }
@@ -593,6 +623,74 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
+    @Override
+    public void onCallStateRinging() {
+        if (player!=null){
+            player.pause();
+        }
+
+    }
+
+    @Override
+    public void onCallStateIdle(int state) {
+        if (player!=null){
+            player.play();
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        Log.d("gtgtgtgt",isConnected+"");
+        if (!isConnected) {
+            if (player != null) {
+                Log.d("gtgtgtgt","Enter");
+                player.pause();
+                showErrorDialog(getActivity().getResources().getString(R.string.no_internet));
+            }
+        }
+    }
+
+    private void showErrorDialog(String message) {
+        playerControlsFragment.hideControls();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        errorDialog = AlertDialogSingleButtonFragment.newInstance("", message, getResources().getString(R.string.ok));
+        errorDialog.setCancelable(false);
+
+        errorDialog.setAlertDialogCallBack(new AlertDialogFragment.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                if (player!=null){
+                    player.stop();
+                    player.destroy();
+                    requireActivity().finish();
+                }
+            }
+        });
+
+        errorDialog.show(fm, "fragment_alert");
+    }
+
+    @Override
+    public void BackPressClicked(int value) {
+        checkBackButtonOrientation(value);
+
+    }
+
+    private void checkBackButtonOrientation(int value) {
+        FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams) container.getLayoutParams();
+        captionParams.bottomMargin = (int) 0;
+        captionParams.topMargin = (int) 0;
+        container.setLayoutParams(captionParams);
+        if (value == 2) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        } else {
+            if (player != null) {
+                player.stop();
+                getActivity().finish();
+            }
+        }
+    }
+
     public interface OnPlayerInteractionListener {
         void bingeWatchCall(String entryID);
 
@@ -602,9 +700,23 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     @Override
     public void onPause() {
         super.onPause();
+        if (receiver != null) {
+            getActivity().unregisterReceiver(receiver);
+            if (NetworkChangeReceiver.connectivityReceiverListener != null)
+                NetworkChangeReceiver.connectivityReceiverListener = null;
+        }
+
         if (player != null) {
             stopPosition = (int) player.getCurrentPosition();
+            if (play_pause!=null) {
+                countDownTimer.cancel();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_pause));
+                else
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+            }
             player.pause();
+
         }
     }
 
@@ -613,10 +725,33 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         if (player != null) {
             player.seekTo(stopPosition);
+            if (play_pause!=null) {
+                countDownTimer.start();
+                if (AppCommonMethod.isTV(requireActivity()))
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_play));
+                else
+                    play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
+            }
             player.play();
         }
         super.onResume();
+        requestAudioFocus();
+        setBroadcast();
 
+    }
+
+    private void setBroadcast() {
+        receiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        getActivity().registerReceiver(receiver, filter);
+        setConnectivityListener(this);
+    }
+
+    private void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener listener) {
+        NetworkChangeReceiver.connectivityReceiverListener = listener;
     }
 
     @Override
@@ -707,5 +842,70 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void onStop() {
         super.onStop();
         countDownTimer.cancel();
+
+        TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+        if (mgr != null) {
+            mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
+        }
+
+        if (player!=null){
+            finishPlayer();
+        }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        try {
+            TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+            if (mgr != null) {
+                mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_CALL_STATE);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void requestAudioFocus() {
+
+        AudioManager mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        AudioAttributes mAudioAttributes =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mAudioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+        }
+        AudioFocusRequest mAudioFocusRequest =
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mAudioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(mAudioAttributes)
+                    .setAcceptsDelayedFocusGain(true)
+                    .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                        @Override
+                        public void onAudioFocusChange(int i) {
+                            if (i == AUDIOFOCUS_LOSS) {
+//                                if (player!=null) {
+//                                    player.pause();
+//                                }
+                            }
+                        }
+                    }) // Need to implement listener
+                    .build();
+        }
+        int focusRequest = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            focusRequest = mAudioManager.requestAudioFocus(mAudioFocusRequest);
+        }
+        switch (focusRequest) {
+            case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
+                // don’t start playback
+            case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
+                // actually start playback
+        }
+
+    }
+
 }
