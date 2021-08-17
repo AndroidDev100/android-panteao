@@ -101,7 +101,6 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        Logger.e("PLAYLIST_ID", "ON_BIND" + String.valueOf(position));
         Logger.e("position bind in", position + " ==>" + holder.getClass().getSimpleName());
         setFadeAnimation(holder.itemView);
         if (holder instanceof CarouselViewHolder) {

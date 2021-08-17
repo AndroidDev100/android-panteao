@@ -62,16 +62,18 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                 InternalPlaylistListingFragment();
 
                             val bundle = Bundle()
-                            bundle.putString(AppConstants.PLAYLIST_CONTENT, enveuCommonResponse.enveuVideoItemBeans[0].customLinkDetails)
+                            bundle.putString(
+                                AppConstants.PLAYLIST_CONTENT,
+                                enveuCommonResponse.enveuVideoItemBeans[0].customLinkDetails
+                            )
                             internalPlaylistListingFragment.arguments = bundle
-                            Logger.e("PLAYLIST_ID", "FRAG_ADDED")
 
                             supportFragmentManager.beginTransaction()
                                 .replace(
                                     binding.frameInteralPlaylists.id,
                                     internalPlaylistListingFragment,
                                     null
-                                ).commit()
+                                ).addToBackStack(null).commit()
                         } else {
                             val internalPlayListGridFragment =
                                 InternalPlayListGridFragment()
@@ -85,7 +87,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                     binding.frameInteralPlaylists.id,
                                     internalPlayListGridFragment,
                                     null
-                                ).commit()
+                                ).addToBackStack(null).commit()
                         }
                     } else if (assetResponse.status
                             .equals(APIStatus.ERROR.name, ignoreCase = true)

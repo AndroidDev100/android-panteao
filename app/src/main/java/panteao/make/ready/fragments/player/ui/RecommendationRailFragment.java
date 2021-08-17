@@ -106,7 +106,6 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                         //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
                         adapterDetailRail = new CommonAdapterNew(getActivity(), railCommonDataList, RecommendationRailFragment.this::railItemClick, RecommendationRailFragment.this::moreRailClick);
                         getBinding().recyclerView.setAdapter(adapterDetailRail);
-
                     } else {
                         synchronized (railCommonDataList) {
                             adapterDetailRail.notifyItemChanged(railCommonDataList.size() - 1);

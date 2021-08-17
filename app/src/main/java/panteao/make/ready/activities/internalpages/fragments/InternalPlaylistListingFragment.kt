@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import androidx.leanback.widget.*
+import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.leanback.widget.Presenter
+import androidx.leanback.widget.Row
+import androidx.leanback.widget.RowPresenter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.make.baseCollection.baseCategoryModel.BaseCategory
@@ -17,8 +20,8 @@ import com.make.enums.Layouts
 import com.make.enums.RailCardType
 import panteao.make.ready.R
 import panteao.make.ready.activities.listing.callback.ItemClickListener
-import panteao.make.ready.adapters.CommonListingAdapter
 import panteao.make.ready.adapters.commonRails.CommonAdapterNew
+import panteao.make.ready.adapters.shimmer.ShimmerAdapter
 import panteao.make.ready.baseModels.BaseBindingFragment
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.playListModelV2.EnveuCommonResponse
@@ -32,13 +35,10 @@ import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_LDS_LANDSCAPE
 import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_PR_POTRAIT
-import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 import panteao.make.ready.utils.helpers.RecyclerAnimator
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class InternalPlaylistListingFragment :
@@ -87,10 +87,7 @@ class InternalPlaylistListingFragment :
                     arguments?.getString(AppConstants.PLAYLIST_CONTENT)!!
             }
             binding.listRecyclerview.visibility = View.VISIBLE
-            //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
-            //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
             railCommonDataList = ArrayList<RailCommonData>()
-
             setupFragment()
         } else {
             noInternetFragment()
@@ -106,12 +103,23 @@ class InternalPlaylistListingFragment :
     private fun setupFragment() {
         playLists = playListContent.split(",") as ArrayList<String>;
         playLists.addAll(playLists)
-        callShimmer()
+//        callShimmer()
+        setRecyclerProperties(binding.listRecyclerview)
+    }
+
+    fun setRecyclerProperties(recyclerView: RecyclerView) {
+        recyclerView.isNestedScrollingEnabled = false
+        recyclerView.setHasFixedSize(false)
+        val mLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerView.layoutManager = mLayoutManager
+        getPlayListDetails(requireActivity())
     }
 
     private fun callShimmer() {
-        val shimmerAdapter = CommonListingAdapter(requireActivity())
-//        binding.listRecyclerview.hasFixedSize()
+
+        val shimmerAdapter = ShimmerAdapter(
+            activity, ShimmerDataModel(activity).getList(0), ShimmerDataModel(activity).slides
+        )//        binding.listRecyclerview.hasFixedSize()
         binding.listRecyclerview.isNestedScrollingEnabled = false
         var num = 2
         val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
@@ -121,7 +129,7 @@ class InternalPlaylistListingFragment :
                         .configuration.orientation == 2
                 ) 4 else 3
         }
-        shimmerAdapter.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+//        shimmerAdapter.setDataList(ShimmerDataModel(requireActivity()).getList(4))
         var gridLayoutManager = LinearLayoutManager(requireActivity())
         binding.listRecyclerview.layoutManager = gridLayoutManager
         binding.listRecyclerview.adapter = shimmerAdapter
@@ -135,6 +143,8 @@ class InternalPlaylistListingFragment :
             RecyclerView.VERTICAL,
             false
         )
+
+        binding.listRecyclerview.adapter = shimmerAdapter
         getPlayListDetails(requireActivity())
     }
 
@@ -175,16 +185,19 @@ class InternalPlaylistListingFragment :
                             } else {
                                 railCommonData.railType = HORIZONTAL_PR_POTRAIT
                             }
-                            railCommonDataList.add(railCommonDataList.size, railCommonData)
+                            railCommonDataList.add(railCommonData)
 
                             if (adapterDetailRail == null) {
-                                RecyclerAnimator(getActivity()).animate(binding.listRecyclerview)
                                 adapterDetailRail = CommonAdapterNew(
                                     activity, railCommonDataList, this, this
                                 )
                                 binding.listRecyclerview.adapter = adapterDetailRail
                             } else {
-                                adapterDetailRail!!.notifyItemInserted(count + 1)
+                                synchronized(railCommonDataList) {
+                                    adapterDetailRail?.notifyItemChanged(
+                                        railCommonDataList.size - 1
+                                    )
+                                }
                             }
                             count++
                             getPlayListDetails(activity)
