@@ -2,6 +2,7 @@ package panteao.make.ready.utils.helpers.downloads;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -484,36 +485,57 @@ public class KTDownloadHelper {
             DBExecuter.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    if (entryId != null && !entryId.equalsIgnoreCase("")) {
-                       // Log.w("sortedChapters",entryId+" ");
-                       // Log.w("downloadVideo 1",entryId);
-                        getManager().removeAsset(entryId);
-                        removeFromDB(entryId);
+                    try {
+                        if (entryId != null && !entryId.equalsIgnoreCase("")) {
+                            // Log.w("sortedChapters",entryId+" ");
+                            // Log.w("downloadVideo 1",entryId);
+                            updateDataBase(entryId);
+                        }
+
+                    }catch (Exception ignored){
+                        Log.w("sortedChapters",ignored.toString()+" ");
                     }
+
                 }
             });
 
         }catch (Exception ignored){
             Log.w("sortedChapters",ignored.toString()+" ");
         }
-        try {
-            updateDataBase(entryId);
-        }catch (Exception ignored){
-            Log.w("sortedChapters",ignored.toString()+" ");
-        }
 
     }
 
-    private void updateDataBase(String entryId) {
+    private void updateDataBase(String entryI) {
         try {
             DBExecuter.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    DownloadItemEntity entity=getAssetFromDB(entryId);
-                   // Log.w("sortedChapters",entity.isSeries()+" ");
-                    if (entity.isSeries()){
+                    try {
+                        DownloadItemEntity entity=getAssetFromDB(entryI);
+                        getManager().removeAsset(entryI);
+                        removeFromDB(entryI);
                         getAllEpdFromDB(entity.getSeriesId(),entity.getSeasonNumber());
+                        if (zContext!=null){
+                            if(zContext instanceof Activity){
+                                zContext.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                            }
+                                        },10);
+                                    }
+                                });
+                            }
+                        }
+
+
+                    }catch (Exception ignored){
+                        Log.w("sortedChapters",ignored.toString()+" ");
                     }
+
                 }
             });
 
@@ -549,10 +571,14 @@ public class KTDownloadHelper {
                 public void run() {
                     if (it != null && it.size()>0) {
                         if (db!=null){
-                            DownloadItemEntity entity=it.get(0);
-                            //Log.w("sortedChapters",entity.getEpisodesCount()+" ");
-                            entity.setEpisodesCount(it.size());
-                            db.downloadDao().updateDownloadItem(entity);
+                            try {
+                                DownloadItemEntity entity=it.get(0);
+                                Log.w("sortedChapters",entity.getEpisodesCount()+" "+it.size());
+                                entity.setEpisodesCount(it.size());
+                                db.downloadDao().updateDownloadItem(entity);
+                            }catch (Exception e){
+
+                            }
                         }
                     }
                 }
@@ -576,20 +602,24 @@ public class KTDownloadHelper {
     public DownloadItemEntity getAssetFromDB(String kentryid) {
             if (db!=null) {
                 List<DownloadItemEntity> downloadItemEntity = db.downloadDao().loadAllDownloads();
+                Log.w("sortedChapters 2",downloadItemEntity.size()+"");
                 if (downloadItemEntity.size() > 0) {
                     for (int i = 0; i < downloadItemEntity.size(); i++) {
                         String entryId = downloadItemEntity.get(i).getEntryId();
+                        Log.w("sortedChapters 2",entryId+"-->in"+ kentryid);
                         if (entryId != null && entryId.equalsIgnoreCase(kentryid)) {
+                            Log.w("sortedChapters 2",entryId+"-->in");
+
                             return downloadItemEntity.get(i);
                         } else {
-                            return null;
+                            //return null;
                         }
                     }
                 } else {
-                    return null;
+                   // return null;
                 }
             }else {
-                return null;
+               // return null;
             }
         return null;
     }
@@ -649,6 +679,7 @@ public class KTDownloadHelper {
                                 String entryId = downloadItemEntity.get(i).getEntryId();
                                 if (entryId != null && entryId.equalsIgnoreCase(entryIds)) {
                                     db.downloadDao().deleteDownloadItem(downloadItemEntity.get(i));
+                                    Log.w("sortedChapters","deletefromdb");
                                     break;
                                 } else {
                                     Log.w("Dowmload","entryid not exists in DB");
@@ -760,7 +791,7 @@ public class KTDownloadHelper {
                 }
             });
         }catch (Exception ignored){
-
+            Log.w("sortedChapters",ignored.toString()+" ");
         }
     }
 
@@ -770,17 +801,21 @@ public class KTDownloadHelper {
                 @Override
                 public void run() {
                     if (db!=null) {
-                        List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId,seasonNumber);
-                        //Log.w("sortedChapters",downloadItemEntityList.size()+" ");
-                        if (downloadItemEntityList.size() > 0) {
-                          //  Log.w("sortedChapters",downloadItemEntityList.get(0).getAssetType()+" ");
-                            if (!downloadItemEntityList.get(0).getAssetType().equalsIgnoreCase("chapter")){
-                                updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
-                            }else {
-                                updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
-                            }
-                        } else {
+                        try {
+                            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId, seasonNumber);
+                            Log.w("sortedChapters",downloadItemEntityList.size()+" ");
+                            if (downloadItemEntityList.size() > 0) {
+                                  Log.w("sortedChapters",downloadItemEntityList.get(0).getAssetType()+" ");
+                                if (!downloadItemEntityList.get(0).getAssetType().equalsIgnoreCase("chapter")) {
+                                    updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
+                                } else {
+                                    updateDownload(AppCommonMethod.getSortedChapters(new ArrayList<DownloadItemEntity>(downloadItemEntityList)));
+                                }
+                            } else {
 
+                            }
+                        }catch (Exception e){
+                            Log.w("sortedChapters 2",e.toString());
                         }
                     }else {
 
@@ -789,7 +824,7 @@ public class KTDownloadHelper {
             });
 
         }catch (Exception ignored){
-
+            Log.w("sortedChapters 3",ignored.toString());
         }
     }
 
