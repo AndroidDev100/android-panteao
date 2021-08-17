@@ -302,18 +302,22 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
-                    player.stop();
-                    showBingeWatchControls = false;
-                    playerControlsFragment.hideControls();
-//                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
-//                        playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
-//                    }
+                    if (!IsbingeWatch) {
+                        player.stop();
+                        showBingeWatchControls = false;
+                       // playerControlsFragment.hideControls();
+                        playerControlsFragment.showReplayVisibility();
+                    }
                 }
                 if (mHandler != null) {
                     finishPlayer();
                 }
                 if (IsbingeWatch) {
                     if (totalEpisodes == runningEpisodes){
+                        player.stop();
+                        showBingeWatchControls = false;
+                       // playerControlsFragment.hideControls();
+                        playerControlsFragment.showReplayVisibility();
 
                     }else {
                         isFirstCalled = true;
@@ -532,7 +536,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void replay() {
-
+        if (player!=null){
+            player.seekTo(0);
+            startPlayer();
+            countDownTimer.start();
+            playerControlsFragment.showControls();
+        }
     }
 
     @Override

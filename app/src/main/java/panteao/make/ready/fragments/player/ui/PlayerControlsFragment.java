@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,6 +90,7 @@ public class PlayerControlsFragment extends Fragment {
     public ConstraintLayout bingeLay;
     private CountDownTimer mTimer;
     private TextView skipduration;
+    private FrameLayout replay;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -394,16 +396,17 @@ public class PlayerControlsFragment extends Fragment {
         });
 
         //Replay video event
-//        replay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (playerCallbacks != null) {
-//                    replay.setVisibility(View.GONE);
-//                    seekBar.setPosition(0);
-//                    playerCallbacks.replay();
-//                }
-//            }
-//        });
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    replay.setVisibility(View.GONE);
+                    seekBar.setPosition(0);
+                    currentPosition.setText("00:00");
+                    playerCallbacks.replay();
+                }
+            }
+        });
 
 
     }
@@ -411,30 +414,34 @@ public class PlayerControlsFragment extends Fragment {
     public void showControls() {
         Log.d("ffrrrfrrfr",childControls.getVisibility()+"");
         Log.d("ffrrrfrrfr",bingeLay.getVisibility()+"");
-        if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility()!=View.VISIBLE) {
-            childControls.animate().alpha(1.0f).setDuration(1000)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            if (AppCommonMethod.isTV(requireContext())) {
-                                btnPause.requestFocus();
+        if (replay.getVisibility() == View.VISIBLE){
+            backArrow.setVisibility(View.VISIBLE);
+        }else {
+            if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
+                childControls.animate().alpha(1.0f).setDuration(1000)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if (AppCommonMethod.isTV(requireContext())) {
+                                    btnPause.requestFocus();
+                                }
+
                             }
 
-                        }
-
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                            childControls.setVisibility(View.VISIBLE);
-                            seekbarLayout.setVisibility(View.VISIBLE);
-                            backArrow.setVisibility(View.VISIBLE);
-                            qualitySettings.setVisibility(View.VISIBLE);
-                            if (childControls.getFocusedChild() != null) {
-                                childControls.getFocusedChild().requestFocus();
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                super.onAnimationStart(animation);
+                                childControls.setVisibility(View.VISIBLE);
+                                seekbarLayout.setVisibility(View.VISIBLE);
+                                backArrow.setVisibility(View.VISIBLE);
+                                qualitySettings.setVisibility(View.VISIBLE);
+                                if (childControls.getFocusedChild() != null) {
+                                    childControls.getFocusedChild().requestFocus();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
     }
 
@@ -632,6 +639,7 @@ public class PlayerControlsFragment extends Fragment {
         btnRewind = (ImageView) view.findViewById(R.id.rew);
         bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
         skipduration = (TextView) view.findViewById(R.id.skip_duration);
+        replay = (FrameLayout) view.findViewById(R.id.replay);
         seekBar = view.findViewById(R.id.exo_progress);
         currentPosition = view.findViewById(R.id.exo_position);
         totalDuration = view.findViewById(R.id.exo_duration);
@@ -644,6 +652,8 @@ public class PlayerControlsFragment extends Fragment {
         skipBtn = view.findViewById(R.id.skipBtn);
         qualitySettings = (ImageView) view.findViewById(R.id.iv_quality);
         bingeLay.setVisibility(View.GONE);
+        replay.setVisibility(View.GONE);
+        bingeBtn.setVisibility(View.GONE);
         if (AppCommonMethod.isTV(getActivity())) {
             Logger.e("IS_TV", "TRUE");
             fullscreen.setVisibility(View.GONE);
@@ -662,10 +672,15 @@ public class PlayerControlsFragment extends Fragment {
 
                 if (!mFlag)
                     return false;
-                if (childControls.getVisibility() == View.VISIBLE) {
-                    hideControls();
-                } else {
-                    showControls();
+                if (replay.getVisibility() == View.VISIBLE) {
+
+                }else {
+
+                    if (childControls.getVisibility() == View.VISIBLE) {
+                        hideControls();
+                    } else {
+                        showControls();
+                    }
                 }
 //                if (replay.getVisibility() == View.VISIBLE) {
 //                    childControl.setVisibility(View.GONE);
@@ -745,5 +760,13 @@ public class PlayerControlsFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    public void showReplayVisibility() {
+        childControls.setVisibility(View.GONE);
+        seekbarLayout.setVisibility(View.GONE);
+        qualitySettings.setVisibility(View.GONE);
+        replay.setVisibility(View.VISIBLE);
+        backArrow.setVisibility(View.VISIBLE);
     }
 }
