@@ -232,7 +232,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
                             } else {
                                 AppCommonMethod.launchDetailScreen(mContext,0l,AppConstants.Video, continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
                             }*/
-                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium());
+                            AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(i).getUserAssetDetail().getAssetType(), continuelist.get(i).getUserAssetDetail().getId(), String.valueOf(continuelist.get(i).getUserAssetStatus().getPosition()), continuelist.get(i).getUserAssetDetail().isPremium(),null);
                         }
                     }
                 });

@@ -1515,7 +1515,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         } else {
             if (AppCommonMethod.getCheckBCID(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 Long getVideoId = Long.parseLong(item.getEnveuVideoItemBeans().get(position).getkEntryId());
-                AppCommonMethod.launchDetailScreen(this, getVideoId.toString(), AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId.toString(), AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false,item.getEnveuVideoItemBeans().get(position));
             }
         }
     }

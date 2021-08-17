@@ -605,12 +605,12 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         if (AppCommonMethod.getCheckBCID(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
             if (itemValue.getAssetType() != null) {
-                AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
             } else {
-                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false,itemValue);
             }
         }else {
-            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         }
     }
 

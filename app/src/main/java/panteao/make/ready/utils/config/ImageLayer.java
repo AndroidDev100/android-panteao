@@ -202,7 +202,6 @@ public class ImageLayer {
                 Map.Entry<String, Thumbnail> entry = crousalImages.entrySet().iterator().next();
                 imageUrl = entry.getValue().getSources().get(0).getSrc();
             }
-            Logger.e("RECOMMENDED_IMAGES", Utils.INSTANCE.getFilteredUrl(imageUrl, width, height));
         }
         return Utils.INSTANCE.getFilteredUrl(imageUrl, width, height);
     }

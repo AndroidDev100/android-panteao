@@ -4,78 +4,69 @@ package panteao.make.ready.activities.internalpages.fragments
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
-import androidx.leanback.app.BackgroundManager
-import androidx.leanback.app.HeadersSupportFragment
 import androidx.leanback.widget.*
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.make.baseCollection.baseCategoryModel.BaseCategory
 import com.make.enums.ImageType
 import com.make.enums.Layouts
+import com.make.enums.RailCardType
 import panteao.make.ready.R
+import panteao.make.ready.activities.listing.callback.ItemClickListener
+import panteao.make.ready.adapters.CommonListingAdapter
+import panteao.make.ready.adapters.commonRails.CommonAdapterNew
+import panteao.make.ready.baseModels.BaseBindingFragment
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.playListModelV2.EnveuCommonResponse
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
-import panteao.make.ready.callbacks.commonCallbacks.DataUpdateCallBack
-import panteao.make.ready.callbacks.commonCallbacks.OnKeywordSearchFragmentListener
-import panteao.make.ready.cardlayout.cardpresenter.PopularSearchCardPresenter
-import panteao.make.ready.cardlayout.cardpresenter.PotraitCardPresenter
-import panteao.make.ready.cardlayout.cardpresenter.SquareCardPresenter
+import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner
+import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner
+import panteao.make.ready.databinding.InternalPlaylistListFragmentBinding
 import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.networking.servicelayer.APIServiceLayer
-import panteao.make.ready.tvBaseModels.basemodels.TVBaseFragment
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
+import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_LDS_LANDSCAPE
+import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_PR_POTRAIT
 import panteao.make.ready.utils.cropImage.helpers.Logger
+import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
+import panteao.make.ready.utils.helpers.RecyclerAnimator
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class InternalPlaylistListingFragment constructor() : TVBaseFragment(), OnItemViewClickedListener,
-    DataUpdateCallBack, NoInternetFragment.OnFragmentInteractionListener {
+class InternalPlaylistListingFragment :
+    BaseBindingFragment<InternalPlaylistListFragmentBinding>(), OnItemViewClickedListener,
+    NoInternetFragment.OnFragmentInteractionListener, ItemClickListener,
+    CommonRailtItemClickListner, MoreClickListner {
 
-    private lateinit var playLists: List<String>
+    private val mScrollY = 0
+    private lateinit var railCommonDataList: ArrayList<RailCommonData>
+    private lateinit var playLists: ArrayList<String>
     private var count = 0
-    private var mGridPresenter: Presenter? = null
-    private var gridRowAdapter: ArrayObjectAdapter? = null
     private lateinit var playListContent: String
-    private lateinit var mBackgroundManager: BackgroundManager
-    private lateinit var rowsAdapter: ArrayObjectAdapter
-    private lateinit var customListRowPresenter: ListRowPresenter
-    private var mOnFragmentListener: OnKeywordSearchFragmentListener? = null
     private lateinit var railInjectionHelper: RailInjectionHelper
+    private var adapterDetailRail: CommonAdapterNew? = null
 
 
     override fun onFragmentInteraction() {
 //        connectionObserver()
     }
 
-    override fun onDataClick(searchString: String) {
-        activity?.applicationContext?.let {
-            if (NetworkConnectivity.isOnline(activity)) {
-                setupFragment(searchString)
-            } else {
-                noInternetFragment()
-            }
-        }
-    }
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         railInjectionHelper = RailInjectionHelper(activity?.application!!)
-        mOnFragmentListener = context as OnKeywordSearchFragmentListener
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        connectionObserver()
     }
 
     private fun connectionObserver() {
@@ -91,20 +82,16 @@ class InternalPlaylistListingFragment constructor() : TVBaseFragment(), OnItemVi
 
     private fun connectionValidation(aBoolean: Boolean) {
         if (aBoolean) {
-
             if (arguments != null) {
                 playListContent =
                     arguments?.getString(AppConstants.PLAYLIST_CONTENT)!!
             }
-            setupEventListeners()
-            customListRowPresenter = object : ListRowPresenter(FocusHighlight.ZOOM_FACTOR_NONE) {
-                override fun isUsingDefaultListSelectEffect() = false
-            }.apply {
-                shadowEnabled = false
-            }
-            rowsAdapter = ArrayObjectAdapter(customListRowPresenter)
-            mBackgroundManager = BackgroundManager.getInstance(activity)
-            setupFragment(playListContent)
+            binding.listRecyclerview.visibility = View.VISIBLE
+            //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
+            //new RecyclerAnimator(getActivity()).animate(getBinding().recyclerView);
+            railCommonDataList = ArrayList<RailCommonData>()
+
+            setupFragment()
         } else {
             noInternetFragment()
         }
@@ -116,40 +103,39 @@ class InternalPlaylistListingFragment constructor() : TVBaseFragment(), OnItemVi
         fragmentTransaction?.commit()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        connectionObserver()
+    private fun setupFragment() {
+        playLists = playListContent.split(",") as ArrayList<String>;
+        playLists.addAll(playLists)
+        callShimmer()
     }
 
-    private fun setupEventListeners() {
-        onItemViewClickedListener = this
-    }
-
-    private var tagValue = -1
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (hidden) {
-            mOnFragmentListener?.showProgressBarView(false)
-        } else {
-            count = 0
-            rowsAdapter.clear()
+    private fun callShimmer() {
+        val shimmerAdapter = CommonListingAdapter(requireActivity())
+//        binding.listRecyclerview.hasFixedSize()
+        binding.listRecyclerview.isNestedScrollingEnabled = false
+        var num = 2
+        val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
+        if (tabletSize) {
+            num =
+                if (resources
+                        .configuration.orientation == 2
+                ) 4 else 3
         }
-    }
+        shimmerAdapter.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+        var gridLayoutManager = LinearLayoutManager(requireActivity())
+        binding.listRecyclerview.layoutManager = gridLayoutManager
+        binding.listRecyclerview.adapter = shimmerAdapter
+        binding.listRecyclerview.visibility = View.VISIBLE
 
-    private fun setupFragment(searchString: String?) {
-        count = 0
-        rowsAdapter.clear()
-        adapter = rowsAdapter;
-        playLists = playListContent.split(",");
-        checkActivity()
-    }
-
-    private fun checkActivity() {
-        activity?.let { getPlayListDetails(it) }
-            ?: Handler(Looper.getMainLooper()).postDelayed({
-                checkActivity()
-            }, 3000)
+//        binding.listRecyclerview.setHasFixedSize(true)
+        binding.listRecyclerview.setItemViewCacheSize(20)
+        binding.listRecyclerview.isNestedScrollingEnabled = false
+        binding.listRecyclerview.layoutManager = LinearLayoutManager(
+            activity,
+            RecyclerView.VERTICAL,
+            false
+        )
+        getPlayListDetails(requireActivity())
     }
 
     private fun getPlayListDetails(activity: FragmentActivity) {
@@ -166,43 +152,46 @@ class InternalPlaylistListingFragment constructor() : TVBaseFragment(), OnItemVi
                     title = s.replace("\"", "").trim()
                 }
             }
-            Logger.e("DETAILS", playListId + " " + imageType + " " + title)
             APIServiceLayer.getInstance().getPlayListById(playListId, 0, 20)
                 .observe(
                     activity,
                     { enveuCommonResponse: EnveuCommonResponse? ->
                         if (enveuCommonResponse != null && enveuCommonResponse.data != null) {
-                            mOnFragmentListener?.showNoDataFoundView(false, "")
-                            if (imageType == "LANDSCAPE") {
-                                mGridPresenter = PopularSearchCardPresenter("16x9")
-                            } else if (imageType == "PORTRAIT_2_3" || imageType == "PORTRAIT") {
-                                mGridPresenter = PotraitCardPresenter(100, activity, "9x16")
-
-                            } else if (imageType == "SQUARE") {
-                                mGridPresenter = SquareCardPresenter(0, "16x9")
-                            }
+                            RecyclerAnimator(activity).animate(binding.listRecyclerview)
                             val screenWidget = BaseCategory()
                             screenWidget.layout = Layouts.HOR.name
                             screenWidget.contentImageType = ImageType.LDS.name
-                            val railCommonData =
-                                RailCommonData(enveuCommonResponse.data, screenWidget, false)
-                            gridRowAdapter = ArrayObjectAdapter(mGridPresenter)
-                            gridRowAdapter?.addAll(0, railCommonData.enveuVideoItemBeans)
-
-                            val gridHeader = HeaderItem(
-                                count.toLong(),
-                                title
+                            screenWidget.name = title
+                            screenWidget.showHeader = true
+                            val baseCategory = BaseCategory()
+                            baseCategory.railCardType = RailCardType.IMAGE_ONLY.name
+                            val railCommonData = RailCommonData(
+                                enveuCommonResponse.data,
+                                screenWidget,
+                                false
                             )
-                            val listRow = ListRow(gridHeader, gridRowAdapter)
-                            rowsAdapter.add(listRow)
+                            if (count == 0) {
+                                railCommonData.railType = HORIZONTAL_LDS_LANDSCAPE
+                            } else {
+                                railCommonData.railType = HORIZONTAL_PR_POTRAIT
+                            }
+                            railCommonDataList.add(railCommonDataList.size, railCommonData)
+
+                            if (adapterDetailRail == null) {
+                                RecyclerAnimator(getActivity()).animate(binding.listRecyclerview)
+                                adapterDetailRail = CommonAdapterNew(
+                                    activity, railCommonDataList, this, this
+                                )
+                                binding.listRecyclerview.adapter = adapterDetailRail
+                            } else {
+                                adapterDetailRail!!.notifyItemInserted(count + 1)
+                            }
                             count++
                             getPlayListDetails(activity)
                         }
                     })
         }
-
     }
-
 
     override fun onItemClicked(
         p0: Presenter.ViewHolder?,
@@ -239,26 +228,20 @@ class InternalPlaylistListingFragment constructor() : TVBaseFragment(), OnItemVi
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    override fun onCreateHeadersSupportFragment(): HeadersSupportFragment {
-        super.setHeadersState(HEADERS_DISABLED)
-        return super.onCreateHeadersSupportFragment()
+
+    override fun inflateBindingLayout(inflater: LayoutInflater): InternalPlaylistListFragmentBinding {
+        return InternalPlaylistListFragmentBinding.inflate(inflater)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        mOnFragmentListener = null
+    override fun onRowItemClicked(itemValue: EnveuVideoItemBean?, position: Int) {
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mOnFragmentListener?.showNoDataFoundView(false, "")
-        mOnFragmentListener?.showProgressBarView(false)
+    override fun railItemClick(item: RailCommonData?, position: Int) {
+
     }
 
-    fun onUpKeyClicked() {
-        if (selectedRowViewHolder != null && selectedRowViewHolder.row.id.toInt() == 1) {
-            requireActivity().findViewById<FrameLayout>(R.id.recent_searches_layout)
-                .requestFocus()
-        }
+    override fun moreRailClick(data: RailCommonData?, position: Int) {
+
     }
 }

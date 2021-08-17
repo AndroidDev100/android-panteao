@@ -1317,7 +1317,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         } else {
             if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 String getVideoId = item.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId();
-                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false,item.getEnveuVideoItemBeans().get(position));
 
             }
         }

@@ -4,48 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridFragment
+import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridTVFragment
 import panteao.make.ready.activities.internalpages.fragments.InternalPlaylistListingFragment
-import panteao.make.ready.adapters.CommonListingAdapter
-import panteao.make.ready.adapters.CommonShimmerAdapter
-import panteao.make.ready.baseModels.BaseBindingActivity
+import panteao.make.ready.activities.internalpages.fragments.InternalPlaylistListingTVFragment
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.callbacks.commonCallbacks.OnKeywordSearchFragmentListener
 import panteao.make.ready.databinding.ActivityCustomInternalPageBinding
-import panteao.make.ready.enums.KalturaImageType
+import panteao.make.ready.databinding.ActivityTvCustomInternalPageBinding
 import panteao.make.ready.fragments.dialog.AlertDialogFragment
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment
 import panteao.make.ready.networking.apistatus.APIStatus
 import panteao.make.ready.networking.responsehandler.ResponseModel
+import panteao.make.ready.tvBaseModels.basemodels.TvBaseBindingActivity
 import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.cropImage.helpers.Logger
-import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
-import panteao.make.ready.utils.helpers.GridSpacingItemDecoration
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 
-class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding>(),
+class TVCustomInternalPage : TvBaseBindingActivity<ActivityTvCustomInternalPageBinding>(),
     AlertDialogFragment.AlertDialogListener, OnKeywordSearchFragmentListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val videoItem = intent.getParcelableExtra("asset") as EnveuVideoItemBean?
+        val strings = videoItem?.posterURL?.split(AppConstants.FILTER_PLAYER_BANNER + "/")
+        videoItem?.posterURL = strings?.get(1)
         binding.asset = videoItem
-        if (videoItem?.description.isNullOrEmpty()) {
-            binding.description.visibility = View.GONE
-        } else {
-            binding.description.visibility = View.VISIBLE
+        if(videoItem?.description.isNullOrEmpty()){
+            binding.description.visibility=View.GONE
+        }else{
+            binding.description.visibility=View.VISIBLE
         }
         getAssetDetails(videoItem!!.id)
     }
 
     private fun getAssetDetails(assestId: Int) {
         val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
-        railInjectionHelper.getAssetDetailsV2(assestId.toString()).observe(this@CustomInternalPage,
+        railInjectionHelper.getAssetDetailsV2(assestId.toString()).observe(this@TVCustomInternalPage,
             { assetResponse: ResponseModel<*>? ->
                 if (assetResponse != null) {
                     if (assetResponse.status.equals(APIStatus.START.name, ignoreCase = true)) {
@@ -59,12 +54,11 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                         if (strings.size > 1) {
                             binding.title.visibility = View.GONE
                             val internalPlaylistListingFragment =
-                                InternalPlaylistListingFragment();
+                                InternalPlaylistListingTVFragment();
 
                             val bundle = Bundle()
                             bundle.putString(AppConstants.PLAYLIST_CONTENT, enveuCommonResponse.enveuVideoItemBeans[0].customLinkDetails)
                             internalPlaylistListingFragment.arguments = bundle
-                            Logger.e("PLAYLIST_ID", "FRAG_ADDED")
 
                             supportFragmentManager.beginTransaction()
                                 .replace(
@@ -72,9 +66,11 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                     internalPlaylistListingFragment,
                                     null
                                 ).commit()
+                            if (internalPlaylistListingFragment.view != null)
+                                internalPlaylistListingFragment.view?.requestFocus()
                         } else {
                             val internalPlayListGridFragment =
-                                InternalPlayListGridFragment()
+                                InternalPlayListGridTVFragment()
                             val bundle = Bundle()
                             bundle.putString(AppConstants.PLAYLIST_CONTENT, strings[0])
                             internalPlayListGridFragment.arguments = bundle
@@ -86,6 +82,8 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                     internalPlayListGridFragment,
                                     null
                                 ).commit()
+                            if (internalPlayListGridFragment.view != null)
+                                internalPlayListGridFragment.view?.requestFocus()
                         }
                     } else if (assetResponse.status
                             .equals(APIStatus.ERROR.name, ignoreCase = true)
@@ -110,7 +108,6 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
             })
     }
 
-
     private fun showDialog(title: String, message: String) {
         val fm = supportFragmentManager
         val alertDialog = AlertDialogSingleButtonFragment.newInstance(
@@ -123,8 +120,8 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         alertDialog.show(fm, "fragment_alert")
     }
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityCustomInternalPageBinding {
-        return ActivityCustomInternalPageBinding.inflate(inflater)
+    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityTvCustomInternalPageBinding {
+        return ActivityTvCustomInternalPageBinding.inflate(inflater)
     }
 
     override fun onFinishDialog() {

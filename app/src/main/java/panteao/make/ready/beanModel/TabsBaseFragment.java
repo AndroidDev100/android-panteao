@@ -390,13 +390,13 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
             if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() == MediaTypeConstants.getInstance().getSeries()) {
                 String videoId = railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId();
-                AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(getActivity(), videoId, MediaTypeConstants.getInstance().getSeries(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", false,railCommonData.getEnveuVideoItemBeans().get(position));
             } else {
                 if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() != null && railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId()!=null &&
                         !railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId().equalsIgnoreCase("")) {
-                    AppCommonMethod.launchDetailScreen(getActivity(), railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium(),railCommonData.getEnveuVideoItemBeans().get(position));
                 } else {
-                    AppCommonMethod.launchDetailScreen(getActivity(), "", railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium());
+                    AppCommonMethod.launchDetailScreen(getActivity(), "", railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), railCommonData.getEnveuVideoItemBeans().get(position).getId(), "0", railCommonData.getEnveuVideoItemBeans().get(position).isPremium(),railCommonData.getEnveuVideoItemBeans().get(position));
                 }
             }
         }

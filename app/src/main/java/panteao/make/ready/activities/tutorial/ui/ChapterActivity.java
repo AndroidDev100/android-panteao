@@ -1513,7 +1513,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         } else {
             if (AppCommonMethod.getCheckKEntryId(item.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 String getVideoId = item.getEnveuVideoItemBeans().get(position).getkEntryId();
-                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false);
+                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, item.getEnveuVideoItemBeans().get(position).getId(), "0", false,item.getEnveuVideoItemBeans().get(position));
             }
         }
     }

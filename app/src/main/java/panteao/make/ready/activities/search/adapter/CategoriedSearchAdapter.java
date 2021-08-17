@@ -346,9 +346,9 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
             PrintLogging.printLog("", "SearchAssetType-->>" + itemValue.getAssetType());
-            AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         } else {
-            AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
 
         }
     }

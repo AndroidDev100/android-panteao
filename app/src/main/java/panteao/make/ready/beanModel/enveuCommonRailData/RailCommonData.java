@@ -64,6 +64,10 @@ public class RailCommonData implements Parcelable {
     private boolean isAd = false;
     private int pageNumber = 0;
 
+    public void setRailType(int railType) {
+        this.railType = railType;
+    }
+
     protected RailCommonData(Parcel in) {
         maxContent = in.readInt();
         displayName = in.readString();

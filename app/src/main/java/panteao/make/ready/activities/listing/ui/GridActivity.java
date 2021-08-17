@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.bookmarking.bean.continuewatching.ContinueWatchingBookmark;
 import com.make.enums.ImageType;
+
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.listing.viewmodel.ListingViewModel;
@@ -97,7 +98,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         flag = getIntent().getIntExtra("flag", 0);
         shimmerType = getIntent().getIntExtra("shimmerType", 0);
         baseCategory = getIntent().getExtras().getParcelable("baseCategory");
-        pos = getIntent().getIntExtra("railPosition",0);
+        pos = getIntent().getIntExtra("railPosition", 0);
 
         modelCall();
         UiIntilization();
@@ -268,18 +269,17 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                     bookmarkingViewModel.getContinueWatchingData(token, counter, AppConstants.PAGE_SIZE).observe(this, getContinueWatchingBean -> {
                         getBinding().transparentLayout.setVisibility(View.GONE);
                         String videoIds = "";
-                        List<ContinueWatchingBookmark> continueWatchingBookmarkLists= new ArrayList<>();
-                        if (getContinueWatchingBean != null){
+                        List<ContinueWatchingBookmark> continueWatchingBookmarkLists = new ArrayList<>();
+                        if (getContinueWatchingBean != null) {
                             continueWatchingBookmarkLists = getContinueWatchingBean.getData().getContinueWatchingBookmarks();
-
                         }
 
-                        List<ContinueWatchingBookmark> continueWatchingBookmarkList =  removeDuplicates(continueWatchingBookmarkLists);
+                        List<ContinueWatchingBookmark> continueWatchingBookmarkList = removeDuplicates(continueWatchingBookmarkLists);
                         for (ContinueWatchingBookmark continueWatchingBookmark : continueWatchingBookmarkList
                         ) {
                             videoIds = videoIds.concat(String.valueOf(continueWatchingBookmark.getAssetId())).concat(",");
                         }
-                        Logger.w("assetIds",videoIds);
+                        Logger.w("assetIds", videoIds);
 
                         ContinueWatchingLayer.getInstance().getContinueWatchingVideos(continueWatchingBookmarkList, videoIds, new CommonApiCallBack() {
                             @Override
@@ -381,7 +381,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 }
                 if (!isFound) noRepeat.add(event);
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -392,7 +392,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     private void setSeasonData(SeasonResponse seasonResponse) {
         if (!isScrolling) {
             PrintLogging.printLog("", isScrolling + "isScrolling");
-            commonLandscapeAdapter = new LandscapeListingAdapter(this, new ArrayList<>(), seasonResponse.getData().getItems(), AppConstants.VOD, this,baseCategory);
+            commonLandscapeAdapter = new LandscapeListingAdapter(this, new ArrayList<>(), seasonResponse.getData().getItems(), AppConstants.VOD, this, baseCategory);
             int num = 2;
             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
             if (tabletSize) {
@@ -424,11 +424,10 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
             mIsLoading = true;
             int num = 3;
             if (playlistRailData != null) {
-           Logger.e("GRID_TYPE",baseCategory.getContentImageType());
                 if (baseCategory.getReferenceName() != null && (baseCategory.getReferenceName().equalsIgnoreCase(AppConstants.ContentType.CONTINUE_WATCHING.name()) || baseCategory.getReferenceName().equalsIgnoreCase("special_playlist"))) {
                     if (commonPosterLandscapeAdapter == null) {
                         new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                        commonPosterLandscapeAdapter = new CommonPosterLandscapeAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(),baseCategory);
+                        commonPosterLandscapeAdapter = new CommonPosterLandscapeAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(), baseCategory);
                         num = 2;
                         boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
                         if (tabletSize) {
@@ -488,7 +487,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonLandscapeAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonLandscapeAdapter = new LandscapeListingAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", this,baseCategory);
+                            commonLandscapeAdapter = new LandscapeListingAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", this, baseCategory);
 
                             num = 2;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -510,7 +509,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonLandscapeAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonLandscapeAdapter = new LandscapeListingAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", this,baseCategory);
+                            commonLandscapeAdapter = new LandscapeListingAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", this, baseCategory);
 
                             num = 2;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -532,7 +531,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonPotraitAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPotraitAdapter = new CommonPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this,baseCategory);
+                            commonPotraitAdapter = new CommonPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this, baseCategory);
 
                             num = 3;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -555,7 +554,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonPotraitTwoAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPotraitTwoAdapter = new CommonPotraitTwoAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this,baseCategory);
+                            commonPotraitTwoAdapter = new CommonPotraitTwoAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this, baseCategory);
 
                             num = 3;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -578,7 +577,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonPosterLandscapeAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPosterLandscapeAdapter = new CommonPosterLandscapeAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(),baseCategory);
+                            commonPosterLandscapeAdapter = new CommonPosterLandscapeAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(), baseCategory);
 
                             num = 2;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -600,7 +599,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                     } else if (baseCategory.getContentImageType().equalsIgnoreCase(ImageType.PR1.name())) {
                         if (commonPosterPotraitAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPosterPotraitAdapter = new CommonPosterPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(), this,baseCategory);
+                            commonPosterPotraitAdapter = new CommonPosterPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), new ArrayList<>(), "VIDEO", new ArrayList<>(), this, baseCategory);
                             num = 3;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
                             if (tabletSize) {
@@ -666,8 +665,8 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 mIsLoading = playlistRailData.getMaxContent() != commonLandscapeAdapter.getItemCount();
 
             }
-        }else {
-            mIsLoading=false;
+        } else {
+            mIsLoading = false;
         }
     }
 
@@ -712,64 +711,29 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
     @Override
     public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
-//        Bundle args = new Bundle();
-//        args.putInt(AppConstants.BUNDLE_ASSET_ID, itemValue.getId());
-//        args.putBoolean(AppConstants.BUNDLE_IS_PREMIUM, itemValue.isPremium());
-//        args.putString(AppConstants.BUNDLE_DETAIL_TYPE, itemValue.getAssetType());
-//        args.putString(AppConstants.BUNDLE_DURATION, "0");
-//        if (listData.isSeries() && itemValue.getBrightcoveVideoId() != null) {
-//            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
-//            args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, getVideoId);
-//            args.putString(AppConstants.BUNDLE_ASSET_TYPE, AppConstants.Series);
-//        } else {
-//            Long getVideoId = Long.parseLong(itemValue.getBrightcoveVideoId());
-//            args.putLong(AppConstants.BUNDLE_VIDEO_ID_BRIGHTCOVE, getVideoId);
-//
-//            if (itemValue.getAssetType() != null) {
-//                args.putString(AppConstants.BUNDLE_ASSET_TYPE, itemValue.getAssetType());
-//            } else {
-//                args.putString(AppConstants.BUNDLE_ASSET_TYPE, AppConstants.Video);
-//                AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false);
-//            }
-//        }
-//        Intent intent = new Intent();
-//        intent.putExtra(AppConstants.BUNDLE_ASSET_BUNDLE, args);
-//        setResult(10001, intent);
-//        finish();
-             Log.d("clickedItem","list");
-             try {
-                 AppCommonMethod.trackFcmEvent("Content Screen","",getApplicationContext(),0);
-                 AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "","","");
-             }catch (Exception ignored){
+        Log.d("clickedItem", "list");
+        try {
+            AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
+            AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "", "", "");
+        } catch (Exception ignored) {
 
-             }
-                    //        }else if(KsPreferenceKeys.getInstance().getScreenName() == "Main - TopHits") {
-//            AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, "Main - TopHits", listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "");
-//
-//        } else if(KsPreferenceKeys.getInstance().getScreenName() == "Main - Coming soon") {
-//            AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, "Main - Coming soon", listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "");
-//        } else if(KsPreferenceKeys.getInstance().getScreenName() == "Main – Live TV") {
-//            AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, "Main – Live TV", listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "");
-//
-//        }
-
-
+        }
         if (listData.isSeries() && AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
-            AppCommonMethod.launchDetailScreen(this, getVideoId, MediaTypeConstants.getInstance().getSeries(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, getVideoId, MediaTypeConstants.getInstance().getSeries(), itemValue.getId(), "0", false, itemValue);
         } else {
             if (AppCommonMethod.getCheckBCID(itemValue.getBrightcoveVideoId())) {
                 String getVideoId = itemValue.getkEntryId();
                 if (itemValue.getAssetType() != null) {
-                    AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false, itemValue);
                 } else {
-                    AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, getVideoId, AppConstants.Video, itemValue.getId(), "0", false, itemValue);
                 }
             } else {
                 if (itemValue.getAssetType() != null) {
-                    AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false, itemValue);
                 } else {
-                    AppCommonMethod.launchDetailScreen(this, "", AppConstants.Video, itemValue.getId(), "0", false);
+                    AppCommonMethod.launchDetailScreen(this, "", AppConstants.Video, itemValue.getId(), "0", false, itemValue);
                 }
             }
         }

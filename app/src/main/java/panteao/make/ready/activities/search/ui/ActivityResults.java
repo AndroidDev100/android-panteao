@@ -313,7 +313,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
             }
             mLastClickTime = SystemClock.elapsedRealtime();
 
-            AppCommonMethod.launchDetailScreen(ActivityResults.this, String.valueOf(itemValue.getId()), itemValue.getType(),itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(ActivityResults.this, String.valueOf(itemValue.getId()), itemValue.getType(),itemValue.getId(), "0", false,null);
 
         } else {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -337,9 +337,9 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         }
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getBrightcoveVideoId();
-            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         } else {
-            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
 
         }
     }

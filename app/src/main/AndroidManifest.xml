@@ -46,7 +46,8 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
-        <activity android:name=".activities.internalpages.CustomInternalPage"></activity>
+        <activity android:name=".activities.internalpages.TVCustomInternalPage" />
+        <activity android:name=".activities.internalpages.CustomInternalPage" />
         <activity
             android:name=".activities.show.ui.ShowActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -117,12 +118,12 @@
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

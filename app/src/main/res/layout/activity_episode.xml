@@ -97,11 +97,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_arrow_back_black_24dp"
                         android:contentDescription="TODO" />
-
-
                 </LinearLayout>
-
-
             </RelativeLayout>
 
             <androidx.core.widget.NestedScrollView

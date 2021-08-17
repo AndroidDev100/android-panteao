@@ -432,7 +432,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         }
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
-            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false);
+            AppCommonMethod.launchDetailScreen(this, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         }
     }
 
