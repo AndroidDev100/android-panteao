@@ -205,7 +205,9 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (!currentVideoItem.assetType.equals("chapter", ignoreCase = true)){
                     var builder=StringBuilder()
                     builder.append("Season ")
-                    if (currentVideoItem.seasonNumber>0){
+                    if (currentVideoItem.seasonNumber==0){
+                        builder.append("1")
+                    }else{
                         builder.append(currentVideoItem.seasonNumber)
                     }
                     builder.append(" | ")
