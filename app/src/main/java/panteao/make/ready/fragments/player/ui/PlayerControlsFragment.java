@@ -298,7 +298,7 @@ public class PlayerControlsFragment extends Fragment {
 
             @Override
             public void onScrubMove(TimeBar timeBar, long position) {
-                seekBar.setPosition(position);
+              //  seekBar.setPosition(position);
                 currentPosition.setText(stringForTime(position));
             }
 
