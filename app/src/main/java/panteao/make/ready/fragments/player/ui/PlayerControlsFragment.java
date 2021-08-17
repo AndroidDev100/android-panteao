@@ -375,6 +375,10 @@ public class PlayerControlsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (playerCallbacks != null) {
+                    bingeLay.setVisibility(View.GONE);
+                    bingeBtn.setVisibility(View.GONE);
+                    backArrow.setVisibility(View.GONE);
+                    qualitySettings.setVisibility(View.GONE);
                     playerCallbacks.bingeWatch();
                 }
             }
@@ -407,7 +411,7 @@ public class PlayerControlsFragment extends Fragment {
     public void showControls() {
         Log.d("ffrrrfrrfr",childControls.getVisibility()+"");
         Log.d("ffrrrfrrfr",bingeLay.getVisibility()+"");
-        if (childControls.getVisibility() == View.GONE) {
+        if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility()!=View.VISIBLE) {
             childControls.animate().alpha(1.0f).setDuration(1000)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -424,6 +428,8 @@ public class PlayerControlsFragment extends Fragment {
                             super.onAnimationStart(animation);
                             childControls.setVisibility(View.VISIBLE);
                             seekbarLayout.setVisibility(View.VISIBLE);
+                            backArrow.setVisibility(View.VISIBLE);
+                            qualitySettings.setVisibility(View.VISIBLE);
                             if (childControls.getFocusedChild() != null) {
                                 childControls.getFocusedChild().requestFocus();
                             }
@@ -445,6 +451,8 @@ public class PlayerControlsFragment extends Fragment {
                         super.onAnimationEnd(animation);
                         childControls.setVisibility(View.GONE);
                         seekbarLayout.setVisibility(View.GONE);
+                        backArrow.setVisibility(View.GONE);
+                        qualitySettings.setVisibility(View.GONE);
                         if (childControls.getFocusedChild() != null) {
                             childControls.getFocusedChild().clearFocus();
                         }
@@ -452,7 +460,7 @@ public class PlayerControlsFragment extends Fragment {
                 });
     }
 
-    public void showBingeWatch(int position, boolean isFirstCalled) {
+    public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes) {
 //        try {
 //            if (timer) {
 //                if (viewHideShowTimeHandler != null) {
@@ -466,33 +474,40 @@ public class PlayerControlsFragment extends Fragment {
 //        seekbarLayout.setVisibility(View.VISIBLE);
 //        bingeBtn.setVisibility(View.VISIBLE);
 //        backArrow.setVisibility(View.VISIBLE);
+        if (totalEpisodes==runningEpisodes){
 
-        childControls.setVisibility(View.VISIBLE);
-        seekbarLayout.setVisibility(View.VISIBLE);
-        bingeLay.setVisibility(View.VISIBLE);
-        bingeBtn.setVisibility(View.VISIBLE);
-        skipduration.setVisibility(View.VISIBLE);
-        backArrow.setVisibility(View.VISIBLE);
-        if (isFirstCalled) {
-            mTimer = new CountDownTimer(position, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    skipduration.setText(Long.toString(millisUntilFinished / 1000));
-                }
+        }else {
+            childControls.setVisibility(View.GONE);
+            seekbarLayout.setVisibility(View.GONE);
+            qualitySettings.setVisibility(View.GONE);
+            bingeLay.setVisibility(View.VISIBLE);
+            bingeBtn.setVisibility(View.VISIBLE);
+            skipduration.setVisibility(View.VISIBLE);
+            backArrow.setVisibility(View.VISIBLE);
+            if (isFirstCalled) {
+                mTimer = new CountDownTimer(position, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        skipduration.setText(Long.toString(millisUntilFinished / 1000));
+                    }
 
-                public void onFinish() {
-                    skipduration.setText("");
-                }
-            };
+                    public void onFinish() {
+                        skipduration.setText("");
+                    }
+                };
 
-            mTimer.start();
+                mTimer.start();
+            }
         }
-
 
     }
 
     public void hideBingeWatch() {
         try {
+            childControls.setVisibility(View.GONE);
+            seekbarLayout.setVisibility(View.GONE);
+            bingeLay.setVisibility(View.GONE);
             bingeBtn.setVisibility(View.GONE);
+            skipduration.setVisibility(View.GONE);
             backArrow.setVisibility(View.GONE);
         } catch (Exception e) {
 
@@ -628,6 +643,7 @@ public class PlayerControlsFragment extends Fragment {
         bingeBtn = view.findViewById(R.id.bingeBtn);
         skipBtn = view.findViewById(R.id.skipBtn);
         qualitySettings = (ImageView) view.findViewById(R.id.iv_quality);
+        bingeLay.setVisibility(View.GONE);
         if (AppCommonMethod.isTV(getActivity())) {
             Logger.e("IS_TV", "TRUE");
             fullscreen.setVisibility(View.GONE);

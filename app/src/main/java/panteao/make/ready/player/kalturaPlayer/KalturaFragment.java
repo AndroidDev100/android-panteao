@@ -258,15 +258,15 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         playerControlsFragment.hideControls();
                     }
                 }
-
-                Log.w("progressValuess", IsbingeWatch + " " + player.getCurrentPosition() + " " + bingeWatchTimer + "  " + player.getDuration());
+                int currentPosition = (int) player.getCurrentPosition();
+                Log.w("progressValuess", IsbingeWatch + " " + currentPosition + " " + bingeWatchTimer + "  " + player.getDuration());
                 if (IsbingeWatch && bingeWatchTimer > 0) {
-                    int currentPosition = (int) player.getCurrentPosition();
+
                     if (currentPosition >= bingeWatchTimer) {
-                        showBingeWatchControls = true;
-                        playerControlsFragment.showBingeWatch((int) (player.getDuration() - player.getCurrentPosition()),isFirstCalled);
-                        isFirstCalled = false;
-                        countDownTimer.cancel();
+                            showBingeWatchControls = true;
+                            playerControlsFragment.showBingeWatch((int) (player.getDuration() - player.getCurrentPosition()), isFirstCalled, totalEpisodes, runningEpisodes);
+                            isFirstCalled = false;
+                            countDownTimer.cancel();
                     }
                 }
             }
@@ -274,6 +274,17 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         player.addListener(this, PlayerEvent.playing, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
+
+            }
+        });
+        player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+                playerLayout.setVisibility(View.VISIBLE);
+                isFirstCalled = true;
+                mListener.onPlayerStart();
+                countDownTimer.start();
+                playerControlsFragment.showControls();
                 if (playerControlsFragment != null) {
                     Log.d("ffrrrfrrfr",isBingeWatchTimeCalculate+"");
                     if (!isBingeWatchTimeCalculate) {
@@ -287,16 +298,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 }
             }
         });
-        player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
-            @Override
-            public void onEvent(PKEvent event) {
-                playerLayout.setVisibility(View.VISIBLE);
-                isFirstCalled = true;
-                mListener.onPlayerStart();
-                countDownTimer.start();
-                playerControlsFragment.showControls();
-            }
-        });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
@@ -304,16 +305,21 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     player.stop();
                     showBingeWatchControls = false;
                     playerControlsFragment.hideControls();
-                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
-                        playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
-                    }
+//                    if (playerControlsFragment.bingeLay.getVisibility() == View.VISIBLE) {
+//                        playerControlsFragment.backArrow.setVisibility(View.VISIBLE);
+//                    }
                 }
                 if (mHandler != null) {
                     finishPlayer();
                 }
                 if (IsbingeWatch) {
-                    isBingeWatchTimeCalculate = false;
-                    mListener.bingeWatchCall(entryID);
+                    if (totalEpisodes == runningEpisodes){
+
+                    }else {
+                        isFirstCalled = true;
+                        isBingeWatchTimeCalculate = false;
+                        mListener.bingeWatchCall(entryID);
+                    }
                 }
 
             }
@@ -481,7 +487,13 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void bingeWatch() {
+        if (playerControlsFragment != null) {
+            player.stop();
+            showBingeWatchControls = false;
+            playerControlsFragment.hideControls();
+        }
         isBingeWatchTimeCalculate = false;
+        isFirstCalled = true;
         mListener.bingeWatchCall(entryID);
     }
 
