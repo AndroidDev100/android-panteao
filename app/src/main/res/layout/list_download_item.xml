@@ -85,10 +85,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:ellipsize="end"
-                    android:text="kmsdkmsdk"
+                    android:text=""
                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                     android:maxLines="2"
-                    android:minLines="2"
+                    android:minLines="1"
                     android:textColor="?attr/download_description_text_color"
                     android:textSize="@dimen/descriptionRowItem" />
 
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:ellipsize="end"
-                    android:text="kmsdkmsdk"
+                    android:text=""
                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                     android:maxLines="1"
                     android:paddingBottom="@dimen/_2sdp"

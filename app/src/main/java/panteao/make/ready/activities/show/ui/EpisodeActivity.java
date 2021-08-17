@@ -2078,7 +2078,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
 
                     }
-                },700);
+                },1000);
 
             }
         });

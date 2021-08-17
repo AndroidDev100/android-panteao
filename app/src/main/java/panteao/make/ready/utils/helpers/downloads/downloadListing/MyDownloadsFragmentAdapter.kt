@@ -135,6 +135,15 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
+                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }else{
 
                     }
@@ -175,6 +184,15 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
+                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }else{
 
                     }
@@ -189,11 +207,11 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         val currentVideoItem = itemList[position]
         try {
             Log.d("imageURL",currentVideoItem.imageURL)
+            viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
             if (!currentVideoItem.isSeries){
                 updatedStatus(viewHolder?.itemBinding,currentVideoItem,position,context)
             }
 
-            viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
             if (currentVideoItem.isSeries){
                 if (currentVideoItem.seriesImageUrl!=null && !currentVideoItem.seriesImageUrl.equals("", ignoreCase = true)){
                     ImageHelper.getInstance(context)
@@ -281,6 +299,15 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.descriptionTxt?.text = downloadSize
+                        itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }else{
 
                     }

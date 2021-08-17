@@ -279,8 +279,9 @@
     <string name="language_thai_title">ไทย</string>
     <string name="language_indonesia">bahasa Indonesia</string>
     <string name="go_to_my_downloads">View My Downloads</string>
+    <string name="go_to_my_downloads_new">Go to My Downloads</string>
     <string name="download">Download</string>
-    <string name="no_downloads">You don\'t have any downloaded content to watch.</string>
+    <string name="no_downloads">Films and TV programmes that you download appear here.</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>
@@ -302,8 +303,9 @@
     <string name="download_quality">Download quality</string>
     <string name="start_download">Start download</string>
     <string name="make_quality_default">Make this default download setting</string>
+    <string name="save_preference">Save Preference</string>
     <string name="available_size">Available space :</string>
-    <string name="download_option">Download options</string>
+    <string name="download_option">Download Quality</string>
 
     <string name="update_has_downloaded">An update has just been downloaded.</string>
     <string name="restart">RESTART APP</string>

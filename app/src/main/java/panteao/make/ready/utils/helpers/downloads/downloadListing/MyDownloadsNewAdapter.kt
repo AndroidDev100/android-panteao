@@ -2,7 +2,6 @@ package panteao.make.ready.utils.helpers.downloads.downloadListing
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -142,6 +141,15 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
+                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }else{
 
                     }
@@ -181,6 +189,16 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
+
+                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }else{
 
                     }
@@ -197,10 +215,11 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
         val currentVideoItem = itemList[position]
         try {
             Log.d("imageURL",currentVideoItem.imageURL)
+            viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
             updatedStatus(viewHolder?.itemBinding,currentVideoItem,position,context)
             ImageHelper.getInstance(context)
                 .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)
-            viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
+
             if (currentVideoItem.isSeries){
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
                 viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name
@@ -256,6 +275,16 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.descriptionTxt?.text = downloadSize
+
+                        itemBinding?.tvGenre?.visibility = View.VISIBLE
+                        itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                        itemBinding?.tvGenre?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
+                        itemBinding?.descriptionTxt?.setTextColor(
+                            context.getResources().getColor(R.color.more_text_color_dark)
+                        )
                     }
                     else if (name.equals("failed", ignoreCase = true)){
                         itemBinding?.downloadStatus = DownloadStatus.FAILED
