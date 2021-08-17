@@ -166,8 +166,9 @@ public class PlayerControlsFragment extends Fragment {
         totalDuration.setText(stringForTime(duration));
         updateSeekbar(currentposition);
         playbackCurrentPosition = currentposition;
-//       controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
+      // controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
     }
+
 
     private void updateSeekbar(int currentposition) {
 
@@ -200,82 +201,6 @@ public class PlayerControlsFragment extends Fragment {
 
     }
 
-    private void ShowAndHideView() {
-        try {
-
-            Animation animationFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
-            Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-
-            animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    if (playerCallbacks != null)
-                        playerCallbacks.showPlayerController(true);
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (playerCallbacks != null)
-                        playerCallbacks.showPlayerController(false);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-            if (childControls.getVisibility() == View.VISIBLE) {
-                childControls.startAnimation(animationFadeOut);
-//                    backArrow.setVisibility(View.GONE);
-                childControls.setVisibility(View.GONE);
-
-
-                timer = true;
-
-
-            } else {
-
-                Log.w("IMATAG", "handler");
-                childControls.setVisibility(View.VISIBLE);
-//                    backArrow.setVisibility(View.VISIBLE);
-//                    if (videoType.equalsIgnoreCase("1")) {
-//                        hideControlsForLive();
-//                    } else {
-//
-//                    }
-                childControls.startAnimation(animationFadeIn);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void callHandler() {
-        timer = true;
-        viewHideShowRunnable = () -> ShowAndHideView();
-        viewHideShowTimeHandler = new Handler();
-        viewHideShowTimeHandler.postDelayed(viewHideShowRunnable, 5000);
-    }
-
     public void sendTapCallBack(boolean b) {
         mFlag = b;
         if (childControls.getVisibility() == View.VISIBLE) {
@@ -298,7 +223,7 @@ public class PlayerControlsFragment extends Fragment {
 
             @Override
             public void onScrubMove(TimeBar timeBar, long position) {
-              //  seekBar.setPosition(position);
+                //  seekBar.setPosition(position);
                 currentPosition.setText(stringForTime(position));
             }
 
@@ -412,11 +337,11 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showControls() {
-        Log.d("ffrrrfrrfr",childControls.getVisibility()+"");
-        Log.d("ffrrrfrrfr",bingeLay.getVisibility()+"");
-        if (replay.getVisibility() == View.VISIBLE){
+        Log.d("ffrrrfrrfr", childControls.getVisibility() + "");
+        Log.d("ffrrrfrrfr", bingeLay.getVisibility() + "");
+        if (replay.getVisibility() == View.VISIBLE) {
             backArrow.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
                 childControls.animate().alpha(1.0f).setDuration(1000)
                         .setListener(new AnimatorListenerAdapter() {
@@ -481,9 +406,9 @@ public class PlayerControlsFragment extends Fragment {
 //        seekbarLayout.setVisibility(View.VISIBLE);
 //        bingeBtn.setVisibility(View.VISIBLE);
 //        backArrow.setVisibility(View.VISIBLE);
-        if (totalEpisodes==runningEpisodes){
+        if (totalEpisodes == runningEpisodes) {
 
-        }else {
+        } else {
             childControls.setVisibility(View.GONE);
             seekbarLayout.setVisibility(View.GONE);
             qualitySettings.setVisibility(View.GONE);
@@ -558,7 +483,6 @@ public class PlayerControlsFragment extends Fragment {
         }
 
 
-
     }
 
     public void sendLandscapeCallback() {
@@ -612,6 +536,7 @@ public class PlayerControlsFragment extends Fragment {
         quality.setLayoutParams(params);
 
     }
+
     public static void setParamstoQualityinPortrait(View quality) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -660,12 +585,11 @@ public class PlayerControlsFragment extends Fragment {
         } else {
             Logger.e("IS_TV", "FALSE");
         }
-        if (playerCallbacks!=null){
+        if (playerCallbacks != null) {
             playerCallbacks.sendPlayPauseId(btnPause);
         }
 
-        childControls.setOnTouchListener(new View.OnTouchListener()
-        {
+        childControls.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
@@ -674,7 +598,7 @@ public class PlayerControlsFragment extends Fragment {
                     return false;
                 if (replay.getVisibility() == View.VISIBLE) {
 
-                }else {
+                } else {
 
                     if (childControls.getVisibility() == View.VISIBLE) {
                         hideControls();

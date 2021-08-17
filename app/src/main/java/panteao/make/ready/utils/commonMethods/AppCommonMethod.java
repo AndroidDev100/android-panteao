@@ -1946,11 +1946,13 @@ public class AppCommonMethod {
             if (videoTrackInfo.isAdaptive()) {
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
             } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000 && !track1) {
+                track1 = true;
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
             } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000) && !track2) {
+                track2 = true;
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
             } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000 && !track3) {
-
+                track3 = true;
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
             }
         }

@@ -708,6 +708,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         } else {
             if (player != null) {
                 player.stop();
+                finishPlayer();
                 getActivity().finish();
             }
         }
