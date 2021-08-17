@@ -8,29 +8,20 @@
     android:paddingBottom="10dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:padding="6dp">
+        android:padding="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:contentDescription="backarrow"
             android:padding="4dp"
             android:src="@drawable/videobackicon" />
-
-        <ImageView
-            android:id="@+id/iv_quality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:src="@drawable/ic_settings" />
     </RelativeLayout>
 
 
@@ -76,14 +67,31 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="6dp">
+
+
+            <ImageView
+                android:id="@+id/iv_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_settings" />
+        </RelativeLayout>
+
 
         <LinearLayout
             android:id="@+id/seekbar_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <include
                 android:id="@+id/seekbarLayout"
@@ -93,28 +101,27 @@
         </LinearLayout>
 
 
-
         <!--        <Button-->
-<!--            android:id="@+id/bingeBtn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_above="@id/seekbar_ll"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:layout_marginEnd="15dp"-->
-<!--            android:layout_marginBottom="12dp"-->
-<!--            android:background="@drawable/skip_intro"-->
-<!--            android:drawableEnd="@drawable/ic_baseline_play_arrow_24"-->
-<!--            android:minWidth="0dp"-->
-<!--            android:minHeight="0dp"-->
-<!--            android:paddingStart="8dp"-->
-<!--            android:paddingTop="6dp"-->
-<!--            android:paddingEnd="8dp"-->
-<!--            android:paddingBottom="6dp"-->
-<!--            android:text="@string/next_episode"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="12sp"-->
-<!--            android:visibility="gone" />-->
+        <!--            android:id="@+id/bingeBtn"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_above="@id/seekbar_ll"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:layout_marginTop="4dp"-->
+        <!--            android:layout_marginEnd="15dp"-->
+        <!--            android:layout_marginBottom="12dp"-->
+        <!--            android:background="@drawable/skip_intro"-->
+        <!--            android:drawableEnd="@drawable/ic_baseline_play_arrow_24"-->
+        <!--            android:minWidth="0dp"-->
+        <!--            android:minHeight="0dp"-->
+        <!--            android:paddingStart="8dp"-->
+        <!--            android:paddingTop="6dp"-->
+        <!--            android:paddingEnd="8dp"-->
+        <!--            android:paddingBottom="6dp"-->
+        <!--            android:text="@string/next_episode"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="12sp"-->
+        <!--            android:visibility="gone" />-->
 
         <Button
             android:id="@+id/skipBtn"

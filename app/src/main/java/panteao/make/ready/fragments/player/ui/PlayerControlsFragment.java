@@ -360,7 +360,7 @@ public class PlayerControlsFragment extends Fragment {
                                 childControls.setVisibility(View.VISIBLE);
                                 seekbarLayout.setVisibility(View.VISIBLE);
                                 backArrow.setVisibility(View.VISIBLE);
-                                qualitySettings.setVisibility(View.VISIBLE);
+                               // qualitySettings.setVisibility(View.VISIBLE);
                                 if (childControls.getFocusedChild() != null) {
                                     childControls.getFocusedChild().requestFocus();
                                 }
@@ -384,7 +384,7 @@ public class PlayerControlsFragment extends Fragment {
                         childControls.setVisibility(View.GONE);
                         seekbarLayout.setVisibility(View.GONE);
                         backArrow.setVisibility(View.GONE);
-                        qualitySettings.setVisibility(View.GONE);
+                       // qualitySettings.setVisibility(View.GONE);
                         if (childControls.getFocusedChild() != null) {
                             childControls.getFocusedChild().clearFocus();
                         }
@@ -411,7 +411,7 @@ public class PlayerControlsFragment extends Fragment {
         } else {
             childControls.setVisibility(View.GONE);
             seekbarLayout.setVisibility(View.GONE);
-            qualitySettings.setVisibility(View.GONE);
+           // qualitySettings.setVisibility(View.GONE);
             bingeLay.setVisibility(View.VISIBLE);
             bingeBtn.setVisibility(View.VISIBLE);
             skipduration.setVisibility(View.VISIBLE);
@@ -449,7 +449,7 @@ public class PlayerControlsFragment extends Fragment {
 
     public void sendPortraitCallback() {
 
-        qualitySettings.setVisibility(View.VISIBLE);
+      //  qualitySettings.setVisibility(View.VISIBLE);
 
         fullscreen.setBackgroundResource(R.drawable.full_screen);
         setParamstoQualityinPortrait(qualitySettings);
@@ -487,7 +487,7 @@ public class PlayerControlsFragment extends Fragment {
 
     public void sendLandscapeCallback() {
         try {
-            qualitySettings.setVisibility(View.VISIBLE);
+         //   qualitySettings.setVisibility(View.VISIBLE);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
             Log.d("frfjghjghj","EnterHere5");
             if (!getResources().getBoolean(R.bool.isTablet)) {
@@ -691,7 +691,7 @@ public class PlayerControlsFragment extends Fragment {
     public void showReplayVisibility() {
         childControls.setVisibility(View.GONE);
         seekbarLayout.setVisibility(View.GONE);
-        qualitySettings.setVisibility(View.GONE);
+      //  qualitySettings.setVisibility(View.GONE);
         replay.setVisibility(View.VISIBLE);
         backArrow.setVisibility(View.VISIBLE);
     }
