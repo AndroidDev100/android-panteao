@@ -1,5 +1,6 @@
 package panteao.make.ready.utils.helpers.downloads.downloadListing
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,11 +10,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.kaltura.tvplayer.OfflineManager
 import kotlinx.android.synthetic.main.activity_my_downloads.*
 import panteao.make.ready.R
 import panteao.make.ready.baseModels.BaseBindingActivity
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver.ConnectivityReceiverListener
 import panteao.make.ready.databinding.ActivityMyDownloadsBinding
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
@@ -22,11 +24,13 @@ import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
-class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>(), KTDownloadEvents {
+class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>(), KTDownloadEvents,
+    ConnectivityReceiverListener{
 
     private lateinit var downloadHelper:KTDownloadHelper
     private lateinit var downloadsAdapter:MyDownloadsNewAdapter
     private var seriesID : String? = ""
+    private var title : String? = ""
     private var sesonNumber : Int? = 0
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityMyDownloadsBinding {
         return ActivityMyDownloadsBinding.inflate(inflater)
@@ -34,6 +38,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title=intent.getStringExtra("title")
         seriesID=intent.getStringExtra("series_id")
         sesonNumber=intent.getIntExtra("season_number",0)
         setupToolBar();
@@ -98,7 +103,12 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
             binding.toolbar.backLayout.visibility = View.VISIBLE
             binding.toolbar.homeIcon.visibility = View.GONE
             binding.toolbar.titleText.visibility = View.VISIBLE
-            binding.toolbar.screenText.text = resources.getString(R.string.my_downloads)
+            if (title!=null && !title.equals("")){
+                binding.toolbar.screenText.text = title
+            }else{
+                binding.toolbar.screenText.text = resources.getString(R.string.my_downloads)
+            }
+
             binding.toolbar.backLayout.setOnClickListener { onBackPressed() }
         }
 
@@ -152,6 +162,42 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
             noDownloadedData(1)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setBroadcast()
+    }
+    private var receiver: NetworkChangeReceiver? = null
+    private fun setBroadcast() {
+            receiver = NetworkChangeReceiver()
+            val filter = IntentFilter()
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+            filter.addAction("android.net.wifi.WIFI_STATE_CHANGED")
+            filter.addAction("android.net.wifi.STATE_CHANGE")
+            this@MyDownloadsNewActivity.registerReceiver(receiver, filter)
+            setConnectivityListener(this)
+    }
+
+    fun setConnectivityListener(listener: ConnectivityReceiverListener?) {
+        NetworkChangeReceiver.connectivityReceiverListener = listener
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        Log.d("onNetworkConnection",isConnected.toString())
+        if (!isConnected){
+            if (downloadHelper!=null && downloadHelper.manager!=null) {
+                downloadHelper.manager.pauseDownloads()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (receiver != null) {
+            unregisterReceiver(receiver)
+            if (NetworkChangeReceiver.connectivityReceiverListener != null) NetworkChangeReceiver.connectivityReceiverListener = null
+        }
     }
 
 }

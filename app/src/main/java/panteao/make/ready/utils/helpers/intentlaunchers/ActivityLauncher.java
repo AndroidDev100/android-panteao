@@ -443,10 +443,11 @@ public class ActivityLauncher {
         // activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(source).toBundle());
         activity.startActivity(intent);
     }
-    public void launchMyDownloads(String seriesId,int seasonNumber){
+    public void launchMyDownloads(String seriesId,int seasonNumber,String title){
         Intent intent = new Intent(this.activity, MyDownloadsNewActivity.class);
         intent.putExtra("series_id", seriesId);
         intent.putExtra("season_number", seasonNumber);
+        intent.putExtra("title", title);
         activity.startActivity(intent);
     }
 

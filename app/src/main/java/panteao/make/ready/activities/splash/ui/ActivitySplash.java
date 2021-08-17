@@ -684,17 +684,6 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             connectionValidation(false);
             try {
 
-//                DownloadHelper downloadHelper = new DownloadHelper(ActivitySplash.this);
-//                downloadHelper.getAllVideosFromDatabase().observe(ActivitySplash.this, new Observer<DownloadModel>() {
-//                    @Override
-//                    public void onChanged(DownloadModel downloadModel) {
-//                        if (downloadModel.getDownloadVideos().size()>0){
-//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
-//                        }else {
-//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
             }catch (Exception ignored){
                 getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
             }
@@ -705,10 +694,15 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         if (aBoolean) {
             getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.GONE);
             loadAnimations();
-
         } else {
             getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.VISIBLE);
             getBinding().noConnectionLayout.noConnectionLayout.bringToFront();
+            configBean=AppCommonMethod.getConfigResponse();
+            if (configBean!=null){
+                getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
+                new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
+                finish();
+            }
             /*  showDialog(ActivitySplash.this.getResources().getString(R.string.error),getResources().getString(R.string.no_connection)); */
         }
     }

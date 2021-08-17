@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
@@ -15,6 +16,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import com.kaltura.android.exoplayer2.ui.TimeBar
 import com.kaltura.android.exoplayer2.ui.TimeBar.OnScrubListener
@@ -23,7 +26,6 @@ import com.kaltura.playkit.PlayerEvent
 import com.kaltura.tvplayer.KalturaBasicPlayer
 import com.kaltura.tvplayer.OfflineManager
 import com.kaltura.tvplayer.PlayerInitOptions
-import kotlinx.android.synthetic.main.offline_player_fragment.*
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.baseModels.BaseBindingFragment
@@ -39,6 +41,9 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
     var player: KalturaBasicPlayer?=null
     var powerManager:PowerManager?=null
     var wakeLock:PowerManager.WakeLock?=null
+    private var viewHideShowRunnable: Runnable? = null
+    private var viewHideShowTimeHandler: Handler? = null
+    private var timer = true
     override fun inflateBindingLayout(inflater: LayoutInflater): OfflinePlayerFragmentBinding {
         return OfflinePlayerFragmentBinding.inflate(inflater)
     }
@@ -110,6 +115,31 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
             }
         }
 
+        player!!.addListener(this,PlayerEvent.canPlay){
+                event:PKEvent?->
+            if (player!==null){
+                Log.w("optionss","canPlay")
+                binding.seekBar.setDuration(player!!.duration)
+                binding.seekBar.setPosition(player!!.currentPosition)
+                binding.currentTime.setText(stringForTime(player!!.currentPosition))
+                binding.totalDuration.setText(stringForTime(player!!.duration))
+                player.play()
+            }
+        }
+
+        player!!.addListener(this,PlayerEvent.loadedMetadata){
+                event:PKEvent?->
+            if (player!==null){
+                Log.w("optionss","loadedMetadata")
+                binding.seekBar.setDuration(player!!.duration)
+                binding.seekBar.setPosition(player!!.currentPosition)
+                binding.currentTime.setText(stringForTime(player!!.currentPosition))
+                binding.totalDuration.setText(stringForTime(player!!.duration))
+            }
+        }
+
+
+
         binding.cancel.setOnClickListener(View.OnClickListener {
             requireActivity().onBackPressed()
         })
@@ -122,10 +152,59 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
             forwardFunction()
         })
 
+        binding.rl.setOnClickListener(View.OnClickListener {
+            if (timer) {
+                viewHideShowTimeHandler?.removeCallbacks(viewHideShowRunnable!!);
+            }
+            ShowAndHideView();
+        })
+
         binding.quality.visibility = View.INVISIBLE
         seekBarListener(player)
 
     }
+
+    private fun ShowAndHideView() {
+        try {
+            val animationFadeOut: Animation =
+                AnimationUtils.loadAnimation(activity, R.anim.fade_out)
+            val animationFadeIn: Animation = AnimationUtils.loadAnimation(activity, R.anim.fade_in)
+            if (binding.rl1.visibility === View.VISIBLE) {
+                binding.rl1.startAnimation(animationFadeOut)
+                binding.rl1.visibility = View.GONE
+                timer = true
+                hideSoftKeyButton()
+            } else {
+                binding.rl1.visibility = View.VISIBLE
+                binding.lock.visibility = View.VISIBLE
+                binding.rl1.startAnimation(animationFadeIn)
+                binding.lock.startAnimation(animationFadeIn)
+                callHandler()
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun hideSoftKeyButton() {
+        val decorView = requireActivity()!!.window.decorView
+        decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_IMMERSIVE // Set the content to appear under the system bars so that the
+                    // content doesn't resize when the system bars hide and show.
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // Hide the nav bar and status bar
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
+
+    private fun callHandler() {
+        timer = true
+        viewHideShowRunnable = Runnable { ShowAndHideView() }
+        viewHideShowTimeHandler = Handler()
+        viewHideShowTimeHandler?.postDelayed(viewHideShowRunnable!!, 3000)
+    }
+
 
     private fun forwardFunction() {
         if (player != null) {

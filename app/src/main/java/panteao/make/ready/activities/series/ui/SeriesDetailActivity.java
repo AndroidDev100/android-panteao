@@ -1207,9 +1207,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     case R.id.delete_download:
 //                        downloadHelper.deleteVideo(downloadAbleVideo);
                         break;
-                    case R.id.my_Download:
-                        new ActivityLauncher(this).launchMyDownloads();
-                        break;
                 }
                 return false;
             });

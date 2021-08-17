@@ -1543,9 +1543,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     }
                     downloadHelper.cancelVideo(Entryid);
                     break;
-                case R.id.my_Download:
-                    new ActivityLauncher(this).launchMyDownloads();
-                    break;
             }
             return false;
         });

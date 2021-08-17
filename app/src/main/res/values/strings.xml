@@ -284,6 +284,7 @@
     <string name="cancel_download">Cancel Download</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>
+    <string name="resume_download">Resume Download</string>
     <string name="my_downloads">My Downloads</string>
 
     <string name="title_activity_downloaded_video">DownloadedVideoActivity</string>

@@ -15,6 +15,7 @@ import panteao.make.ready.R
 import panteao.make.ready.databinding.ListDownloadItemBinding
 import panteao.make.ready.enums.DownloadStatus
 import panteao.make.ready.utils.helpers.ImageHelper
+import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity
@@ -52,6 +53,11 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
 
     override fun onStateChanged(state: OfflineManager.AssetDownloadState) {
         android.util.Log.w("adapterCallBack 2","onStateChanged")
+        if (context!=null && !NetworkConnectivity.isOnline(context)){
+            if (downloadHelper!=null && downloadHelper.manager!=null) {
+              //  downloadHelper.manager.pauseDownloads()
+            }
+        }
     }
 
     override fun onAssetDownloadComplete(assetId: String) {
@@ -204,12 +210,17 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
             }
 
             viewHolder?.itemBinding?.clRoot?.setOnClickListener { v ->
-               /* if (currentVideoItem.isSeries){
-                    ActivityLauncher(context).launchMyDownloads(currentVideoItem.seriesId,currentVideoItem.seasonNumber)
-                }else{
+                downloadHelper.getAssetDownloadState(currentVideoItem.entryId,downloadHelper,
+                    object : DownloadStateListener {
+                        override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
+                            if (name.equals("completed", ignoreCase = true)){
+                                ActivityLauncher(context!!).launchOfflinePlayer(currentVideoItem.entryId)
+                            }else if(name.equals("failed", ignoreCase = true)){
+                               failedDownloadPopUpMenu(v!!, currentVideoItem, position)
+                            }
+                        }
+                    })
 
-                }*/
-                ActivityLauncher(context!!).launchOfflinePlayer(currentVideoItem.entryId)
             }
 
 
@@ -245,7 +256,12 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                     else if (name.equals("completed", ignoreCase = true)){
                         itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
                         itemBinding?.descriptionTxt?.text = downloadSize
-                    }else{
+                    }
+                    else if (name.equals("failed", ignoreCase = true)){
+                        itemBinding?.downloadStatus = DownloadStatus.FAILED
+                        itemBinding?.descriptionTxt?.text = DownloadStatus.FAILED.name
+                    }
+                    else{
 
                     }
                 }
@@ -290,6 +306,30 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
 
 
     }
+
+    private fun failedDownloadPopUpMenu(view: View, video: DownloadItemEntity, position: Int) {
+        val popup = PopupMenu(context, view)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.delete_download -> {
+                    downloadHelper.cancelVideo(video.entryId)
+                    itemList.remove(video)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, itemList.size)
+                    if (itemList.size>0){
+                        listener.updateAdapter(1)
+                    }else{
+                        KsPreferenceKeys.getInstance().videoDownloadAction = 3
+                        listener.updateAdapter(2)
+                    }
+                }
+            }
+            false
+        }
+        popup.inflate(R.menu.failed_download)
+        popup.show()
+    }
+
 
     private fun showPauseCancelPopUpMenu(view: View, video: DownloadItemEntity, position: Int) {
         val popup = PopupMenu(context, view)

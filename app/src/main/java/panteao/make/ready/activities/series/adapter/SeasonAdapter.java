@@ -221,9 +221,6 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 //                        downloadHelper.deleteVideo(enveuVideoItemBean.getBrightcoveVideoId());
                         onDownloadClickInteraction.onDownloadDeleted(enveuVideoItemBean.getBrightcoveVideoId(),enveuVideoItemBean);
                         break;
-                    case R.id.my_Download:
-                        new ActivityLauncher(context).launchMyDownloads();
-                        break;
                 }
                 return false;
             }

@@ -3,6 +3,7 @@ package panteao.make.ready.utils.helpers.downloads.offlinePlayer
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
