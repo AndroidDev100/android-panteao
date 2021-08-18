@@ -407,7 +407,7 @@ public class RailCommonData implements Parcelable {
                 } else {
                     String imageUrl = ImageLayer.getInstance().getPosterImageUrl(enveuVideoDetails1, screenWidget.getWidgetImageType());
                     enveuVideoItemBean.setPosterURL(imageUrl);
-                    enveuVideoItemBean.setPosterURL(screenWidget.getImageURL());
+                    //enveuVideoItemBean.setPosterURL(screenWidget.getImageURL());
                     enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(enveuVideoDetails1, screenWidget.getWidgetImageType()));
 
                 }

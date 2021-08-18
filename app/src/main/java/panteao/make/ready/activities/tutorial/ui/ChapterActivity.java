@@ -1652,6 +1652,22 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     }
 
+    @Override
+    public void onBookmarkCall(int currentPosition) {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
+        }
+    }
+
+    @Override
+    public void onBookmarkFinish() {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.finishBookmark(token, assestId);
+        }
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;

@@ -1647,4 +1647,19 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         }
     }
 
+    @Override
+    public void onBookmarkCall(int currentPosition) {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
+        }
+    }
+
+    @Override
+    public void onBookmarkFinish() {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.finishBookmark(token, assestId);
+        }
+    }
 }

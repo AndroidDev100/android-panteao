@@ -131,10 +131,10 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
 
                 if (contentsItem.getVideoPosition() > 0) {
                     AppCommonMethod.railBadgeVisibility(holder.itemBinding.llContinueProgress, true);
-                    double totalDuration = contentsItem.getDuration();
-                    double currentPosition = contentsItem.getVideoPosition() * 1000;
-                    double percentagePlayed = ((currentPosition / totalDuration) * 100L);
-                    holder.itemBinding.setProgress((int) percentagePlayed);
+                    int totalDuration = (int)contentsItem.getDuration();
+                    int currentPosition = (int)contentsItem.getVideoPosition();
+                    int percentagePlayed = currentPosition * 100 / totalDuration;
+                    holder.itemBinding.setProgress(percentagePlayed);
                 } else {
                     AppCommonMethod.railBadgeVisibility(holder.itemBinding.llContinueProgress, false);
                 }

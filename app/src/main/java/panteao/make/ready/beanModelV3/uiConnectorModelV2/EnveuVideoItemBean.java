@@ -3,6 +3,7 @@ package panteao.make.ready.beanModelV3.uiConnectorModelV2;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -439,6 +440,7 @@ public class EnveuVideoItemBean implements Parcelable {
             this.status = details.getStatus() == null ? "" : details.getStatus();
             if (details.getPosition() != null) {
                 this.videoPosition = details.getPosition();
+                Log.w("playedPosition",this.videoPosition+"");
             }
 
             this.contentOrder = contentOrder;
