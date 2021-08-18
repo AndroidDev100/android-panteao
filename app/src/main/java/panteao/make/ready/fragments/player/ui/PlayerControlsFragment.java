@@ -203,9 +203,6 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void sendTapCallBack(boolean b) {
-
-        Log.d("ffrrrfrrfr", "playerTab");
-
         mFlag = b;
         if (childControls.getVisibility() == View.VISIBLE) {
             hideControls();
@@ -341,15 +338,10 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showControls() {
-      //  Log.d("ffrrrfrrfr", childControls.getVisibility() + "");
-      //  Log.d("ffrrrfrrfr", bingeLay.getVisibility() + "");
         if (replay.getVisibility() == View.VISIBLE) {
             backArrow.setVisibility(View.VISIBLE);
-            Log.d("ffrrrfrrfr", "Enter1");
         } else {
-            Log.d("ffrrrfrrfr", "Enter2");
             if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
-                Log.d("ffrrrfrrfr", "Enter3");
                 childControls.animate().alpha(1.0f).setDuration(1000)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
@@ -484,9 +476,7 @@ public class PlayerControlsFragment extends Fragment {
         try {
          //   qualitySettings.setVisibility(View.VISIBLE);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
-            Log.d("frfjghjghj","EnterHere5");
             if (!getResources().getBoolean(R.bool.isTablet)) {
-                Log.d("frfjghjghj","EnterHere4");
                 setParamstoSeekBarControl(seekBarControl);
                 setParamstoBackbutton(backArrow);
                 setParamstoQuality(qualitySettings);
@@ -590,14 +580,11 @@ public class PlayerControlsFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
-                Log.d("ffrrrfrrfr", "childControls");
 
                 if (!mFlag)
                     return false;
                 if (replay.getVisibility() == View.VISIBLE) {
-                    Log.d("ffrrrfrrfr", "childControlsReplay");
                 } else {
-                    Log.d("ffrrrfrrfr", "childControlsElse");
                     if (childControls.getVisibility() == View.VISIBLE) {
                         hideControls();
                     } else {

@@ -430,7 +430,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 playerControlsFragment.sendPlayerCurrentPosition((int) player.getCurrentPosition());
             }
         }
-        Log.d("playyyyy", "for");
 
     }
 
@@ -614,10 +613,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         String selectedTrack = KsPreferenceKeys.getInstance().getQualityName();
         if (!TextUtils.isEmpty(selectedTrack)) {
             trackName = selectedTrack;
-
-            Log.d("TrackNameIs", trackName);
-            Log.d("TrackNameIs", selectedTrack);
-
         }
     }
 
@@ -687,10 +682,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Log.d("gtgtgtgt",isConnected+"");
         if (!isConnected) {
             if (player != null) {
-                Log.d("gtgtgtgt","Enter");
                 player.pause();
                 showErrorDialog(getActivity().getResources().getString(R.string.no_internet));
             }
