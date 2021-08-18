@@ -314,8 +314,15 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     if (!IsbingeWatch) {
                         player.stop();
                         showBingeWatchControls = false;
-                       // playerControlsFragment.hideControls();
-                        playerControlsFragment.showReplayVisibility();
+                      //  playerControlsFragment.hideControls();
+                        countDownTimer.cancel();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                playerControlsFragment.showReplayVisibility();
+                            }
+                        },1000);
+
                     }
                 }
 //                if (mHandler != null) {
@@ -326,7 +333,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         player.stop();
                         showBingeWatchControls = false;
                        // playerControlsFragment.hideControls();
-                        playerControlsFragment.showReplayVisibility();
+                        countDownTimer.cancel();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                playerControlsFragment.showReplayVisibility();
+                            }
+                        },1200);
+                       // playerControlsFragment.showReplayVisibility();
 
                     }else {
                         player.stop();
