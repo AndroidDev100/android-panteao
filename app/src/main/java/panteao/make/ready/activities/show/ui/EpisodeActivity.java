@@ -522,6 +522,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }
+                Log.w("bookmarkingPosition",bookmarkPosition+"");
                 transaction = getSupportFragmentManager().beginTransaction();
                 setPlayerFragment();
             }
@@ -1801,21 +1802,21 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 //    }
 //
 //
-//    @Override
-//    public void onBookmarkCall(int currentPosition) {
-//        if (isLogin) {
-//            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
-//            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
-//        }
-//    }
-//
-//    @Override
-//    public void onBookmarkFinish() {
-//        if (isLogin) {
-//            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
-//            bookmarkingViewModel.finishBookmark(token, assestId);
-//        }
-//    }
+    @Override
+    public void onBookmarkCall(int currentPosition) {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
+        }
+    }
+
+    @Override
+    public void onBookmarkFinish() {
+        if (isLogin) {
+            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            bookmarkingViewModel.finishBookmark(token, assestId);
+        }
+    }
 //
 //    @Override
 //    public void onPlayerInProgress() {

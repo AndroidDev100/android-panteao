@@ -132,10 +132,12 @@ public class CommonLandscapeRailAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         if (videos.get(i).getVideoPosition() > 0) {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, true);
-            double totalDuration = videos.get(i).getDuration();
-            double currentPosition = videos.get(i).getVideoPosition() * 1000;
-            double percentagePlayed = ((currentPosition / totalDuration) * 100L);
-            itemBinding.setProgress((int) percentagePlayed);
+            int totalDuration = (int)videos.get(i).getDuration();
+            int currentPosition = (int)videos.get(i).getVideoPosition();
+            int progres = currentPosition * 100 / totalDuration;
+            //double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+            //Log.w("playedPosition",currentPosition+" "+totalDuration+" "+percentagePlayed+"  "+progres);
+            itemBinding.setProgress(progres);
         } else {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, false);
         }
@@ -181,10 +183,12 @@ public class CommonLandscapeRailAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         if (videos.get(i).getVideoPosition() > 0) {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, true);
-            double totalDuration = videos.get(i).getDuration();
-            double currentPosition = videos.get(i).getVideoPosition() * 1000;
-            double percentagePlayed = ((currentPosition / totalDuration) * 100L);
-            itemBinding.setProgress((int) percentagePlayed);
+            int totalDuration = (int)videos.get(i).getDuration();
+            int currentPosition = (int)videos.get(i).getVideoPosition();
+            int progres = currentPosition * 100 / totalDuration;
+            //double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+            //Log.w("playedPosition",currentPosition+" "+totalDuration+" "+percentagePlayed+"  "+progres);
+            itemBinding.setProgress(progres);
         } else {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, false);
         }
@@ -229,10 +233,12 @@ public class CommonLandscapeRailAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         if (videos.get(i).getVideoPosition() > 0) {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, true);
-            double totalDuration = videos.get(i).getDuration();
-            double currentPosition = videos.get(i).getVideoPosition() * 1000;
-            double percentagePlayed = ((currentPosition / totalDuration) * 100L);
-            itemBinding.setProgress((int) percentagePlayed);
+            int totalDuration = (int)videos.get(i).getDuration();
+            int currentPosition = (int)videos.get(i).getVideoPosition();
+            int progres = currentPosition * 100 / totalDuration;
+            //double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+            //Log.w("playedPosition",currentPosition+" "+totalDuration+" "+percentagePlayed+"  "+progres);
+            itemBinding.setProgress(progres);
         } else {
             AppCommonMethod.railBadgeVisibility(itemBinding.llContinueProgress, false);
         }

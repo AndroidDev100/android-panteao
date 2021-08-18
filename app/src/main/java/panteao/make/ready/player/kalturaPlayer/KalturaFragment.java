@@ -112,6 +112,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private AlertDialogSingleButtonFragment errorDialog;
     private NetworkChangeReceiver receiver = null;
     private boolean isFirstCalled = true;
+    private boolean canPlay=false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -305,6 +306,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     }
 
                 }
+                canPlay=true;
+                bookmarking(player);
             }
         });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
@@ -323,6 +326,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                             }
                         },1000);
 
+                    }
+                    if (mListener!=null){
+                        mListener.onBookmarkFinish();
                     }
                 }
 //                if (mHandler != null) {
@@ -737,6 +743,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         void bingeWatchCall(String entryID);
 
         void onPlayerStart();
+
+        void onBookmarkCall(int currentPosition);
+
+        void onBookmarkFinish();
     }
 
     @Override
@@ -760,6 +770,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             player.pause();
 
         }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(runnable);
+            handler = null;
+        }
     }
 
     @Override
@@ -779,7 +793,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         super.onResume();
         requestAudioFocus();
         setBroadcast();
-
+        if (canPlay==true && handler==null){
+            bookmarking(player);
+        }
     }
 
     private void setBroadcast() {
@@ -889,6 +905,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (mgr != null) {
             mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
         }
+
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(runnable);
+            handler = null;
+        }
     }
 
     @Override
@@ -944,6 +965,43 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 // actually start playback
         }
 
+
+    }
+
+    private Handler handler;
+    private Runnable runnable;
+    public void bookmarking(KalturaOvpPlayer player){
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (player != null) {
+                    double totalDuration = player.getDuration();
+                    double currentPosition = player.getCurrentPosition();
+                    double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+                    if (percentagePlayed > 10 && percentagePlayed <= 95) {
+                        if (mListener != null) {
+                            mListener = (OnPlayerInteractionListener) getActivity();
+                            mListener.onBookmarkCall((int)player.getCurrentPosition());
+                        }
+                        if (handler != null) {
+                            handler.postDelayed(this, 10000);
+                        }
+                    } else if (percentagePlayed > 95) {
+                        if (mListener != null) {
+                            mListener = (OnPlayerInteractionListener) getActivity();
+                            mListener.onBookmarkFinish();
+                        }
+                        Log.d("PercentagePlayed", percentagePlayed + "");
+                    } else {
+                        if (handler != null) {
+                            handler.postDelayed(this, 10000);
+                        }
+                    }
+                }
+            }
+        };
+        handler.postDelayed(runnable, 10000);
     }
 
 }
