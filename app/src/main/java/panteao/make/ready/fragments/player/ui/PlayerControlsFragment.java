@@ -342,7 +342,7 @@ public class PlayerControlsFragment extends Fragment {
             backArrow.setVisibility(View.VISIBLE);
         } else {
             if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
-                childControls.animate().alpha(1.0f).setDuration(1000)
+                childControls.animate().alpha(1.0f).setDuration(600)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {

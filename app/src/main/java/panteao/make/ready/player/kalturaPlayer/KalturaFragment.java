@@ -113,6 +113,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private NetworkChangeReceiver receiver = null;
     private boolean isFirstCalled = true;
     private boolean canPlay=false;
+    private long bookmarkPosition = 0l;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -164,6 +165,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (bundle != null) {
             IsbingeWatch = bundle.getBoolean("binge_watch");
             bingeWatchTimer = bundle.getInt("binge_watch_timer");
+            bookmarkPosition = bundle.getLong("bookmark_position");
         }
 
     }
@@ -288,6 +290,16 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
             }
         });
+
+        player.addListener(this, PlayerEvent.loadedMetadata, new PKEvent.Listener() {
+            @Override
+            public void onEvent(PKEvent event) {
+                if (player!=null) {
+                    if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus())
+                        player.seekTo(bookmarkPosition*1000);
+                }
+            }
+        });
         player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
@@ -313,6 +325,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
+
+                Log.d("grgrgrgrgr",IsbingeWatch+"");
+                Log.d("grgrgrgrgr",totalEpisodes+"");
+                Log.d("grgrgrgrgr",runningEpisodes+"");
+
                 if (playerControlsFragment != null) {
                     if (!IsbingeWatch) {
                       //  player.stop();

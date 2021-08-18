@@ -183,6 +183,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean hitEvent = false;
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
+    long bookmarkPosition = 0l;
 
 
     public static void closeActivity() {
@@ -328,6 +329,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         Bundle args = new Bundle();
         if (videoDetails != null && !Entryid.equalsIgnoreCase("")) {
             args.putString(AppConstants.ENTRY_ID, Entryid);
+            args.putLong("bookmark_position",bookmarkPosition);
            // Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -518,7 +520,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
                 getBinding().backButton.setVisibility(View.GONE);
-                long bookmarkPosition = 0l;
+
                 if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }

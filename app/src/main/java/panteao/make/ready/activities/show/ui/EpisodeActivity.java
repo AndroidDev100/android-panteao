@@ -183,6 +183,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
     private boolean skipIntro=true;
+    long bookmarkPosition = 0l;
 
 
     public static void closeActivity() {
@@ -307,6 +308,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             args.putBoolean("binge_watch", SDKConfig.getInstance().getBingeWatchingEnabled());
             args.putInt("binge_watch_timer", SDKConfig.getInstance().getTimer());
             args.putBoolean("from_binge", fromBingWatch);
+            args.putLong("bookmark_position",bookmarkPosition);
             Logger.d("ENTRY_ID", Entryid + "");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -518,7 +520,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
                 getBinding().backButton.setVisibility(View.GONE);
-                long bookmarkPosition = 0l;
+
                 if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }

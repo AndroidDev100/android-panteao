@@ -154,6 +154,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
     private KalturaOvpPlayer player;
+    long bookmarkPosition = 0l;
 
     @Override
     public ActivityShowBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
@@ -241,6 +242,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
        Bundle args = new Bundle();
        if (videoDetails != null) {
             args.putString(AppConstants.ENTRY_ID, Entryid);
+            args.putLong("bookmark_position",bookmarkPosition);
             Logger.d("ENTRY_ID",Entryid+"");
         }
        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -306,7 +308,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
                 getBinding().backButton.setVisibility(View.GONE);
-                long bookmarkPosition = 0l;
+
                 if (getBookmarkResponse != null && getBookmarkResponse.getBookmarks() != null) {
                     bookmarkPosition = getBookmarkResponse.getBookmarks().get(0).getPosition();
                 }
