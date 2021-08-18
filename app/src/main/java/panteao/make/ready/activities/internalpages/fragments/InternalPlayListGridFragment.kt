@@ -31,6 +31,7 @@ import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.networking.servicelayer.APIServiceLayer
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
+import panteao.make.ready.utils.cropImage.helpers.PrintLogging
 import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
 import panteao.make.ready.utils.helpers.GridSpacingItemDecoration
 import panteao.make.ready.utils.helpers.NetworkConnectivity
@@ -39,7 +40,7 @@ import panteao.make.ready.utils.helpers.RecyclerAnimator
 import java.util.*
 
 
-class InternalPlayListGridFragment constructor() :
+class InternalPlayListGridFragment :
     BaseBindingFragment<InternalPlaylistListingFragmentBinding>(), OnItemViewClickedListener,
     DataUpdateCallBack, NoInternetFragment.OnFragmentInteractionListener, ItemClickListener {
 
@@ -371,6 +372,28 @@ class InternalPlayListGridFragment constructor() :
     }
 
     override fun onRowItemClicked(itemValue: EnveuVideoItemBean?, position: Int) {
-
+        if (AppCommonMethod.getCheckKEntryId(itemValue!!.getkEntryId())) {
+            val getVideoId = itemValue!!.getkEntryId()
+            PrintLogging.printLog("", "SearchAssetType-->>" + itemValue!!.assetType)
+            AppCommonMethod.launchDetailScreen(
+                context,
+                getVideoId,
+                itemValue.assetType,
+                itemValue.id,
+                "0",
+                false,
+                itemValue
+            )
+        } else {
+            AppCommonMethod.launchDetailScreen(
+                context,
+                "",
+                itemValue.assetType,
+                itemValue.id,
+                "0",
+                false,
+                itemValue
+            )
+        }
     }
 }

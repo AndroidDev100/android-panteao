@@ -184,17 +184,14 @@ public class ImageLayer {
                 } else if (imageType == KalturaImageType.LANDSCAPE) {
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) >= 1 && (entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 3) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
-                        width = (int) (height * 1.78);
                     }
                 } else if (imageType == KalturaImageType.PORTRAIT) {
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
-                        width = (int) (height * 0.56);
                     }
                 } else if (imageType == KalturaImageType.PORTRAIT_2_3) {
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
-                        height = (int) (width * 1.5);
                     }
                 }
             }
@@ -202,6 +199,7 @@ public class ImageLayer {
                 Map.Entry<String, Thumbnail> entry = crousalImages.entrySet().iterator().next();
                 imageUrl = entry.getValue().getSources().get(0).getSrc();
             }
+            Logger.e("RECOMMENDED_IMAGES", Utils.INSTANCE.getFilteredUrl(imageUrl, width, height));
         }
         return Utils.INSTANCE.getFilteredUrl(imageUrl, width, height);
     }

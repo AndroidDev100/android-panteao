@@ -316,7 +316,7 @@ public interface AppConstants {
     String EPISODE_DETAIL = "episode_detail";
     String SEASON_DETAIL = "SeasonDetails";
     String FACEBOOK_BASE_URL = "https://graph.facebook.com/";
-    String FACEBOOK_ID_ACCESS_TOKEN = "3991362660937190|ed0d96f57393fdd742f6a3b02e60806c";
+    String FACEBOOK_ID_ACCESS_TOKEN = "223342169169169|7a0140a0d7520a440c34faff052b4142";
     String SCOPE = "public_profile";
     String FACEBOOK_FIELD = "name,email,first_name,last_name,picture.type(large)";
     String FB_LOGIN_CALL = "/user/fbLogin";

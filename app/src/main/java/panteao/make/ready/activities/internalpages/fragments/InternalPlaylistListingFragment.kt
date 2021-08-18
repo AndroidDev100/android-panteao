@@ -35,6 +35,7 @@ import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_LDS_LANDSCAPE
 import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_PR_POTRAIT
+import panteao.make.ready.utils.cropImage.helpers.PrintLogging
 import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
@@ -43,7 +44,7 @@ import panteao.make.ready.utils.helpers.RecyclerAnimator
 
 class InternalPlaylistListingFragment :
     BaseBindingFragment<InternalPlaylistListFragmentBinding>(), OnItemViewClickedListener,
-    NoInternetFragment.OnFragmentInteractionListener, ItemClickListener,
+    NoInternetFragment.OnFragmentInteractionListener,
     CommonRailtItemClickListner, MoreClickListner {
 
     private val mScrollY = 0
@@ -167,7 +168,6 @@ class InternalPlaylistListingFragment :
                     activity,
                     { enveuCommonResponse: EnveuCommonResponse? ->
                         if (enveuCommonResponse != null && enveuCommonResponse.data != null) {
-                            RecyclerAnimator(activity).animate(binding.listRecyclerview)
                             val screenWidget = BaseCategory()
                             screenWidget.layout = Layouts.HOR.name
                             screenWidget.contentImageType = ImageType.LDS.name
@@ -188,6 +188,7 @@ class InternalPlaylistListingFragment :
                             railCommonDataList.add(railCommonData)
 
                             if (adapterDetailRail == null) {
+                                RecyclerAnimator(activity).animate(binding.listRecyclerview)
                                 adapterDetailRail = CommonAdapterNew(
                                     activity, railCommonDataList, this, this
                                 )
@@ -246,12 +247,32 @@ class InternalPlaylistListingFragment :
         return InternalPlaylistListFragmentBinding.inflate(inflater)
     }
 
-    override fun onRowItemClicked(itemValue: EnveuVideoItemBean?, position: Int) {
-
-    }
 
     override fun railItemClick(item: RailCommonData?, position: Int) {
-
+        val itemValue = item?.enveuVideoItemBeans?.get(position)!!
+        if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
+            val getVideoId = itemValue.getkEntryId()
+            PrintLogging.printLog("", "SearchAssetType-->>" + itemValue!!.assetType)
+            AppCommonMethod.launchDetailScreen(
+                context,
+                getVideoId,
+                itemValue.assetType,
+                itemValue.id,
+                "0",
+                false,
+                itemValue
+            )
+        } else {
+            AppCommonMethod.launchDetailScreen(
+                context,
+                "",
+                itemValue.assetType,
+                itemValue.id,
+                "0",
+                false,
+                itemValue
+            )
+        }
     }
 
     override fun moreRailClick(data: RailCommonData?, position: Int) {

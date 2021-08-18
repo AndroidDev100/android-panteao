@@ -73,7 +73,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                     binding.frameInteralPlaylists.id,
                                     internalPlaylistListingFragment,
                                     null
-                                ).addToBackStack(null).commit()
+                                ).commit()
                         } else {
                             val internalPlayListGridFragment =
                                 InternalPlayListGridFragment()
@@ -87,7 +87,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                     binding.frameInteralPlaylists.id,
                                     internalPlayListGridFragment,
                                     null
-                                ).addToBackStack(null).commit()
+                                ).commit()
                         }
                     } else if (assetResponse.status
                             .equals(APIStatus.ERROR.name, ignoreCase = true)

@@ -95,7 +95,17 @@ class InternalPlayListGridTVFragment : VerticalGridSupportFragment(), OnItemView
                     if (enveuCommonResponse != null && enveuCommonResponse.data != null) {
                         val screenWidget = BaseCategory()
                         screenWidget.layout = Layouts.HOR.name
-                        screenWidget.contentImageType = ImageType.LDS.name
+                        if(imageType == "LANDSCAPE") {
+                            screenWidget.contentImageType = ImageType.LDS.name
+                        }else if(imageType == "PORTRAIT") {
+                            screenWidget.contentImageType = ImageType.PR1.name
+                        }else if(imageType == "PORTRAIT_2_3") {
+                            screenWidget.contentImageType = ImageType.PR2.name
+                        }else if(imageType == "SQUARE") {
+                            screenWidget.contentImageType = ImageType.SQR.name
+                        }else{
+                            screenWidget.contentImageType = ImageType.LDS.name
+                        }
                         val railCommonData =
                             RailCommonData(enveuCommonResponse.data, screenWidget, false)
                         mAdapter.addAll(0, railCommonData.enveuVideoItemBeans)

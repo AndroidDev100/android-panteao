@@ -24,7 +24,6 @@ open class TVBaseActivity : FragmentActivity() {
 
     internal var tabletSize: Boolean = false
     internal var logoutBackpress = false
-    //    private var preference: SharedPrefHelper? = null
     internal var currentLanguage = ""
 
     fun hideSoftKeyboard(view: View) {
@@ -32,9 +31,6 @@ open class TVBaseActivity : FragmentActivity() {
         Objects.requireNonNull(imm).hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     fun showHideProgress(progressBar: ProgressBar) {
         showLoading(progressBar, false)
