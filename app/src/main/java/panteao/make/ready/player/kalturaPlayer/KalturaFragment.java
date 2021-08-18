@@ -312,7 +312,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             public void onEvent(PKEvent event) {
                 if (playerControlsFragment != null) {
                     if (!IsbingeWatch) {
-                        player.stop();
+                      //  player.stop();
                         showBingeWatchControls = false;
                       //  playerControlsFragment.hideControls();
                         countDownTimer.cancel();
@@ -330,7 +330,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 //                }
                 if (IsbingeWatch) {
                     if (totalEpisodes == runningEpisodes){
-                        player.stop();
+                      //  player.stop();
                         showBingeWatchControls = false;
                        // playerControlsFragment.hideControls();
                         countDownTimer.cancel();
@@ -561,15 +561,14 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
-//    @Override
-//    public void replay() {
-//        if (player!=null){
-//            player.seekTo(0);
-//            startPlayer();
-//            countDownTimer.start();
-//            playerControlsFragment.showControls();
-//        }
-//    }
+    @Override
+    public void replay() {
+        if (player!=null){
+            player.replay();
+            countDownTimer.start();
+            playerControlsFragment.showControls();
+        }
+    }
 
     @Override
     public void QualitySettings() {

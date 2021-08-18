@@ -16,5 +16,6 @@ public interface PlayerCallbacks {
     void sendPlayPauseId(ImageView id);
     void changeBitRateRequest(String title,int position);
     void bitRateRequest();
+    void replay();
 
 }
