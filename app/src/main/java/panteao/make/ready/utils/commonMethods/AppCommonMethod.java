@@ -2072,7 +2072,7 @@ public class AppCommonMethod {
 
         Date today = calendar.getTime();
 
-        calendar.add(Calendar.DAY_OF_YEAR, 6);
+        calendar.add(Calendar.DAY_OF_YEAR, SDKConfig.DOWNLOAD_EXPIRY_DAYS);
         Date tomorrow = calendar.getTime();
 
         if (type == 1) {
