@@ -91,6 +91,7 @@ public class PlayerControlsFragment extends Fragment {
     private CountDownTimer mTimer;
     private TextView skipduration;
     private FrameLayout replay;
+    private boolean isFirstCalledBingeWatch = true;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -416,7 +417,8 @@ public class PlayerControlsFragment extends Fragment {
             bingeBtn.setVisibility(View.VISIBLE);
             skipduration.setVisibility(View.VISIBLE);
             backArrow.setVisibility(View.VISIBLE);
-            if (isFirstCalled) {
+            if (isFirstCalledBingeWatch) {
+                isFirstCalledBingeWatch = false;
                 mTimer = new CountDownTimer(position, 1000) {
                     public void onTick(long millisUntilFinished) {
                         skipduration.setText(Long.toString(millisUntilFinished / 1000));

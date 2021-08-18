@@ -275,8 +275,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
                     if (currentPosition >= bingeWatchTimer) {
                             showBingeWatchControls = true;
-                            playerControlsFragment.showBingeWatch((int) (player.getDuration() - player.getCurrentPosition()), isFirstCalled, totalEpisodes, runningEpisodes);
-                            isFirstCalled = false;
+                            playerControlsFragment.showBingeWatch(player.getDuration() - player.getCurrentPosition(), isFirstCalled, totalEpisodes, runningEpisodes);
                             countDownTimer.cancel();
                     }
                 }
