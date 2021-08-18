@@ -1982,7 +1982,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
 
                     }
-                },700);
+                },1000);
 
             }
         });

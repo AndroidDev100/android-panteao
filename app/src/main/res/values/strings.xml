@@ -362,6 +362,7 @@
     <string name="Downloading">Downloading</string>
     <string name="Downloaded">Downloaded</string>
     <string name="Paused">Paused</string>
+    <string name="Resume">Resume</string>
     <string name="minutes">minutes</string>
     <string name="subscribe_now_to_annual_pack">Subscribe now to Annual Pack</string>
     <string name="subscribe_to_monthly_pack">Subscribe now to Monthly Pack</string>

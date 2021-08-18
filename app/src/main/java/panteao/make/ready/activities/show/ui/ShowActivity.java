@@ -1626,7 +1626,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         }
 
                     }
-                },500);
+                },1000);
 
             }
         });

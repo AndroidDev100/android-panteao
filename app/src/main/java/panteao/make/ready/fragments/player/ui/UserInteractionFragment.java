@@ -803,7 +803,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             getBinding().setDownloadStatus(downloadStatus);
         try {
             if (downloadStatus==DownloadStatus.PAUSE){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Paused));
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
             }else if (downloadStatus==DownloadStatus.DOWNLOADING){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
