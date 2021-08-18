@@ -987,7 +987,7 @@ public class AppCommonMethod {
                     (TVBaseActivity) context,
                     asset
             );
-        } else if (screenType.equalsIgnoreCase("CUSTOM INTERNAL PAGE")) {
+        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
             Intent playerIntent =
                     new Intent(context, TVCustomInternalPage.class);
             playerIntent.putExtra(
@@ -998,7 +998,7 @@ public class AppCommonMethod {
         }
     }
 
-    public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium,EnveuVideoItemBean asset) {
+    public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium, EnveuVideoItemBean asset) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
             return;
         }
@@ -1035,7 +1035,7 @@ public class AppCommonMethod {
             }
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
             new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
-        }else if (screenType.equalsIgnoreCase("CUSTOM INTERNAL PAGE")) {
+        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
             Intent playerIntent =
                     new Intent(context, CustomInternalPage.class);
             playerIntent.putExtra(
@@ -1043,6 +1043,17 @@ public class AppCommonMethod {
                     asset
             );
             context.startActivity(playerIntent);
+        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
+            if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
+                try {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(asset.getCustomLinkDetails().replace("\"", "")));
+                    context.startActivity(browserIntent);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                Logger.e("EXTERNAL_PAGE", "EMPTY");
+            }
         }
     }
 
@@ -1334,17 +1345,17 @@ public class AppCommonMethod {
     public static void heroAssetRedirections(RailCommonData railCommonData, Context activity, String videoId, int parseInt, String s, boolean b) {
         try {
             if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getEpisode(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getEpisode(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getSeries(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getSeries(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getMovie())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getMovie(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getMovie(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getShow(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getShow(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(AppConstants.ContentType.ARTICLE.name())) {
-                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false,null);
+                AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             }
 
         } catch (Exception ignored) {

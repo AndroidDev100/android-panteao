@@ -34,6 +34,42 @@ public class MediaTypes {
     @Expose
     private String instructor;
 
+    @SerializedName("sponsor")
+    @Expose
+    private String sponsor;
+
+    @SerializedName("customInternalPage")
+    @Expose
+    private String customInternalPage;
+
+    public String getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(String sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    public String getCustomInternalPage() {
+        return customInternalPage;
+    }
+
+    public void setCustomInternalPage(String customInternalPage) {
+        this.customInternalPage = customInternalPage;
+    }
+
+    public String getCustomExternalPage() {
+        return customExternalPage;
+    }
+
+    public void setCustomExternalPage(String customExternalPage) {
+        this.customExternalPage = customExternalPage;
+    }
+
+    @SerializedName("customExternalPage")
+    @Expose
+    private String customExternalPage;
+
     public String getMovie() {
         return movie;
     }

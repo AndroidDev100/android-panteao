@@ -233,6 +233,9 @@ public class RailCommonData implements Parcelable {
                 VideosItem videoItem = videos.get(i).getContent();
                 Gson gson = new Gson();
                 EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
+                if (enveuVideoItemBean.getId() == 128982) {
+                    Logger.e("EXTERNAL_ASSET", new Gson().toJson(videos.get(0)));
+                }
                 enveuVideoItemBean.setImages(videoItem.getImages());
                 if (videoItem != null) {
                     if (videoItem.getSeasonNumber() != null && !videoItem.getSeasonNumber().equalsIgnoreCase("")) {
@@ -283,7 +286,7 @@ public class RailCommonData implements Parcelable {
                     if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
                         Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
                         String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem, screenWidget.getWidgetImageType());
-                       enveuVideoItemBean.setImages(videoItem.getImages());
+                        enveuVideoItemBean.setImages(videoItem.getImages());
                         enveuVideoItemBean.setPosterURL(imageUrl);
                         enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem, screenWidget.getWidgetImageType()));
 

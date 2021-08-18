@@ -137,7 +137,7 @@ public class EnveuVideoItemBean implements Parcelable {
         VastTag = in.readString();
         islivedrm = in.readString();
         kEntryId = in.readString();
-        customLinkDetails=in.readString();
+        customLinkDetails = in.readString();
         isContinueWatching = in.readByte() != 0;
     }
 
@@ -216,6 +216,9 @@ public class EnveuVideoItemBean implements Parcelable {
 
             Object customeFiled = details.getData().getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
+            Logger.e("EXTERNAL_LINK", "ID= " +details.getData().getId());
+            if (id == 128982)
+                Logger.e("EXTERNAL_LINK", "LINK" + new Gson().toJson(t));
             if (t != null) {
                 if (t.containsKey(CustomeFields.WIDEVINE_LICENCE)) {
                     String widevineLicence = t.get((CustomeFields.WIDEVINE_LICENCE)).toString();
@@ -266,11 +269,11 @@ public class EnveuVideoItemBean implements Parcelable {
                     String isNew = t.get((CustomeFields.IsNew)).toString();
                     this.isNewS = isNew;
                 }
-                if(t.containsKey(CustomeFields.ExternalURLLink)){
-                    this.customLinkDetails=t.get(CustomeFields.ExternalURLLink).toString();
+                if (t.containsKey(CustomeFields.ExternalURLLink)) {
+                    this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
                 }
-                if(t.containsKey(CustomeFields.LinkedPlaylistId)){
-                    this.customLinkDetails=t.get(CustomeFields.LinkedPlaylistId).toString();
+                if (t.containsKey(CustomeFields.LinkedPlaylistId)) {
+                    this.customLinkDetails = t.get(CustomeFields.LinkedPlaylistId).toString();
                 }
 
             }
@@ -328,6 +331,14 @@ public class EnveuVideoItemBean implements Parcelable {
             Object customeFiled = details.getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
             if (t != null) {
+
+                if (t.containsKey(CustomeFields.ExternalURLLink)) {
+                    this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
+                }
+                if (t.containsKey(CustomeFields.LinkedPlaylistId)) {
+                    this.customLinkDetails = t.get(CustomeFields.LinkedPlaylistId).toString();
+                }
+
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
 
                     if (t.containsKey(CustomeFields.parentalRating)) {
@@ -452,9 +463,13 @@ public class EnveuVideoItemBean implements Parcelable {
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
 
             if (t != null) {
+                if (t.containsKey(CustomeFields.ExternalURLLink)) {
+                    this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
+                }
+                if (t.containsKey(CustomeFields.LinkedPlaylistId)) {
+                    this.customLinkDetails = t.get(CustomeFields.LinkedPlaylistId).toString();
+                }
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-
-
                     if (t.containsKey(CustomeFields.parentalRating)) {
                         String parentalRating = t.get((CustomeFields.parentalRating)).toString();
                         this.parentalRating = parentalRating;
@@ -583,7 +598,12 @@ public class EnveuVideoItemBean implements Parcelable {
 
             if (t != null) {
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-
+                    if (t.containsKey(CustomeFields.ExternalURLLink)) {
+                        this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
+                    }
+                    if (t.containsKey(CustomeFields.LinkedPlaylistId)) {
+                        this.customLinkDetails = t.get(CustomeFields.LinkedPlaylistId).toString();
+                    }
                     if (t.containsKey(CustomeFields.parentalRating)) {
                         String parentalRating = t.get((CustomeFields.parentalRating)).toString();
                         this.parentalRating = parentalRating;

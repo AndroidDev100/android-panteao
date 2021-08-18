@@ -54,7 +54,15 @@ public class MediaTypeConstants {
     public String getInstructor() {
         return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getInstructor();
     }
-
+    public String getSponsor() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getSponsor();
+    }
+    public String getCustomInternalPage() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getCustomInternalPage();
+    }
+    public String getCustomExternalPage() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getCustomExternalPage();
+    }
     public static String getVIDEO() {
         return VIDEO;
     }
