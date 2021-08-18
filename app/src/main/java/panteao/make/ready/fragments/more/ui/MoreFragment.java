@@ -567,6 +567,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     @Override
     public void onFinishDialog() {
+        preference.setAppPrefLoginStatus(false);
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
             AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){

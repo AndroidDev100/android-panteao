@@ -46,6 +46,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.kaltura.tvplayer.OfflineManager;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
@@ -879,6 +880,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
                         Entryid = (videoDetails.getkEntryId());
+
                         playPlayerWhenShimmer();
                     }
 
@@ -1592,6 +1594,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 for (int i = 0; i < seasonEpisodes.size(); i++) {
                     if (seasonEpisodes.get(i).getkEntryId() != null) {
                         String id = seasonEpisodes.get(i).getkEntryId();
+                        Log.d("rtrtrtrtrt",id);
+                        Log.d("rtrtrtrtrt",Entryid);
                         if (id.equalsIgnoreCase(String.valueOf(Entryid))) {
                             seasonEpisodesList.addAll(seasonEpisodes);
                             if (playerfragment != null) {
@@ -1860,6 +1864,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
                 }
             }
+
             if (seasonEpisodesList == null || seasonEpisodesList.size() <= 0) {
                 if (playerfragment != null) {
                     playerfragment.bingeWatchStatus(false);

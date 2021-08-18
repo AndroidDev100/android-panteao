@@ -325,11 +325,6 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
-
-                Log.d("grgrgrgrgr",IsbingeWatch+"");
-                Log.d("grgrgrgrgr",totalEpisodes+"");
-                Log.d("grgrgrgrgr",runningEpisodes+"");
-
                 if (playerControlsFragment != null) {
                     if (!IsbingeWatch) {
                       //  player.stop();
