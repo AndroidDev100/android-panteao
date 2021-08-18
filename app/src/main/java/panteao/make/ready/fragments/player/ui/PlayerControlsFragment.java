@@ -394,19 +394,6 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes) {
-//        try {
-//            if (timer) {
-//                if (viewHideShowTimeHandler != null) {
-//                    viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
-//                }
-//            }
-//        } catch (Exception ignored) {
-//            ignored.printStackTrace();
-//        }
-//        childControls.setVisibility(View.VISIBLE);
-//        seekbarLayout.setVisibility(View.VISIBLE);
-//        bingeBtn.setVisibility(View.VISIBLE);
-//        backArrow.setVisibility(View.VISIBLE);
         if (totalEpisodes == runningEpisodes) {
 
         } else {
