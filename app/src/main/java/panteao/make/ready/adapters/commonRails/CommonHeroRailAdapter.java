@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.LayoutHeroCircularItemBinding;
@@ -18,10 +19,14 @@ import panteao.make.ready.databinding.LayoutHeroLandscapeItemBinding;
 import panteao.make.ready.databinding.LayoutHeroPosterItemBinding;
 import panteao.make.ready.databinding.LayoutHeroPotraitItemBinding;
 import panteao.make.ready.databinding.LayoutHeroSquareItemBinding;
+import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
+
+import java.util.HashMap;
 
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
@@ -77,7 +82,18 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        if (item.getEnveuVideoItemBeans().get(0).getImages() != null) {
+            HashMap<String, Thumbnail> crousalImages = item.getEnveuVideoItemBeans().get(0).getImages();
+            KalturaImageType imageType = KalturaImageType.LANDSCAPE;
+            if (item.getScreenWidget().getWidgetImageType().equalsIgnoreCase("9x16")) {
+                imageType = KalturaImageType.PORTRAIT;
+                item.getEnveuVideoItemBeans().get(0).setPosterURL(
+                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 1080, 1920));
+            } else {
+                item.getEnveuVideoItemBeans().get(0).setPosterURL(
+                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 1920, 1080));
+            }
+        }
         if (holder instanceof SquareHeroHolder) {
             ((SquareHeroHolder) holder).itemBinding.setPlaylistItem(item.getEnveuVideoItemBeans().get(0));
             ((SquareHeroHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {

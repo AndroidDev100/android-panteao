@@ -1009,6 +1009,7 @@ public class AppCommonMethod {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
+        Logger.e("CLICKED_DETAILS", screenType + " " + new Gson().toJson(asset));
 
         if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
             if (SDKConfig.getInstance().getShowDetailId().equalsIgnoreCase("")) {

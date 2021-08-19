@@ -80,14 +80,6 @@
         <item name="android:textColorPrimary">#f3f3f3</item>
     </style>
 
-<!--    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">-->
-<!--        <item name="android:textColor">@color/dialog_color_selector</item>-->
-<!--    </style>-->
-
-<!--    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">-->
-<!--        <item name="android:textColor">@color/dialog_color_selector</item>-->
-<!--    </style>-->
-
     <style name="Custom.Widget.CardView" parent="CardView">
         <item name="android:background">@color/transparent</item>
         <item name="cardElevation">0dp</item>

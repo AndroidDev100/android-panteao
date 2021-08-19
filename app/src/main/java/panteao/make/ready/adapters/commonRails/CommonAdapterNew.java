@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.google.gson.Gson;
+
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
@@ -201,6 +203,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     private void heroAdsLayout(HeroAdsHolder holder, int position) {
+        Logger.e("HERO_DATA", new Gson().toJson(mList.get(position)));
         CommonHeroRailAdapter adapter = new CommonHeroRailAdapter(mContext, mList.get(position), listner);
         holder.heroAdsHolder.rvHeroBanner.setNestedScrollingEnabled(false);
         holder.heroAdsHolder.rvHeroBanner.setHasFixedSize(true);
