@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.activities.article.ArticleActivity;
@@ -32,11 +33,15 @@ import panteao.make.ready.beanModel.responseModels.SignUp.DataModel;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ADHelper;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsNewActivity;
+import panteao.make.ready.utils.helpers.downloads.offlinePlayer.OfflinePlayerActivity;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.Nullable;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -438,7 +443,23 @@ public class ActivityLauncher {
         // activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(source).toBundle());
         activity.startActivity(intent);
     }
+    public void launchMyDownloads(String seriesId,int seasonNumber,String title){
+        Intent intent = new Intent(this.activity, MyDownloadsNewActivity.class);
+        intent.putExtra("series_id", seriesId);
+        intent.putExtra("season_number", seasonNumber);
+        intent.putExtra("title", title);
+        activity.startActivity(intent);
+    }
+
     public void launchMyDownloads(){
-//        this.activity.startActivity(new Intent(this.activity, MyDownloads.class));
+        Intent intent = new Intent(this.activity, MyDownloadsNewActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void launchOfflinePlayer(@Nullable String entryId) {
+        Log.w("optionss","launchOfflinePlayer");
+        Intent intent = new Intent(this.activity, OfflinePlayerActivity.class);
+        intent.putExtra("entry_id",entryId);
+        activity.startActivity(intent);
     }
 }

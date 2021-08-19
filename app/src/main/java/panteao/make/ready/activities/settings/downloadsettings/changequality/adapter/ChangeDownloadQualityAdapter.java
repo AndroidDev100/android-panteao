@@ -29,10 +29,10 @@ public class ChangeDownloadQualityAdapter extends RecyclerView.Adapter<ChangeDow
 
     public ChangeDownloadQualityAdapter(Activity activity, List<String> downloadQualities) {
         preference = KsPreferenceKeys.getInstance();
-        pos = preference.getAppPrefLanguagePos();
+       // pos = preference.getAppPrefLanguagePos();
         this.downloadQualities = downloadQualities;
         this.activity = activity;
-        pos = new SharedPrefHelper(activity).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+        pos = new SharedPrefHelper(activity).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
     }
 
     @NonNull

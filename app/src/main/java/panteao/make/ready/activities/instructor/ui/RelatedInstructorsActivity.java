@@ -2010,7 +2010,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
-                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 Log.w("downloadClick",videoQuality+"");
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1 && NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                     if (source instanceof UserInteractionFragment) {
@@ -2241,9 +2241,6 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
                 switch (item.getItemId()) {
                     case R.id.delete_download:
 //                        downloadHelper.deleteVideo(downloadAbleVideo);
-                        break;
-                    case R.id.my_Download:
-                        new ActivityLauncher(this).launchMyDownloads();
                         break;
                 }
                 return false;

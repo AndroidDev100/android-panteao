@@ -85,6 +85,7 @@ import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
+import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.intentlaunchers.TvActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -95,15 +96,20 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -1929,5 +1935,166 @@ public class AppCommonMethod {
             }
         }
         return trackItemList;
+    }
+
+
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getSortedList(@NotNull List<? extends DownloadItemEntity> it) {
+        ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        int temp = 1;
+        HashMap map=new HashMap();
+        for (int i=0;i<it.size();i++){
+            boolean notFound=false;
+            if (list.size()>0) {
+                DownloadItemEntity value = it.get(i);
+                Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries());
+                if (value.isSeries()) {
+                    String seriesId = value.getSeriesId();
+                    int seasonNumber = value.getSeasonNumber();
+                    Log.w("CheckingCondition 2","seriesid-->>"+value.getSeriesId());
+                    for (int j = 0; j < list.size(); j++) {
+                        DownloadItemEntity value2 = list.get(j);
+                        String seriesId2 = value2.getSeriesId();
+                        int seasonNumber2 = value2.getSeasonNumber();
+                        Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
+                       // if (value2.isSeries()) {
+                            if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
+                                Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
+                                notFound=true;
+                            }
+                       // }
+                    }
+                    if (!notFound){
+                        list.add(value);
+                    }
+
+
+                }else {
+                    list.add(value);
+                }
+            }else {
+                list.add(it.get(0));
+            }
+
+        }
+
+        return getSortedList(list);
+    }
+
+    private static ArrayList<DownloadItemEntity> getSortedListBasedOnepisodeNo(ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return o1.getEpisodeNumber().compareTo(o2.getEpisodeNumber());
+            }
+        });
+        //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
+        return list;
+    }
+
+
+    private static ArrayList<DownloadItemEntity> getSortedList(ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
+            }
+        });
+      //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
+        return list;
+    }
+
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getEpisodesSortedList(@NotNull List<? extends DownloadItemEntity> it) {
+        ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        for (int i=0;i<it.size();i++){
+            if (list.size()>0) {
+                DownloadItemEntity value = it.get(i);
+                list.add(value);
+            }else {
+                list.add(it.get(0));
+            }
+        }
+        return getSortedListBasedOnepisodeNo(list);
+    }
+
+    @NotNull
+    public static List<DownloadItemEntity> getSortedListByTimeStamp(@NotNull List<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
+            }
+        });
+        return list;
+    }
+
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getSortedChapters(@NotNull ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
+            }
+        });
+        return list;
+    }
+
+    private static String formattedDate;
+    public static String getCurrentDateTimeStamp(int type) {
+        Calendar calendar = Calendar.getInstance();
+
+        Date today = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_YEAR, SDKConfig.DOWNLOAD_EXPIRY_DAYS);
+        Date tomorrow = calendar.getTime();
+
+        if (type == 1) {
+            SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+            formattedDate = df.format(today);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+        } else {
+            SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+            formattedDate = df.format(tomorrow);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+
+        }
+        calendar.clear();
+        return getTimeStamp(formattedDate, type);
+    }
+    private static final String startTime = " 00:00:00 AM";
+    private static String getTimeStamp(String todayDate, int type) {
+        long timestamp = 0;
+        String dateStr;
+        if (type == 1) {
+            dateStr = todayDate + startTime;
+        } else {
+            dateStr = todayDate + startTime;
+        }
+
+        DateFormat readFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+        DateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = readFormat.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String formattedDate = "";
+        if (date != null) {
+            formattedDate = writeFormat.format(date);
+        }
+
+        if (date == null) {
+
+        } else {
+            long output = date.getTime() / 1000L;
+            String str = Long.toString(output);
+            timestamp = Long.parseLong(str);
+            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>" + timestamp);
+            System.out.println(formattedDate);
+        }
+        return String.valueOf(timestamp);
     }
 }

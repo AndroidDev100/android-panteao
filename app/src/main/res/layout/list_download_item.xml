@@ -2,21 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <data>-->
-<!--        <variable-->
-<!--            name="videoItem"-->
-<!--            type="com.brightcove.player.model.Video" />-->
-<!--        <variable-->
-<!--            name="downloadedVideo"-->
-<!--            type="panteao.make.ready.utils.helpers.downloads.room.DownloadedVideo" />-->
+    <data>
 
-<!--        <variable-->
-<!--            name="downloadStatus"-->
-<!--            type="panteao.make.ready.enums.DownloadStatus" />-->
+        <variable
+            name="downloadStatus"
+            type="panteao.make.ready.enums.DownloadStatus" />
 
-<!--        <import type="android.view.View" />-->
-<!--        <import type="panteao.make.ready.enums.DownloadStatus" />-->
-<!--    </data>-->
+        <import type="android.view.View" />
+        <import type="panteao.make.ready.enums.DownloadStatus" />
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clRoot"
@@ -26,152 +21,163 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/NontonSize12">
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/searchItemImage"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginLeft="@dimen/NontonSize15"-->
-<!--            app:layout_constraintStart_toStartOf="parent">-->
+        <FrameLayout
+            android:id="@+id/searchItemImage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/NontonSize15"
+            app:layout_constraintStart_toStartOf="parent">
 
-<!--            <androidx.cardview.widget.CardView-->
-<!--                style="@style/Custom.Widget.CardView"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center">-->
+            <androidx.cardview.widget.CardView
+                style="@style/Custom.Widget.CardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/itemImage"-->
-<!--                    imageUrl="@{videoItem.posterImage.toString()}"-->
-<!--                    errorImage="@{@drawable/placeholder_landscape}"-->
-<!--                    placeholder="@{@drawable/placeholder_landscape}"-->
-<!--                    android:layout_width="@dimen/list_lds_width"-->
-<!--                    android:layout_height="@dimen/list_lds_height"-->
-<!--                    android:contentDescription="TODO"-->
-<!--                    android:scaleType="fitXY" />-->
-<!--            </androidx.cardview.widget.CardView>-->
-<!--        </FrameLayout>-->
+                <ImageView
+                    android:id="@+id/itemImage"
+                    errorImage="@{@drawable/placeholder_landscape}"
+                    placeholder="@{@drawable/placeholder_landscape}"
+                    android:layout_width="@dimen/list_lds_width"
+                    android:layout_height="@dimen/list_lds_height"
+                    android:contentDescription="TODO"
+                    android:scaleType="fitXY" />
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/list_details"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="@dimen/NontonSize10"-->
-<!--            android:gravity="top"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="10"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/searchItemImage"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/flDeleteWatchlist"-->
-<!--            app:layout_constraintRight_toLeftOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/searchItemImage"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/searchItemImage">-->
-
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_gravity="top"-->
-<!--                android:layout_weight="2"-->
-<!--                android:orientation="vertical">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/tvTitle"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="top|left"-->
-<!--                    android:ellipsize="end"-->
-<!--                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"-->
-<!--                    android:maxLines="1"-->
-<!--                    android:textColor="?attr/download_tvtitle_color"-->
-<!--                    android:textSize="@dimen/itemRowItem" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/description_txt"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:layout_marginTop="@dimen/_3sdp"-->
-<!--                    android:ellipsize="end"-->
-<!--                    android:fontFamily="@font/sarabun_v7_thai_latin_light"-->
-<!--                    android:maxLines="2"-->
-<!--                    android:minLines="2"-->
-<!--                    android:textColor="?attr/list_prtwo_item_description_color"-->
-<!--                    android:textSize="@dimen/descriptionRowItem" />-->
+        <LinearLayout
+            android:id="@+id/list_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/NontonSize10"
+            android:gravity="top"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:layout_constraintBottom_toBottomOf="@+id/searchItemImage"
+            app:layout_constraintEnd_toStartOf="@id/flDeleteWatchlist"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/searchItemImage"
+            app:layout_constraintTop_toTopOf="@+id/searchItemImage">
 
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tvGenre"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:layout_marginTop="@dimen/_1sdp"-->
-<!--                    android:ellipsize="end"-->
-<!--                    android:fontFamily="@font/roboto_regular"-->
-<!--                    android:maxLines="1"-->
-<!--                    android:paddingBottom="@dimen/_2sdp"-->
-<!--                    android:text="@{videoItem.description}"-->
-<!--                    android:textColor="?attr/download_description_text_color"-->
-<!--                    android:textSize="@dimen/descriptionRowItem"-->
-<!--                    android:visibility="invisible" />-->
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_weight="2"
+                android:orientation="vertical">
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/flDeleteWatchlist"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="8"-->
-<!--            android:visibility="visible"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@id/list_details"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left"
+                    android:ellipsize="end"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                    android:maxLines="1"
+                    android:textColor="?attr/download_tvtitle_color"
+                    android:textSize="@dimen/itemRowItem" />
 
-<!--            <panteao.make.ready.utils.DownloadProgressBar-->
-<!--                android:id="@+id/video_downloading"-->
-<!--                android:layout_width="22dp"-->
-<!--                android:layout_height="22dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_margin="@dimen/NontonSize8"-->
-<!--                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'-->
-<!--                app:background_progressbar_color="@android:color/darker_gray"-->
-<!--                app:progressbar_color="@color/moretitlecolor"-->
-<!--                />-->
-<!--            <ImageView-->
-<!--                android:layout_width="@dimen/watchListWidth"-->
-<!--                android:layout_height="@dimen/watchListHeight"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_margin="@dimen/NontonSize8"-->
-<!--                android:contentDescription="TODO"-->
-<!--                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'-->
-<!--                app:srcCompat="@drawable/download_icon"-->
-<!--                android:id="@+id/video_downloaded"/>-->
-<!--            <ImageView-->
-<!--                android:layout_width="@dimen/watchListWidth"-->
-<!--                android:layout_height="@dimen/watchListHeight"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_margin="@dimen/NontonSize8"-->
-<!--                android:contentDescription="TODO"-->
-<!--                android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'-->
-<!--                app:srcCompat="@drawable/pause_download"-->
-<!--                android:id="@+id/pause_download"/>-->
-
-<!--            <ProgressBar-->
-<!--                android:id="@+id/loading_download"-->
-<!--                android:layout_width="@dimen/watch_ListWidth"-->
-<!--                android:layout_height="@dimen/watch_ListWidth"-->
-<!--                android:layout_margin="@dimen/NontonSize8"-->
-<!--                android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}' />-->
+                <TextView
+                    android:id="@+id/description_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:text=""
+                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:textColor="?attr/download_description_text_color"
+                    android:textSize="@dimen/descriptionRowItem" />
 
 
-<!--        </FrameLayout>-->
+                <TextView
+                    android:id="@+id/tvGenre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:text=""
+                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:textColor="?attr/download_description_text_color"
+                    android:textSize="@dimen/descriptionRowItem"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/_1sdp"-->
-<!--            android:layout_marginTop="@dimen/NontonSize10"-->
-<!--            android:background="@color/home_screen_seperator"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/searchItemImage" />-->
+        <FrameLayout
+            android:id="@+id/flDeleteWatchlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/list_details"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <panteao.make.ready.utils.DownloadProgressBar
+                android:id="@+id/video_downloading"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
+                app:background_progressbar_color="@android:color/darker_gray"
+                app:progressbar_color="@color/moretitlecolor"
+                />
+            <ImageView
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
+                app:srcCompat="@drawable/download_icon"
+                android:id="@+id/video_downloaded"/>
+
+            <ImageView
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                android:visibility="gone"
+                app:srcCompat="@drawable/more_arrow"
+                android:id="@+id/arrow_icon"/>
+
+            <ImageView
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                app:srcCompat="?attr/pause_download"
+                android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
+                android:id="@+id/pause_download"/>
+
+            <ProgressBar
+                android:id="@+id/loading_download"
+                android:layout_width="@dimen/watch_ListWidth"
+                android:layout_height="@dimen/watch_ListWidth"
+                android:layout_margin="@dimen/NontonSize8"
+                android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}'
+                />
+
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/NontonSize10"
+            android:background="@color/home_screen_seperator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchItemImage" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

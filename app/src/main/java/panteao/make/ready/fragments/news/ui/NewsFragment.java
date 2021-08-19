@@ -85,7 +85,6 @@ public class NewsFragment extends BaseBindingFragment<MyDownloadsHomeFragmentBin
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
 }

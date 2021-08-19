@@ -38,6 +38,8 @@ import panteao.make.ready.utils.helpers.AnalyticsController;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToolBarHandler;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsFragment;
+import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsNewActivity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -80,14 +82,19 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
                     return true;
                 case R.id.navigation_originals:
 
-                    if (active instanceof NewsFragment)
+                    if (active instanceof MyDownloadsFragment)
                         return true;
 
                     if (originalFragment == null) {
-                        originalFragment = new NewsFragment();
+                        originalFragment = new MyDownloadsFragment();
                         fragmentManager.beginTransaction().add(R.id.content_frame, originalFragment, "3").hide(originalFragment).commit();
                         switchToOriginalFragment();
                     } else {
+                        try {
+                            ((MyDownloadsFragment)originalFragment).clickEvent();
+                        }catch (Exception e){
+
+                        }
                         switchToOriginalFragment();
                         try {
                             if (originalFragmentClick != null)
@@ -323,10 +330,31 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
-        if (preference == null)
+        if (preference == null){
             preference = KsPreferenceKeys.getInstance();
+        }
 
+        try {
+            if (KsPreferenceKeys.getInstance().getFromOfflineClick()==2){
+                Log.w("redirections",KsPreferenceKeys.getInstance().getFromOfflineClick()+"---->>"+originalFragment);
+                if (originalFragment == null) {
+                    KsPreferenceKeys.getInstance().setFromOfflineClick(1);
+                    originalFragment = new MyDownloadsFragment();
+                    fragmentManager.beginTransaction().add(R.id.content_frame, originalFragment, "3").hide(originalFragment).commit();
+                    switchToOriginalFragment();
+                }
+            }
 
+            removeNavigationShiftMode(navigation);
+            if (active instanceof MyDownloadsFragment) {
+                navigation.getMenu().findItem(R.id.navigation_originals).setChecked(true);
+                navigation.setSelectedItemId(R.id.navigation_originals);
+                navigation.setSelected(true);
+            }
+
+        }catch (Exception e){
+
+        }
     }
 
     @Override
