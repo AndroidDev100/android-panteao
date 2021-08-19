@@ -148,7 +148,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         if (bundle != null) {
             this.likeCounter = 0;
             this.assestId = bundle.getInt(AppConstants.BUNDLE_ASSET_ID);
-            seriesDetailBean = (EnveuVideoItemBean) bundle.getSerializable(AppConstants.BUNDLE_SERIES_DETAIL);
+            seriesDetailBean = (EnveuVideoItemBean) bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
             videoId = seriesDetailBean.getBrightcoveVideoId();
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
         }
