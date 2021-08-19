@@ -99,6 +99,10 @@ public class SliderAdapter extends PagerAdapter {
 
         HashMap<String, Thumbnail> crousalImages = videos.get(position).getImages();
         KalturaImageType imageType=KalturaImageType.LANDSCAPE;
+        if(items.getScreenWidget().getCrousalType().equalsIgnoreCase("FULL_IMAGE")){
+             imageType=KalturaImageType.CAROUSAL_FULL_IMAGE;
+
+        }
         videos.get(position).setPosterURL(ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 800, 450));
 
         viewDataBinding.setVariable(BR.assetItem, videos.get(position));
