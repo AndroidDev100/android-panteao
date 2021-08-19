@@ -987,30 +987,35 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (player != null) {
-                    double totalDuration = player.getDuration();
-                    double currentPosition = player.getCurrentPosition();
-                    double percentagePlayed = ((currentPosition / totalDuration) * 100L);
-                    if (percentagePlayed > 10 && percentagePlayed <= 95) {
-                        if (mListener != null) {
-                            mListener = (OnPlayerInteractionListener) getActivity();
-                            mListener.onBookmarkCall((int)player.getCurrentPosition());
-                        }
-                        if (handler != null) {
-                            handler.postDelayed(this, 10000);
-                        }
-                    } else if (percentagePlayed > 95) {
-                        if (mListener != null) {
-                            mListener = (OnPlayerInteractionListener) getActivity();
-                            mListener.onBookmarkFinish();
-                        }
-                        Log.d("PercentagePlayed", percentagePlayed + "");
-                    } else {
-                        if (handler != null) {
-                            handler.postDelayed(this, 10000);
+                try {
+                    if (player != null) {
+                        double totalDuration = player.getDuration();
+                        double currentPosition = player.getCurrentPosition();
+                        double percentagePlayed = ((currentPosition / totalDuration) * 100L);
+                        if (percentagePlayed > 10 && percentagePlayed <= 95) {
+                            if (mListener != null) {
+                                mListener = (OnPlayerInteractionListener) getActivity();
+                                mListener.onBookmarkCall((int)player.getCurrentPosition());
+                            }
+                            if (handler != null) {
+                                handler.postDelayed(this, 10000);
+                            }
+                        } else if (percentagePlayed > 95) {
+                            if (mListener != null) {
+                                mListener = (OnPlayerInteractionListener) getActivity();
+                                mListener.onBookmarkFinish();
+                            }
+                            Log.d("PercentagePlayed", percentagePlayed + "");
+                        } else {
+                            if (handler != null) {
+                                handler.postDelayed(this, 10000);
+                            }
                         }
                     }
+                }catch (Exception e){
+
                 }
+
             }
         };
         handler.postDelayed(runnable, 10000);
