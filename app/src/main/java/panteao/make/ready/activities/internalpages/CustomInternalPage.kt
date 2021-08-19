@@ -40,6 +40,11 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         } else {
             binding.description.visibility = View.VISIBLE
         }
+        if (binding!==null){
+            binding.backButton.setOnClickListener(View.OnClickListener {
+                onBackPressed()
+            })
+        }
         getAssetDetails(videoItem!!.id)
     }
 

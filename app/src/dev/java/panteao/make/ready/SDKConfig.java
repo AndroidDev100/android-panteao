@@ -84,7 +84,7 @@ public class SDKConfig {
     }
 
     public String getSecondTabId() {
-        return AppCommonMethod.getHomeTabId(configBean,"SKILLSET");
+        return AppCommonMethod.getHomeTabId(configBean,"PREMIUM");
 
     }
     public String getThirdTabId() {
