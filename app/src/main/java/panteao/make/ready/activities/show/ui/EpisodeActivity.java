@@ -866,6 +866,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
                 isLogin = preference.getAppPrefLoginStatus();
                 if (isLogin) {
+                    Log.d("tgtgtgtgtt",isLogin+"");
+                    Log.d("tgtgtgtgtt",preference.getEntitlementStatus()+"");
                     if (!preference.getEntitlementStatus()) {
                         GetPlansLayer.getInstance().getEntitlementStatus(preference, token, new EntitlementStatus() {
                             @Override
@@ -874,12 +876,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                     isAdShowingToUser = false;
                                 }
                                 Entryid = (videoDetails.getkEntryId());
+                                Log.d("tgtgtgtgtt",Entryid);
                                 playPlayerWhenShimmer();
                             }
                         });
                     } else {
                         getBinding().pBar.setVisibility(View.GONE);
                         Entryid = (videoDetails.getkEntryId());
+                        Log.d("tgtgtgtgtt>>>>",Entryid);
 
                         playPlayerWhenShimmer();
                     }

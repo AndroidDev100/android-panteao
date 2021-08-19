@@ -471,6 +471,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 String strCurrentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
                 int languagePosition=KsPreferenceKeys.getInstance().getAppPrefLanguagePos();
                 int downloadOverWifi=KsPreferenceKeys.getInstance().getDownloadOverWifi();
+               // preference.setAppPrefLoginStatus(false);
                 preference.clear();
 //                preference.setAppPrefUserId("");
                 Log.d("getIdLogout",preference.getAppPrefUserId());
@@ -567,7 +568,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     @Override
     public void onFinishDialog() {
-        preference.setAppPrefLoginStatus(false);
+
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
             AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
