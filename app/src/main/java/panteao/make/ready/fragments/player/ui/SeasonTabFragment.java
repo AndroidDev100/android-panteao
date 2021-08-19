@@ -261,7 +261,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                         public void run() {
                                             ((EpisodeActivity) context).episodesList(allEpiosdes);
                                         }
-                                    },800);
+                                    },1200);
 
                                 }
                             }
@@ -365,7 +365,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                         public void run() {
                             ((EpisodeActivity) context).episodesList(seasonEpisodes);
                         }
-                    },800);
+                    },1200);
 
                 }
             } else {
