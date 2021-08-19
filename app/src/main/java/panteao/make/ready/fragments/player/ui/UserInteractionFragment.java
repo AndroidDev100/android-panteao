@@ -148,7 +148,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         if (bundle != null) {
             this.likeCounter = 0;
             this.assestId = bundle.getInt(AppConstants.BUNDLE_ASSET_ID);
-            seriesDetailBean = (EnveuVideoItemBean) bundle.getSerializable(AppConstants.BUNDLE_SERIES_DETAIL);
+            seriesDetailBean = (EnveuVideoItemBean) bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
             videoId = seriesDetailBean.getBrightcoveVideoId();
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
         }
@@ -231,11 +231,23 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             title = seriesDetailBean.getTitle();
             assetType = MediaTypeConstants.getInstance().getEpisode();
 
+        } else if (context instanceof TutorialActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = MediaTypeConstants.getInstance().getTutorial();
+
+        } else if (context instanceof ChapterActivity) {
+            imgUrl = seriesDetailBean.getPosterURL();
+            id = seriesDetailBean.getId();
+            title = seriesDetailBean.getTitle();
+            assetType = MediaTypeConstants.getInstance().getChapter();
+
         } else if (context instanceof InstructorActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getInstructor();
 
         } else if (context instanceof ArticleActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
@@ -523,19 +535,19 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getInstructor();
 
         } else if (context instanceof TutorialActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getTutorial();
 
         } else if (context instanceof ChapterActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
             id = seriesDetailBean.getId();
             title = seriesDetailBean.getTitle();
-            assetType = seriesDetailBean.getAssetType();
+            assetType = MediaTypeConstants.getInstance().getChapter();
 
         } else if (context instanceof ArticleActivity) {
             imgUrl = seriesDetailBean.getPosterURL();
@@ -791,12 +803,16 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             getBinding().setDownloadStatus(downloadStatus);
         try {
             if (downloadStatus==DownloadStatus.PAUSE){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Paused));
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
             }else if (downloadStatus==DownloadStatus.DOWNLOADING){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }else if (downloadStatus==DownloadStatus.DOWNLOADED){
+            }else if (downloadStatus==DownloadStatus.started){
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+            }
+            else if (downloadStatus==DownloadStatus.DOWNLOADED){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
             }

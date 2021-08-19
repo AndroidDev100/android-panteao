@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -26,5 +27,11 @@ public interface DownloadDao {
     DownloadItemEntity loadDownloadItemById(int id);
 
     @Query("SELECT * FROM ASSETDOWNLOAD WHERE seriesId = :seriesId")
-    List<DownloadItemEntity> loadEpisodesBySeriesID(String seriesId);
+    List<DownloadItemEntity> loadChaptersByTID(String seriesId);
+
+    @Query("SELECT * FROM ASSETDOWNLOAD WHERE seriesId = :seriesId AND seasonNumber = :seasonNumber")
+    List<DownloadItemEntity> loadEpisodesBySeriesID(String seriesId,int seasonNumber);
+
+    @Delete
+    void deleteExpireIDs(ArrayList<DownloadItemEntity> ids);
 }

@@ -48,6 +48,8 @@ import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.splash.dialog.ConfigFailDialog;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.dependencies.providers.DTGPrefrencesProvider;
@@ -72,6 +74,7 @@ import panteao.make.ready.utils.helpers.ForceUpdateHandler;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
+import panteao.make.ready.utils.helpers.downloads.ManagerStart;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -82,10 +85,11 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.inject.Inject;
 
-public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener {
+public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> implements AlertDialogFragment.AlertDialogListener, ManagerStart {
     private final String TAG = this.getClass().getSimpleName();
     @Inject
     DTGPrefrencesProvider dtgPrefrencesProvider;
+    KTDownloadHelper downloadHelper;
     private ForceUpdateHandler forceUpdateHandler;
     private KsPreferenceKeys session;
     private PanteaoApplication appState;
@@ -138,18 +142,25 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
         dtgPrefrencesProvider.saveExpiryDays(3);
-        KTDownloadHelper downloadHelper = new KTDownloadHelper(this);
+        downloadHelper = new KTDownloadHelper(this,this);
 //        DownloadHelper downloadHelper = new DownloadHelper(this);
-//        downloadHelper.deleteAllExpiredVideos();
+
 
         notificationCheck();
 
         connectionObserver();
         getBinding().noConnectionLayout.retryTxt.setOnClickListener(view -> connectionObserver());
-        getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
+        //getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
         Logger.e("IntentData", new Gson().toJson(this.getIntent().getData()));
         printHashKey();
 
+    }
+
+    @Override
+    public void managerStarted() {
+        if (downloadHelper!=null){
+            downloadHelper.deleteAllExpiredVideos();
+        }
     }
 
     private void printHashKey() {
@@ -593,11 +604,34 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).seriesDetailScreen(ActivitySplash.this, SeriesDetailActivity.class, assestId);
                         //finish();
+
+
                     }  else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
                         //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).showScreen(ActivitySplash.this, ShowActivity.class, assestId, "0", false);
-                       // finish();
+
+
+                    }  else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
+                        new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
+                        new ActivityLauncher(ActivitySplash.this).tutorialDetailScreen(ActivitySplash.this, TutorialActivity.class, assestId);
+
+
+                    }  else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
+                        //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
+                        new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
+                        new ActivityLauncher(ActivitySplash.this).detailScreen(ActivitySplash.this, InstructorActivity.class, assestId, "0", false);
+
+                    }  else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+                        //new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
+                        new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
+                        new ActivityLauncher(ActivitySplash.this).chapterScreen(ActivitySplash.this, ChapterActivity.class, assestId, "0", false);
+
+
+
+                        // finish();
                     } else if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getLive())) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                             return;
@@ -624,6 +658,8 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                         new ActivityLauncher(ActivitySplash.this).articleScreen(ActivitySplash.this, ArticleActivity.class, assestId, "0", false);
                        // finish();
                     }
+
+
                 } else {
                     new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                     finish();
@@ -648,17 +684,6 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             connectionValidation(false);
             try {
 
-//                DownloadHelper downloadHelper = new DownloadHelper(ActivitySplash.this);
-//                downloadHelper.getAllVideosFromDatabase().observe(ActivitySplash.this, new Observer<DownloadModel>() {
-//                    @Override
-//                    public void onChanged(DownloadModel downloadModel) {
-//                        if (downloadModel.getDownloadVideos().size()>0){
-//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
-//                        }else {
-//                            getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
             }catch (Exception ignored){
                 getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.GONE);
             }
@@ -669,11 +694,40 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         if (aBoolean) {
             getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.GONE);
             loadAnimations();
-
         } else {
-            getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.VISIBLE);
-            getBinding().noConnectionLayout.noConnectionLayout.bringToFront();
-            /*  showDialog(ActivitySplash.this.getResources().getString(R.string.error),getResources().getString(R.string.no_connection)); */
+            try {
+                getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.VISIBLE);
+                getBinding().noConnectionLayout.noConnectionLayout.bringToFront();
+                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                configBean=AppCommonMethod.getConfigResponse();
+                if (configBean!=null){
+                    AppCommonMethod.setConfigConstant(configBean, isTablet);
+                    String API_KEY = "";
+                    String DEVICE_TYPE = "";
+                    if (isTablet) {
+                        API_KEY = SDKConfig.API_KEY_TAB;
+                        DEVICE_TYPE = BaseDeviceType.tablet.name();
+                    } else {
+                        API_KEY = SDKConfig.API_KEY_MOB;
+                        DEVICE_TYPE = BaseDeviceType.mobile.name();
+                    }
+                    BaseClient client = new BaseClient(ActivitySplash.this, BaseGateway.ENVEU, SDKConfig.getInstance().getBASE_URL(), SDKConfig.getInstance().getSUBSCRIPTION_BASE_URL(), DEVICE_TYPE, API_KEY, BasePlatform.android.name(), isTablet, AppCommonMethod.getDeviceId(getContentResolver()));
+                    BaseConfiguration.Companion.getInstance().clientSetup(client);
+                    getBinding().noConnectionLayout.btnMyDownloads.setVisibility(View.VISIBLE);
+
+                    getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            KsPreferenceKeys.getInstance().setFromOfflineClick(2);
+                            new ActivityLauncher(ActivitySplash.this).homeScreen(ActivitySplash.this, HomeActivity.class);
+                            finish();
+                        }
+                    });
+
+                }
+            }catch (Exception ignored){
+
+            }
         }
     }
 
@@ -713,8 +767,9 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
             @Override
             public void onSuccess(@NonNull PendingDynamicLinkData pendingDynamicLinkData) {
                 try {
+                        Uri deepLink=null;
                     if (pendingDynamicLinkData != null) {
-                        Uri deepLink = pendingDynamicLinkData.getLink();
+                           deepLink = pendingDynamicLinkData.getLink();
                         Log.e("deepLink","in2"+pendingDynamicLinkData.getLink()+" "+deepLink.getQuery());
 
                         if (deepLink!=null){
@@ -730,20 +785,23 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            if (!mediaType.equalsIgnoreCase("") && !id.equalsIgnoreCase("")) {
-                                //Logger.e("ASSET TYPE", String.valueOf(viaIntent));
-                                KsPreferenceKeys.getInstance().setAppPrefJumpTo(mediaType);
-                                KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
-                                KsPreferenceKeys.getInstance().setAppPrefJumpBackId(Integer.parseInt(id));
-                                deepLinkObject=AppCommonMethod.createDynamicLinkObject(id,mediaType);
-                                redirections(deepLinkObject);
-                                Log.w("redirectionss", "redirections");
+                            try {
+                                if (!mediaType.equalsIgnoreCase("") && !id.equalsIgnoreCase("")) {
+                                    //Logger.e("ASSET TYPE", String.valueOf(viaIntent));
+                                    KsPreferenceKeys.getInstance().setAppPrefJumpTo(mediaType);
+                                    KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
+                                    KsPreferenceKeys.getInstance().setAppPrefJumpBackId(Integer.parseInt(id));
+                                    deepLinkObject = AppCommonMethod.createDynamicLinkObject(id, mediaType);
+                                    redirections(deepLinkObject);
+                                    Log.w("redirectionss", "redirections");
 
-                            } else {
-                                redirectToHome();
+                                } else {
+                                    redirectToHome();
+                                }
+
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
-
-
 
 
 
@@ -790,6 +848,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
 
             }
         });

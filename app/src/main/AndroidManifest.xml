@@ -397,6 +397,11 @@
         <meta-data
             android:name="com.brightcove.cast.DefaultOptionsProvider.NOTIFICATION_TARGET_ACTIVITY_CLASS_NAME"
             android:value="com.brightcove.cast.DefaultExpandedControllerActivity" />
+
+        <activity android:name=".utils.helpers.downloads.downloadListing.MyDownloadsNewActivity" android:screenOrientation="locked"></activity>
+        <activity android:name=".utils.helpers.downloads.offlinePlayer.OfflinePlayerActivity"  android:configChanges="keyboardHidden|orientation|screenSize"
+            android:resizeableActivity="true"
+            android:screenOrientation="sensorLandscape"></activity>
     </application>
 
 </manifest>

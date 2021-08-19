@@ -798,7 +798,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
         int id = seriesDetailBean.getId();
         String title = seriesDetailBean.getTitle();
         Logger.e("openShareDialogue", new Gson().toJson(seriesDetailBean));
-        AppCommonMethod.openShareDialog(InstructorActivity.this, title, id, MediaTypeConstants.getInstance().getSeries(), imgUrl, String.valueOf(seriesId), seriesDetailBean.getSeason());
+        AppCommonMethod.openShareDialog(InstructorActivity.this, title, id, MediaTypeConstants.getInstance().getInstructor(), imgUrl, String.valueOf(seriesId), seriesDetailBean.getSeason());
         new Handler().postDelayed(() -> dismissLoading(getBinding().progressBar), 2000);
     }
 
@@ -1060,7 +1060,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
-                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 if (source instanceof UserInteractionFragment) {
                     if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1 && NetworkHelper.INSTANCE.isWifiEnabled(this)) {
 //                        downloadHelper.findVideo(seriesDetailBean.getBrightcoveVideoId(), new VideoListener() {
@@ -1235,9 +1235,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
                     case R.id.delete_download:
 //                        downloadHelper.deleteVideo(downloadAbleVideo);
                         break;
-                    case R.id.my_Download:
-                        new ActivityLauncher(this).launchMyDownloads();
-                        break;
+
                 }
                 return false;
             });

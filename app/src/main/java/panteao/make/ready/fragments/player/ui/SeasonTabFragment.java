@@ -2,6 +2,7 @@ package panteao.make.ready.fragments.player.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -255,7 +256,13 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                 }
 
                                 if (context instanceof EpisodeActivity) {
-                                    ((EpisodeActivity) context).episodesList(allEpiosdes);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ((EpisodeActivity) context).episodesList(allEpiosdes);
+                                        }
+                                    },1200);
+
                                 }
                             }
                         }
@@ -353,7 +360,13 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                     seasonAdapter.notifyDataSetChanged();
                 }
                 if (context instanceof EpisodeActivity) {
-                    ((EpisodeActivity) context).episodesList(seasonEpisodes);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((EpisodeActivity) context).episodesList(seasonEpisodes);
+                        }
+                    },1200);
+
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);

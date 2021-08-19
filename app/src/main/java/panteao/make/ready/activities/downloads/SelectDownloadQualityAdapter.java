@@ -30,7 +30,7 @@ public class SelectDownloadQualityAdapter extends RecyclerView.Adapter<SelectDow
 
     public SelectDownloadQualityAdapter(Activity activity, List<String> downloadQualities, VideoQualitySelectedListener videoQualitySelectedListener) {
         preference = KsPreferenceKeys.getInstance();
-        pos =  new SharedPrefHelper(activity).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+        pos =  new SharedPrefHelper(activity).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
         this.downloadQualities = downloadQualities;
         this.videoQualitySelectedListener = videoQualitySelectedListener;
         this.activity = activity;

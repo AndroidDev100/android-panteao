@@ -10,11 +10,12 @@ public interface PlayerCallbacks {
     void skipIntro();
     void bingeWatch();
     void checkOrientation(ImageView id);
-    void replay();
     void QualitySettings();
     void SeekbarLastPosition(long position);
     void showPlayerController(boolean isVisible);
+    void sendPlayPauseId(ImageView id);
     void changeBitRateRequest(String title,int position);
     void bitRateRequest();
+    void replay();
 
 }

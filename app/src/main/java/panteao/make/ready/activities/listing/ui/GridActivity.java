@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,8 +23,11 @@ import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.listing.viewmodel.ListingViewModel;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
+import panteao.make.ready.fragments.dialog.AlertDialogFragment;
+import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.R;
 import panteao.make.ready.adapters.CommonListingAdapter;
@@ -59,7 +63,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class GridActivity extends BaseBindingActivity<ListingActivityBinding> implements ItemClickListener {
+public class GridActivity extends BaseBindingActivity<ListingActivityBinding> implements ItemClickListener, AlertDialogFragment.AlertDialogListener {
     String playListId;
     BaseCategory baseCategory;
     int enveuLayoutType = 0;
@@ -296,6 +300,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                                         @Override
                                         public void onFailure(Throwable throwable) {
+                                            showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                                         }
 
                                         @Override
@@ -353,9 +358,10 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                             }
                         }
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
+                        showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
 
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-
+                        showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
                     }
 
                 });
@@ -749,6 +755,19 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
+    }
+
+    private void showDialog(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(this);
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+    @Override
+    public void onFinishDialog() {
+        onBackPressed();
     }
 }
 

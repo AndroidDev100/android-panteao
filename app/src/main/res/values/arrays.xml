@@ -76,10 +76,9 @@
 
 
     <string-array name="download_quality">
-        <item>High</item>
-        <item>Medium</item>
-        <item>Low</item>
-        <item>Data Saver</item>
+        <item>UHD</item>
+        <item>HD</item>
+        <item>SD</item>
         <item>Always ask</item>
     </string-array>
 </resources>

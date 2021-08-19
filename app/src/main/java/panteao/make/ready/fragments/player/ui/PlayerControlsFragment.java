@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,7 +65,7 @@ public class PlayerControlsFragment extends Fragment {
     private Handler viewHideShowTimeHandler;
     private boolean timer = true;
     private boolean mFlag = false;
-    private ImageView qualitySettings;
+    public ImageView qualitySettings;
     private Formatter formatter;
     private StringBuilder formatBuilder;
     private PlayerCallbacks playerCallbacks;
@@ -81,10 +83,15 @@ public class PlayerControlsFragment extends Fragment {
     private long playbackDuration, playbackCurrentPosition;
     private boolean isOffline = false;
     private LinearLayout seekbarLayout;
-    private ViewGroup childControls;
+    public ViewGroup childControls;
     public Button skipBtn;
-    public Button bingeBtn;
+    public LinearLayout bingeBtn;
     private boolean dragging = false;
+    public ConstraintLayout bingeLay;
+    private CountDownTimer mTimer;
+    private TextView skipduration;
+    private FrameLayout replay;
+    private boolean isFirstCalledBingeWatch = true;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -160,8 +167,9 @@ public class PlayerControlsFragment extends Fragment {
         totalDuration.setText(stringForTime(duration));
         updateSeekbar(currentposition);
         playbackCurrentPosition = currentposition;
-//       controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
+      // controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
     }
+
 
     private void updateSeekbar(int currentposition) {
 
@@ -194,82 +202,6 @@ public class PlayerControlsFragment extends Fragment {
 
     }
 
-    private void ShowAndHideView() {
-        try {
-
-            Animation animationFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
-            Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-
-            animationFadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    if (playerCallbacks != null)
-                        playerCallbacks.showPlayerController(true);
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (playerCallbacks != null)
-                        playerCallbacks.showPlayerController(false);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-            if (childControls.getVisibility() == View.VISIBLE) {
-                childControls.startAnimation(animationFadeOut);
-//                    backArrow.setVisibility(View.GONE);
-                childControls.setVisibility(View.GONE);
-
-
-                timer = true;
-
-
-            } else {
-
-                Log.w("IMATAG", "handler");
-                childControls.setVisibility(View.VISIBLE);
-//                    backArrow.setVisibility(View.VISIBLE);
-//                    if (videoType.equalsIgnoreCase("1")) {
-//                        hideControlsForLive();
-//                    } else {
-//
-//                    }
-                childControls.startAnimation(animationFadeIn);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void callHandler() {
-        timer = true;
-        viewHideShowRunnable = () -> ShowAndHideView();
-        viewHideShowTimeHandler = new Handler();
-        viewHideShowTimeHandler.postDelayed(viewHideShowRunnable, 5000);
-    }
-
     public void sendTapCallBack(boolean b) {
         mFlag = b;
         if (childControls.getVisibility() == View.VISIBLE) {
@@ -292,7 +224,7 @@ public class PlayerControlsFragment extends Fragment {
 
             @Override
             public void onScrubMove(TimeBar timeBar, long position) {
-                seekBar.setPosition(position);
+                //  seekBar.setPosition(position);
                 currentPosition.setText(stringForTime(position));
             }
 
@@ -371,6 +303,10 @@ public class PlayerControlsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (playerCallbacks != null) {
+                    bingeLay.setVisibility(View.GONE);
+                    bingeBtn.setVisibility(View.GONE);
+                    backArrow.setVisibility(View.GONE);
+                    qualitySettings.setVisibility(View.GONE);
                     playerCallbacks.bingeWatch();
                 }
             }
@@ -385,40 +321,51 @@ public class PlayerControlsFragment extends Fragment {
             }
         });
 
-        //Replay video event
-//        replay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (playerCallbacks != null) {
-//                    replay.setVisibility(View.GONE);
-//                    seekBar.setPosition(0);
-//                    playerCallbacks.replay();
-//                }
-//            }
-//        });
+
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playerCallbacks != null) {
+                    replay.setVisibility(View.GONE);
+                    seekBar.setPosition(0);
+                    currentPosition.setText("00:00");
+                    playerCallbacks.replay();
+                }
+            }
+        });
 
 
     }
 
     public void showControls() {
-        if (childControls.getVisibility() == View.GONE && bingeBtn.getVisibility() != View.VISIBLE) {
-            childControls.animate().alpha(1.0f).setDuration(1000)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            if (AppCommonMethod.isTV(requireContext())) {
-                                btnPause.requestFocus();
-                            }
-                        }
+        if (replay.getVisibility() == View.VISIBLE) {
+            backArrow.setVisibility(View.VISIBLE);
+        } else {
+            if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
+                childControls.animate().alpha(1.0f).setDuration(600)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if (AppCommonMethod.isTV(requireContext())) {
+                                    btnPause.requestFocus();
+                                }
 
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                            childControls.setVisibility(View.VISIBLE);
-                            seekbarLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
+                            }
+
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                super.onAnimationStart(animation);
+                                childControls.setVisibility(View.VISIBLE);
+                                seekbarLayout.setVisibility(View.VISIBLE);
+                                backArrow.setVisibility(View.VISIBLE);
+                               // qualitySettings.setVisibility(View.VISIBLE);
+                                if (childControls.getFocusedChild() != null) {
+                                    childControls.getFocusedChild().requestFocus();
+                                }
+                            }
+                        });
+            }
         }
     }
 
@@ -435,6 +382,8 @@ public class PlayerControlsFragment extends Fragment {
                         super.onAnimationEnd(animation);
                         childControls.setVisibility(View.GONE);
                         seekbarLayout.setVisibility(View.GONE);
+                        backArrow.setVisibility(View.GONE);
+                       // qualitySettings.setVisibility(View.GONE);
                         if (childControls.getFocusedChild() != null) {
                             childControls.getFocusedChild().clearFocus();
                         }
@@ -442,26 +391,42 @@ public class PlayerControlsFragment extends Fragment {
                 });
     }
 
-    public void showBingeWatch() {
-        try {
-            if (timer) {
-                if (viewHideShowTimeHandler != null) {
-                    viewHideShowTimeHandler.removeCallbacks(viewHideShowRunnable);
-                }
+    public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes) {
+        if (totalEpisodes == runningEpisodes) {
+
+        } else {
+            childControls.setVisibility(View.GONE);
+            seekbarLayout.setVisibility(View.GONE);
+           // qualitySettings.setVisibility(View.GONE);
+            bingeLay.setVisibility(View.VISIBLE);
+            bingeBtn.setVisibility(View.VISIBLE);
+            skipduration.setVisibility(View.VISIBLE);
+            backArrow.setVisibility(View.VISIBLE);
+            if (isFirstCalledBingeWatch) {
+                isFirstCalledBingeWatch = false;
+                mTimer = new CountDownTimer(position, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        skipduration.setText(Long.toString(millisUntilFinished / 1000));
+                    }
+
+                    public void onFinish() {
+                        skipduration.setText("");
+                    }
+                };
+
+                mTimer.start();
             }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
-        childControls.setVisibility(View.GONE);
-        seekbarLayout.setVisibility(View.GONE);
-        bingeBtn.setVisibility(View.VISIBLE);
-        backArrow.setVisibility(View.VISIBLE);
 
     }
 
     public void hideBingeWatch() {
         try {
+            childControls.setVisibility(View.GONE);
+            seekbarLayout.setVisibility(View.GONE);
+            bingeLay.setVisibility(View.GONE);
             bingeBtn.setVisibility(View.GONE);
+            skipduration.setVisibility(View.GONE);
             backArrow.setVisibility(View.GONE);
         } catch (Exception e) {
 
@@ -471,7 +436,7 @@ public class PlayerControlsFragment extends Fragment {
 
     public void sendPortraitCallback() {
 
-        qualitySettings.setVisibility(View.VISIBLE);
+      //  qualitySettings.setVisibility(View.VISIBLE);
 
         fullscreen.setBackgroundResource(R.drawable.full_screen);
         setParamstoQualityinPortrait(qualitySettings);
@@ -505,12 +470,11 @@ public class PlayerControlsFragment extends Fragment {
         }
 
 
-
     }
 
     public void sendLandscapeCallback() {
         try {
-            qualitySettings.setVisibility(View.VISIBLE);
+         //   qualitySettings.setVisibility(View.VISIBLE);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
             if (!getResources().getBoolean(R.bool.isTablet)) {
                 setParamstoSeekBarControl(seekBarControl);
@@ -559,6 +523,7 @@ public class PlayerControlsFragment extends Fragment {
         quality.setLayoutParams(params);
 
     }
+
     public static void setParamstoQualityinPortrait(View quality) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -584,6 +549,9 @@ public class PlayerControlsFragment extends Fragment {
         btnPause = (ImageView) view.findViewById(R.id.pause);
         btnForward = (ImageView) view.findViewById(R.id.forward);
         btnRewind = (ImageView) view.findViewById(R.id.rew);
+        bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
+        skipduration = (TextView) view.findViewById(R.id.skip_duration);
+        replay = (FrameLayout) view.findViewById(R.id.replay);
         seekBar = view.findViewById(R.id.exo_progress);
         currentPosition = view.findViewById(R.id.exo_position);
         totalDuration = view.findViewById(R.id.exo_duration);
@@ -595,12 +563,43 @@ public class PlayerControlsFragment extends Fragment {
         bingeBtn = view.findViewById(R.id.bingeBtn);
         skipBtn = view.findViewById(R.id.skipBtn);
         qualitySettings = (ImageView) view.findViewById(R.id.iv_quality);
+        bingeLay.setVisibility(View.GONE);
+        replay.setVisibility(View.GONE);
+        bingeBtn.setVisibility(View.GONE);
         if (AppCommonMethod.isTV(getActivity())) {
             Logger.e("IS_TV", "TRUE");
             fullscreen.setVisibility(View.GONE);
         } else {
             Logger.e("IS_TV", "FALSE");
         }
+        if (playerCallbacks != null) {
+            playerCallbacks.sendPlayPauseId(btnPause);
+        }
+
+        childControls.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                //  Toast.makeText(getActivity(),"playerViewClicked",Toast.LENGTH_LONG).show();
+
+                if (!mFlag)
+                    return false;
+                if (replay.getVisibility() == View.VISIBLE) {
+                } else {
+                    if (childControls.getVisibility() == View.VISIBLE) {
+                        hideControls();
+                    } else {
+                        showControls();
+                    }
+                }
+//                if (replay.getVisibility() == View.VISIBLE) {
+//                    childControl.setVisibility(View.GONE);
+//                } else {
+//                    callAnimation();
+//                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -670,5 +669,13 @@ public class PlayerControlsFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    public void showReplayVisibility() {
+        childControls.setVisibility(View.GONE);
+        seekbarLayout.setVisibility(View.GONE);
+      //  qualitySettings.setVisibility(View.GONE);
+        replay.setVisibility(View.VISIBLE);
+        backArrow.setVisibility(View.VISIBLE);
     }
 }

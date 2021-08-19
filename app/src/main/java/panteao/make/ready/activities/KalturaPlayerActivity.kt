@@ -56,6 +56,14 @@ class KalturaPlayerActivity : FragmentActivity(), KalturaFragment.OnPlayerIntera
 
     }
 
+    override fun onBookmarkCall(currentPosition: Int) {
+
+    }
+
+    override fun onBookmarkFinish() {
+
+    }
+
     override fun bingeWatchCall(entryID: String?) {
     }
 
