@@ -103,8 +103,6 @@ class InternalPlaylistListingFragment :
 
     private fun setupFragment() {
         playLists = playListContent.split(",") as ArrayList<String>;
-        playLists.addAll(playLists)
-//        callShimmer()
         setRecyclerProperties(binding.listRecyclerview)
     }
 
