@@ -41,6 +41,7 @@
                     placeholder="@{@drawable/placeholder_potrait}"
                     android:layout_width="@dimen/NontonSize120"
                     android:layout_height="@dimen/NontonSize180"
+                    android:scaleType="fitXY"
                     android:contentDescription="TODO"
                      />
 

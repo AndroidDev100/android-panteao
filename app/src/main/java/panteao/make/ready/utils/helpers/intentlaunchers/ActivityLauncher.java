@@ -3,6 +3,7 @@ package panteao.make.ready.utils.helpers.intentlaunchers;
 import android.app.Activity;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,7 +30,9 @@ import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.activities.usermanagment.ui.SignUpActivity;
 import panteao.make.ready.activities.usermanagment.ui.SkipActivity;
 import panteao.make.ready.activities.watchList.ui.WatchListActivity;
+import panteao.make.ready.baseModels.BaseActivity;
 import panteao.make.ready.beanModel.responseModels.SignUp.DataModel;
+import panteao.make.ready.cms.CustomExternalPageWebview;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ADHelper;
@@ -460,6 +463,14 @@ public class ActivityLauncher {
         Log.w("optionss","launchOfflinePlayer");
         Intent intent = new Intent(this.activity, OfflinePlayerActivity.class);
         intent.putExtra("entry_id",entryId);
+        activity.startActivity(intent);
+    }
+
+    public void customExternalPageWebview(BaseActivity source, Class<CustomExternalPageWebview> destination, String parse,String title) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("customExternalPageUrl", parse);
+        intent.putExtra("customExternalPageTitle", title);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
     }
 }

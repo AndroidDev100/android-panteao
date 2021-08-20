@@ -68,6 +68,7 @@ import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
+import panteao.make.ready.cms.CustomExternalPageWebview;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
@@ -1053,8 +1054,7 @@ public class AppCommonMethod {
         } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
             if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(asset.getCustomLinkDetails().replace("\"", "")));
-                    context.startActivity(browserIntent);
+                    new ActivityLauncher((BaseActivity) context).customExternalPageWebview((BaseActivity) context, CustomExternalPageWebview.class,asset.getCustomLinkDetails().replace("\"", ""),asset.getTitle());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

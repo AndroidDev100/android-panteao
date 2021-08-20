@@ -192,6 +192,8 @@ public class ImageLayer {
                 } else if (imageType == KalturaImageType.PORTRAIT_2_3) {
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
+                        width=0;
+                        height=244;
                     }
                 }
             }
