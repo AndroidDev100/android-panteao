@@ -171,6 +171,7 @@ class InternalPlaylistListingFragment :
                             screenWidget.contentImageType = ImageType.LDS.name
                             screenWidget.name = title
                             screenWidget.showHeader = true
+                            screenWidget.contentShowMoreButton = true
                             val baseCategory = BaseCategory()
                             baseCategory.railCardType = RailCardType.IMAGE_ONLY.name
                             val railCommonData = RailCommonData(
