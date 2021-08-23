@@ -79,25 +79,25 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 3:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.watchhistory_icon, v);
                             break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
+//                            break;
                         case 4:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
-                            break;
-                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.membership_icon, v);
                             break;
-                        case 6: //Coupon
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 7:
+//                        case 5: //Coupon
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
+//                            break;
+                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
                             break;
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.t_and_c_more, v);
                             break;
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
-                        case 10:
+                        case 8:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.log_out, v);
                             break;
 //                    case 15:
@@ -134,20 +134,20 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 4:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.membership_icon, v);
                             break;
+//                        case 5:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
+//                            break;
                         case 5:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
                             break;
-                        case 7:
+                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 8:
+                        case 7:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
-                        case 9:
+                        case 8:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.log_out, v);
                             break;
 //                    case 15:
@@ -180,26 +180,26 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 3:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.watchhistory_icon, v);
                             break;
-                        case 4:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
-                            break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
+//                            break;
 
-                        case 5:
+                        case 4:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.membership_icon, v);
                             break;
-                        case 6://coupon
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
-                            break;
+//                        case 6://coupon
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
+//                            break;
 
-                        case 7:
+                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
                             break;
 
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
 
@@ -226,18 +226,18 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 4:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.membership_icon, v);
                             break;
+//                        case 5:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
+//                            break;
                         case 5:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
                             break;
 
-                        case 7:
+                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 8:
+                        case 7:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
 
@@ -267,25 +267,25 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 3:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.watchhistory_icon, v);
                             break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
+//                            break;
                         case 4:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
-                            break;
-                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.membership_icon, v);
                             break;
-                        case 6: //Coupon
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 7:
+//                        case 6: //Coupon
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
+//                            break;
+                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
                             break;
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.t_and_c_more, v);
                             break;
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
-                        case 10:
+                        case 8:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.log_out, v);
                             break;
 //                    case 15:
@@ -317,29 +317,29 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.watchhistory_icon, v);
                             break;
 
-                        case 4:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.my_downloads_icon_more, v);
-                            break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.my_downloads_icon_more, v);
+//                            break;
                     /*case 4:
                         callDrawableHelper(mContext, R.color.icons_color, R.drawable.ic_save_alt, v);
                         break;*/
-                        case 5:
+                        case 4:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.membership_icon, v);
                             break;
-                        case 6:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 7:
+//                        case 6:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
+//                            break;
+                        case 5:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
                             break;
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
-                        case 10:
+                        case 8:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.log_out, v);
                             break;
 //                    case 15:
@@ -372,26 +372,26 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 3:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.watchhistory_icon, v);
                             break;
-                        case 4:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
-                            break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.ic_save_alt, v);
+//                            break;
 
-                        case 5:
+                        case 4:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.membership_icon, v);
                             break;
-                        case 6://coupon
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
-                            break;
+//                        case 6://coupon
+//                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.redeem_coupon, v);
+//                            break;
 
-                        case 7:
+                        case 5:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
                             break;
 
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
 
@@ -415,24 +415,24 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                         case 3:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.watchhistory_icon, v);
                             break;
+//                        case 4:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.my_downloads_icon_more, v);
+//                            break;
                         case 4:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.my_downloads_icon_more, v);
-                            break;
-                        case 5:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.membership_icon, v);
                             break;
-                        case 6:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
-                            break;
-                        case 7:
+//                        case 6:
+//                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.redeem_coupon, v);
+//                            break;
+                        case 5:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
                             break;
 
-                        case 8:
+                        case 6:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.t_and_c_more, v);
                             break;
 
-                        case 9:
+                        case 7:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
 

@@ -262,6 +262,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             getBinding().comingSoon.setVisibility(View.VISIBLE);
                             getBinding().seriesRecyclerView.setVisibility(View.GONE);
                             getBinding().seasonMore.setVisibility(View.GONE);
+
                         }
 
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
