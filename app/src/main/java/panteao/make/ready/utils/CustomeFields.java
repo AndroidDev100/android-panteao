@@ -20,4 +20,5 @@ public interface CustomeFields {
     String ISLIVEDRM = "islivedrm";
     String ExternalURLLink = "ExternalURLLink";
     String LinkedPlaylistId = "LinkedPlaylistId";
+    String TrailerReferenceId = "TrailerReferenceId";
 }

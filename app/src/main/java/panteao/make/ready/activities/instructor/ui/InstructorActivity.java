@@ -641,6 +641,9 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
                 openShareDialogue();
             });
+            if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null){
+                Logger.e("TrailerReferenceId",seriesResponse.getTrailerReferenceId());
+            }
         }
     }
 

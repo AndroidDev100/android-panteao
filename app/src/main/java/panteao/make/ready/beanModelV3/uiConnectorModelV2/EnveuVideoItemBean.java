@@ -87,6 +87,7 @@ public class EnveuVideoItemBean implements Parcelable {
     private String kEntryId = "";
     public boolean isContinueWatching = false;
     private HashMap<String, Thumbnail> images;
+    String trailerReferenceId = "";
 
     public String getCustomLinkDetails() {
         return customLinkDetails;
@@ -236,6 +237,11 @@ public class EnveuVideoItemBean implements Parcelable {
             if (id == 128982)
                 Logger.e("EXTERNAL_LINK", "LINK" + new Gson().toJson(t));
             if (t != null) {
+
+                if (t.containsKey(CustomeFields.TrailerReferenceId)) {
+                    String trailerReferenceId = t.get((CustomeFields.TrailerReferenceId)).toString().replace("\"", "");
+                    this.trailerReferenceId = trailerReferenceId;
+                }
                 if (t.containsKey(CustomeFields.WIDEVINE_LICENCE)) {
                     String widevineLicence = t.get((CustomeFields.WIDEVINE_LICENCE)).toString();
                     this.widevineLicence = widevineLicence;
@@ -347,7 +353,10 @@ public class EnveuVideoItemBean implements Parcelable {
             Object customeFiled = details.getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
             if (t != null) {
-
+                if (t.containsKey(CustomeFields.TrailerReferenceId)) {
+                    String trailerReferenceId = t.get((CustomeFields.TrailerReferenceId)).toString().replace("\"", "");
+                    this.trailerReferenceId = trailerReferenceId;
+                }
                 if (t.containsKey(CustomeFields.ExternalURLLink)) {
                     this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
                 }
@@ -447,6 +456,7 @@ public class EnveuVideoItemBean implements Parcelable {
     public EnveuVideoItemBean(DataItem details, String imageType) {
 
         try {
+
             this.title = details.getTitle() == null ? "" : details.getTitle();
             this.description = details.getDescription() == null ? "" : details.getDescription().trim();
             this.assetGenres = details.getGenres() == null ? new ArrayList<>() : details.getGenres();
@@ -480,6 +490,10 @@ public class EnveuVideoItemBean implements Parcelable {
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
 
             if (t != null) {
+                if (t.containsKey(CustomeFields.TrailerReferenceId)) {
+                    String trailerReferenceId = t.get((CustomeFields.TrailerReferenceId)).toString().replace("\"", "");
+                    this.trailerReferenceId = trailerReferenceId;
+                }
                 if (t.containsKey(CustomeFields.ExternalURLLink)) {
                     this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
                 }
@@ -614,6 +628,11 @@ public class EnveuVideoItemBean implements Parcelable {
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
 
             if (t != null) {
+
+                if (t.containsKey(CustomeFields.TrailerReferenceId)) {
+                    String trailerReferenceId = t.get((CustomeFields.TrailerReferenceId)).toString().replace("\"", "");
+                    this.trailerReferenceId = trailerReferenceId;
+                }
                 if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                     if (t.containsKey(CustomeFields.ExternalURLLink)) {
                         this.customLinkDetails = t.get(CustomeFields.ExternalURLLink).toString();
@@ -1129,6 +1148,14 @@ public class EnveuVideoItemBean implements Parcelable {
 
     public String getSeriesImageURL() {
         return seriesImageURL;
+    }
+
+    public void setTrailerReferenceId(String trailerReferenceId) {
+        this.trailerReferenceId = trailerReferenceId;
+    }
+
+    public String getTrailerReferenceId() {
+        return trailerReferenceId;
     }
 
     @Override
