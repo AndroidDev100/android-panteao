@@ -92,6 +92,7 @@ public class PlayerControlsFragment extends Fragment {
     private TextView skipduration;
     private FrameLayout replay;
     private boolean isFirstCalledBingeWatch = true;
+    private boolean isFromtrailor = false;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -284,6 +285,7 @@ public class PlayerControlsFragment extends Fragment {
                     if (playerCallbacks != null) {
                         playerCallbacks.finishPlayer();
                     }
+                    Log.d("gtgtgtgtg","fromTrailor");
                     playerCallbacks.checkOrientation(backArrow);
                 } else {
                     getActivity().finish();
@@ -476,6 +478,9 @@ public class PlayerControlsFragment extends Fragment {
         try {
          //   qualitySettings.setVisibility(View.VISIBLE);
             fullscreen.setBackgroundResource(R.drawable.exit_full_screen);
+            if (isFromtrailor){
+                fullscreen.setBackgroundResource(0);
+            }
             if (!getResources().getBoolean(R.bool.isTablet)) {
                 setParamstoSeekBarControl(seekBarControl);
                 setParamstoBackbutton(backArrow);
@@ -677,5 +682,9 @@ public class PlayerControlsFragment extends Fragment {
       //  qualitySettings.setVisibility(View.GONE);
         replay.setVisibility(View.VISIBLE);
         backArrow.setVisibility(View.VISIBLE);
+    }
+
+    public void IsFromTrailor(boolean fromTrailor) {
+        this.isFromtrailor = fromTrailor;
     }
 }
