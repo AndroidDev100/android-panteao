@@ -642,7 +642,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
                 openShareDialogue();
             });
-            if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null){
+            if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null && seriesResponse.getTrailerReferenceId()!=""){
                 getBinding().trailor.setVisibility(View.VISIBLE);
                 Logger.e("TrailerReferenceId",seriesResponse.getTrailerReferenceId());
             }else {
