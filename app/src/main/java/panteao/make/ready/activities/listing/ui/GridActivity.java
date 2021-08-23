@@ -99,6 +99,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         super.onCreate(savedInstanceState);
         title = getIntent().getStringExtra("title");
         playListId = getIntent().getStringExtra("playListId");
+        Log.e("testData", "playListId: "+playListId );
         flag = getIntent().getIntExtra("flag", 0);
         shimmerType = getIntent().getIntExtra("shimmerType", 0);
         baseCategory = getIntent().getExtras().getParcelable("baseCategory");
@@ -339,6 +340,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                     }
                 });*/
                 railInjectionHelper.getPlayListDetailsWithPaginationV2(this, playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
+                    Log.e("testData", "getPlayListByWithPagination: "+playListId+"\n"+counter+"\n"+ AppConstants.PAGE_SIZE+"\n"+baseCategory );
                     if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
@@ -350,6 +352,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                         getBinding().toolbar.screenText.setText(railCommonData.getDisplayName());
                                     }
                                 } catch (Exception e) {
+                                    e.printStackTrace();
 
                                 }
                                 listData = railCommonData;
@@ -359,6 +362,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                         }
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                         showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+
 
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
                         showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));

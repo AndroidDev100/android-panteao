@@ -1,5 +1,7 @@
 package panteao.make.ready.layersV2;
 
+import android.util.Log;
+
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
@@ -29,6 +31,7 @@ public class ListPaginationDataLayer {
                                             int pageNumber,
                                             int pageSize,
                                             BaseCategory screenWidget, ApiResponseModel listener) {
+
         APIServiceLayer.getInstance().getPlayListByWithPagination(playlistID, pageNumber, pageSize, screenWidget, listener);
     }
 }
