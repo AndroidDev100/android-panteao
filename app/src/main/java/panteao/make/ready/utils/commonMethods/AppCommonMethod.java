@@ -648,15 +648,13 @@ public class AppCommonMethod {
         String showTime = minute + ":" + strSecond;
 
         if (hours > 0)
-            showTime = strHour + ":" + strMinute;
+            showTime = strHour + ":" + strMinute + ":" + strSecond;
         else if (minute > 0)
             if (second > 0) {
-                showTime = "00:" + strMinute;
-            } else {
-                showTime = "00:" + strMinute;
+                showTime =strMinute +  ":" +  strSecond;
             }
         else if (second >= 0)
-            showTime = "00:" + "01";
+            showTime = "00:" + strSecond;
         return showTime;
     }
 
