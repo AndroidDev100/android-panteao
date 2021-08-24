@@ -631,9 +631,9 @@ public class AppCommonMethod {
 
     public static String calculateTimein_hh_mm_format(long milliseconds) {
 
-       /* if (milliseconds % 1000 > 0) {
-            milliseconds = milliseconds + (milliseconds % 1000);
-        }*/
+   /* if (milliseconds % 1000 > 0) {
+        milliseconds = milliseconds + (milliseconds % 1000);
+    }*/
 
         long hours = TimeUnit.SECONDS.toHours(milliseconds);
         long minute = TimeUnit.SECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
@@ -648,15 +648,13 @@ public class AppCommonMethod {
         String showTime = minute + ":" + strSecond;
 
         if (hours > 0)
-            showTime = strHour + ":" + strMinute;
+            showTime = strHour + ":" + strMinute + ":" + strSecond;
         else if (minute > 0)
             if (second > 0) {
-                showTime = "00:" + strMinute;
-            } else {
-                showTime = "00:" + strMinute;
+                showTime =strMinute +  ":" +  strSecond;
             }
-        else if (second >= 0)
-            showTime = "00:" + "01";
+            else if (second >= 0)
+                showTime = "00:" + strSecond;
         return showTime;
     }
 
