@@ -28,6 +28,7 @@ import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
 import panteao.make.ready.utils.helpers.StringUtils;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -269,6 +270,24 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
         preference.setAppPrefUserId(String.valueOf(fbLoginData.getId()));
         preference.setAppPrefUserName(String.valueOf(fbLoginData.getName()));
         preference.setAppPrefUserEmail(String.valueOf(fbLoginData.getEmail()));
+        try {
+            Log.d("storedEmail 1",KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck());
+            if (!KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck().equalsIgnoreCase("") && String.valueOf(fbLoginData.getEmail())!=null && !String.valueOf(fbLoginData.getEmail()).equalsIgnoreCase("")){
+                String storedLogin=KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
+                Log.d("storedEmail 2",storedLogin+"  "+String.valueOf(fbLoginData.getEmail()));
+                if (storedLogin!=null && !storedLogin.equalsIgnoreCase("")){
+                    if (storedLogin.equalsIgnoreCase(String.valueOf(fbLoginData.getEmail()))){
+
+                    }else {
+                        removeDownloadsFromDB();
+                    }
+                }
+            }
+        }catch (Exception e){
+            Log.d("storedEmail 3",e.toString());
+        }
+        KsPreferenceKeys.getInstance().setLoginEmailForDownloadCheck(String.valueOf(fbLoginData.getEmail()));
+
         AppCommonMethod.userId = String.valueOf(fbLoginData.getId());
         onBackPressed();
         //new ActivityLauncher(SignUpActivity.this).homeScreen(SignUpActivity.this, HomeActivity.class);
@@ -277,6 +296,15 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
             trackEvent(String.valueOf(fbLoginData.getName()),String.valueOf(fbLoginData.getEmail()));
         }catch (Exception e){
 
+        }
+    }
+
+    private void removeDownloadsFromDB() {
+        try {
+            KTDownloadHelper downloadHelper = new KTDownloadHelper(this);
+            downloadHelper.deleteAllVideos();
+        }catch (Exception e){
+            Log.w("sortedChapters 4",e.toString());
         }
     }
 
