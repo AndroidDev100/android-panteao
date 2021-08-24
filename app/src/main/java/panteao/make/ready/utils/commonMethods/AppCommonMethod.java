@@ -1370,6 +1370,17 @@ public class AppCommonMethod {
             } else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(AppConstants.ContentType.ARTICLE.name())) {
                 AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getLive(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
             }
+            else if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
+                String id = railCommonData.setCustomeInternalPageId(railCommonData.getScreenWidget());
+                if (!id.equalsIgnoreCase("")){
+                    Intent playerIntent =
+                            new Intent(activity, CustomInternalPage.class);
+                    playerIntent.putExtra("asset", railCommonData.getEnveuVideoItemBeans().get(0));
+                    playerIntent.putExtra("asset_id", Integer.parseInt(id));
+                    activity.startActivity(playerIntent);
+                }
+
+            }
 
         } catch (Exception ignored) {
 

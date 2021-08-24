@@ -1,32 +1,23 @@
 package panteao.make.ready.activities.internalpages
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridFragment
 import panteao.make.ready.activities.internalpages.fragments.InternalPlaylistListingFragment
-import panteao.make.ready.adapters.CommonListingAdapter
-import panteao.make.ready.adapters.CommonShimmerAdapter
 import panteao.make.ready.baseModels.BaseBindingActivity
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.callbacks.commonCallbacks.OnKeywordSearchFragmentListener
 import panteao.make.ready.databinding.ActivityCustomInternalPageBinding
-import panteao.make.ready.enums.KalturaImageType
 import panteao.make.ready.fragments.dialog.AlertDialogFragment
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment
 import panteao.make.ready.networking.apistatus.APIStatus
 import panteao.make.ready.networking.responsehandler.ResponseModel
 import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.cropImage.helpers.Logger
-import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
-import panteao.make.ready.utils.helpers.GridSpacingItemDecoration
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 
 class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding>(),
@@ -34,18 +25,48 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val videoItem = intent.getParcelableExtra("asset") as EnveuVideoItemBean?
+        val assetId = intent.getIntExtra("asset_id", 0)
         binding.asset = videoItem
         if (videoItem?.description.isNullOrEmpty()) {
             binding.description.visibility = View.GONE
+            binding.lessButton.visibility = View.GONE
         } else {
             binding.description.visibility = View.VISIBLE
+            binding.lessButton.visibility = View.VISIBLE
+            binding.description.setEllipsis("...")
+            binding.description.setEllipsize(TextUtils.TruncateAt.END)
         }
         if (binding!==null){
             binding.backButton.setOnClickListener(View.OnClickListener {
                 onBackPressed()
             })
+
+            binding.lessButton.setOnClickListener(View.OnClickListener {
+                expendable()
+            })
         }
-        getAssetDetails(videoItem!!.id)
+        if (assetId>0){
+            getAssetDetails(assetId)
+        }else{
+            getAssetDetails(videoItem!!.id)
+        }
+
+    }
+
+    private fun expendable() {
+        binding.description.toggle()
+        binding.description.setEllipsis("...")
+        if (binding.description.isExpanded()) {
+            binding.description.setEllipsize(null)
+        } else {
+            binding.description.setEllipsize(TextUtils.TruncateAt.END)
+        }
+
+        if (binding.description.isExpanded()) {
+            binding.textExpandable.text = (resources.getString(R.string.more))
+        } else {
+            binding.textExpandable.text = (resources.getString(R.string.less))
+        }
     }
 
     private fun getAssetDetails(assestId: Int) {
@@ -147,5 +168,6 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
 
     override fun searchResultsFound(searchKeyword: String) {
     }
+
 
 }

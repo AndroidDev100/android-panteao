@@ -63,6 +63,7 @@ public class RailCommonData implements Parcelable {
     private boolean isContinueWatching = false;
     private boolean isAd = false;
     private int pageNumber = 0;
+    public String customeInternalPageId = "";
 
     public void setRailType(int railType) {
         this.railType = railType;
@@ -635,5 +636,13 @@ public class RailCommonData implements Parcelable {
         dest.writeByte((byte) (isAd ? 1 : 0));
         dest.writeInt(pageNumber);
         dest.writeInt(pageSize);
+    }
+
+    public String setCustomeInternalPageId(BaseCategory screenWidget) {
+        customeInternalPageId = "";
+        if (screenWidget!=null && screenWidget.getLandingPageAssetId()!=null && !screenWidget.getLandingPageAssetId().equalsIgnoreCase("")){
+            customeInternalPageId=screenWidget.getLandingPageAssetId();
+        }
+        return customeInternalPageId;
     }
 }

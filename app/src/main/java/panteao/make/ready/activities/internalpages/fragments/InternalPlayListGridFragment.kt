@@ -146,25 +146,20 @@ class InternalPlayListGridFragment :
         playLists = playListContent.split(",");
         callShimmer()
     }
-
+    var shimmerAdapter : CommonListingAdapter?=null
     private fun callShimmer() {
-        val shimmerAdapter = CommonListingAdapter(requireActivity())
+        shimmerAdapter = CommonListingAdapter(requireActivity())
         binding.listRecyclerview.hasFixedSize()
         binding.listRecyclerview.isNestedScrollingEnabled = false
-        var num = 2
-        val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
-        if (tabletSize) {
-            num =
-                if (resources
-                        .configuration.orientation == 2
-                ) 4 else 3
+        playLists[0].split("|").forEachIndexed { i, s ->
+            if (i == 0) {
+            } else if (i == 2) {
+                setRecyclerView(s.replace("\"", "").trim());
+            } else if (i == 1) {
+
+            }
         }
-        shimmerAdapter.setDataList(ShimmerDataModel(requireActivity()).getList(4))
-        binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
-        var gridLayoutManager = GridLayoutManager(requireActivity(), num)
-        binding.listRecyclerview.layoutManager = gridLayoutManager
-        binding.listRecyclerview.adapter = shimmerAdapter
-        binding.listRecyclerview.visibility = View.VISIBLE
+
         checkActivity()
     }
 
@@ -207,6 +202,7 @@ class InternalPlayListGridFragment :
                                 screenWidget,
                                 false
                             )
+
                             if (imageType == "LANDSCAPE") {
                                 if (commonLandscapeAdapter == null) {
                                     commonLandscapeAdapter = LandscapeListingAdapter(
@@ -312,7 +308,77 @@ class InternalPlayListGridFragment :
                                 } else squareCommonAdapter!!.notifydata(railCommonData.getEnveuVideoItemBeans())
                           }
                         }
+                        else{
+                            count++
+                            getPlayListDetails(activity)
+                        }
                     })
+        }
+    }
+
+    private fun setRecyclerView(imageType: String) {
+        if (imageType == "LANDSCAPE") {
+            var num = 2
+            val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
+            if (tabletSize) {
+                num =
+                    if (resources
+                            .configuration.orientation == 2
+                    ) 4 else 3
+            }
+            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+            binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
+            var gridLayoutManager = GridLayoutManager(requireActivity(), num)
+            binding.listRecyclerview.layoutManager = gridLayoutManager
+            binding.listRecyclerview.adapter = shimmerAdapter
+            binding.listRecyclerview.visibility = View.VISIBLE
+        }
+        else if (imageType == "PORTRAIT") {
+            var num = 3
+            val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
+            if (tabletSize) {
+                num =
+                    if (resources
+                            .configuration.orientation == 2
+                    ) 4 else 3
+            }
+            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(5))
+            binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
+            var gridLayoutManager = GridLayoutManager(requireActivity(), num)
+            binding.listRecyclerview.layoutManager = gridLayoutManager
+            binding.listRecyclerview.adapter = shimmerAdapter
+            binding.listRecyclerview.visibility = View.VISIBLE
+        }
+        else if (imageType == "PORTRAIT_2_3") {
+            var num = 3
+            val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
+            if (tabletSize) {
+                num =
+                    if (resources
+                            .configuration.orientation == 2
+                    ) 4 else 3
+            }
+            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(5))
+            binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
+            var gridLayoutManager = GridLayoutManager(requireActivity(), num)
+            binding.listRecyclerview.layoutManager = gridLayoutManager
+            binding.listRecyclerview.adapter = shimmerAdapter
+            binding.listRecyclerview.visibility = View.VISIBLE
+        }else{
+            var num = 2
+            val tabletSize: Boolean = resources.getBoolean(R.bool.isTablet)
+            if (tabletSize) {
+                num =
+                    if (resources
+                            .configuration.orientation == 2
+                    ) 4 else 3
+            }
+            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+            binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
+            var gridLayoutManager = GridLayoutManager(requireActivity(), num)
+            binding.listRecyclerview.layoutManager = gridLayoutManager
+            binding.listRecyclerview.adapter = shimmerAdapter
+            binding.listRecyclerview.visibility = View.VISIBLE
         }
     }
 

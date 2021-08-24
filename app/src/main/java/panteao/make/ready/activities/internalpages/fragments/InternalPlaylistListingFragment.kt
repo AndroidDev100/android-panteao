@@ -4,6 +4,7 @@ package panteao.make.ready.activities.internalpages.fragments
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.make.baseCollection.baseCategoryModel.BaseCategory
 import com.make.enums.ImageType
 import com.make.enums.Layouts
+import com.make.enums.ListingLayoutType
 import com.make.enums.RailCardType
 import panteao.make.ready.R
-import panteao.make.ready.activities.listing.callback.ItemClickListener
+import panteao.make.ready.activities.internalpages.InternalPageImageType
+import panteao.make.ready.activities.listing.listui.ListActivity
+import panteao.make.ready.activities.listing.ui.GridActivity
+import panteao.make.ready.activities.watchList.ui.WatchListActivity
 import panteao.make.ready.adapters.commonRails.CommonAdapterNew
 import panteao.make.ready.adapters.shimmer.ShimmerAdapter
 import panteao.make.ready.baseModels.BaseBindingFragment
@@ -33,13 +38,14 @@ import panteao.make.ready.fragments.common.NoInternetFragment
 import panteao.make.ready.networking.servicelayer.APIServiceLayer
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_LDS_LANDSCAPE
-import panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_PR_POTRAIT
+import panteao.make.ready.utils.constants.AppConstants.*
+import panteao.make.ready.utils.cropImage.helpers.Logger
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging
 import panteao.make.ready.utils.cropImage.helpers.ShimmerDataModel
 import panteao.make.ready.utils.helpers.NetworkConnectivity
 import panteao.make.ready.utils.helpers.RailInjectionHelper
 import panteao.make.ready.utils.helpers.RecyclerAnimator
+import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher
 
 
 class InternalPlaylistListingFragment :
@@ -170,8 +176,16 @@ class InternalPlaylistListingFragment :
                             screenWidget.layout = Layouts.HOR.name
                             screenWidget.contentImageType = ImageType.LDS.name
                             screenWidget.name = title
+                            screenWidget.contentID=playListId
                             screenWidget.showHeader = true
                             screenWidget.contentShowMoreButton = true
+                            if (imageType.equals(InternalPageImageType.PORTRAIT_2_3.name)){
+                               screenWidget.contentImageType= ImageType.PR2.name
+                            }else if (imageType.equals(InternalPageImageType.LANDSCAPE.name)){
+                                screenWidget.contentImageType= ImageType.LDS.name
+                            }else{
+                                screenWidget.contentImageType= ImageType.LDS.name
+                            }
                             val baseCategory = BaseCategory()
                             baseCategory.railCardType = RailCardType.IMAGE_ONLY.name
                             val railCommonData = RailCommonData(
@@ -179,11 +193,22 @@ class InternalPlaylistListingFragment :
                                 screenWidget,
                                 false
                             )
-                            if (count == 0) {
+                            Log.w("imageType-->",imageType)
+                            if (imageType.equals(InternalPageImageType.PORTRAIT_2_3.name)){
+                                railCommonData.railType = HORIZONTAL_PR_POSTER
+                            }else if (imageType.equals(InternalPageImageType.LANDSCAPE.name)){
                                 railCommonData.railType = HORIZONTAL_LDS_LANDSCAPE
-                            } else {
+                            }
+                            else if (imageType.equals(InternalPageImageType.PORTRAIT.name)){
                                 railCommonData.railType = HORIZONTAL_PR_POTRAIT
                             }
+                            else if (imageType.equals(InternalPageImageType.SQUARE.name)){
+                                railCommonData.railType = HORIZONTAL_SQR_SQUARE
+                            }
+                            else{
+                                railCommonData.railType = HORIZONTAL_LDS_LANDSCAPE
+                            }
+
                             railCommonDataList.add(railCommonData)
 
                             if (adapterDetailRail == null) {
@@ -199,6 +224,9 @@ class InternalPlaylistListingFragment :
                                     )
                                 }
                             }
+                            count++
+                            getPlayListDetails(activity)
+                        }else{
                             count++
                             getPlayListDetails(activity)
                         }
@@ -274,7 +302,127 @@ class InternalPlaylistListingFragment :
         }
     }
 
+    var playListId: String? = null
     override fun moreRailClick(data: RailCommonData?, position: Int) {
+        try {
+            if (data!!.screenWidget != null) {
+                if (data!!.screenWidget.contentID != null) playListId =
+                    data!!.screenWidget.contentID else playListId =
+                    data!!.screenWidget.landingPagePlayListId
+                if (data!!.screenWidget.name != null && data!!.screenWidget.referenceName != null && (data!!.screenWidget.referenceName.equals(
+                        AppConstants.ContentType.CONTINUE_WATCHING.name,
+                        ignoreCase = true
+                    ) || data!!.screenWidget.referenceName.equals(
+                        "special_playlist",
+                        ignoreCase = true
+                    ))
+                ) {
+                    ActivityLauncher(requireActivity()).portraitListing(
+                        requireActivity(),
+                        GridActivity::class.java,
+                        playListId,
+                        data!!.screenWidget.name.toString(),
+                        0,
+                        0,
+                        data!!.screenWidget,
+                        position
+                    )
+                } else if (data!!.screenWidget.name != null && data!!.screenWidget.referenceName != null && data!!.screenWidget.referenceName.equals(
+                        AppConstants.ContentType.MY_WATCHLIST.name,
+                        ignoreCase = true
+                    )
+                ) {
+                    ActivityLauncher(requireActivity()).watchHistory(
+                        requireActivity(),
+                        WatchListActivity::class.java, data!!.screenWidget.name.toString(), false
+                    )
+                } else {
+                    if (data!!.screenWidget.contentListinglayout != null && !data!!.screenWidget.contentListinglayout.equals(
+                            "",
+                            ignoreCase = true
+                        ) && data!!.screenWidget.contentListinglayout.equals(
+                            ListingLayoutType.LST.name,
+                            ignoreCase = true
+                        )
+                    ) {
+                        if (data!!.screenWidget.name != null) {
+                            ActivityLauncher(requireActivity()).listActivity(
+                                requireActivity(),
+                                ListActivity::class.java,
+                                playListId,
+                                data!!.screenWidget.name.toString(),
+                                0,
+                                0,
+                                data!!.screenWidget
+                            )
+                        } else {
+                            ActivityLauncher(requireActivity()).listActivity(
+                                requireActivity(),
+                                ListActivity::class.java, playListId, "", 0, 0, data!!.screenWidget
+                            )
+                        }
+                    } else if (data!!.screenWidget.contentListinglayout != null && !data!!.screenWidget.contentListinglayout.equals(
+                            "",
+                            ignoreCase = true
+                        ) && data!!.screenWidget.contentListinglayout.equals(
+                            ListingLayoutType.GRD.name,
+                            ignoreCase = true
+                        )
+                    ) {
+                        Logger.e("getRailData", "GRD")
+                        if (data!!.screenWidget.name != null) {
+                            ActivityLauncher(requireActivity()).portraitListing(
+                                requireActivity(),
+                                GridActivity::class.java,
+                                playListId,
+                                data!!.screenWidget.name.toString(),
+                                0,
+                                0,
+                                data!!.screenWidget,
+                                position
+                            )
+                        } else {
+                            ActivityLauncher(requireActivity()).portraitListing(
+                                requireActivity(),
+                                GridActivity::class.java,
+                                playListId,
+                                "",
+                                0,
+                                0,
+                                data!!.screenWidget,
+                                position
+                            )
+                        }
+                    } else {
+                        Logger.e("getRailData", "PDF")
+                        if (data!!.screenWidget.name != null) {
+                            ActivityLauncher(requireActivity()).portraitListing(
+                                requireActivity(),
+                                GridActivity::class.java,
+                                playListId,
+                                data!!.screenWidget.name.toString(),
+                                0,
+                                0,
+                                data!!.screenWidget,
+                                position
+                            )
+                        } else {
+                            ActivityLauncher(requireActivity()).portraitListing(
+                                requireActivity(),
+                                GridActivity::class.java,
+                                playListId,
+                                "",
+                                0,
+                                0,
+                                data!!.screenWidget,
+                                position
+                            )
+                        }
+                    }
+                }
+            }
+        }catch (exception : Exception){
 
+        }
     }
 }
