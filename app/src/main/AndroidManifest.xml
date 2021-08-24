@@ -46,6 +46,11 @@
         android:theme="@style/MyMaterialTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
+        <activity
+            android:name=".player.trailor.PlayerActivity"
+            android:exported="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensorLandscape"/>
         <activity android:name=".activities.internalpages.TVCustomInternalPage" />
         <activity android:name=".activities.internalpages.CustomInternalPage" />
         <activity
@@ -117,13 +122,11 @@
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -306,12 +309,12 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".cms.HelpActivity"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".cms.CustomExternalPageWebview"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.videoquality.ui.ChangeLanguageActivity"
             android:launchMode="singleTop" />
@@ -403,10 +406,14 @@
             android:name="com.brightcove.cast.DefaultOptionsProvider.NOTIFICATION_TARGET_ACTIVITY_CLASS_NAME"
             android:value="com.brightcove.cast.DefaultExpandedControllerActivity" />
 
-        <activity android:name=".utils.helpers.downloads.downloadListing.MyDownloadsNewActivity" android:screenOrientation="locked"></activity>
-        <activity android:name=".utils.helpers.downloads.offlinePlayer.OfflinePlayerActivity"  android:configChanges="keyboardHidden|orientation|screenSize"
+        <activity
+            android:name=".utils.helpers.downloads.downloadListing.MyDownloadsNewActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".utils.helpers.downloads.offlinePlayer.OfflinePlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:resizeableActivity="true"
-            android:screenOrientation="sensorLandscape"></activity>
+            android:screenOrientation="sensorLandscape" />
     </application>
 
 </manifest>

@@ -40,6 +40,7 @@ import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
+import panteao.make.ready.player.trailor.PlayerActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
@@ -641,9 +642,21 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
                 openShareDialogue();
             });
-            if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null){
+            if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null && seriesResponse.getTrailerReferenceId()!=""){
+                getBinding().trailor.setVisibility(View.VISIBLE);
                 Logger.e("TrailerReferenceId",seriesResponse.getTrailerReferenceId());
+            }else {
+                getBinding().trailor.setVisibility(View.GONE);
             }
+
+            getBinding().trailor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(InstructorActivity.this, PlayerActivity.class);
+                    intent.putExtra(AppConstants.ENTRY_ID, seriesResponse.getTrailerReferenceId());
+                    startActivity(intent);
+                }
+            });
         }
     }
 
