@@ -25,6 +25,7 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public static final String AUTO_DURATION = "auto_rotate_duration";
     public static final String VIDEO_QUALITY = "video_quality";
     public static final String VIDEO_DOWNLOAD_ACTION = "video_download_action";
+    public static final String VIDEO_DOWNLOAD_EMAIL = "video_download_email";
 
 
     private static final String DOWNLOADED_ITEM_DELETED = "download_item_deleted";
@@ -403,5 +404,13 @@ public class KsPreferenceKeys extends SharedPrefHelper {
 
     public void setVideoDownloadAction(int actionType){
         setInt(VIDEO_DOWNLOAD_ACTION, actionType);
+    }
+
+    public void setLoginEmailForDownloadCheck(String email) {
+        setString(VIDEO_DOWNLOAD_EMAIL,email);
+    }
+
+    public String getLoginEmailForDownloadCheck() {
+        return getString(VIDEO_DOWNLOAD_EMAIL, "");
     }
 }

@@ -828,4 +828,47 @@ public class KTDownloadHelper {
         }
     }
 
+    public void deleteAllVideos() {
+        try {
+            ArrayList<DownloadItemEntity> idsForRemove=new ArrayList<DownloadItemEntity>();
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (db!=null) {
+                        List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadAllDownloads();
+                        if (downloadItemEntityList.size() > 0) {
+                            try {
+                                for (int i=0;i<downloadItemEntityList.size();i++){
+                                    if (downloadItemEntityList.get(i).getExpiryDate()!=null && !downloadItemEntityList.get(i).getExpiryDate().equalsIgnoreCase("")){
+                                        Log.w("removeIds",downloadItemEntityList.get(i).getEntryId());
+                                        try {
+                                            if (manager!=null){
+                                                manager.removeAsset(downloadItemEntityList.get(i).getEntryId());
+                                            }
+                                        }catch (Exception e){
+                                            Log.w("sortedChapters 5",e.toString());
+                                        }
+
+                                        idsForRemove.add(downloadItemEntityList.get(i));
+                                    }
+                                }
+                                db.downloadDao().deleteExpireIDs(idsForRemove);
+                            }catch (Exception e){
+                                Log.w("sortedChapters 6",e.toString());
+                            }
+
+                        } else {
+
+                        }
+                    }else {
+
+                    }
+                }
+            });
+        }catch (Exception ignored){
+            Log.w("sortedChapters 6",ignored.toString());
+        }
+    }
+
+
 }

@@ -234,8 +234,12 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }else{
                         builder.append(currentVideoItem.episodesCount.toString())
                     }
+                    if (currentVideoItem.episodesCount>1){
+                        builder.append(" Episodes")
+                    }else{
+                        builder.append(" Episode")
+                    }
 
-                    builder.append(" Episodes")
                     viewHolder?.itemBinding?.descriptionTxt?.text = builder.toString()
                 }else{
                     var builder=StringBuilder()

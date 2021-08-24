@@ -14,7 +14,6 @@ import com.kaltura.tvplayer.OfflineManager
 import kotlinx.android.synthetic.main.activity_my_downloads.*
 import panteao.make.ready.R
 import panteao.make.ready.baseModels.BaseBindingFragment
-import panteao.make.ready.databinding.ActivityMyDownloadsBinding
 import panteao.make.ready.databinding.FragmentMyDownloadsBinding
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
 import panteao.make.ready.utils.constants.AppConstants
@@ -60,16 +59,22 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
     }
 
     private fun fetchdataBaseValues() {
-        downloadHelper= KTDownloadHelper(activity,this)
-        progress_bar.visibility = View.VISIBLE
-        downloadHelper.getAllAssetFromDB().observe(requireActivity(), Observer {
-            if(it!==null && it.size>0){
-                noDownloadedData(2)
-                createUniqueList(it)
-            }else{
-                noDownloadedData(1)
-            }
-        })
+        val loginStatus: Boolean = KsPreferenceKeys.getInstance().getAppPrefLoginStatus()
+        if (loginStatus){
+            downloadHelper= KTDownloadHelper(activity,this)
+            progress_bar.visibility = View.VISIBLE
+            downloadHelper.getAllAssetFromDB().observe(requireActivity(), Observer {
+                if(it!==null && it.size>0){
+                    noDownloadedData(2)
+                    createUniqueList(it)
+                }else{
+                    noDownloadedData(1)
+                }
+            })
+        }else{
+            noDownloadedData(1)
+        }
+
     }
 
     private fun noDownloadedData(noData : Int) {

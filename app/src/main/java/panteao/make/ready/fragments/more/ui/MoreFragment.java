@@ -472,15 +472,17 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 String strCurrentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
                 int languagePosition=KsPreferenceKeys.getInstance().getAppPrefLanguagePos();
                 int downloadOverWifi=KsPreferenceKeys.getInstance().getDownloadOverWifi();
+                String downloadEmail=KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
                // preference.setAppPrefLoginStatus(false);
                 preference.clear();
 //                preference.setAppPrefUserId("");
                 Log.d("getIdLogout",preference.getAppPrefUserId());
+                KsPreferenceKeys.getInstance().setLoginEmailForDownloadCheck(downloadEmail);
                 KsPreferenceKeys.getInstance().setDownloadOverWifi(downloadOverWifi);
                 KsPreferenceKeys.getInstance().setCurrentTheme(strCurrentTheme);
                 KsPreferenceKeys.getInstance().setAppLanguage(strCurrentLanguage);
                 KsPreferenceKeys.getInstance().setAppPrefLanguagePos(languagePosition);
-                new SharedPrefHelper(getActivity()).setInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 4);
+                new SharedPrefHelper(getActivity()).setInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 modelCall();
                 Logger.w("currentLang-->>",strCurrentLanguage);
                 if (strCurrentLanguage.equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
