@@ -1,6 +1,7 @@
 package panteao.make.ready.fragments.player.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +30,9 @@ import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.enums.DownloadStatus;
+import panteao.make.ready.player.trailor.PlayerActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
+import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
@@ -137,6 +140,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         getBinding().videoDownloading.setProgress(0);
         getBinding().videoDownloading.setOnClickListener(this);
         getBinding().pauseDownload.setOnClickListener(this);
+        getBinding().trailor.setOnClickListener(this);
         getBinding().setDownloadStatus(DownloadStatus.START);
         if (context instanceof SeriesDetailActivity) {
             getBinding().down.setVisibility(View.GONE);
@@ -151,6 +155,13 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             seriesDetailBean = (EnveuVideoItemBean) bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
             videoId = seriesDetailBean.getBrightcoveVideoId();
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
+        }
+
+        if (seriesDetailBean!=null && seriesDetailBean.getTrailerReferenceId()!=null && seriesDetailBean.getTrailerReferenceId()!=""){
+            getBinding().trailor.setVisibility(View.VISIBLE);
+            Logger.e("TrailerReferenceId",seriesDetailBean.getTrailerReferenceId());
+        }else {
+            getBinding().trailor.setVisibility(View.GONE);
         }
 
 
@@ -794,6 +805,12 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             break;
             case R.id.pause_download: {
                 onDownloadClickInteraction.onPauseClicked(null, this);
+            }
+            case R.id.trailor: {
+
+                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                intent.putExtra(AppConstants.ENTRY_ID, seriesDetailBean.getTrailerReferenceId());
+                startActivity(intent);
             }
         }
     }

@@ -120,22 +120,6 @@
 
                             />
 
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/rounded_red_button"
-                            android:gravity="center"
-                            android:text="Watch Trailor"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                            android:textSize="@dimen/_16dp"
-                            android:visibility="gone"
-                            android:id="@+id/trailor">
-
-                        </TextView>
 
                         <RelativeLayout
                             android:layout_width="match_parent"

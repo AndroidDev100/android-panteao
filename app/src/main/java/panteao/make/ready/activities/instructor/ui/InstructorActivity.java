@@ -643,20 +643,12 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
                 openShareDialogue();
             });
             if (seriesResponse!=null && seriesResponse.getTrailerReferenceId()!=null && seriesResponse.getTrailerReferenceId()!=""){
-                getBinding().trailor.setVisibility(View.VISIBLE);
+             //   getBinding().trailor.setVisibility(View.VISIBLE);
                 Logger.e("TrailerReferenceId",seriesResponse.getTrailerReferenceId());
             }else {
-                getBinding().trailor.setVisibility(View.GONE);
+               // getBinding().trailor.setVisibility(View.GONE);
             }
 
-            getBinding().trailor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(InstructorActivity.this, PlayerActivity.class);
-                    intent.putExtra(AppConstants.ENTRY_ID, seriesResponse.getTrailerReferenceId());
-                    startActivity(intent);
-                }
-            });
         }
     }
 

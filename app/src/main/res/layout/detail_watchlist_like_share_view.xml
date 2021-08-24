@@ -217,6 +217,32 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/trailor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                app:srcCompat="?attr/trailor_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                android:gravity="center"
+                android:text="@string/trailor"
+                android:textColor="?attr/watchlist_share_like_text_color"
+                android:textSize="@dimen/font_small" />
+        </LinearLayout>
 
 
         <LinearLayout
