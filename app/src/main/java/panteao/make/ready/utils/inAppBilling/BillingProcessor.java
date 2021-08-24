@@ -483,7 +483,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
     private void fetchAllProducts(List<String> productSkuList, List<SkuDetails> listOfllSkus) {
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-        params.setSkusList(productSkuList).setType(BillingClient.SkuType.SUBS);
+        params.setSkusList(productSkuList).setType(BillingClient.SkuType.INAPP);
         myBillingClient.querySkuDetailsAsync(params.build(),
                 new SkuDetailsResponseListener() {
                     @Override

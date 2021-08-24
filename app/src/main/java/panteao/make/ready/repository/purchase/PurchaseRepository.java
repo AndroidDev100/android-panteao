@@ -52,13 +52,13 @@ public class PurchaseRepository {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
                 jsonObject1.put("enveuSMSOfferContentSKU", sku);
             }else {
                 jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                 jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                 jsonObject1.put("enveuSMSSubscriptionOfferType", model.getPurchaseOptions());
-                jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
             }
 
 
@@ -303,7 +303,7 @@ public class PurchaseRepository {
 
             if (purchaseModel!=null){
                 jsonObject1.put("purchasePrice", purchaseModel.getPrice());
-                jsonObject1.put("purchaseCurrency", purchaseModel.getCurrency());
+                jsonObject1.put("purchaseCurrency", "USD");
             }else {
                 jsonObject1.put("purchasePrice", "");
                 jsonObject1.put("purchaseCurrency", "");

@@ -2118,4 +2118,27 @@ public class AppCommonMethod {
         }
         return String.valueOf(timestamp);
     }
+
+    public static int getIndex(List<String> subList,String identifier) {
+        int returnIndex=-1;
+        for (int i=0;i<subList.size();i++){
+            String s=identifier.replace("svod_","");
+            String v=s.replace("_",".");
+            if (v.equalsIgnoreCase(subList.get(i))){
+                returnIndex=i;
+            }
+        }
+        return returnIndex;
+    }
+
+    public static int getProductIndex(List<String> subList,String identifier) {
+        int returnIndex=-1;
+        for (int i=0;i<subList.size();i++){
+            if (identifier.equalsIgnoreCase(subList.get(i))){
+                returnIndex=i;
+            }
+        }
+        return returnIndex;
+    }
+
 }

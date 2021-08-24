@@ -731,7 +731,9 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 intent.putExtra("assestId", assestId);
                 intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
-                startActivity(intent);
+                if (responseEntitlementModel!=null){
+                    startActivity(intent);
+                }
             }
 
         } else {

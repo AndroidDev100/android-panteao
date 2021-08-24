@@ -26,31 +26,14 @@ public class SDKConfig {
         return (sdkConfigInstance);
     }
 
-    /*PROD keys*//*
-     */
 
-    /*public static String CONFIG_BASE_URL = "https://api.enveu.com/experience-manager-fe-api/app/api/v1/config/";
-    public static String API_KEY_MOB = "oorgebfpjudysyrtdhwmlaqlavglgmtlvplaodpt";
-    public static String API_KEY_TAB = "zzmnptygwjeybngjnumcrhcmwchszfjgkbeieflw";
-    *//* UAT keys*//*
-   *//* public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.uat.enveu.com/app/api/v1/config/";
-    public static String API_KEY_MOB = "spkuaohqsngqcrvfrgforegkooveiobspgwwbmce";
-    public static String API_KEY_TAB = "unwtftwilxazacjururwsdtwuepymqqxlvamahqf";*//*
-    public static int CONFIG_VERSION = 1;
-    public static String ApplicationStatus = "disconnected";
-    public static String TERMCONDITION = "https://www.mvhub.com/term.php";
-    public static String PRIVACYPOLICY = "https://www.mvhub.com/privacy.php";
-    public static String WEBP_QUALITY = "filters:format(webp):quality(60)/";
-    public static int DOWNLOAD_EXPIRY_DAYS=30;
-    public static boolean DOWNLOAD_ENABLE=true;*/
-
-    public static String CONFIG_BASE_URL = "https://api-us.enveu.com/experience-manager-fe-api/app/api/v1/config/";
+    /*public static String CONFIG_BASE_URL = "https://api-us.enveu.com/experience-manager-fe-api/app/api/v1/config/";
     public static String API_KEY_MOB = "ynpwlhgafrnfhkjxjzqgoyxmwphxpxxxmjczkdtm";
-    public static String API_KEY_TAB = "namofxttigqlynruoqyduaenplgsfphafrspibiu";
+    public static String API_KEY_TAB = "namofxttigqlynruoqyduaenplgsfphafrspibiu";*/
 
-    /*public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
+    public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
     public static String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
-    public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";*/
+    public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";
     public static int CONFIG_VERSION = 1;
     public static String ApplicationStatus = "disconnected";
     public static String TERMCONDITION = "https://www.mvhub.com/term.php";
