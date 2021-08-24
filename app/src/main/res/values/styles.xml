@@ -156,6 +156,7 @@
         <item name="watchlist_icon_color">@drawable/add_to_watchlist_navy_blue</item>
         <item name="like_icon">@drawable/like_icon_navy_blue</item>
         <item name="share_icon">@drawable/share_navy_blue</item>
+        <item name="trailor_icon">@drawable/player</item>
         <item name="recommendation_rail_background_color">@color/white</item>
         <item name="like_text_color">@color/navy_blue</item>
         <item name="episode_screen_background">@color/white</item>
@@ -277,6 +278,7 @@
         <item name="watchlist_icon_color">@drawable/add_to_watchlist</item>
         <item name="like_icon">@drawable/like_icon</item>
         <item name="share_icon">@drawable/share</item>
+        <item name="trailor_icon">@drawable/player_grey</item>
         <item name="recommendation_rail_background_color">@color/black_theme_color</item>
         <item name="like_text_color">@color/description_grey</item>
         <item name="episode_screen_background">@color/black_theme_color</item>

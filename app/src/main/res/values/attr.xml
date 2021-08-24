@@ -76,6 +76,7 @@
     <attr name="watchlist_icon_color" format="reference" />
     <attr name="like_icon" format="reference" />
     <attr name="share_icon" format="reference" />
+    <attr name="trailor_icon" format="reference"/>
     <attr name="recommendation_rail_background_color" format="reference" />
     <attr name="like_text_color" format="reference" />
     <attr name="episode_screen_background" format="reference" />
