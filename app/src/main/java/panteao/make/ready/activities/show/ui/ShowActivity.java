@@ -1134,9 +1134,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     public void onBackPressed() {
         //  super.onBackPressed();
-        if (playerfragment != null) {
-            playerfragment.stopPlayback();
-        }
+//        if (playerfragment != null) {
+//            playerfragment.stopPlayback();
+//        }
 
 
         if (commentsFragment != null) {
