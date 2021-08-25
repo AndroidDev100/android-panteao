@@ -157,4 +157,9 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     public void onBookmarkFinish() {
 
     }
+
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+
+    }
 }

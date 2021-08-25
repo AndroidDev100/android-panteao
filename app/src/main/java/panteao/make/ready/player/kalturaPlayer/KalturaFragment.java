@@ -115,6 +115,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean canPlay = false;
     private long bookmarkPosition = 0l;
     private boolean fromTrailor = false;
+    private long playerCurrentPosition = 0l;
+    private boolean fromOnstart = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -304,8 +306,17 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             @Override
             public void onEvent(PKEvent event) {
                 if (player != null) {
-                    if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus())
-                        player.seekTo(bookmarkPosition * 1000);
+                    if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+                        if (fromOnstart){
+                            player.seekTo(playerCurrentPosition);
+                        }else {
+                            player.seekTo(bookmarkPosition * 1000);
+                        }
+                    }else {
+                        if (fromOnstart){
+                            player.seekTo(playerCurrentPosition);
+                        }
+                    }
                 }
             }
         });
@@ -792,6 +803,19 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
+    public void pausePlayer() {
+        if (player!=null){
+            mListener.onCurrentPosition(player.getCurrentPosition());
+            player.stop();
+            player.destroy();
+        }
+    }
+
+    public void passCurrentPosition(long playerCurrentPosition, boolean fromOnStart) {
+        this.playerCurrentPosition = playerCurrentPosition;
+        this.fromOnstart = fromOnStart;
+    }
+
 
     public interface OnPlayerInteractionListener {
         void bingeWatchCall(String entryID);
@@ -801,6 +825,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         void onBookmarkCall(int currentPosition);
 
         void onBookmarkFinish();
+
+        void onCurrentPosition(long currentPosition);
     }
 
     @Override

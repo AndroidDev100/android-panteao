@@ -1696,6 +1696,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;

@@ -64,6 +64,10 @@ class KalturaPlayerActivity : FragmentActivity(), KalturaFragment.OnPlayerIntera
 
     }
 
+    override fun onCurrentPosition(currentPosition: Long) {
+        TODO("Not yet implemented")
+    }
+
     override fun bingeWatchCall(entryID: String?) {
     }
 

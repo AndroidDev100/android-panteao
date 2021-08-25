@@ -87,6 +87,7 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -123,7 +124,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents {
+public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents, TrailorCallBack {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
@@ -186,6 +187,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private KalturaFragment playerfragment;
     private boolean skipIntro=true;
     long bookmarkPosition = 0l;
+    private long playerCurrentPosition = 0l;
 
 
     public static void closeActivity() {
@@ -319,6 +321,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         transaction.replace(R.id.player_frame, playerfragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
 
     }
 
@@ -1676,6 +1679,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     }
 
+    @Override
+    public void onClick() {
+        if (playerfragment!=null){
+            playerfragment.pausePlayer();
+        }
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<EpisodeActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;
@@ -1846,7 +1856,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             bookmarkingViewModel.finishBookmark(token, assestId);
         }
     }
-//
+
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+        this.playerCurrentPosition = currentPosition;
+    }
+
+    //
 //    @Override
 //    public void onPlayerInProgress() {
 //        double totalDuration = videoDetails.getDuration();
@@ -2157,4 +2173,16 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            if (playerfragment != null) {
+                setPlayerFragment();
+                playerfragment.passCurrentPosition(playerCurrentPosition,true);
+            }
+        }catch (Exception e){
+            Log.e("ErrorIs",e.getLocalizedMessage());
+        }
+    }
 }

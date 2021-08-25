@@ -1714,4 +1714,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             bookmarkingViewModel.finishBookmark(token, assestId);
         }
     }
+
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+
+    }
 }
