@@ -1372,11 +1372,21 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             AppCommonMethod.seasonId = -1;
             int orientation = this.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+              //  playerfragment.BackPressClicked(1);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(playerfragment!=null) {
+                            playerfragment.stopPlayback();
+                        }
+                    }
+                },1500);
+
                 finish();
             } else {
-//                if (playerFragment != null) {
-//                    playerFragment.BackPressClicked(2);
-//                }
+                if (playerfragment != null) {
+                    playerfragment.BackPressClicked(2);
+                }
             }
         }
     }
