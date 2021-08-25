@@ -118,7 +118,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <ImageView
                 android:layout_width="@dimen/watchListWidth"
@@ -138,6 +139,7 @@
                 android:textColor="?attr/watchlist_share_like_text_color"
                 android:textSize="@dimen/font_small" />
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/down"
@@ -217,13 +219,14 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/trailor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            <LinearLayout
+                android:id="@+id/trailor"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
             <ImageView
                 android:layout_width="@dimen/watchListWidth"
@@ -243,6 +246,8 @@
                 android:textColor="?attr/watchlist_share_like_text_color"
                 android:textSize="@dimen/font_small" />
         </LinearLayout>
+
+
 
 
         <LinearLayout
