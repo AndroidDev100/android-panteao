@@ -233,9 +233,9 @@ public class EnveuVideoItemBean implements Parcelable {
             //Log.w("store_seriesid -1",getSeriesId());
             Object customeFiled = details.getData().getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
-            Logger.e("EXTERNAL_LINK", "ID= " +details.getData().getId());
+           /* Logger.e("EXTERNAL_LINK", "ID= " +details.getData().getId());
             if (id == 128982)
-                Logger.e("EXTERNAL_LINK", "LINK" + new Gson().toJson(t));
+                Logger.e("EXTERNAL_LINK", "LINK" + new Gson().toJson(t));*/
             if (t != null) {
 
                 if (t.containsKey(CustomeFields.TrailerReferenceId)) {

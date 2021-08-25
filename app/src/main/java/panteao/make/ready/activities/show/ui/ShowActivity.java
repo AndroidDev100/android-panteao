@@ -1134,6 +1134,10 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     public void onBackPressed() {
         //  super.onBackPressed();
+//        if (playerfragment != null) {
+//            playerfragment.stopPlayback();
+//        }
+
 
         if (commentsFragment != null) {
             removeCommentFragment();
@@ -1153,11 +1157,19 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             int orientation = this.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 // code for portrait mode
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(playerfragment!=null) {
+                            playerfragment.stopPlayback();
+                        }
+                    }
+                },1500);
                 finish();
             } else {
-//                if (playerFragment != null) {
-//                    playerFragment.BackPressClicked(2);
-//                }
+                if (playerfragment != null) {
+                    playerfragment.BackPressClicked(2);
+                }
             }
         }
     }

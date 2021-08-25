@@ -590,6 +590,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                if (player!=null){
+                    player.stop();
+                    player.destroy();
+                }
                 getActivity().finish();
             } else {
                 getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -773,6 +777,18 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     getActivity().finish();
                 }
             }
+        }
+    }
+
+    public void stopPlayback() {
+        try {
+            if (player != null) {
+            player.stop();
+            player.destroy();
+           // finishPlayer();
+        }
+        }catch (Exception exception){
+            Log.e("ErrorIs",exception.getMessage());
         }
     }
 

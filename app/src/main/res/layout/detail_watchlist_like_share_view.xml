@@ -17,262 +17,273 @@
         <import type="panteao.make.ready.enums.DownloadStatus" />
     </data>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/watchList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="35dp"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <panteao.make.ready.utils.CustomProgressBar
-                    android:id="@+id/w_progress_bar"
-                    style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="@dimen/watch_ListWidth"
-                    android:layout_height="@dimen/watch_ListHeight"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize6"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/addIcon"
-                    android:layout_width="@dimen/watch_ListWidth"
-                    android:layout_height="@dimen/watch_ListHeight"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize6"
-                    android:contentDescription="TODO"
-                    app:srcCompat="?attr/watchlist_icon_color" />
-
-                <TextView
-                    android:id="@+id/tvWatch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                    android:gravity="center"
-                    android:text="@string/watchlist"
-                    android:textColor="?attr/list_circle_item_description"
-                    android:textSize="@dimen/font_small" />
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/llLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="35dp"
-                android:orientation="vertical">
-
-                <panteao.make.ready.utils.CustomProgressBar
-                    android:id="@+id/l_progress_bar"
-                    style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="@dimen/watchListWidth"
-                    android:layout_height="@dimen/watchListHeight"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/likeIcon"
-                    android:layout_width="@dimen/watchListWidth"
-                    android:layout_height="@dimen/watchListHeight"
-                    android:layout_gravity="center|center_horizontal"
-                    android:layout_margin="@dimen/NontonSize8"
-                    android:contentDescription="TODO"
-                    app:srcCompat="?attr/like_icon" />
-
-                <TextView
-                    android:id="@+id/tvLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                    android:gravity="center"
-                    android:text="@string/like"
-                    android:textColor="?attr/like_text_color"
-                    android:textSize="@dimen/font_small" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/shareWith"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/watchListWidth"
-                android:layout_height="@dimen/watchListHeight"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
-                android:contentDescription="TODO"
-                app:srcCompat="?attr/share_icon" />
-
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                android:gravity="center"
-                android:text="@string/share"
-                android:textColor="?attr/watchlist_share_like_text_color"
-                android:textSize="@dimen/font_small" />
-        </LinearLayout>
+                android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/down"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginLeft="35dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/watchList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="35dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <panteao.make.ready.utils.CustomProgressBar
+                        android:id="@+id/w_progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar"
+                        android:layout_width="@dimen/watch_ListWidth"
+                        android:layout_height="@dimen/watch_ListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize6"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/addIcon"
+                        android:layout_width="@dimen/watch_ListWidth"
+                        android:layout_height="@dimen/watch_ListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize6"
+                        android:contentDescription="TODO"
+                        app:srcCompat="?attr/watchlist_icon_color" />
+
+                    <TextView
+                        android:id="@+id/tvWatch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                        android:gravity="center"
+                        android:text="@string/watchlist"
+                        android:textColor="?attr/list_circle_item_description"
+                        android:textSize="@dimen/font_small" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="35dp"
+                    android:orientation="vertical">
+
+                    <panteao.make.ready.utils.CustomProgressBar
+                        android:id="@+id/l_progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/likeIcon"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center|center_horizontal"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:contentDescription="TODO"
+                        app:srcCompat="?attr/like_icon" />
+
+                    <TextView
+                        android:id="@+id/tvLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                        android:gravity="center"
+                        android:text="@string/like"
+                        android:textColor="?attr/like_text_color"
+                        android:textSize="@dimen/font_small" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
 
             <LinearLayout
-                android:id="@+id/download"
+                android:id="@+id/shareWith"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical"
-                android:visibility='@{isDownloadable ? View.VISIBLE : View.GONE,default="gone"}'>
-
+                >
 
                 <ImageView
-                    android:id="@+id/download_video"
                     android:layout_width="@dimen/watchListWidth"
                     android:layout_height="@dimen/watchListHeight"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/NontonSize8"
                     android:contentDescription="TODO"
-                    android:visibility='@{downloadStatus==DownloadStatus.START ? View.VISIBLE : View.GONE, default="gone"}'
-                    app:srcCompat="@drawable/ic_start_download" />
-
-                <panteao.make.ready.utils.DownloadProgressBar
-                    android:id="@+id/video_downloading"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
-                    android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
-                    app:background_progressbar_color="@android:color/darker_gray"
-                    app:progressbar_color="@color/moretitlecolor" />
-
-                <ImageView
-                    android:id="@+id/video_downloaded"
-                    android:layout_width="@dimen/watchListWidth"
-                    android:layout_height="@dimen/watchListHeight"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
-                    android:contentDescription="TODO"
-                    android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
-                    app:srcCompat="@drawable/download_icon" />
-
-                <ImageView
-                    android:id="@+id/pause_download"
-                    android:layout_width="@dimen/watchListWidth"
-                    android:layout_height="@dimen/watchListHeight"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
-                    android:contentDescription="TODO"
-                    android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
-                    app:srcCompat="@drawable/pause_download" />
-
-                <ProgressBar
-                    android:id="@+id/loading_download"
-                    android:layout_width="@dimen/watch_ListWidth"
-                    android:layout_height="@dimen/watch_ListWidth"
-                    android:layout_margin="@dimen/NontonSize5"
-                    android:layout_gravity="center"
-                    android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}' />
+                    app:srcCompat="?attr/share_icon" />
 
                 <TextView
-                    android:id="@+id/downloadText"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                    android:text="@string/download"
+                    android:gravity="center"
+                    android:text="@string/share"
                     android:textColor="?attr/watchlist_share_like_text_color"
                     android:textSize="@dimen/font_small" />
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/trailor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="@dimen/watchListWidth"
-                android:layout_height="@dimen/watchListHeight"
+            <LinearLayout
+                android:id="@+id/trailor"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
-                android:contentDescription="TODO"
-                app:srcCompat="?attr/trailor_icon" />
+                android:layout_marginLeft="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
-            <TextView
+                <ImageView
+                    android:layout_width="@dimen/watchListWidth"
+                    android:layout_height="@dimen/watchListHeight"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/NontonSize8"
+                    android:contentDescription="TODO"
+                    app:srcCompat="?attr/trailor_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                    android:gravity="center"
+                    android:text="@string/trailor"
+                    android:textColor="?attr/watchlist_share_like_text_color"
+                    android:textSize="@dimen/font_small" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/down"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility='@{isDownloadable ? View.VISIBLE : View.GONE,default="gone"}'>
+
+
+                    <ImageView
+                        android:id="@+id/download_video"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:contentDescription="TODO"
+                        android:visibility='@{downloadStatus==DownloadStatus.START ? View.VISIBLE : View.GONE, default="gone"}'
+                        app:srcCompat="@drawable/ic_start_download" />
+
+                    <panteao.make.ready.utils.DownloadProgressBar
+                        android:id="@+id/video_downloading"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
+                        app:background_progressbar_color="@android:color/darker_gray"
+                        app:progressbar_color="@color/moretitlecolor" />
+
+                    <ImageView
+                        android:id="@+id/video_downloaded"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:contentDescription="TODO"
+                        android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
+                        app:srcCompat="@drawable/download_icon" />
+
+                    <ImageView
+                        android:id="@+id/pause_download"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:contentDescription="TODO"
+                        android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
+                        app:srcCompat="@drawable/pause_download" />
+
+                    <ProgressBar
+                        android:id="@+id/loading_download"
+                        android:layout_width="@dimen/watch_ListWidth"
+                        android:layout_height="@dimen/watch_ListWidth"
+                        android:layout_margin="@dimen/NontonSize5"
+                        android:layout_gravity="center"
+                        android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}' />
+
+                    <TextView
+                        android:id="@+id/downloadText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                        android:text="@string/download"
+                        android:textColor="?attr/watchlist_share_like_text_color"
+                        android:textSize="@dimen/font_small" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/show_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                android:gravity="center"
-                android:text="@string/trailor"
-                android:textColor="?attr/watchlist_share_like_text_color"
-                android:textSize="@dimen/font_small" />
+                android:layout_marginLeft="@dimen/NontonSize15"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/watchListWidth"
+                    android:layout_height="@dimen/watchListHeight"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/NontonSize8"
+                    android:contentDescription="TODO"
+                    app:srcCompat="@drawable/chat_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="@string/comments"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_small" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
+    </HorizontalScrollView>
 
-        <LinearLayout
-            android:id="@+id/show_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/NontonSize15"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="@dimen/watchListWidth"
-                android:layout_height="@dimen/watchListHeight"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
-                android:contentDescription="TODO"
-                app:srcCompat="@drawable/chat_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="@string/comments"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_small" />
-        </LinearLayout>
-
-
-    </LinearLayout>
 </layout>

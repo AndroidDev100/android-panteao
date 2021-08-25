@@ -1346,8 +1346,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onBackPressed() {
         try {
-//            if (playerFragment != null) {
-//                AppCommonMethod.trackFcmCustomEvent(EpisodeActivity.this, AppConstants.CONTENT_EXIT, videoDetails.getAssetType(), "", "", 0, videoDetails.getTitle(), 0, videoDetails.getSeriesId(), playerFragment.getBaseVideoView().getCurrentPosition(), videoDetails.getDuration(), "", "", "", "");
+//            if (playerfragment != null) {
+//                playerfragment.stopPlayback();
 //            }
 
         } catch (Exception ignored) {
@@ -1370,11 +1370,19 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             AppCommonMethod.seasonId = -1;
             int orientation = this.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(playerfragment!=null) {
+                            playerfragment.stopPlayback();
+                        }
+                    }
+                },1500);
                 finish();
             } else {
-//                if (playerFragment != null) {
-//                    playerFragment.BackPressClicked(2);
-//                }
+                if (playerfragment != null) {
+                    playerfragment.BackPressClicked(2);
+                }
             }
         }
     }
