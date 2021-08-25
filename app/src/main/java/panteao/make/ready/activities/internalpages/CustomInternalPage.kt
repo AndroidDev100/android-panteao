@@ -63,9 +63,9 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         }
 
         if (binding.description.isExpanded()) {
-            binding.textExpandable.text = (resources.getString(R.string.more))
-        } else {
             binding.textExpandable.text = (resources.getString(R.string.less))
+        } else {
+            binding.textExpandable.text = (resources.getString(R.string.more))
         }
     }
 
