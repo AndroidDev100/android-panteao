@@ -36,6 +36,7 @@ import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
+import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.databinding.LayoutDownloadQualityBottomSheetBinding;
 import panteao.make.ready.databinding.WifiDialogBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
@@ -381,7 +382,7 @@ public class KTDownloadHelper {
         }else if (position==1){
             defaultPrefs.videoBitrate = 1000000;
         }else if (position==2){
-            defaultPrefs.videoBitrate = 600000;
+            defaultPrefs.videoBitrate = 100000;
         }else if (position==3){
             defaultPrefs.videoBitrate = 100000;
         }else {
@@ -396,7 +397,9 @@ public class KTDownloadHelper {
 
     int selectedVideoQualityPosition=0;
     int clicked=-1;
-    public void selectVideoQuality(VideoQualitySelectedListener videoQualitySelectedListener) {
+    int downloadQualitySelection=0;
+    List<String> stringList= null;
+    public void selectVideoQuality(String typeofTVOD,VideoQualitySelectedListener videoQualitySelectedListener) {
         LayoutDownloadQualityBottomSheetBinding binding = DataBindingUtil.inflate(zContext.getLayoutInflater(), R.layout.layout_download_quality_bottom_sheet, null,false);
         BottomSheetDialog dialog = new BottomSheetDialog(zContext);
         dialog.setContentView(binding.getRoot());
@@ -407,10 +410,24 @@ public class KTDownloadHelper {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(zContext, RecyclerView.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(binding.recyclerView.getContext(),binding.recyclerView.VERTICAL);
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
+        if (typeofTVOD.equalsIgnoreCase("")){
+            String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
+            stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+            stringList.remove(3);
 
-        String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
-        List<String> stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
-        stringList.remove(3);
+        }else {
+            if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___sd.name())){
+                String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality_sd);
+                stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+            }else if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___hd.name())){
+                String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality_hd);
+                stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+            }else if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___uhd.name())){
+                String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
+                stringList = new ArrayList<String>(Arrays.asList(downloadQualityList));
+                stringList.remove(3);
+            }
+        }
 
 
         selectedVideoQualityPosition=0;
@@ -418,7 +435,15 @@ public class KTDownloadHelper {
         SelectDownloadQualityAdapter downloadQualityAdapter=new SelectDownloadQualityAdapter(zContext, stringList, new VideoQualitySelectedListener() {
             @Override
             public void videoQualitySelected(int position) {
-                selectedVideoQualityPosition=position;
+                if (stringList.get(position).equalsIgnoreCase("SD")){
+                    selectedVideoQualityPosition=2;
+                }else if (stringList.get(position).equalsIgnoreCase("HD")){
+                    selectedVideoQualityPosition=1;
+                }else if (stringList.get(position).equalsIgnoreCase("UHD")){
+                    selectedVideoQualityPosition=0;
+                }else {
+                    selectedVideoQualityPosition=-1;
+                }
                 clicked=position;
             }
         });

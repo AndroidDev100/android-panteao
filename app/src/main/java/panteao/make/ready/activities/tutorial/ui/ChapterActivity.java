@@ -61,6 +61,7 @@ import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
+import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
@@ -1065,12 +1066,32 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         }
     }
-
+    String typeofTVOD="";
     private void updateBuyNowText(ResponseEntitle responseEntitlement, int type) {
         try {
             if (type == 1) {
                 if (responseEntitlement.getData().getEntitledAs() != null) {
                     List<EntitledAs> alpurchaseas = responseEntitlement.getData().getEntitledAs();
+                    for (int i = 0 ; i<alpurchaseas.size();i++){
+                        String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
+                        if (vodOfferType!=null){
+                            if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
+
+                            } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                                if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___sd.name())){
+                                    typeofTVOD=TVODENUMS.___sd.name();
+                                }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___hd.name())){
+                                    typeofTVOD=TVODENUMS.___hd.name();
+                                }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___uhd.name())){
+                                    typeofTVOD=TVODENUMS.___uhd.name();
+                                }
+
+                            } else {
+
+                            }
+                        }
+
+                    }
                     String vodOfferType = alpurchaseas.get(0).getVoDOfferType();
                     String subscriptionOfferPeriod = null;
                     if (alpurchaseas.get(0).getOfferType() != null) {
@@ -1889,7 +1910,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
     private void selectDownloadVideoQuality() {
-        downloadHelper.selectVideoQuality(position -> {
+        downloadHelper.selectVideoQuality(typeofTVOD,position -> {
             if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                 String[] array = getResources().getStringArray(R.array.download_quality);
                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
