@@ -149,9 +149,9 @@
                                     android:layout_marginRight="@dimen/_4sdp"
                                     android:layout_toLeftOf="@+id/mPremiumStatus"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                                    android:lineHeight="@dimen/movie_title_line_height"
-                                    android:singleLine="true"
                                     android:text="@{responseApi.title}"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:textColor="?attr/title_color"
                                     android:textSize="@dimen/font_large"
                                     tools:targetApi="p" />
