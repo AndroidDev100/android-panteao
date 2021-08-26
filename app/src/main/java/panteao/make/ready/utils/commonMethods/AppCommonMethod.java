@@ -1672,17 +1672,42 @@ public class AppCommonMethod {
 
     public static String calculateTimeinMinutes(long milliseconds) {
         String minutes = "";
+        int minutes1;
+        int seconds;
         try {
            /* if (milliseconds % 1000 > 0) {
                 milliseconds = milliseconds + (milliseconds % 1000);
             }*/
 
-            long hours = TimeUnit.SECONDS.toHours(milliseconds);
-            long minute = TimeUnit.SECONDS.toMinutes(milliseconds);
-            long second = TimeUnit.SECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
 
-            Log.w("episodeTiming", minute + "   ---   " + milliseconds);
-            minutes = String.format("%02d", minute);
+//            if (milliseconds/60 > 0){
+//                minutes = String.valueOf(milliseconds/60);
+//            }else {
+//                minutes = String.valueOf(milliseconds).concat("s");
+//            }
+
+          // int hours1 = (int) (milliseconds / 3600);
+            minutes1 = (int) ((milliseconds % 3600) / 60);
+            seconds = (int) (milliseconds % 60);
+           if (minutes1>0){
+               if (minutes1<2) {
+                   minutes = String.valueOf(minutes1).concat(" ").concat("minute");
+               }else {
+                   minutes = String.valueOf(minutes1).concat(" ").concat("minutes");
+               }
+           }else if (seconds>0){
+               minutes = String.valueOf(seconds).concat("s");
+           }
+
+          // String timeString = String.format("%02d:%02d:%02d", hours1, minutes1, seconds);
+
+
+//            long hours = TimeUnit.SECONDS.toHours(milliseconds);
+//            long minute = TimeUnit.SECONDS.toMinutes(milliseconds);
+//            long second = TimeUnit.SECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1);
+//
+//            Log.w("episodeTiming", minute + "   ---   " + milliseconds);
+//            minutes = String.format("%02d", minute);
 
         } catch (Exception ignored) {
 
