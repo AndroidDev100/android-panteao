@@ -335,6 +335,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (videoDetails != null && !Entryid.equalsIgnoreCase("")) {
             args.putString(AppConstants.ENTRY_ID, Entryid);
             args.putLong("bookmark_position",bookmarkPosition);
+            args.putString("tvod_type",typeofTVOD);
            // Logger.d("ENTRY_ID",videoDetails.getkEntryId()+"");
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

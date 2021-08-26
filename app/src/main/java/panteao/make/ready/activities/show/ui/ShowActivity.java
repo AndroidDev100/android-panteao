@@ -240,6 +240,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
        if (videoDetails != null) {
             args.putString(AppConstants.ENTRY_ID, Entryid);
             args.putLong("bookmark_position",bookmarkPosition);
+            args.putString("tvod_type",typeofTVOD);
             Logger.d("ENTRY_ID",Entryid+"");
         }
        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
