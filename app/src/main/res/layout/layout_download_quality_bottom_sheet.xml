@@ -16,6 +16,17 @@
             android:textColor="@color/rounded_button_text_color"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <TextView
+            android:id="@+id/default_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="20dp"
+            android:text="@string/make_quality_default"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/btn_start_download" />
+
 
         <CheckBox
             android:id="@+id/checkbox_make_default"
@@ -25,7 +36,7 @@
             android:paddingBottom="20dp"
             android:text="@string/save_preference"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/btn_start_download" />
+            app:layout_constraintBottom_toTopOf="@id/default_textview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
