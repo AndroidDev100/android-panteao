@@ -1114,6 +1114,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         if (subscriptionOfferPeriod != null) {
                             getBinding().tvPurchased.setVisibility(View.VISIBLE);
                             getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
+                            typeofTVOD="";
                         } else {
 
                         }

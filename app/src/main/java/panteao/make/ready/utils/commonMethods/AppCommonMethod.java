@@ -54,6 +54,7 @@ import panteao.make.ready.activities.KalturaPlayerActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.internalpages.CustomInternalPage;
 import panteao.make.ready.activities.internalpages.TVCustomInternalPage;
+import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -1934,7 +1935,7 @@ public class AppCommonMethod {
 
     static boolean track1, track2, track3 = false;
 
-    public static ArrayList<TracksItem> createTrackList(PKTracks tracks, FragmentActivity activity) {
+    public static ArrayList<TracksItem> createTrackList(PKTracks tracks, FragmentActivity activity,String typeofTVOD) {
         track1 = false;
         track2 = false;
         track3 = false;
@@ -1953,6 +1954,33 @@ public class AppCommonMethod {
             } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000 && !track3) {
                 track3 = true;
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
+            }
+        }
+        if (typeofTVOD!=null && !typeofTVOD.equalsIgnoreCase("") && trackItemList.size()>0){
+            trackItemList=basedOnSubscription(trackItemList,typeofTVOD);
+        }
+        return trackItemList;
+    }
+
+    private static ArrayList<TracksItem> basedOnSubscription(ArrayList<TracksItem> tracks,String typeofTVOD) {
+        ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
+        for (int i = 0; i < tracks.size(); i++) {
+            if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___sd.name())){
+                if (tracks.get(i).getTrackName().equalsIgnoreCase("Low")){
+                    trackItemList.add(tracks.get(i));
+                }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Auto")){
+                    trackItemList.add(tracks.get(i));
+                }
+            }else if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___hd.name())){
+                if (tracks.get(i).getTrackName().equalsIgnoreCase("Low")){
+                    trackItemList.add(tracks.get(i));
+                }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Medium")){
+                    trackItemList.add(tracks.get(i));
+                }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Auto")){
+                    trackItemList.add(tracks.get(i));
+                }
+            }else if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___uhd.name())){
+                trackItemList.add(tracks.get(i));
             }
         }
         return trackItemList;

@@ -313,7 +313,9 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             args.putInt("binge_watch_timer", SDKConfig.getInstance().getTimer());
             args.putBoolean("from_binge", fromBingWatch);
             args.putLong("bookmark_position",bookmarkPosition);
+            args.putString("tvod_type",typeofTVOD);
             Logger.d("ENTRY_ID", Entryid + "");
+
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         playerfragment = new KalturaFragment();
@@ -1122,6 +1124,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         if (subscriptionOfferPeriod != null) {
                             getBinding().tvPurchased.setVisibility(View.VISIBLE);
                             getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
+                            typeofTVOD="";
                         } else {
 
                         }
