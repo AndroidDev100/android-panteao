@@ -303,7 +303,7 @@
     <string name="always_ask">Always ask</string>
     <string name="download_quality">Download quality</string>
     <string name="start_download">Start download</string>
-    <string name="make_quality_default">Make this default download setting</string>
+    <string name="make_quality_default">Next time video will be downloaded by default in this quality.You can change this from Settings.</string>
     <string name="save_preference">Save Preference</string>
     <string name="available_size">Available space :</string>
     <string name="download_option">Download Quality</string>
