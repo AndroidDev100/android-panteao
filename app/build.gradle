@@ -54,8 +54,8 @@ android {
     productFlavors {
         dev {
             dimension 'default'
-            versionCode 8
-            versionName "1.7"
+            versionCode 9
+            versionName "1.8"
             applicationId "panteao.make.ready.dev"
         }
         prod {
