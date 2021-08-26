@@ -187,6 +187,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     long bookmarkPosition = 0l;
     private long playerCurrentPosition = 0l;
     private boolean isClickedTrailor = false;
+    private boolean fromOnStart = false;
 
 
     public static void closeActivity() {
@@ -2087,11 +2088,13 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         try {
             if (isClickedTrailor) {
                 if (playerfragment != null) {
+                    fromOnStart = true;
                     playerfragment = null;
                     setPlayerFragment();
 
-                    playerfragment.passCurrentPosition(playerCurrentPosition, true);
+                    playerfragment.passCurrentPosition(playerCurrentPosition, fromOnStart);
                     isClickedTrailor = false;
+                    fromOnStart = false;
                 }
             }
         }catch (Exception e){

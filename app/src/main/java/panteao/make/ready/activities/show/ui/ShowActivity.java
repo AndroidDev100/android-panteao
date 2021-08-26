@@ -72,6 +72,7 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityShowBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -108,7 +109,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
-public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents {
+public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents, TrailorCallBack {
 
     public long videoPos = 0;
     public boolean isloggedout = false;
@@ -157,6 +158,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     private KalturaFragment playerfragment;
     private KalturaOvpPlayer player;
     long bookmarkPosition = 0l;
+    private boolean isClickedTrailor = false;
+    private long playerCurrentPosition = 0l;
+    private boolean fromOnStart = false;
 
     @Override
     public ActivityShowBinding inflateBindingLayout(@NonNull @NotNull LayoutInflater inflater) {
@@ -1717,6 +1721,35 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     @Override
     public void onCurrentPosition(long currentPosition) {
+        this.playerCurrentPosition = currentPosition;
 
+    }
+
+    @Override
+    public void onClick(boolean isClicked) {
+        this.isClickedTrailor = isClicked;
+        if (playerfragment!=null){
+            playerfragment.pausePlayer();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            if (isClickedTrailor) {
+                if (playerfragment != null) {
+                    fromOnStart = true;
+                    playerfragment = null;
+                    setPlayerFragment();
+
+                    playerfragment.passCurrentPosition(playerCurrentPosition, fromOnStart);
+                    isClickedTrailor = false;
+                    fromOnStart = false;
+                }
+            }
+        }catch (Exception e){
+            Log.e("ErrorIs",e.getLocalizedMessage());
+        }
     }
 }
