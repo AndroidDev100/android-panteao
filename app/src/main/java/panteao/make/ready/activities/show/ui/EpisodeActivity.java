@@ -2178,7 +2178,9 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         super.onStart();
         try {
             if (playerfragment != null) {
+                playerfragment = null;
                 setPlayerFragment();
+
                 playerfragment.passCurrentPosition(playerCurrentPosition,true);
             }
         }catch (Exception e){
