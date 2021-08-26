@@ -177,7 +177,7 @@
                         android:layout_gravity="top|left"
                         android:ellipsize="end"
                         android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:textColor="?attr/title_color"
                         android:textSize="@dimen/detail_rail_episode_title" />
 
