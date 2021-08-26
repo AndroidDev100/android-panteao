@@ -811,7 +811,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 onDownloadClickInteraction.onPauseClicked(null, this);
             }
             case R.id.trailor: {
-                trailorCallBack.onClick();
+                trailorCallBack.onClick(true);
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 intent.putExtra(AppConstants.ENTRY_ID, seriesDetailBean.getTrailerReferenceId());
                 startActivity(intent);

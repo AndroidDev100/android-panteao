@@ -62,7 +62,6 @@ import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.listing.listui.ListActivity;
@@ -89,11 +88,11 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
-import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
@@ -122,7 +121,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents {
+public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents, TrailorCallBack {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
@@ -186,6 +185,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private boolean isCastConnected = false;
     private KalturaFragment playerfragment;
     long bookmarkPosition = 0l;
+    private long playerCurrentPosition = 0l;
+    private boolean isClickedTrailor = false;
 
 
     public static void closeActivity() {
@@ -1698,7 +1699,15 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     @Override
     public void onCurrentPosition(long currentPosition) {
+        this.playerCurrentPosition = currentPosition;
+    }
 
+    @Override
+    public void onClick(boolean b) {
+        this.isClickedTrailor = b;
+        if (playerfragment!=null){
+            playerfragment.pausePlayer();
+        }
     }
 
     class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
@@ -2071,5 +2080,23 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        try {
+            if (isClickedTrailor) {
+                if (playerfragment != null) {
+                    playerfragment = null;
+                    setPlayerFragment();
+
+                    playerfragment.passCurrentPosition(playerCurrentPosition, true);
+                    isClickedTrailor = false;
+                }
+            }
+        }catch (Exception e){
+            Log.e("ErrorIs",e.getLocalizedMessage());
+        }
+    }
 }
 
