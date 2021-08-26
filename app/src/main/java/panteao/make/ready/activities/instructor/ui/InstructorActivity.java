@@ -37,6 +37,7 @@ import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
@@ -78,7 +79,7 @@ import java.util.Objects;
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetailBinding> implements AlertDialogFragment.AlertDialogListener, OnDownloadClickInteraction, VideoListListener {
+public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetailBinding> implements AlertDialogFragment.AlertDialogListener, OnDownloadClickInteraction, VideoListListener, TrailorCallBack {
     private final String TAG = this.getClass().getSimpleName();
     public String userName = "";
     public boolean isloggedout = false;
@@ -1264,6 +1265,16 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
     @Override
     public void onDownloadDeleted(@NotNull String videoId, @NotNull Object source) {
+
+    }
+
+    @Override
+    public void onClick(boolean isClicked) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 
