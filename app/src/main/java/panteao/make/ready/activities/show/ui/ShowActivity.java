@@ -1061,7 +1061,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         if (responseDetailPlayer.getAssetType() != null && responseDetailPlayer.getDuration() > 0) {
             String tempTag1 = responseDetailPlayer.getAssetType();
             String bullet = "\u2022";
-            String tempTag2 = AppCommonMethod.calculateTimein_hh_mm_format(responseDetailPlayer.getDuration());
+            String tempTag2 = AppCommonMethod.calculateTimeinMinutes(responseDetailPlayer.getDuration());
             Spannable WordtoSpan = new SpannableString(bullet);
             WordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), 0, WordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             // StringBuilder stringBuilder = new StringBuilder(tempTag1 + "  " + WordtoSpan + " " + tempTag2);
