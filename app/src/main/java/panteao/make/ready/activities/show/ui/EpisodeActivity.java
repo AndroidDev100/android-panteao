@@ -46,7 +46,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.kaltura.tvplayer.OfflineManager;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
@@ -88,11 +87,11 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
-import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
@@ -117,14 +116,13 @@ import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.utils.helpers.downloads.VideoListListener;
-import panteao.make.ready.utils.helpers.downloads.db.DBExecuter;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents {
+public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener, AudioManager.OnAudioFocusChangeListener, CommonRailtItemClickListner, MoreClickListner, OnDownloadClickInteraction, VideoListListener, KalturaFragment.OnPlayerInteractionListener, KTDownloadEvents, TrailorCallBack {
     public static boolean isActive = false;
     private long mLastClickTime = 0;
     private DetailViewModel viewModel;
@@ -187,6 +185,9 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     private KalturaFragment playerfragment;
     private boolean skipIntro=true;
     long bookmarkPosition = 0l;
+    private long playerCurrentPosition = 0l;
+    private boolean isClickedTrailor = false;
+    private boolean fromOnStart = false;
 
 
     public static void closeActivity() {
@@ -320,6 +321,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         transaction.replace(R.id.player_frame, playerfragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
 
     }
 
@@ -1702,6 +1704,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     }
 
+    @Override
+    public void onClick(boolean isClicked) {
+        this.isClickedTrailor  = isClicked;
+        if (playerfragment!=null){
+            playerfragment.pausePlayer();
+        }
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<EpisodeActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;
@@ -1872,7 +1882,13 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             bookmarkingViewModel.finishBookmark(token, assestId);
         }
     }
-//
+
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+        this.playerCurrentPosition = currentPosition;
+    }
+
+    //
 //    @Override
 //    public void onPlayerInProgress() {
 //        double totalDuration = videoDetails.getDuration();
@@ -2183,4 +2199,23 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            if (isClickedTrailor) {
+                if (playerfragment != null) {
+                    fromOnStart = true;
+                    playerfragment = null;
+                    setPlayerFragment();
+
+                    playerfragment.passCurrentPosition(playerCurrentPosition, fromOnStart);
+                    isClickedTrailor = false;
+                    fromOnStart = false;
+                }
+            }
+        }catch (Exception e){
+            Log.e("ErrorIs",e.getLocalizedMessage());
+        }
+    }
 }

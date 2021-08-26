@@ -1681,6 +1681,11 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
 
     }
 
+    @Override
+    public void onCurrentPosition(long currentPosition) {
+
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<RelatedInstructorsActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;

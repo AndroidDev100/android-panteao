@@ -29,7 +29,9 @@ import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
+import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.DownloadStatus;
+import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.player.trailor.PlayerActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -72,6 +74,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     private boolean resetWatchlist =false;
     private boolean addToWatchlist=false;
     private OnDownloadClickInteraction onDownloadClickInteraction;
+    private TrailorCallBack trailorCallBack;
     /**
      * The policy key for the video cloud account.
      */
@@ -128,6 +131,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         onDownloadClickInteraction = (OnDownloadClickInteraction) getActivity();
+        trailorCallBack = (TrailorCallBack) getActivity();
     }
 
     private void setClickListeners() {
@@ -806,8 +810,9 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             case R.id.pause_download: {
                 onDownloadClickInteraction.onPauseClicked(null, this);
             }
+            break;
             case R.id.trailor: {
-
+                trailorCallBack.onClick(true);
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 intent.putExtra(AppConstants.ENTRY_ID, seriesDetailBean.getTrailerReferenceId());
                 startActivity(intent);
