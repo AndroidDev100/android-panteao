@@ -185,7 +185,7 @@ class InternalPlayListGridFragment :
                 }
             }
             var num = 3
-            APIServiceLayer.getInstance().getPlayListById(playListId, 0, 20)
+            APIServiceLayer.getInstance().getPlayListById(playListId, 0, 50)
                 .observe(
                     activity,
                     { enveuCommonResponse: EnveuCommonResponse? ->
