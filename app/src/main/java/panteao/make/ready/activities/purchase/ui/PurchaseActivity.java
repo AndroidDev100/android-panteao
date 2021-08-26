@@ -39,6 +39,7 @@ import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
 import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
+import panteao.make.ready.beanModel.entitle.EntitledAs;
 import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.beanModel.membershipAndPlan.ResponseMembershipAndPlan;
 import panteao.make.ready.beanModel.purchaseModel.PurchaseModel;
@@ -288,6 +289,20 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
     public void resetpurchaseAdapter() {
         try {
+            if (responseEntitlementModel.getData().getEntitledAs()!=null){
+                for (int i = 0; i < responseEntitlementModel.getData().getEntitledAs().size(); i++) {
+                    EntitledAs entitledAs=responseEntitlementModel.getData().getEntitledAs().get(i);
+                    String entitledAsIdentifier=entitledAs.getIdentifier();
+                    for (int j = 0; j < alPurchaseOptions.size(); j++) {
+                        PurchaseModel model=alPurchaseOptions.get(j);
+                        String identifier= model.getIdentifier();
+                        if (identifier.equalsIgnoreCase(entitledAsIdentifier)){
+                            alPurchaseOptions.get(j).setSelected(true);
+                        }
+                    }
+                }
+            }
+
             if (alPurchaseOptions.size() > 0) {
                 alPurchaseOptions=getSortedList(alPurchaseOptions);
                 adapterPurchase = new PurchaseAdapter(this, alPurchaseOptions, PurchaseActivity.this);
@@ -417,6 +432,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         if (responseEntitlementModel.getData().getPurchaseAs().size() > 0 && responseEntitlementModel.getData().getPurchaseAs() != null)
             for (int i = 0; i < responseEntitlementModel.getData().getPurchaseAs().size(); i++) {
                 try {
+
                     createPlanList(i, alPurchaseOptions);
                 } catch (Exception e) {
                     Logger.e(e.getMessage(), e.getLocalizedMessage());
