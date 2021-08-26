@@ -806,6 +806,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             case R.id.pause_download: {
                 onDownloadClickInteraction.onPauseClicked(null, this);
             }
+            break;
             case R.id.trailor: {
 
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
