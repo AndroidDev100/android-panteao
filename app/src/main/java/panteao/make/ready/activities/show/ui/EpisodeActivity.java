@@ -1124,7 +1124,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     private void BuyNowClick() {
-        getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
+      //  getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
     }
     private KTDownloadHelper downloadHelper;
     public void setUserInteractionFragment(int id, EnveuVideoItemBean seriesDetailBean,boolean isVideoPremium) {

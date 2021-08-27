@@ -1120,7 +1120,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     private void BuyNowClick() {
-        getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
+       // getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
     }
 
     KTDownloadHelper downloadHelper;

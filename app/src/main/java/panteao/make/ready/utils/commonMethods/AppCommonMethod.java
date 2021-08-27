@@ -1674,6 +1674,7 @@ public class AppCommonMethod {
         String minutes = "";
         int minutes1;
         int seconds;
+
         try {
            /* if (milliseconds % 1000 > 0) {
                 milliseconds = milliseconds + (milliseconds % 1000);
@@ -1686,18 +1687,29 @@ public class AppCommonMethod {
 //                minutes = String.valueOf(milliseconds).concat("s");
 //            }
 
-          // int hours1 = (int) (milliseconds / 3600);
+            int hours1 = (int) (milliseconds / 3600);
+            Log.d("gygygyygyg",hours1+"");
             minutes1 = (int) ((milliseconds % 3600) / 60);
             seconds = (int) (milliseconds % 60);
-           if (minutes1>0){
-               if (minutes1<2) {
-                   minutes = String.valueOf(minutes1).concat(" ").concat("minute");
-               }else {
-                   minutes = String.valueOf(minutes1).concat(" ").concat("minutes");
-               }
-           }else if (seconds>0){
-               minutes = String.valueOf(seconds).concat("s");
-           }
+            if (hours1>0){
+                if (minutes1>0){
+                    Log.d("gygygyygyg",minutes1+"");
+                    int total = (hours1*60)+minutes1;
+                    minutes = String.valueOf(total).concat(" ").concat("minutes");
+                }else {
+                    minutes = String.valueOf(hours1 * 60).concat(" ").concat("minutes");
+                }
+            }else {
+                if (minutes1 > 0) {
+                    if (minutes1 < 2) {
+                        minutes = String.valueOf(minutes1).concat(" ").concat("minute");
+                    } else {
+                        minutes = String.valueOf(minutes1).concat(" ").concat("minutes");
+                    }
+                } else if (seconds > 0) {
+                    minutes = String.valueOf(seconds).concat("s");
+                }
+            }
 
           // String timeString = String.format("%02d:%02d:%02d", hours1, minutes1, seconds);
 

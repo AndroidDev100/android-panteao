@@ -956,7 +956,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
 
     private void BuyNowClick() {
-        getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
+      //  getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
     }
 
     public void setUI(EnveuVideoItemBean responseDetailPlayer) {
