@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
+import panteao.make.ready.databinding.NewCommonSearchAdapterBinding;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.Utils;
 import panteao.make.ready.utils.config.ImageLayer;
@@ -64,10 +65,10 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
     @Override
     public RowSearchAdapter.SingleItemRowHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        CommonSearchAdapterBinding itemBinding;
+        NewCommonSearchAdapterBinding itemBinding;
         itemBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(viewGroup.getContext()),
-                R.layout.common_search_adapter, viewGroup, false);
+                R.layout.new_common_search_adapter, viewGroup, false);
 
         return new SingleItemRowHolder(itemBinding);
     }
@@ -135,9 +136,9 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        final CommonSearchAdapterBinding itemBinding;
+        final NewCommonSearchAdapterBinding itemBinding;
 
-        public SingleItemRowHolder(CommonSearchAdapterBinding binding) {
+        public SingleItemRowHolder(NewCommonSearchAdapterBinding binding) {
             super(binding.getRoot());
             this.itemBinding = binding;
         }

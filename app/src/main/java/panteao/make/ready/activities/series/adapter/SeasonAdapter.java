@@ -42,6 +42,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 //    private DownloadHelper downloadHelper;
     private HashMap indexMap = new HashMap<String, Integer>();
     private OnDownloadClickInteraction onDownloadClickInteraction;
+    private String minutes = "";
 
     public SeasonAdapter(Activity context, List<EnveuVideoItemBean> videoItemBeans, int id, int currentAssetId, EpisodeItemClick listner) {
         this.context = context;
@@ -140,13 +141,15 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         try {
             if (!StringUtils.isNullOrEmpty(String.valueOf(videoItemBeans.get(position).getDuration()))) {
 
-                double d = (double) videoItemBeans.get(position).getDuration();
-                long x = (long) d; // x = 1234
-                Log.w("episodeTiming",x+"");
-                String minutes=AppCommonMethod.calculateTimeinMinutes((x));
-                if (!minutes.equalsIgnoreCase("")){
-                    minutes=minutes+" "+context.getResources().getString(R.string.minutes);
+//                double d = (double) videoItemBeans.get(position).getDuration();
+//                long x = (long) d; // x = 1234
+                Log.w("episodeTiming",videoItemBeans.get(position).getDuration()+"");
+                 minutes=AppCommonMethod.calculateTimeinMinutes(videoItemBeans.get(position).getDuration());
+                if (!minutes.contains("s")){
+                   // minutes=minutes+" "+context.getResources().getString(R.string.minutes);
                     Log.d("time",minutes);
+                    holder.itemBinding.duration.setText(minutes);
+                }else {
                     holder.itemBinding.duration.setText(minutes);
                 }
 
