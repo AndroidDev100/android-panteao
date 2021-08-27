@@ -16,6 +16,8 @@ import panteao.make.ready.databinding.SettingsActivityBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 
+import panteao.make.ready.utils.constants.SharedPrefesConstants;
+import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 
@@ -29,6 +31,23 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (KsPreferenceKeys.getInstance().getDownloadOverWifi()==1){
+            getBinding().switchThemeNew.setChecked(true);
+        }else {
+            getBinding().switchThemeNew.setChecked(false);
+        }
+
+        getBinding().switchThemeNew.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    new SharedPrefHelper(ActivitySettings.this).setInt(SharedPrefesConstants.DOWNLOAD_OVER_WIFI, 1);
+                }else {
+                    new SharedPrefHelper(ActivitySettings.this).setInt(SharedPrefesConstants.DOWNLOAD_OVER_WIFI, 0);
+                }
+            }
+        });
 
         if (KsPreferenceKeys.getInstance().getCurrentTheme().equalsIgnoreCase(AppConstants.LIGHT_THEME)) {
             setTheme(R.style.MyMaterialTheme_Base_Light);
@@ -88,10 +107,10 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
 
         try {
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
-                getBinding().downloadLayout.setVisibility(View.VISIBLE);
+               // getBinding().downloadLayout.setVisibility(View.VISIBLE);
             }else {
 //                getBinding().downloadLayout.setVisibility(View.GONE);
-                getBinding().downloadLayout.setVisibility(View.VISIBLE);
+               // getBinding().downloadLayout.setVisibility(View.VISIBLE);
 
             }
         }catch (Exception ignored){

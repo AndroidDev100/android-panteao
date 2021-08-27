@@ -117,6 +117,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean fromTrailor = false;
     private long playerCurrentPosition = 0l;
     private boolean fromOnstart = false;
+    String typeofTVOD="";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -169,6 +170,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             IsbingeWatch = bundle.getBoolean("binge_watch");
             bingeWatchTimer = bundle.getInt("binge_watch_timer");
             bookmarkPosition = bundle.getLong("bookmark_position");
+            if (bundle.getString("tvod_type")!=null){
+                typeofTVOD = bundle.getString("tvod_type");
+            }
             fromTrailor = bundle.getBoolean("from_trailor", false);
 //            Log.d("gtgtgtgt",fromTrailor);
         }
@@ -630,7 +634,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private void chooseVideoquality() {
         trackItemList.clear();
         if (tracks.getVideoTracks().size() > 0) {
-            trackItemList = AppCommonMethod.createTrackList(tracks, getActivity());
+            trackItemList = AppCommonMethod.createTrackList(tracks, getActivity(),typeofTVOD);
         } else {
             ToastHandler.show(getActivity().getResources().getString(R.string.no_tracks_available), getActivity());
         }

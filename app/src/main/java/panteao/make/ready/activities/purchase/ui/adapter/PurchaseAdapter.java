@@ -21,6 +21,7 @@ import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.beanModel.purchaseModel.PurchaseModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.PurchaseViewHolder> {
@@ -30,12 +31,17 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
     private final List<PurchaseModel> list;
     private final OnPurchaseItemClick fragmentClickNetwork;
     private int rowIndex = -1;
+    private String subscription = "";
+    private String tvod = "";
     private boolean isClickable;
+    private ArrayList<String> purchasedList;
+    boolean fromClick=false;
 
     public PurchaseAdapter(Context context, List<PurchaseModel> list, OnPurchaseItemClick purchaseActivity) {
         this.context = context;
         this.list = list;
         this.fragmentClickNetwork = purchaseActivity;
+        this.purchasedList=new ArrayList<>();
 
     }
 
@@ -107,6 +113,20 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
 
 
         holder.cardView.setOnClickListener(view -> {
+            String option=list.get(position).getPurchaseOptions();
+            if(option.equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
+                 if (subscription.equalsIgnoreCase("")){
+
+                 }else {
+                     return;
+                 }
+            }else {
+                if (tvod.equalsIgnoreCase("")){
+
+                }else {
+                    return;
+                }
+            }
             boolean isCurrencySupported=false;
             for (int i = 0; i < SDKConfig.getInstance().getSupportedCurrencies().size() ; i++){
                 if (SDKConfig.getInstance().getSupportedCurrencies().get(i).equalsIgnoreCase(list.get(position).getCurrency())){
@@ -114,10 +134,10 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
                     break;
                 }
             }
-            if (isCurrencySupported){
-                if (!(((PurchaseActivity) context).isAlreadySubscribed && !list.get(position).getPurchaseOptions().equalsIgnoreCase("TVOD")))
-                    resetSelectable(position);
-                else {
+            if (isCurrencySupported) {
+                if (!(((PurchaseActivity) context).isAlreadySubscribed && !list.get(position).getPurchaseOptions().equalsIgnoreCase("TVOD"))){
+                resetSelectable(position,subscription,tvod);
+            }else {
                     resetAll(holder);
                 }
                 fragmentClickNetwork.onPurchaseCardClick(true, list.get(position));
@@ -130,10 +150,19 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
 
 
         if (list.get(position).isSelected()) {
-            rowIndex = position;
+            //purchasedList.add(list.get(position).getPurchaseOptions());
+            if (!fromClick){
+                if(list.get(position).getPurchaseOptions().equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
+                    subscription=list.get(position).getPurchaseOptions();
+                }else {
+                    tvod=list.get(position).getPurchaseOptions();
+                }
+                rowIndex = position;
+            }
+
         }
 
-        if (rowIndex == position) {
+        if (list.get(position).isSelected()) {
 
             holder.currency_price.setBackground(context.getDrawable(R.drawable.rounded_corner_textview_white));
             holder.currency_price.setTextColor(context.getResources().getColor(R.color.themeColorDark));
@@ -160,16 +189,36 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
 
     }
 
-    private void resetSelectable(int pos) {
+    private void resetSelectable(int pos,String subscription,String tvod) {
         rowIndex = pos;
         for (int i = 0; i < list.size(); i++) {
-            if (i == pos) {
+            boolean selected=list.get(i).isSelected();
+            String options=list.get(i).getPurchaseOptions();
+            if (selected && !subscription.equalsIgnoreCase("") || selected && !tvod.equalsIgnoreCase("")){
                 list.get(i).setSelected(true);
-            } else {
-                list.get(i).setSelected(false);
+            }else {
+                if (i == pos) {
+                    for (int j=0;j<list.size();j++){
+                        String selectedOption=list.get(pos).getPurchaseOptions();
+                        String selectedOptions=list.get(j).getPurchaseOptions();
+                        if(selectedOption.equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
+                            if(selectedOptions.equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
+                                list.get(j).setSelected(false);
+                            }
+
+                        }else {
+                            if(selectedOptions.equalsIgnoreCase(VodOfferType.RENTAL.name())){
+                                list.get(j).setSelected(false);
+                            }
+                        }
+                    }
+                    list.get(i).setSelected(true);
+                } else {
+                    list.get(i).setSelected(false);
+                }
             }
         }
-
+        fromClick=true;
     }
 
     private void resetAll(PurchaseViewHolder holder) {

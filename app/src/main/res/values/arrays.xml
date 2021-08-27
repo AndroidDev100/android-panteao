@@ -82,4 +82,13 @@
         <item>Always ask</item>
 
     </string-array>
+    <string-array name="download_quality_sd">
+        <item>SD</item>
+
+    </string-array>
+    <string-array name="download_quality_hd">
+        <item>HD</item>
+        <item>SD</item>
+
+    </string-array>
 </resources>

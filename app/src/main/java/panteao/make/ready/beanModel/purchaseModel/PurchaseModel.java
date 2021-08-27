@@ -18,6 +18,7 @@ public class PurchaseModel implements Serializable {
     private String periodType;
     private double expiryDate;
     private String description;
+    private boolean fromClick;
 
     public PurchaseModel() {
     }
@@ -122,6 +123,14 @@ public class PurchaseModel implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setFromClick(boolean fromClick) {
+        this.fromClick = fromClick;
+    }
+
+    public boolean isFromClick() {
+        return fromClick;
     }
 
     @Override
