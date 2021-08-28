@@ -348,6 +348,10 @@
     <string name="medium">Medium</string>
     <string name="high">High</string>
 
+    <string name="sd">SD</string>
+    <string name="hd">HD</string>
+    <string name="uhd">UHD</string>
+
     <string name="enter_coupon_code">Enter a Coupon Code</string>
     <string name="coupon_code">Coupon Code</string>
 

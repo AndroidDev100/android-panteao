@@ -1984,13 +1984,13 @@ public class AppCommonMethod {
                 trackItemList.add(new TracksItem(activity.getResources().getString(R.string.auto), videoTrackInfo.getUniqueId()));
             } else if (videoTrackInfo.getBitrate() > 100000 && videoTrackInfo.getBitrate() < 450000 && !track1) {
                 track1 = true;
-                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.low), videoTrackInfo.getUniqueId()));
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.sd), videoTrackInfo.getUniqueId()));
             } else if ((videoTrackInfo.getBitrate() > 450001 && videoTrackInfo.getBitrate() < 600000) && !track2 || (videoTrackInfo.getBitrate() > 400000 && videoTrackInfo.getBitrate() < 620000) && !track2) {
                 track2 = true;
-                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.medium), videoTrackInfo.getUniqueId()));
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.hd), videoTrackInfo.getUniqueId()));
             } else if (videoTrackInfo.getBitrate() > 600001 && videoTrackInfo.getBitrate() < 1000000 && !track3) {
                 track3 = true;
-                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.high), videoTrackInfo.getUniqueId()));
+                trackItemList.add(new TracksItem(activity.getResources().getString(R.string.uhd), videoTrackInfo.getUniqueId()));
             }
         }
         if (typeofTVOD!=null && !typeofTVOD.equalsIgnoreCase("") && trackItemList.size()>0){
@@ -2003,15 +2003,15 @@ public class AppCommonMethod {
         ArrayList<TracksItem> trackItemList = new ArrayList<TracksItem>();
         for (int i = 0; i < tracks.size(); i++) {
             if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___sd.name())){
-                if (tracks.get(i).getTrackName().equalsIgnoreCase("Low")){
+                if (tracks.get(i).getTrackName().equalsIgnoreCase("SD")){
                     trackItemList.add(tracks.get(i));
                 }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Auto")){
                     trackItemList.add(tracks.get(i));
                 }
             }else if (typeofTVOD.equalsIgnoreCase(TVODENUMS.___hd.name())){
-                if (tracks.get(i).getTrackName().equalsIgnoreCase("Low")){
+                if (tracks.get(i).getTrackName().equalsIgnoreCase("SD")){
                     trackItemList.add(tracks.get(i));
-                }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Medium")){
+                }else if (tracks.get(i).getTrackName().equalsIgnoreCase("HD")){
                     trackItemList.add(tracks.get(i));
                 }else if (tracks.get(i).getTrackName().equalsIgnoreCase("Auto")){
                     trackItemList.add(tracks.get(i));
