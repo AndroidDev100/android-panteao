@@ -89,7 +89,7 @@ public class PlayerControlsFragment extends Fragment {
     private boolean dragging = false;
     public ConstraintLayout bingeLay;
     private CountDownTimer mTimer;
-    private TextView skipduration;
+    private TextView skipduration,binge_text;
     private FrameLayout replay;
     private boolean isFirstCalledBingeWatch = true;
     private boolean isFromtrailor = false;
@@ -393,7 +393,7 @@ public class PlayerControlsFragment extends Fragment {
                 });
     }
 
-    public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes) {
+    public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes, String fromActivity) {
         if (totalEpisodes == runningEpisodes) {
 
         } else {
@@ -404,6 +404,11 @@ public class PlayerControlsFragment extends Fragment {
             bingeBtn.setVisibility(View.VISIBLE);
             skipduration.setVisibility(View.VISIBLE);
             backArrow.setVisibility(View.VISIBLE);
+            if (fromActivity.equalsIgnoreCase("Episode"))
+                binge_text.setText("Next Episode");
+            else
+                binge_text.setText("Next Chapter");
+
             if (isFirstCalledBingeWatch) {
                 isFirstCalledBingeWatch = false;
                 mTimer = new CountDownTimer(position, 1000) {
@@ -556,6 +561,7 @@ public class PlayerControlsFragment extends Fragment {
         btnRewind = (ImageView) view.findViewById(R.id.rew);
         bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
         skipduration = (TextView) view.findViewById(R.id.skip_duration);
+        binge_text = (TextView) view.findViewById(R.id.bingeTxt);
         replay = (FrameLayout) view.findViewById(R.id.replay);
         seekBar = view.findViewById(R.id.exo_progress);
         currentPosition = view.findViewById(R.id.exo_position);

@@ -184,7 +184,7 @@
 
                 <TextView
                     android:id="@+id/bingeTxt"
-                    android:text="@string/next_episode"
+                    android:text=""
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

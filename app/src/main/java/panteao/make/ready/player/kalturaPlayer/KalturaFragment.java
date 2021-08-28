@@ -118,6 +118,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private long playerCurrentPosition = 0l;
     private boolean fromOnstart = false;
     String typeofTVOD="";
+    private String fromActivity = "";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -170,6 +171,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             IsbingeWatch = bundle.getBoolean("binge_watch");
             bingeWatchTimer = bundle.getInt("binge_watch_timer");
             bookmarkPosition = bundle.getLong("bookmark_position");
+            fromActivity = bundle.getString("from_chapter");
             if (bundle.getString("tvod_type")!=null){
                 typeofTVOD = bundle.getString("tvod_type");
             }
@@ -293,7 +295,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
                     if (currentPosition >= bingeWatchTimer) {
                         showBingeWatchControls = true;
-                        playerControlsFragment.showBingeWatch(player.getDuration() - player.getCurrentPosition(), isFirstCalled, totalEpisodes, runningEpisodes);
+                        playerControlsFragment.showBingeWatch(player.getDuration() - player.getCurrentPosition(), isFirstCalled, totalEpisodes, runningEpisodes,fromActivity);
                         countDownTimer.cancel();
                     }
                 }

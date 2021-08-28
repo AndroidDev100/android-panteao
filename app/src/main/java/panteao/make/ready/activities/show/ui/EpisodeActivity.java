@@ -314,6 +314,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             args.putBoolean("from_binge", fromBingWatch);
             args.putLong("bookmark_position",bookmarkPosition);
             args.putString("tvod_type",typeofTVOD);
+            args.putString("from_chapter","Episode");
             Logger.d("ENTRY_ID", Entryid + "");
 
         }

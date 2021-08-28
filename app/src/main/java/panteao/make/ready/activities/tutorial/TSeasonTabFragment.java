@@ -2,6 +2,7 @@ package panteao.make.ready.activities.tutorial;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -251,7 +253,12 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                 }
 
                                 if (context instanceof ChapterActivity) {
-                                    ((ChapterActivity) context).episodesList(allEpiosdes);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ((ChapterActivity) context).episodesList(allEpiosdes);
+                                        }
+                                    },1200);
                                 }
                             }
                         }
@@ -351,7 +358,12 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                     seasonAdapter.notifyDataSetChanged();
                 }
                 if (context instanceof ChapterActivity) {
-                    ((ChapterActivity) context).episodesList(seasonEpisodes);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ChapterActivity) context).episodesList(seasonEpisodes);
+                        }
+                    },1200);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);
