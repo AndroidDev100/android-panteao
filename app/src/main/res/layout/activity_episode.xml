@@ -398,8 +398,9 @@
                             android:background="?attr/backgroundColor"
                             android:minHeight="?actionBarSize"
                             app:tabGravity="fill"
-                            app:tabIndicatorColor="@color/more_text_color_dark"
                             app:tabMode="fixed"
+                            app:tabMaxWidth="0dp"
+                            app:tabIndicatorColor="@null"
                             android:tabStripEnabled="true"
                             app:tabSelectedTextColor="@color/white"
                             app:tabTextColor="?attr/cancel_text_color"
@@ -407,6 +408,14 @@
                             >
 
                         </com.google.android.material.tabs.TabLayout>
+
+                        <ImageView
+                            android:background="@color/more_text_color_dark"
+                            android:layout_width="match_parent"
+                            android:layout_alignBottom="@+id/tabLayout"
+                            android:layout_height="0.8dp"
+                            />
+
 
 
                     </RelativeLayout>

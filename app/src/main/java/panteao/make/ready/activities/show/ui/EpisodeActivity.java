@@ -486,7 +486,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (getBinding().tabLayout.getTabCount() >= 1 && position <= getBinding().tabLayout.getTabCount()) {
             episodeTabAdapter.removeTabPage(position);
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-            params.width = (int) getResources().getDimension(R.dimen.tab_layout_single);
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
             ;//(int) getResources().getDimension(R.dimen.tab_layout_single);
             getBinding().tabLayout.setLayoutParams(params);
             //  getBinding().tabLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height));

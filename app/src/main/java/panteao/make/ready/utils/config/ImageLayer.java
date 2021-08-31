@@ -222,4 +222,42 @@ public class ImageLayer {
         return finalUrl;
     }
 
+    public String getFilteredDetailImage(HashMap<String, Thumbnail> crousalImages, KalturaImageType imageType, int i, int i1) {
+        int width = i;
+        int height = i1;
+        String imageUrl = "";
+        if (crousalImages != null) {
+            for (Map.Entry<String, Thumbnail> entry : crousalImages.entrySet()) {
+                if (imageType == KalturaImageType.CAROUSAL_FULL_IMAGE) {
+                    if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) > 3) {
+                        imageUrl = entry.getValue().getSources().get(0).getSrc();
+                    }
+                } else if (imageType == KalturaImageType.LANDSCAPE) {
+                    if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) >= 1 && (entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 3) {
+                        imageUrl = entry.getValue().getSources().get(0).getSrc();
+                        width=244;
+                        height=0;
+                    }
+                } else if (imageType == KalturaImageType.PORTRAIT) {
+                    if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
+                        imageUrl = entry.getValue().getSources().get(0).getSrc();
+                    }
+                } else if (imageType == KalturaImageType.PORTRAIT_2_3) {
+                    if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
+                        imageUrl = entry.getValue().getSources().get(0).getSrc();
+                        width=0;
+                        height=244;
+                    }
+                }
+            }
+            if (imageUrl.isEmpty()) {
+                Map.Entry<String, Thumbnail> entry = crousalImages.entrySet().iterator().next();
+                imageUrl = entry.getValue().getSources().get(0).getSrc();
+            }
+            Logger.e("RECOMMENDED_IMAGES", Utils.INSTANCE.getFilteredUrl(imageUrl, width, height));
+        }
+        return Utils.INSTANCE.getFilteredUrl(imageUrl, width, height);
+    }
+
+
 }

@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
+import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
 import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
@@ -39,12 +40,15 @@ import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
+import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.utils.MediaTypeConstants;
+import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
+import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.utils.helpers.downloads.VideoListListener;
@@ -539,7 +543,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
         if (getBinding().tabLayout.getTabCount() >= 1 && position <= getBinding().tabLayout.getTabCount()) {
             episodeTabAdapter.removeTabPage(position);
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
-            params.width = (int) getResources().getDimension(R.dimen.tab_layout_single);
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
             getBinding().tabLayout.setLayoutParams(params);
 
         }
@@ -577,6 +581,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             Logger.e("SeriesResponse", new Gson().toJson(seriesResponse));
 
             getBinding().setPlaylistItem(seriesResponse);
+            if (seriesResponse.getImages()!=null && seriesResponse.getImages().size()>0){
+                ImageHelper.getInstance(TutorialActivity.this).loadListImage(getBinding().sliderImage, ImageLayer.getInstance().getFilteredImage(seriesResponse.getImages(),  KalturaImageType.LANDSCAPE, 800, 450));
+            }
             getBinding().bannerlabel.setText(seriesResponse.getName());
             getBinding().bannerlabel.setVisibility(View.INVISIBLE);
             getBinding().seriesTitle.setText(seriesResponse.getTitle());

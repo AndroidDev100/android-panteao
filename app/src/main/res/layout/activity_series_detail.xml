@@ -111,7 +111,6 @@
                         <ImageView
                             android:id="@+id/sliderImage"
                             errorImage="@{@drawable/placeholder_landscape}"
-                            imageUrl="@{playlistItem.posterURL}"
                             placeholder="@{@drawable/placeholder_landscape}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -377,12 +376,20 @@
                         android:background="?attr/backgroundColor"
                         android:minHeight="?actionBarSize"
                         app:tabGravity="fill"
-                        app:tabIndicatorColor="@color/more_text_color_dark"
+                        app:tabIndicatorFullWidth="true"
+                        app:tabMaxWidth="0dp"
+                        app:tabIndicatorColor="@null"
                         app:tabMode="fixed"
                         app:tabSelectedTextColor="@color/white"
                         app:tabTextColor="?attr/cancel_text_color"
 
                         />
+
+                    <ImageView
+                        android:background="@color/more_text_color_dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                    />
 
 
                     <panteao.make.ready.utils.helpers.WrappingViewPager

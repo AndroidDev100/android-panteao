@@ -3,6 +3,7 @@ package panteao.make.ready.activities.tutorial;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
 
         railCommonDataList.clear();
         RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+/*
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
             public void onSuccess(Object item) {
@@ -140,6 +142,22 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                 }
             }
         });
+*/
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getBinding().progressBar.setVisibility(View.GONE);
+                        removeTab();
+                        hideProgressBar();
+                    }
+                },1500);
+            }
+        });
+
 
     }
 

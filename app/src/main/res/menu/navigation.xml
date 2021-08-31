@@ -20,8 +20,8 @@
     <item
         android:id="@+id/navigation_premium"
         android:enabled="true"
-        android:icon="@drawable/ic_home_premium"
-        android:title="@string/title_premium"
+        android:icon="@drawable/ic_home_free"
+        android:title="@string/title_free"
         app:showAsAction="always|withText" />
 
     <item
