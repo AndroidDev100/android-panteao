@@ -266,7 +266,16 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                 if (currentVideoItem.isSeries){
                     ActivityLauncher(context).launchMyDownloads(currentVideoItem.seriesId,currentVideoItem.seasonNumber,viewHolder?.itemBinding?.tvTitle?.text.toString())
                 }else{
-                    ActivityLauncher(context).launchOfflinePlayer(currentVideoItem.entryId)
+                    downloadHelper.getAssetDownloadState(currentVideoItem.entryId,downloadHelper,
+                        object : DownloadStateListener {
+                            override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
+                                if (name.equals("completed", ignoreCase = true)){
+                                    ActivityLauncher(context).launchOfflinePlayer(currentVideoItem.entryId)
+                                }else if(name.equals("failed", ignoreCase = true)){
+                                    failedDownloadPopUpMenu(v!!, currentVideoItem, position)
+                                }
+                            }
+                        })
                 }
             }
 
@@ -275,6 +284,30 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
     }
+
+    private fun failedDownloadPopUpMenu(view: View, video: DownloadItemEntity, position: Int) {
+        val popup = PopupMenu(context, view)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.delete_download -> {
+                    downloadHelper.cancelVideo(video.entryId)
+                    itemList.remove(video)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, itemList.size)
+                    if (itemList.size>0){
+                        listener.updateAdapter(1)
+                    }else{
+                        KsPreferenceKeys.getInstance().videoDownloadAction = 3
+                        listener.updateAdapter(2)
+                    }
+                }
+            }
+            false
+        }
+        popup.inflate(R.menu.failed_download)
+        popup.show()
+    }
+
 
     private fun updatedStatus(itemBinding: ListDownloadItemBinding?, currentVideoItem: DownloadItemEntity, position: Int, context: Context) {
         downloadHelper.getAssetDownloadState(currentVideoItem.entryId,downloadHelper,

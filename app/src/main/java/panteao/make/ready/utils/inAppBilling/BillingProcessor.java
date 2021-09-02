@@ -13,6 +13,8 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
@@ -206,12 +208,49 @@ public class BillingProcessor implements PurchasesUpdatedListener {
        // PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode());
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (inAppProcessListener!=null){
+                try {
+                    if (purchases.get(0).getPurchaseToken() != null) {
+                        for (Purchase purchase : purchases) {
+                            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                if (purchaseType!=null && !purchaseType.equalsIgnoreCase("") &purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
+                                    handleConsumablePurchasesAsync(purchase);
+                                }
+                            }
+                        }
+                    }
+
+                    }catch (Exception e){
+
+                }
                 inAppProcessListener.onPurchasesUpdated(billingResult,purchases);
             }
           //  processPurchases(purchases);
         } else {
             // Handle any other error codes.
             logErrorType(billingResult);
+        }
+    }
+
+    private void handleConsumablePurchasesAsync(Purchase purchase) {
+        try {
+            // Generating Consume Response listener
+            final ConsumeResponseListener listener =
+                    (billingResult, purchaseToken) -> {
+                        // If billing service was disconnected, we try to reconnect 1 time
+                        // (feel free to introduce your retry policy here).
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                             Log.w("tvod","consumed");
+                        } else {
+                            Log.w("tvod","failed");
+                        }
+                    };
+            // Consume the purchase async
+            final ConsumeParams consumeParams =
+                    ConsumeParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
+            // Creating a runnable from the request to use it inside our connection retry policy below
+            executeServiceRequest(() -> myBillingClient.consumeAsync(consumeParams, listener));
+        }catch (Exception e){
+
         }
     }
 
@@ -334,8 +373,11 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         return billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK;
     }
 
+    String purchaseType="";
     public void purchase(Activity activity, String sku, String developer_payload, String purchaseType) {
+        this.purchaseType="";
         if (purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
+            this.purchaseType=PurchaseType.PRODUCT.name();
             if (myBillingClient!=null && myBillingClient.isReady()){
                 getProductSkuDetails(activity,sku);
             }

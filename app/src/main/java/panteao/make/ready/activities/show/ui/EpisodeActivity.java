@@ -898,7 +898,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 }
                                 Entryid = (videoDetails.getkEntryId());
                                 Log.d("tgtgtgtgtt",Entryid);
-                                playPlayerWhenShimmer();
+                               // playPlayerWhenShimmer();
                             }
                         });
                     } else {
@@ -906,12 +906,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         Entryid = (videoDetails.getkEntryId());
                         Log.d("tgtgtgtgtt>>>>",Entryid);
 
-                        playPlayerWhenShimmer();
+                       // playPlayerWhenShimmer();
                     }
 
                 } else {
                     Entryid = (videoDetails.getkEntryId());
-                    playPlayerWhenShimmer();
+                   // playPlayerWhenShimmer();
                 }
 
             }
