@@ -281,6 +281,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                         getBinding().progressBar.setVisibility(View.GONE);
                         getBinding().seriesRecyclerView.setVisibility(View.GONE);
                         getBinding().seasonMore.setVisibility(View.GONE);
+                        hideProgressBar();
                     }
 
                 }
@@ -320,6 +321,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                         getBinding().progressBar.setVisibility(View.GONE);
                         getBinding().seriesRecyclerView.setVisibility(View.GONE);
                         getBinding().seasonMore.setVisibility(View.GONE);
+                        hideProgressBar();
                     }
 
                 }

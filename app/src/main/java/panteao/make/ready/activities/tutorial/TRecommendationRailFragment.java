@@ -154,7 +154,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                         removeTab();
                         hideProgressBar();
                     }
-                },500);
+                },1000);
             }
         });
 
