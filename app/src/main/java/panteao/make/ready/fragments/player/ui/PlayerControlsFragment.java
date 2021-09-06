@@ -340,35 +340,40 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void showControls() {
-        if (replay.getVisibility() == View.VISIBLE) {
-            backArrow.setVisibility(View.VISIBLE);
-        } else {
-            if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
-                childControls.animate().alpha(1.0f).setDuration(600)
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                if (AppCommonMethod.isTV(requireContext())) {
-                                    btnPause.requestFocus();
+        try {
+            if (replay.getVisibility() == View.VISIBLE) {
+                backArrow.setVisibility(View.VISIBLE);
+            } else {
+                if (childControls.getVisibility() == View.GONE && bingeLay.getVisibility() != View.VISIBLE) {
+                    childControls.animate().alpha(1.0f).setDuration(600)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    if (AppCommonMethod.isTV(requireContext())) {
+                                        btnPause.requestFocus();
+                                    }
+
                                 }
 
-                            }
-
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                super.onAnimationStart(animation);
-                                childControls.setVisibility(View.VISIBLE);
-                                seekbarLayout.setVisibility(View.VISIBLE);
-                                backArrow.setVisibility(View.VISIBLE);
-                               // qualitySettings.setVisibility(View.VISIBLE);
-                                if (childControls.getFocusedChild() != null) {
-                                    childControls.getFocusedChild().requestFocus();
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    childControls.setVisibility(View.VISIBLE);
+                                    seekbarLayout.setVisibility(View.VISIBLE);
+                                    backArrow.setVisibility(View.VISIBLE);
+                                    // qualitySettings.setVisibility(View.VISIBLE);
+                                    if (childControls.getFocusedChild() != null) {
+                                        childControls.getFocusedChild().requestFocus();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
+        }catch (Exception e){
+
         }
+
     }
 
     //

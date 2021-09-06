@@ -164,10 +164,15 @@ class InternalPlayListGridFragment :
     }
 
     private fun checkActivity() {
-        activity?.let { getPlayListDetails(it) }
-            ?: Handler(Looper.getMainLooper()).postDelayed({
-                checkActivity()
-            }, 3000)
+        try {
+            activity?.let { getPlayListDetails(it) }
+                ?: Handler(Looper.getMainLooper()).postDelayed({
+                    checkActivity()
+                }, 3000)
+        }catch (exception : Exception){
+
+        }
+
     }
 
     private fun getPlayListDetails(activity: FragmentActivity) {

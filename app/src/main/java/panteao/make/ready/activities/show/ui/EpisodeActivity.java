@@ -898,7 +898,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                 }
                                 Entryid = (videoDetails.getkEntryId());
                                 Log.d("tgtgtgtgtt",Entryid);
-                               // playPlayerWhenShimmer();
+                                playPlayerWhenShimmer();
                             }
                         });
                     } else {
@@ -906,12 +906,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         Entryid = (videoDetails.getkEntryId());
                         Log.d("tgtgtgtgtt>>>>",Entryid);
 
-                       // playPlayerWhenShimmer();
+                        playPlayerWhenShimmer();
                     }
 
                 } else {
                     Entryid = (videoDetails.getkEntryId());
-                   // playPlayerWhenShimmer();
+                    playPlayerWhenShimmer();
                 }
 
             }
@@ -1072,7 +1072,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+            //showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
 
         }

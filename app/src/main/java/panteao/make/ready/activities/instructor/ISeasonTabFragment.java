@@ -243,7 +243,8 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
                                 if (seasonAdapter == null) {
                                     allEpiosdes = enveuCommonResponse.getEnveuVideoItemBeans();
-                                    getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+                                    //getBinding().seasonHeader.setText(getResources().getString(R.string.all_episode));
+                                    getBinding().seasonHeader.setText("");
                                     getBinding().seasonHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                     new RecyclerAnimator(getActivity()).animate(getBinding().seriesRecyclerView);
                                     seasonAdapter = new SeasonAdapter(getActivity(), allEpiosdes, seriesId, currentAssetId, ISeasonTabFragment.this);
