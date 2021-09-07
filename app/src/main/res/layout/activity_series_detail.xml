@@ -206,18 +206,93 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/series_title"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/sarabun_v7_thai_latin_medium"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text=""
-                                    android:textColor="?attr/title_color"
-                                    android:textSize="@dimen/font_large"
                                     android:layout_marginTop="10dp"
-                                    tools:targetApi="p" />
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:id="@+id/series_title"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginRight="@dimen/_4sdp"
+                                        android:layout_toLeftOf="@+id/mPremiumStatus"
+                                        android:ellipsize="end"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_medium"
+                                        android:maxLines="2"
+                                        android:textColor="?attr/title_color"
+                                        android:textSize="@dimen/font_large"
+                                        tools:targetApi="p" />
+                                    <LinearLayout
+                                        android:id="@+id/mPremiumStatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="@dimen/NontonSize4"
+                                        android:layout_marginLeft="@dimen/NontonSize10">
+
+                                        <TextView
+                                            android:id="@+id/tv_purchased"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_marginTop="2dp"
+                                            android:background="@drawable/rounded_button"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                            android:maxLines="3"
+                                            android:paddingLeft="@dimen/movie_metadata_txt_show_hide_padding_left"
+                                            android:paddingTop="@dimen/movie_metadata_txt_show_hide_padding_top"
+                                            android:paddingRight="@dimen/movie_metadata_txt_show_hide_padding_right"
+                                            android:paddingBottom="@dimen/movie_metadata_txt_show_hide_padding_bottom"
+                                            android:text="Purchased"
+                                            android:textColor="@color/rounded_button_text_color"
+                                            android:textSize="@dimen/detailBuyNow"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/trailor_btn"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/bordrer_button"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                            android:gravity="center"
+                                            android:maxLines="3"
+                                            android:paddingLeft="@dimen/detailMorePaddingLeft"
+                                            android:paddingTop="@dimen/detailMorePaddingTop"
+                                            android:paddingRight="@dimen/detailMorePaddingLeft"
+                                            android:paddingBottom="@dimen/detailMorePaddingTop"
+                                            android:text="Watch Trailor"
+                                            android:layout_marginRight="@dimen/_5sdp"
+                                            android:textColor="@color/rounded_button_text_color"
+                                            android:textSize="@dimen/detailBuyNow"
+                                            android:visibility="gone" />
+
+                                        <TextView
+                                            android:id="@+id/tv_buy_now"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:background="@drawable/bordrer_button"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                                            android:gravity="center"
+                                            android:maxLines="3"
+                                            android:paddingLeft="@dimen/detailMorePaddingLeft"
+                                            android:paddingTop="@dimen/detailMorePaddingTop"
+                                            android:paddingRight="@dimen/detailMorePaddingLeft"
+                                            android:paddingBottom="@dimen/detailMorePaddingTop"
+                                            android:text="@string/buy_now"
+                                            android:textColor="@color/rounded_button_text_color"
+                                            android:textSize="@dimen/detailBuyNow"
+                                            android:visibility="gone" />
+
+
+                                    </LinearLayout>
+                                </RelativeLayout>
+
 
 
                                 <TextView

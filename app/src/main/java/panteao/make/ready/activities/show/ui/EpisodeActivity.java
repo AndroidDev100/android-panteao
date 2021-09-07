@@ -862,7 +862,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
         ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
-        if (videoDetails.isPremium()) {
+        if (videoDetails.isSeriesPremium()) {
             isPremium = true;
             try {
                 if (!isLogin) {
@@ -879,8 +879,15 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             getBinding().tvBuyNow.setVisibility(View.VISIBLE);
             getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
             getBinding().backButton.setVisibility(View.VISIBLE);
-            Entryid="";
-            hitApiEntitlement(videoDetails.getSku());
+            if (videoDetails.isPremium()) {
+                Entryid="";
+            }else {
+                Entryid=videoDetails.getkEntryId();
+            }
+            if (videoDetails.getSeriesSku()!=null && !videoDetails.getSeriesSku().equalsIgnoreCase("")){
+                hitApiEntitlement(videoDetails.getSeriesSku());
+            }
+
 
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
@@ -1131,7 +1138,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         }
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
-                        Entryid = (responseEntitlement.getData().getBrightcoveVideoId());
+                       // Entryid = (responseEntitlement.getData().getBrightcoveVideoId());
                         if(userInteractionFragment!=null) {
                             userInteractionFragment.setDownloadable(true);
                             initDownload(Entryid);

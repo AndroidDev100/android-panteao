@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import panteao.make.ready.activities.layers.EntitlementLayer;
+import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.repository.series.SeriesRepository;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ResponseAssetHistory;
 import panteao.make.ready.beanModel.addComment.ResponseAddComment;
@@ -96,6 +98,10 @@ public class SeriesViewModel extends AndroidViewModel {
 
     public LiveData<JsonObject> hitLogout(boolean session, String token) {
         return SeriesRepository.getInstance().hitApiLogout(session, token);
+    }
+
+    public LiveData<ResponseEntitle> hitApiEntitlement(String token, String sku) {
+        return EntitlementLayer.getInstance().hitApiEntitlement(token, sku);
     }
 
 }

@@ -41,6 +41,7 @@ public class EnveuVideoItemBean implements Parcelable {
     private String contentProvider;
     private List<String> assetCast;
     private boolean premium;
+    private boolean seriesPremium;
     private String posterURL;
     private String seriesImageURL;
     private Object price;
@@ -48,6 +49,7 @@ public class EnveuVideoItemBean implements Parcelable {
     private String season;
     private int id;
     private String sku;
+    private String seriesSku;
     private boolean isNew;
     private Object tvod;
     private Object episodeNo;
@@ -220,6 +222,20 @@ public class EnveuVideoItemBean implements Parcelable {
                         this.tutorialId = String.valueOf(details.getData().getLinkedContent().getId());
                     }
                 }
+
+                if (details.getData().getLinkedContent().getContentType() != null && !details.getData().getLinkedContent().getContentType().equalsIgnoreCase("")) {
+                    if (details.getData().getLinkedContent().getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || details.getData().getLinkedContent().getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesPremium = details.getData().getLinkedContent().isPremium();
+                    }
+                }
+
+                if (details.getData().getLinkedContent().getContentType() != null && !details.getData().getLinkedContent().getContentType().equalsIgnoreCase("")) {
+                    if (details.getData().getLinkedContent().getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || details.getData().getLinkedContent().getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesSku = details.getData().getLinkedContent().getSku();
+                    }
+                }
+
+
                 this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(details.getData(), imageType);
             }
             this.sku = details.getData().getSku() == null ? "" : details.getData().getSku();
@@ -894,6 +910,14 @@ public class EnveuVideoItemBean implements Parcelable {
         this.premium = premium;
     }
 
+    public void setSeriesPremium(boolean seriesPremium) {
+        this.seriesPremium = seriesPremium;
+    }
+
+    public boolean isSeriesPremium() {
+        return seriesPremium;
+    }
+
     public String getPosterURL() {
         return posterURL;
     }
@@ -940,6 +964,14 @@ public class EnveuVideoItemBean implements Parcelable {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public void setSeriesSku(String seriesSku) {
+        this.seriesSku = seriesSku;
+    }
+
+    public String getSeriesSku() {
+        return seriesSku;
     }
 
     public boolean isNew() {

@@ -32,6 +32,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
+import panteao.make.ready.activities.purchase.TVODENUMS;
+import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
+import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.tutorial.TRecommendationRailFragment;
@@ -39,6 +42,8 @@ import panteao.make.ready.activities.tutorial.TSeasonTabFragment;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
+import panteao.make.ready.beanModel.entitle.EntitledAs;
+import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -48,6 +53,7 @@ import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
+import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
@@ -79,6 +85,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
@@ -379,6 +386,12 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             setUserInteractionFragment(seriesId);
             setTabs();
             setUiComponents(seriesDetailBean);
+            if (seriesDetailBean.isPremium()) {
+                getBinding().tvPurchased.setVisibility(View.GONE);
+                getBinding().tvBuyNow.setVisibility(View.VISIBLE);
+                getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
+                hitApiEntitlement(seriesDetailBean.getSku());
+            }
 //            downloadHelper = new DownloadHelper(this, this);
 //            downloadHelper.setAssetType(MediaTypeConstants.getInstance().getEpisode());
 //            downloadHelper.setSeriesName(seriesDetailBean.getTitle());
@@ -394,7 +407,150 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 showDialog(TutorialActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
             }
         }
+
+        BuyNowClick();
     }
+
+    boolean isPremium = false;
+    ResponseEntitle responseEntitlementModel;
+    private void hitApiEntitlement(String sku) {
+        viewModel.hitApiEntitlement(token, sku).observe(TutorialActivity.this, responseEntitlement -> {
+            responseEntitlementModel = responseEntitlement;
+            if (responseEntitlement.getStatus()) {
+                if (responseEntitlement.getData().getEntitled()) {
+                    isPremium = false;
+                    getBinding().tvBuyNow.setVisibility(View.GONE);
+                    if (responseEntitlement.getData() != null) {
+                        updateBuyNowText(responseEntitlement, 1);
+                    }
+                } else {
+                    if (responseEntitlement.getData() != null) {
+                        updateBuyNowText(responseEntitlement, 2);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                isPremium = true;
+
+                            } catch (Exception ignored) {
+
+                            }
+                        }
+                    });
+                }
+            } else {
+                if (responseEntitlementModel != null && responseEntitlementModel.getResponseCode() != null && responseEntitlementModel.getResponseCode() > 0 && responseEntitlementModel.getResponseCode() == 4302) {
+                    isloggedout = true;
+                    logoutUser();
+                }
+            }
+        });
+
+    }
+
+    public void logoutUser() {
+        isloggedout = false;
+        if (isLogin) {
+            if (CheckInternetConnection.isOnline(Objects.requireNonNull(TutorialActivity.this))) {
+                clearCredientials(preference);
+                hitApiLogout(TutorialActivity.this, preference.getAppPrefAccessToken());
+            }
+        }
+    }
+
+    String typeofTVOD="";
+    private void updateBuyNowText(ResponseEntitle responseEntitlement, int type) {
+        try {
+            typeofTVOD="";
+            if (type == 1) {
+                if (responseEntitlement.getData().getEntitledAs() != null) {
+                    List<EntitledAs> alpurchaseas = responseEntitlement.getData().getEntitledAs();
+                    for (int i = 0 ; i<alpurchaseas.size();i++){
+                        String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
+                        if (vodOfferType!=null){
+                            if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
+
+                            } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                                if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___sd.name())){
+                                    typeofTVOD=TVODENUMS.___sd.name();
+                                }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___hd.name())){
+                                    typeofTVOD=TVODENUMS.___hd.name();
+                                }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___uhd.name())){
+                                    typeofTVOD=TVODENUMS.___uhd.name();
+                                }
+
+                            } else {
+
+                            }
+                        }
+
+                    }
+                    String vodOfferType = alpurchaseas.get(0).getVoDOfferType();
+                    String subscriptionOfferPeriod = null;
+                    if (alpurchaseas.get(0).getOfferType() != null) {
+                        subscriptionOfferPeriod = (String) alpurchaseas.get(0).getOfferType();
+                    }
+
+                    if (vodOfferType != null) {
+                        if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
+                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.purchased));
+                        } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.rented));
+                        } else {
+
+                        }
+                    } else {
+                        if (subscriptionOfferPeriod != null) {
+                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
+                            typeofTVOD="";
+                        } else {
+
+                        }
+                    }
+                    if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
+
+                        preference.setEntitlementState(true);
+                    }
+
+                }
+            } else {
+
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void BuyNowClick() {
+        getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
+        getBinding().tvPurchased.setOnClickListener(view -> comingSoon());
+    }
+
+    public void comingSoon() {
+        if (isLogin) {
+            //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
+            AppCommonMethod.seriesId = seriesId;
+            if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
+                Intent intent = new Intent(TutorialActivity.this, PurchaseActivity.class);
+                intent.putExtra("response", seriesDetailBean);
+                intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
+                intent.putExtra("responseEntitlement", responseEntitlementModel);
+                if (responseEntitlementModel!=null){
+                    startActivity(intent);
+                }
+            }
+
+        } else {
+            preference.setAppPrefGotoPurchase(true);
+            openLoginPage(getResources().getString(R.string.please_login_play));
+        }
+    }
+
 
 
     public void setUserInteractionFragment(int id) {
