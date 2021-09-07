@@ -299,6 +299,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     }
 
     private boolean isHitPlayerApi = false;
+    boolean refreshEntitlement=false;
     @Override
     protected void onResume() {
         super.onResume();
@@ -324,6 +325,21 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             // seriesId = AppCommonMethod.seriesId;
             isHitPlayerApi = false;
             refreshDetailPage(seriesId);
+        }
+
+        if (preference!=null){
+            isLogin = preference.getAppPrefLoginStatus();
+        }
+        if (isLogin) {
+            AppCommonMethod.seriesId = seriesId;
+            if (responseEntitlementModel != null && !responseEntitlementModel.getStatus()) {
+                if (!refreshEntitlement){
+                    AppCommonMethod.isPurchase = false;
+                    refreshEntitlement=true;
+                    isHitPlayerApi = false;
+                    refreshDetailPage(seriesId);
+                }
+            }
         }
     }
 

@@ -877,7 +877,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
         ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
-        if (videoDetails.isPremium()) {
+        if (videoDetails.isSeriesPremium()) {
             isPremium=true;
             try {
                 if (!isLogin) {
@@ -1089,7 +1089,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", ChapterActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+           // showDialog("", getResources().getString(R.string.premium_popup_message));
         }catch (Exception ignored){
 
         }
