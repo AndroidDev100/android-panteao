@@ -302,6 +302,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     private boolean isHitPlayerApi = false;
+    boolean refreshEntitlement=false;
     @Override
     protected void onResume() {
         super.onResume();
@@ -321,16 +322,34 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
         if (AppCommonMethod.isPurchase) {
             AppCommonMethod.isPurchase = false;
+            if (getBinding()!=null){
+                getBinding().tvBuyNow.setVisibility(View.GONE);
+            }
            // seriesId = AppCommonMethod.seriesId;
             isHitPlayerApi = false;
             refreshDetailPage(seriesId);
+        }
+
+        if (preference!=null){
+            isLogin = preference.getAppPrefLoginStatus();
+        }
+        if (isLogin) {
+            AppCommonMethod.seriesId = seriesId;
+            if (responseEntitlementModel != null && !responseEntitlementModel.getStatus()) {
+                if (!refreshEntitlement){
+                    AppCommonMethod.isPurchase = false;
+                    refreshEntitlement=true;
+                    isHitPlayerApi = false;
+                    refreshDetailPage(seriesId);
+                }
+            }
         }
     }
 
     private void refreshDetailPage(int seriesId) {
         this.seriesId=seriesId;
         Log.w("seriesID--->>",seriesId+"");
-        connectionObserver();
+        onSeriesCreate();
     }
 
     private void getSeriesDetail() {
@@ -384,7 +403,6 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             setUiComponents(seriesDetailBean);
             if (seriesDetailBean.isPremium()) {
                 getBinding().tvPurchased.setVisibility(View.GONE);
-                getBinding().tvBuyNow.setVisibility(View.VISIBLE);
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 hitApiEntitlement(seriesDetailBean.getSku());
             }
@@ -413,6 +431,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     public void comingSoon() {
+        if (preference!=null){
+            isLogin = preference.getAppPrefLoginStatus();
+        }
         if (isLogin) {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.seriesId = seriesId;
@@ -446,6 +467,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         updateBuyNowText(responseEntitlement, 1);
                     }
                 } else {
+                    getBinding().tvBuyNow.setVisibility(View.VISIBLE);
                     if (responseEntitlement.getData() != null) {
                         updateBuyNowText(responseEntitlement, 2);
                     }
@@ -462,6 +484,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     });
                 }
             } else {
+                if (!isLogin){
+                    getBinding().tvBuyNow.setVisibility(View.VISIBLE);
+                }
                 if (responseEntitlementModel != null && responseEntitlementModel.getResponseCode() != null && responseEntitlementModel.getResponseCode() > 0 && responseEntitlementModel.getResponseCode() == 4302) {
                     isloggedout = true;
                     logoutUser();
@@ -585,7 +610,8 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             TabLayout.Tab tab = getBinding().tabLayout.getTabAt(0);
             tab.select();
         } else {
-            railFragment = new RecommendationRailFragment();
+            if (episodeTabAdapter == null) {
+                 railFragment = new RecommendationRailFragment();
             seasonTabFragment = new SeasonTabFragment();
             getBinding().tabLayout.setSelectedTabIndicatorGravity(INDICATOR_GRAVITY_BOTTOM);
             episodeTabAdapter = new EpisodeTabAdapter(getSupportFragmentManager());
@@ -620,6 +646,18 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 //                        userInteractionFragment.setDownloadable(false);
 //                }
 //            });
+            }else {
+                Bundle args = new Bundle();
+                args.putString(AppConstants.BUNDLE_TAB_ID, tabId);
+                railFragment.getVideoRails(args);
+
+                Bundle bundleSeason = new Bundle();
+                bundleSeason.putInt(AppConstants.BUNDLE_ASSET_ID, seriesId);
+                bundleSeason.putParcelableArrayList(AppConstants.BUNDLE_SEASON_ARRAY, seriesDetailBean.getSeasons());
+                bundleSeason.putInt(AppConstants.BUNDLE_SEASON_COUNT, seriesDetailBean.getSeasonCount());
+                seasonTabFragment.getVideoRails(bundleSeason);
+            }
+
         }
 
         getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
