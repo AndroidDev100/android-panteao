@@ -16,6 +16,8 @@ import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.show.ui.ShowActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.responseModels.series.season.ItemsItem;
 import panteao.make.ready.R;
@@ -157,8 +159,14 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
                             if ((itemsList.get(i).getAssetType()) != null) {
                                 if (itemsList.get(i).getAssetType().equalsIgnoreCase("EPISODE")) {
                                     new ActivityLauncher(mContext).episodeScreen(mContext, EpisodeActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
-                                } else {
-                                    new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
+                                } else if(itemsList.get(i).getAssetType().equalsIgnoreCase("CHAPTER")){
+                                    new ActivityLauncher(mContext).chapterScreen(mContext, ChapterActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
+                                }
+                                else if(itemsList.get(i).getAssetType().equalsIgnoreCase("SHOWS")){
+                                    new ActivityLauncher(mContext).showScreen(mContext, ShowActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
+                                }
+                                else {
+                                   // new ActivityLauncher(mContext).detailScreen(mContext, InstructorActivity.class, itemsList.get(i).getId(), "0", contentsItem.isPremium());
                                 }
                             }
                         } catch (Exception e) {

@@ -31,7 +31,7 @@ public class SDKConfig {
     public static String API_KEY_MOB = "ynpwlhgafrnfhkjxjzqgoyxmwphxpxxxmjczkdtm";
     public static String API_KEY_TAB = "namofxttigqlynruoqyduaenplgsfphafrspibiu";
 
-   /* public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
+    /*public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
     public static String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
     public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";*/
     public static int CONFIG_VERSION = 1;
@@ -101,7 +101,7 @@ public class SDKConfig {
     }
 
     public String getSecondTabId() {
-        return AppCommonMethod.getHomeTabId(configBean,"PREMIUM");
+        return AppCommonMethod.getHomeTabId(configBean,"FREE");
 
     }
     public String getThirdTabId() {
