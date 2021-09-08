@@ -163,11 +163,14 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void setCurrentPosition(int currentposition, int duration) {
-        seekBar.setDuration(duration);
-        currentPosition.setText(stringForTime(currentposition));
-        totalDuration.setText(stringForTime(duration));
-        updateSeekbar(currentposition);
-        playbackCurrentPosition = currentposition;
+
+        if (!seeking) {
+            seekBar.setDuration(duration);
+            currentPosition.setText(stringForTime(currentposition));
+            totalDuration.setText(stringForTime(duration));
+            updateSeekbar(currentposition);
+            this.playbackCurrentPosition = currentposition;
+        }
       // controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
     }
 
@@ -238,6 +241,7 @@ public class PlayerControlsFragment extends Fragment {
                 }
             }
         });
+
 
         //Play pause control for player
 
