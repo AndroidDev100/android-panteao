@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,9 +37,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kaltura.netkit.utils.ErrorElement;
 import com.kaltura.playkit.PKEvent;
@@ -119,6 +116,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean fromOnstart = false;
     String typeofTVOD="";
     private String fromActivity = "";
+    private boolean isBingeWatchRunning = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -628,6 +626,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     @Override
+    public void IsBingeWatchRunning(boolean b) {
+        this.isBingeWatchRunning = b;
+    }
+
+    @Override
     public void QualitySettings() {
 
         chooseVideoquality();
@@ -854,11 +857,18 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
             }
             player.pause();
+            Log.d("ftyshhdh","EnterOnPause");
 
         }
         if (handler != null) {
             handler.removeCallbacksAndMessages(runnable);
             handler = null;
+        }
+
+        if (isBingeWatchRunning){
+            if (playerControlsFragment!=null){
+                playerControlsFragment.stopTimer();
+            }
         }
     }
 
@@ -866,15 +876,20 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void onResume() {
 
         if (player != null) {
+            Log.d("ftyshhdh","EnterResume");
             player.seekTo(stopPosition);
             if (play_pause != null) {
+
                 countDownTimer.start();
+                Log.d("ftyshhdh","EnterResume1");
                 if (AppCommonMethod.isTV(requireActivity()))
                     play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.exo_icon_play));
                 else
                     play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
             }
             player.play();
+
+
         }
         super.onResume();
         requestAudioFocus();
@@ -883,6 +898,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             bookmarking(player);
         }
     }
+
 
     private void setBroadcast() {
         receiver = new NetworkChangeReceiver();
@@ -991,7 +1007,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (mgr != null) {
             mgr.listen(PhoneStateListenerHelper.getInstance(this), PhoneStateListener.LISTEN_NONE);
         }
-
+        Log.d("ftyshhdh","EnterOnStop");
         if (handler != null) {
             handler.removeCallbacksAndMessages(runnable);
             handler = null;
@@ -1001,6 +1017,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     @Override
     public void onStart() {
         super.onStart();
+        if (isBingeWatchRunning){
+            if (player!=null){
+                playerControlsFragment.setBingeTrue(true);
+            }
+
+        }
 
         try {
             TelephonyManager mgr = (TelephonyManager) getActivity().getApplicationContext().getSystemService(TELEPHONY_SERVICE);

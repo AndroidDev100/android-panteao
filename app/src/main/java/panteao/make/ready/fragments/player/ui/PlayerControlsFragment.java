@@ -419,18 +419,22 @@ public class PlayerControlsFragment extends Fragment {
                 binge_text.setText("Next Chapter");
 
             if (isFirstCalledBingeWatch) {
+                playerCallbacks.IsBingeWatchRunning(true);
                 isFirstCalledBingeWatch = false;
+
                 mTimer = new CountDownTimer(position, 1000) {
                     public void onTick(long millisUntilFinished) {
                         skipduration.setText(Long.toString(millisUntilFinished / 1000));
                     }
 
                     public void onFinish() {
+                        playerCallbacks.IsBingeWatchRunning(true);
                         skipduration.setText("");
                     }
                 };
 
                 mTimer.start();
+
             }
         }
 
@@ -701,5 +705,15 @@ public class PlayerControlsFragment extends Fragment {
 
     public void IsFromTrailor(boolean fromTrailor) {
         this.isFromtrailor = fromTrailor;
+    }
+
+    public void stopTimer() {
+        if (mTimer!=null){
+            mTimer.cancel();
+        }
+    }
+
+    public void setBingeTrue(boolean b) {
+        isFirstCalledBingeWatch = b;
     }
 }

@@ -1,5 +1,6 @@
 package panteao.make.ready.fragments.player.ui;
 
+import android.os.CountDownTimer;
 import android.widget.ImageView;
 
 public interface PlayerCallbacks {
@@ -18,4 +19,5 @@ public interface PlayerCallbacks {
     void bitRateRequest();
     void replay();
 
+    void IsBingeWatchRunning(boolean b);
 }
