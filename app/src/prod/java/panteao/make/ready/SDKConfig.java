@@ -36,8 +36,6 @@ public class SDKConfig {
     public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";*/
     public static int CONFIG_VERSION = 1;
     public static String ApplicationStatus = "disconnected";
-    public static String TERMCONDITION = "https://www.mvhub.com/term.php";
-    public static String PRIVACYPOLICY = "https://www.mvhub.com/privacy.php";
     public static String WEBP_QUALITY="filters:format(webp):quality(60)/";
     public static int DOWNLOAD_EXPIRY_DAYS=30;
     public static boolean DOWNLOAD_ENABLE=true;

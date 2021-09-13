@@ -55,6 +55,7 @@ import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.internalpages.CustomInternalPage;
 import panteao.make.ready.activities.internalpages.TVCustomInternalPage;
 import panteao.make.ready.activities.purchase.TVODENUMS;
+import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -62,6 +63,7 @@ import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseActivity;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
+import panteao.make.ready.beanModel.entitle.RentalPeriod;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModel.membershipAndPlan.DataItem;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
@@ -2132,6 +2134,7 @@ public class AppCommonMethod {
 
         Date today = calendar.getTime();
 
+        //Log.w("downloadExpiry-->",SDKConfig.DOWNLOAD_EXPIRY_DAYS+"");
         calendar.add(Calendar.DAY_OF_YEAR, SDKConfig.DOWNLOAD_EXPIRY_DAYS);
         Date tomorrow = calendar.getTime();
 
@@ -2206,4 +2209,33 @@ public class AppCommonMethod {
         return returnIndex;
     }
 
+    public static void setDownloadExpiry(RentalPeriod rentalPeriod) {
+        try {
+            if(rentalPeriod!=null){
+                if (rentalPeriod.getPeriodType().contains(VodOfferType.DAYS.name())){
+                    int periodlenth=rentalPeriod.getPeriodLength();
+                    if (periodlenth>0){
+                        SDKConfig.DOWNLOAD_EXPIRY_DAYS=periodlenth;
+                    }
+                }else if (rentalPeriod.getPeriodType().contains(VodOfferType.WEEKS.name())){
+                    int periodLenth=rentalPeriod.getPeriodLength();
+                    int weekDays=7;
+                    int days=periodLenth*weekDays;
+                    SDKConfig.DOWNLOAD_EXPIRY_DAYS=days;
+                }
+                else if (rentalPeriod.getPeriodType().contains(VodOfferType.MONTHS.name())){
+                    int periodLenth=rentalPeriod.getPeriodLength();
+                    int monthDays=30;
+                    int days=periodLenth*monthDays;
+                    SDKConfig.DOWNLOAD_EXPIRY_DAYS=days;
+                }else {
+                    SDKConfig.DOWNLOAD_EXPIRY_DAYS=30;
+                }
+            }else {
+                SDKConfig.DOWNLOAD_EXPIRY_DAYS=30;
+            }
+        }catch (Exception e){
+            SDKConfig.DOWNLOAD_EXPIRY_DAYS=30;
+        }
+    }
 }

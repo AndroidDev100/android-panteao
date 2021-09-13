@@ -193,7 +193,7 @@ public class ImageLayer {
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) < 1) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
                         width=0;
-                        height=244;
+                        height=350;
                     }
                 }
             }

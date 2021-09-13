@@ -1095,9 +1095,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     for (int i = 0 ; i<alpurchaseas.size();i++){
                         String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
                         if (vodOfferType!=null){
-                            if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
-
-                        } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                             if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                                 AppCommonMethod.setDownloadExpiry(alpurchaseas.get(i).getRentalPeriod());
                                 if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___sd.name())){
                                     typeofTVOD=TVODENUMS.___sd.name();
                                 }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___hd.name())){
@@ -1106,7 +1105,18 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                                     typeofTVOD=TVODENUMS.___uhd.name();
                                 }
 
-                        } else {
+                        }
+                             if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
+                                 AppCommonMethod.setDownloadExpiry(null);
+                                 if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___sd.name())){
+                                     typeofTVOD=TVODENUMS.___sd.name();
+                                 }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___hd.name())){
+                                     typeofTVOD=TVODENUMS.___hd.name();
+                                 }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___uhd.name())){
+                                     typeofTVOD=TVODENUMS.___uhd.name();
+                                 }
+
+                             } else {
 
                         }
                         }
@@ -1119,16 +1129,19 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     }
 
                     if (vodOfferType != null) {
+                        if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.rented));
+                        }
                         if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
                             getBinding().tvPurchased.setVisibility(View.VISIBLE);
                             getBinding().tvPurchased.setText("" + getResources().getString(R.string.purchased));
-                        } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
-                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
-                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.rented));
-                        } else {
+                        }
+                        else {
 
                         }
                     } else {
+                        AppCommonMethod.setDownloadExpiry(null);
                         if (subscriptionOfferPeriod != null) {
                             getBinding().tvPurchased.setVisibility(View.VISIBLE);
                             getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
