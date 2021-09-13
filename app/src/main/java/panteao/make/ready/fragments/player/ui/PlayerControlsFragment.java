@@ -163,11 +163,14 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     public void setCurrentPosition(int currentposition, int duration) {
-        seekBar.setDuration(duration);
-        currentPosition.setText(stringForTime(currentposition));
-        totalDuration.setText(stringForTime(duration));
-        updateSeekbar(currentposition);
-        playbackCurrentPosition = currentposition;
+
+        if (!seeking) {
+            seekBar.setDuration(duration);
+            currentPosition.setText(stringForTime(currentposition));
+            totalDuration.setText(stringForTime(duration));
+            updateSeekbar(currentposition);
+            this.playbackCurrentPosition = currentposition;
+        }
       // controlRewindAndForwardImageVisibility(playbackCurrentPosition, playbackDuration);
     }
 
@@ -238,6 +241,7 @@ public class PlayerControlsFragment extends Fragment {
                 }
             }
         });
+
 
         //Play pause control for player
 
@@ -415,18 +419,22 @@ public class PlayerControlsFragment extends Fragment {
                 binge_text.setText("Next Chapter");
 
             if (isFirstCalledBingeWatch) {
+                playerCallbacks.IsBingeWatchRunning(true);
                 isFirstCalledBingeWatch = false;
+
                 mTimer = new CountDownTimer(position, 1000) {
                     public void onTick(long millisUntilFinished) {
                         skipduration.setText(Long.toString(millisUntilFinished / 1000));
                     }
 
                     public void onFinish() {
+                        playerCallbacks.IsBingeWatchRunning(true);
                         skipduration.setText("");
                     }
                 };
 
                 mTimer.start();
+
             }
         }
 
@@ -697,5 +705,15 @@ public class PlayerControlsFragment extends Fragment {
 
     public void IsFromTrailor(boolean fromTrailor) {
         this.isFromtrailor = fromTrailor;
+    }
+
+    public void stopTimer() {
+        if (mTimer!=null){
+            mTimer.cancel();
+        }
+    }
+
+    public void setBingeTrue(boolean b) {
+        isFirstCalledBingeWatch = b;
     }
 }
