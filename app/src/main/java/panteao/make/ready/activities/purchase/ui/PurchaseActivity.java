@@ -879,7 +879,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                             finish();
                         } else {
                             dismissLoading(getBinding().progressBar);
-                            showDialog(PurchaseActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.payment_error) + " " + "https://www.mvhub.com");
+                            showDialog(PurchaseActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.payment_error) + " " + "info@panteaoproductions.com");
                         }
 
                     }
