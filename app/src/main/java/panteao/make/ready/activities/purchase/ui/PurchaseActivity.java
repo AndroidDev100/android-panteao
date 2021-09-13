@@ -237,10 +237,10 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             showHideProgress(getBinding().progressBar);
             Log.w("planDetails", selectedPlanName + " " + clickedModel.getIdentifier());
             if (selectedPlanName.equalsIgnoreCase(VodOfferType.PERPETUAL.name())) {
-                if (clickedModel != null && clickedModel.getIdentifier() != null) {
+                if (!isAlreadySubscribed) {
                     bp.purchase(PurchaseActivity.this, clickedModel.getIdentifier(), "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
                 } else {
-                    Toast.makeText(PurchaseActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PurchaseActivity.this, getResources().getString(R.string.already_subscriber), Toast.LENGTH_SHORT).show();
                 }
             } else if (selectedPlanName.equalsIgnoreCase(VodOfferType.RENTAL.name())) {
 
@@ -484,7 +484,13 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                 if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
                     SkuDetails skuDetails = null;
                     if (!StringUtils.isNullOrEmptyOrZero(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier())) {
-                        try {
+                        int index= AppCommonMethod.getProductIndex(productSkuList,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+                        if (index==-1 && index>=i){
+
+                        }else {
+                            createPerpetualPlan(purchaseModel, i, alPurchaseOptions, vodOfferType, subscriptionOfferPeriod, VodOfferType.PERPETUAL.name(),index);
+                        }
+                       /* try {
                             // bp.consumePurchase(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
                             skuDetails = bp.getProductSkuDetail(PurchaseActivity.this,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
                             purchaseModel.setPrice("" + skuDetails.getPrice());
@@ -499,10 +505,9 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                             purchaseModel.setTitle(responseEntitlementModel.getData().getPurchaseAs().get(i).getTitle());
                             purchaseModel.setIdentifier(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
                             purchaseModel.setCurrency(responseEntitlementModel.getData().getPurchaseAs().get(i).getPrices().get(0).getCurrencyCode());
-                        }
+                        }*/
                     }
-                    if (skuDetails != null)
-                        alPurchaseOptions.add(purchaseModel);
+
                 } else if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
                     int index= AppCommonMethod.getProductIndex(productSkuList,responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
                     if (index==-1 && index>=i){
@@ -518,6 +523,28 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
         }
 
+    }
+
+    private void createPerpetualPlan(PurchaseModel purchaseModel, int i, List<PurchaseModel> alPurchaseOptions, String vodOfferType, String subscriptionOfferPeriod, String name, int planIndex) {
+
+        try {
+            skuDetails = bp.getLocalSubscriptionSkuDetail(PurchaseActivity.this,productSkuList.get(planIndex));
+            purchaseModel.setPrice("" + skuDetails.getPrice());
+            purchaseModel.setPurchaseOptions(VodOfferType.PERPETUAL.name());
+            purchaseModel.setTitle(responseEntitlementModel.getData().getPurchaseAs().get(i).getTitle());
+            purchaseModel.setIdentifier(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+            purchaseModel.setCurrency(skuDetails.getPriceCurrencyCode());
+        } catch (Exception e) {
+            Logger.e("PurchaseModel", "purchase item not found" + "  " + e.toString());
+            purchaseModel.setPrice("" + responseEntitlementModel.getData().getPurchaseAs().get(i).getPrices().get(0).getPrice());
+            purchaseModel.setPurchaseOptions(VodOfferType.PERPETUAL.name());
+            purchaseModel.setTitle(responseEntitlementModel.getData().getPurchaseAs().get(i).getTitle());
+            purchaseModel.setIdentifier(responseEntitlementModel.getData().getPurchaseAs().get(i).getIdentifier());
+            purchaseModel.setCurrency(responseEntitlementModel.getData().getPurchaseAs().get(i).getPrices().get(0).getCurrencyCode());
+        }
+
+        if (skuDetails != null)
+            alPurchaseOptions.add(purchaseModel);
     }
 
     private void createRentalPlan(PurchaseModel purchaseModel, int i, List<PurchaseModel> alPurchaseOptions, String vodOfferType, String subscriptionOfferPeriod, String subscriptionType,int planIndex) {

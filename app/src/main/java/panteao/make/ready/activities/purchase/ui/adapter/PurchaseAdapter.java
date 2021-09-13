@@ -33,6 +33,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
     private int rowIndex = -1;
     private String subscription = "";
     private String tvod = "";
+    private String perpatual = "";
     private boolean isClickable;
     private ArrayList<String> purchasedList;
     boolean fromClick=false;
@@ -121,9 +122,11 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
                      return;
                  }
             }else {
-                if (tvod.equalsIgnoreCase("")){
+                if (perpatual.equalsIgnoreCase("")){
 
-                }else {
+                }else if (tvod.equalsIgnoreCase("")){
+
+                } else {
                     return;
                 }
             }
@@ -136,7 +139,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
             }
             if (isCurrencySupported) {
                 if (!(((PurchaseActivity) context).isAlreadySubscribed && !list.get(position).getPurchaseOptions().equalsIgnoreCase("TVOD"))){
-                resetSelectable(position,subscription,tvod);
+                resetSelectable(position,subscription,tvod,perpatual);
             }else {
                     resetAll(holder);
                 }
@@ -154,6 +157,9 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
             if (!fromClick){
                 if(list.get(position).getPurchaseOptions().equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
                     subscription=list.get(position).getPurchaseOptions();
+                }
+                else if(list.get(position).getPurchaseOptions().equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
+                    perpatual=list.get(position).getPurchaseOptions();
                 }else {
                     tvod=list.get(position).getPurchaseOptions();
                 }
@@ -189,12 +195,12 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
 
     }
 
-    private void resetSelectable(int pos,String subscription,String tvod) {
+    private void resetSelectable(int pos,String subscription,String tvod,String perpatual) {
         rowIndex = pos;
         for (int i = 0; i < list.size(); i++) {
             boolean selected=list.get(i).isSelected();
             String options=list.get(i).getPurchaseOptions();
-            if (selected && !subscription.equalsIgnoreCase("") || selected && !tvod.equalsIgnoreCase("")){
+            if (selected && !subscription.equalsIgnoreCase("") || selected && !tvod.equalsIgnoreCase("") || selected && !perpatual.equalsIgnoreCase("")){
                 list.get(i).setSelected(true);
             }else {
                 if (i == pos) {
@@ -206,7 +212,13 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
                                 list.get(j).setSelected(false);
                             }
 
-                        }else {
+                        }
+                        else if (selectedOption.equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
+                            if(selectedOptions.equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
+                                list.get(j).setSelected(false);
+                            }
+                        }
+                        else {
                             if(selectedOptions.equalsIgnoreCase(VodOfferType.RENTAL.name())){
                                 list.get(j).setSelected(false);
                             }
