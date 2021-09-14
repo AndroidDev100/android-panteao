@@ -330,6 +330,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
+        AppCommonMethod.isPurchase = false;
         if (preference == null){
             preference = KsPreferenceKeys.getInstance();
         }

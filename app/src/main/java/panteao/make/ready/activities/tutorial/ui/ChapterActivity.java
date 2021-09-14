@@ -61,6 +61,7 @@ import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
@@ -757,8 +758,10 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
 
         } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
+
+                Intent intent = new Intent(ChapterActivity.this, MemberShipPlanActivity.class);
+                startActivity(intent);
+
         }
     }
 

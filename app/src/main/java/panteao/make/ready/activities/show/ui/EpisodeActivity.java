@@ -61,6 +61,7 @@ import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
@@ -727,11 +728,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     public void comingSoon() {
-        if (isLogin) {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
-            if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
                 Intent intent = new Intent(EpisodeActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", videoDetails);
                 intent.putExtra("assestId", assestId);
@@ -739,13 +740,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
                 if (responseEntitlementModel!=null){
                     startActivity(intent);
+                   }
                 }
+            }else {
+                Intent intent = new Intent(EpisodeActivity.this, MemberShipPlanActivity.class);
+                startActivity(intent);
             }
 
-        } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
-        }
+
     }
 
     public void openLoginPage(String message) {

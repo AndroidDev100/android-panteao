@@ -34,11 +34,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
+import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
@@ -447,9 +449,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
             }
 
-        } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
+        }else {
+
+            Intent intent = new Intent(SeriesDetailActivity.this, MemberShipPlanActivity.class);
+            startActivity(intent);
+
         }
     }
 

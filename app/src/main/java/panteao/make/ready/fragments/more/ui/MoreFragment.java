@@ -379,19 +379,20 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
 
         } else if (caption.equalsIgnoreCase(getActivity().getResources().getString(R.string.membership_plan))) {
-            if (loginStatus) {
-                if (NetworkConnectivity.isOnline(getActivity())) {
-                    Intent intent = new Intent(getActivity(), MemberShipPlanActivity.class);
-                    startActivity(intent);
-                    AppCommonMethod.trackFcmEvent("Membership and Plans","", getContext(),0);
+            if (NetworkConnectivity.isOnline(getActivity())) {
+                Intent intent = new Intent(getActivity(), MemberShipPlanActivity.class);
+                startActivity(intent);
+                AppCommonMethod.trackFcmEvent("Membership and Plans","", getContext(),0);
 
-                }else {
-                    new ToastHandler(getActivity()).show(getResources().getString(R.string.no_connection));
-                }
+            }else {
+                new ToastHandler(getActivity()).show(getResources().getString(R.string.no_connection));
+            }
+            /*if (loginStatus) {
+
 
             } else {
                 mListener.onLoginClicked();
-            }
+            }*/
 
         } else if (caption.equalsIgnoreCase(getActivity().getResources().getString(R.string.redeem_coupon))) {
             if (loginStatus) {

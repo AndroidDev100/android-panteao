@@ -1,6 +1,7 @@
 package panteao.make.ready.activities.purchaseNew;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,9 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
+import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.databinding.PurchaseBinding;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
@@ -27,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import panteao.make.ready.baseModels.BaseBindingActivity;
+import panteao.make.ready.utils.helpers.ActivityTrackers;
+import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 public class PurchaseActivityNew extends BaseBindingActivity<PurchaseBinding> implements PurchasesUpdatedListener{
 

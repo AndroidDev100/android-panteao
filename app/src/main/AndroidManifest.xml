@@ -283,13 +283,14 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.purchase.ui.PurchaseActivity"
-            android:launchMode="singleTop" />
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.purchaseNew.PurchaseActivityNew"
+            android:screenOrientation="locked"
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.membershipplans.ui.MemberShipPlanActivity"
-            android:launchMode="singleTop" />
+            android:screenOrientation="locked" />
 
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"

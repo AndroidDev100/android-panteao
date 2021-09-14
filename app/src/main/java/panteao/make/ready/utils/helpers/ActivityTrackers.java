@@ -5,10 +5,11 @@ public class ActivityTrackers {
 
     private static ActivityTrackers activityTrackersInstance;
     public String launcherActivity;
-    public String action;
+    public String action="";
 
     public static String WATCHLIST="watchlist";
     public static String LIKE="like";
+    public static String PURCHASE="purchase";
 
     private ActivityTrackers() {
 

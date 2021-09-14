@@ -32,6 +32,7 @@ import panteao.make.ready.activities.membershipplans.adapter.MembershipAdapter;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
 import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
+import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
 import panteao.make.ready.beanModel.membershipAndPlan.ResponseMembershipAndPlan;
@@ -46,12 +47,14 @@ import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
+import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import com.google.gson.JsonObject;
 import panteao.make.ready.utils.helpers.ToastHandler;
+import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.utils.inAppBilling.BillingProcessor;
 import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
@@ -190,16 +193,24 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         getBinding().btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetworkConnectivity.isOnline(MemberShipPlanActivity.this)) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
+                if (preference!=null){
+                    boolean loginStatus = preference.getAppPrefLoginStatus();
+                    if (loginStatus){
+                        if (NetworkConnectivity.isOnline(MemberShipPlanActivity.this)) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                return;
+                            }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+                            if (model!=null){
+                                purchaseTVOD();
+                            }
+                        }else {
+                            new ToastHandler(MemberShipPlanActivity.this).show(getResources().getString(R.string.no_connection));
+                        }
+                    }else {
+                        ActivityTrackers.getInstance().setAction(ActivityTrackers.PURCHASE);
+                        new ActivityLauncher(MemberShipPlanActivity.this).loginActivity(MemberShipPlanActivity.this, LoginActivity.class);
                     }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    if (model!=null){
-                        purchaseTVOD();
-                    }
-                }else {
-                    new ToastHandler(MemberShipPlanActivity.this).show(getResources().getString(R.string.no_connection));
                 }
             }
         });
@@ -388,8 +399,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
     }
 
     private void getPlansApi() {
-        String token = preference.getAppPrefAccessToken();
-        if (!StringUtils.isNullOrEmptyOrZero(token)) {
+            String token = preference.getAppPrefAccessToken();
             viewModel.getNewPlans(token).observe(MemberShipPlanActivity.this, new Observer<ResponseMembershipAndPlan>() {
                 @Override
                 public void onChanged(@Nullable ResponseMembershipAndPlan responseMembershipAndPlan) {
@@ -432,9 +442,6 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                 }
             });
 
-        } else {
-            Logger.e("MemberShipPlanActivity", "Token is empty/null");
-        }
     }
 
     List<String> subSkuList=new ArrayList<>();
@@ -484,6 +491,15 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                                  alPurchaseOptions=getSortedList(alPurchaseOptions);
                             }
 
+                            if (!isCardClickable){
+                                if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.getInstance().PURCHASE)) {
+                                    ActivityTrackers.getInstance().setAction("");
+                                    AppCommonMethod.isPurchase = true;
+                                }
+                            }else {
+                                ActivityTrackers.getInstance().setAction("");
+                            }
+
                             if (alPurchaseOptions.size() > 0) {
                                 getBinding().offerLayout.setVisibility(View.VISIBLE);
                                 getBinding().noOfferLayout.setVisibility(View.GONE);
@@ -497,7 +513,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
             }
 
         }catch (Exception e){
-
+                Log.w("appCrash",e.toString());
         }
     }
 
@@ -756,6 +772,13 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
     @Override
     protected void onResume() {
         super.onResume();
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+            if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
+                    Intent intent = new Intent(MemberShipPlanActivity.this, MemberShipPlanActivity.class);
+                    startActivity(intent);
+                    finish();
+            }
+        }
     }
 
     @Override
