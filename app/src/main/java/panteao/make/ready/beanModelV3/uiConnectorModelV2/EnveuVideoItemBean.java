@@ -18,6 +18,7 @@ import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
+import panteao.make.ready.beanModelV3.videoDetailsV2.LinkedContent;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -450,6 +451,23 @@ public class EnveuVideoItemBean implements Parcelable {
                     this.isNewS = isNew;
                 }
             }
+
+            Object linkedContent = details.getLinkedContent();
+            LinkedTreeMap<Object, Object> linkedContentObJ = (LinkedTreeMap) linkedContent;
+            if (linkedContentObJ!=null){
+                if (linkedContentObJ.get("contentType") != null && !linkedContentObJ.get("contentType").toString().equalsIgnoreCase("")) {
+                    if (linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesPremium = (boolean)linkedContentObJ.get("premium");
+                    }
+                }
+
+                if (linkedContentObJ.get("contentType") != null && !linkedContentObJ.get("contentType").toString().equalsIgnoreCase("")) {
+                    if (linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesSku = (String) linkedContentObJ.get("sku");
+                    }
+                }
+            }
+
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
 
@@ -464,7 +482,7 @@ public class EnveuVideoItemBean implements Parcelable {
             this.duration = (long) details.getDuration();
 
         } catch (Exception e) {
-
+        Log.w("EpisodesList-->>",e.toString());
         }
     }
 
