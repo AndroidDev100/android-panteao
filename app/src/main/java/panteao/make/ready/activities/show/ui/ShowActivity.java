@@ -52,7 +52,6 @@ import panteao.make.ready.R;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
-import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
 import panteao.make.ready.activities.listing.listui.ListActivity;
@@ -578,10 +577,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             }
 
         } else {
-
-            Intent intent = new Intent(ShowActivity.this, MemberShipPlanActivity.class);
-            startActivity(intent);
-
+            preference.setAppPrefGotoPurchase(true);
+            openLoginPage(getResources().getString(R.string.please_login_play));
         }
     }
 

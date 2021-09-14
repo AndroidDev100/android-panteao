@@ -34,8 +34,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseAdapter;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
 import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
@@ -57,7 +55,6 @@ import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
-import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
@@ -1228,14 +1225,6 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
-        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
-            if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
-                ActivityTrackers.getInstance().setAction("");
-                Intent intent = new Intent(PurchaseActivity.this, MemberShipPlanActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }
     }
 
     @Override
@@ -1277,5 +1266,6 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         });
 
     }
+
 
 }

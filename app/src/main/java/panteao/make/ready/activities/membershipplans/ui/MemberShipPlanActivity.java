@@ -491,15 +491,6 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
                                  alPurchaseOptions=getSortedList(alPurchaseOptions);
                             }
 
-                            if (!isCardClickable){
-                                if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.getInstance().PURCHASE)) {
-                                    ActivityTrackers.getInstance().setAction("");
-                                    AppCommonMethod.isPurchase = true;
-                                }
-                            }else {
-                                ActivityTrackers.getInstance().setAction("");
-                            }
-
                             if (alPurchaseOptions.size() > 0) {
                                 getBinding().offerLayout.setVisibility(View.VISIBLE);
                                 getBinding().noOfferLayout.setVisibility(View.GONE);
@@ -513,7 +504,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
             }
 
         }catch (Exception e){
-                Log.w("appCrash",e.toString());
+
         }
     }
 
@@ -774,6 +765,7 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         super.onResume();
         if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
             if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
+                    ActivityTrackers.getInstance().setAction("");
                     Intent intent = new Intent(MemberShipPlanActivity.this, MemberShipPlanActivity.class);
                     startActivity(intent);
                     finish();

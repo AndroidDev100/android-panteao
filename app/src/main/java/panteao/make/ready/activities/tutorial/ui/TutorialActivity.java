@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
-import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
@@ -588,10 +587,8 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             }
 
         } else {
-
-            Intent intent = new Intent(TutorialActivity.this, MemberShipPlanActivity.class);
-            startActivity(intent);
-
+            preference.setAppPrefGotoPurchase(true);
+            openLoginPage(getResources().getString(R.string.please_login_play));
         }
     }
 
