@@ -20,6 +20,7 @@ import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
 import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.layersV2.VideoDetailLayer;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -141,6 +142,73 @@ public class RailCommonData implements Parcelable {
         isSeries = false;
     }
 
+    // for related content listing constructor
+    public RailCommonData(PlayListDetailsResponse playListDetailsResponse, MediaTypeConstants mediaTypeConstants) {
+        setEpisodesList(playListDetailsResponse.getItems(), ImageType.LDS.name(),mediaTypeConstants);
+        isSeries = false;
+    }
+
+    private void setEpisodesList(List<ItemsItem> videos, String imageType, MediaTypeConstants mediaTypeConstants) {
+        try {
+            if (videos != null && videos.size() > 0) {
+                final RailCommonData railCommonData = this;
+                for (int i = 0; i < videos.size(); i++) {
+                    VideosItem videoItem = videos.get(i).getContent();
+                    if (videoItem.getContentType()!=null && !videoItem.getContentType().equalsIgnoreCase("")){
+                        if (videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) || videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) ||
+                                videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())){
+                            Gson gson = new Gson();
+                            String tmp = gson.toJson(videoItem);
+                            EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
+                            if (videoItem != null) {
+                                if (videoItem.getSeasonNumber() != null && !videoItem.getSeasonNumber().equalsIgnoreCase("")) {
+                                    int seasonNumber = Integer.parseInt(videoItem.getSeasonNumber());
+                                    railCommonData.setSeasonNumber(seasonNumber);
+                                }
+                                enveuVideoItemBean.setVodCount(videos.size());
+                                if (screenWidget != null && screenWidget.getWidgetImageType() != null && screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
+                                    Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
+                                    String imageUrl = ImageLayer.getInstance().getThumbNailImageUrl(videoItem, screenWidget.getWidgetImageType());
+                                    enveuVideoItemBean.setImages(videoItem.getImages());
+                                    enveuVideoItemBean.setPosterURL(imageUrl);
+                                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getPosterImageUrl(videoItem, screenWidget.getWidgetImageType()));
+
+                                } else {
+                                    String imageUrl = ImageLayer.getInstance().getPosterImageUrl(videoItem, ImageType.LDS.name());
+                                    enveuVideoItemBean.setImages(videoItem.getImages());
+                                    enveuVideoItemBean.setPosterURL(imageUrl);
+                                    enveuVideoItemBean.setThumbnailImage(ImageLayer.getInstance().getThumbNailImageUrl(videoItem, ImageType.LDS.name()));
+                                }
+
+
+                                enveuVideoItemBeans.add(enveuVideoItemBean);
+                            }
+                        }
+                    }
+                }
+
+                try {
+                    if (enveuVideoItemBeans != null && enveuVideoItemBeans.size() > 0) {
+                        Collections.sort(enveuVideoItemBeans, new Comparator<EnveuVideoItemBean>() {
+                            public int compare(EnveuVideoItemBean o1, EnveuVideoItemBean o2) {
+                                if (o1.getEpisodeNo() != null && o1.getEpisodeNo() instanceof Double) {
+                                    return Double.compare((Double) o1.getEpisodeNo(), (Double) o2.getEpisodeNo());
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception ignored) {
+
+                }
+
+            }
+        }catch (Exception ignored){
+
+        }
+
+    }
 
     public RailCommonData(BaseCategory screenWidget) {
         this.screenWidget = screenWidget;

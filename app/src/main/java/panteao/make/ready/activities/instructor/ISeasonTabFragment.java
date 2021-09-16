@@ -376,42 +376,12 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     public void onItemClick(EnveuVideoItemBean enveuVideoItemBean, boolean isPremium) {
         String assetType = enveuVideoItemBean.getAssetType().toUpperCase();
 
-        /*long brighCoveId = 0l;
-
-        if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getBrightcoveVideoId()))
-            brighCoveId = Long.parseLong(enveuVideoItemBean.getBrightcoveVideoId());
-
-        int assetID = enveuVideoItemBean.getId();*/
-
-
-        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())) {
-            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            }
-
-        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+       if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
                 if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
                     AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
                 } else {
-                    AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+                    AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
                 }
-
-        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
-            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            }
-
-        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
-            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getTutorial(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-               // AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
-            } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            }
 
         }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())){
             if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
@@ -419,38 +389,16 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             } else {
                 AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getShow(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
             }
-        }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())){
-            if (AppCommonMethod.getCheckKEntryId(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getSeries(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "", MediaTypeConstants.getInstance().getTrailor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
-            }
-
-
-
-
 
         }
+       else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) || assetType.equalsIgnoreCase(AppConstants.Series)) {
+           if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getkEntryId())) {
+               AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getSeries(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           } else {
+               AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getSeries(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           }
 
-/*
-        switch (assetType) {
-            case AppConstants.Episode:
-                AppCommonMethod.launchDetailScreen(getActivity(), Long.valueOf(enveuVideoItemBean.getBrightcoveVideoId()), AppConstants.Episode, enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium());
-                break;
-            case AppConstants.Series:
-                //  new ActivityLauncher(getActivity()).seriesDetailScreen(getActivity(), InstructorActivity.class, id);
-                break;
-            case AppConstants.Video:
-               // new ActivityLauncher(getActivity()).detailScreenBrightCove(getActivity(), DetailActivity.class, brighCoveId, assetID, "0", isPremium, AppConstants.MOVIE_ENVEU);
-                if (SDKConfig.getInstance().getMovieDetailId().equalsIgnoreCase("")){
-                   // new ActivityLauncher(getActivity()).detailScreenBrightCove(getActivity(), DetailActivity.class, brighCoveId, assetID, "0", isPremium, AppConstants.MOVIE_ENVEU);
-                }else {
-                    new ActivityLauncher(getActivity()).detailScreenBrightCove(getActivity(), DetailActivity.class, brighCoveId, assetID, "0", isPremium, SDKConfig.getInstance().getMovieDetailId());
-                }
-                break;
-
-        }
-*/
+       }
     }
 
     public void updateFragment(Bundle bundleSeason) {

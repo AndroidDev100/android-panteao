@@ -212,10 +212,10 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
     public void numberOfEpisodes(int size) {
         if (size == 1) {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episode));
+            setCustomeFields(seriesDetailBean, 0, getResources().getString(R.string.episode));
             // getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episode));
         } else {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episodes));
+            setCustomeFields(seriesDetailBean, 0, getResources().getString(R.string.episodes));
             //getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episodes));
         }
     }

@@ -211,7 +211,8 @@ public class APIServiceLayer {
             public void onResponse(Call<EnveuCommonResponse> call, Response<EnveuCommonResponse> response) {
                 Gson gson = new Gson();
                 String json = gson.toJson(response.body());
-                parseResponseAsRailCommonData(response);
+                parseInstructorRelatedContent(response);
+               // parseResponseAsRailCommonData(response);
             }
 
             @Override
@@ -221,6 +222,34 @@ public class APIServiceLayer {
             }
         });
 
+    }
+
+    private void parseInstructorRelatedContent(Response<EnveuCommonResponse> response) {
+        try {
+            if (response.body() != null && response.body().getData() != null) {
+                RailCommonData railCommonData = new RailCommonData(response.body().getData(),MediaTypeConstants.getInstance());
+                try {
+                    if (railCommonData.getEnveuVideoItemBeans() != null && railCommonData.getEnveuVideoItemBeans().size() > 0) {
+                        railCommonData.setStatus(true);
+                        railCommonData.setTotalCount(response.body().getData().getTotalElements());
+                        railCommonData.setPageTotal(response.body().getData().getTotalPages());
+                        callBack.onSuccess(railCommonData);
+                    } else {
+                        ApiErrorModel errorModel = new ApiErrorModel(response.code(), "something went wrong");
+                        callBack.onFailure(errorModel);
+                    }
+
+                } catch (Exception ignore) {
+
+                }
+
+            } else {
+                ApiErrorModel errorModel = new ApiErrorModel(response.code(), response.message());
+                callBack.onError(errorModel);
+            }
+        }catch (Exception e){
+
+        }
     }
 
     public void getAllEpisodesV2(int seriesId, int pageNumber,
