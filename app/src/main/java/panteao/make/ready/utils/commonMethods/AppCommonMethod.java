@@ -634,9 +634,9 @@ public class AppCommonMethod {
 
     public static String calculateTimein_hh_mm_format(long milliseconds) {
 
-       /* if (milliseconds % 1000 > 0) {
-            milliseconds = milliseconds + (milliseconds % 1000);
-        }*/
+   /* if (milliseconds % 1000 > 0) {
+        milliseconds = milliseconds + (milliseconds % 1000);
+    }*/
 
         long hours = TimeUnit.SECONDS.toHours(milliseconds);
         long minute = TimeUnit.SECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
@@ -656,8 +656,8 @@ public class AppCommonMethod {
             if (second > 0) {
                 showTime =strMinute +  ":" +  strSecond;
             }
-        else if (second >= 0)
-            showTime = "00:" + strSecond;
+            else if (second >= 0)
+                showTime = "00:" + strSecond;
         return showTime;
     }
 
@@ -1714,7 +1714,7 @@ public class AppCommonMethod {
                 }
             }
 
-          // String timeString = String.format("%02d:%02d:%02d", hours1, minutes1, seconds);
+            // String timeString = String.format("%02d:%02d:%02d", hours1, minutes1, seconds);
 
 
 //            long hours = TimeUnit.SECONDS.toHours(milliseconds);
@@ -2045,12 +2045,12 @@ public class AppCommonMethod {
                         String seriesId2 = value2.getSeriesId();
                         int seasonNumber2 = value2.getSeasonNumber();
                         Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
-                       // if (value2.isSeries()) {
-                            if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
-                                Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
-                                notFound=true;
-                            }
-                       // }
+                        // if (value2.isSeries()) {
+                        if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
+                            Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
+                            notFound=true;
+                        }
+                        // }
                     }
                     if (!notFound){
                         list.add(value);
@@ -2088,7 +2088,7 @@ public class AppCommonMethod {
                 return Long.compare(o2.getTimeStamp(), o1.getTimeStamp());
             }
         });
-      //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
+        //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
         return list;
     }
 
@@ -2134,6 +2134,7 @@ public class AppCommonMethod {
 
         Date today = calendar.getTime();
 
+        //Log.w("downloadExpiry-->",SDKConfig.DOWNLOAD_EXPIRY_DAYS+"");
         calendar.add(Calendar.DAY_OF_YEAR, SDKConfig.DOWNLOAD_EXPIRY_DAYS);
         Date tomorrow = calendar.getTime();
 
