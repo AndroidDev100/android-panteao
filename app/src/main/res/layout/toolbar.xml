@@ -83,10 +83,10 @@
 
                 <ImageView
                     android:id="@+id/home_icon"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_width="@dimen/_37sdp"
+                    android:layout_height="@dimen/_37sdp"
                     android:layout_toRightOf="@+id/back_layout"
-                    android:background="@drawable/makereadytv_logo"
+                    android:background="@drawable/logo_new"
                     android:contentDescription="TODO" />
 
 

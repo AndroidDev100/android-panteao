@@ -13,7 +13,7 @@
             android:id="@+id/img_logo"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
-            android:background="@drawable/pp_white"
+            android:background="@drawable/logo_new"
             android:visibility="visible"
 
             app:layout_constraintBottom_toTopOf="@+id/buildNumber"

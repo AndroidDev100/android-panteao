@@ -399,6 +399,30 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
            }
 
        }
+       else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())) {
+           if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getkEntryId())) {
+               AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           } else {
+               AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getChapter(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           }
+
+       }
+       else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
+           if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getkEntryId())) {
+               AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           } else {
+               AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           }
+
+       }
+       else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())) {
+           if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getkEntryId())) {
+               AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getInstructor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           } else {
+               AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getInstructor(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+           }
+
+       }
     }
 
     public void updateFragment(Bundle bundleSeason) {

@@ -30,6 +30,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/itemMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/rail_top_margin"

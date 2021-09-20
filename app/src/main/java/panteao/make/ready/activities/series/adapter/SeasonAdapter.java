@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
@@ -139,6 +140,12 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         holder.itemBinding.description.setText(videoItemBeans.get(position).getDescription());
 
         try {
+            if (videoItemBeans.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) ||
+                    videoItemBeans.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+                holder.itemBinding.duration.setVisibility(View.GONE);
+            }else {
+                holder.itemBinding.duration.setVisibility(View.VISIBLE);
+            }
             if (!StringUtils.isNullOrEmpty(String.valueOf(videoItemBeans.get(position).getDuration()))) {
 
 //                double d = (double) videoItemBeans.get(position).getDuration();
@@ -179,11 +186,22 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             }
         });
 
-        holder.itemBinding.mainLay.setOnClickListener(view -> {
+        holder.itemBinding.itemMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoItemBeans.get(position).getId() == currentAssetId) {
+                    return;
+                }
+                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
+            }
+        });
+
+
+       /* holder.itemBinding.mainLay.setOnClickListener(view -> {
             PrintLogging.printLog("", "positionIs" + videoItemBeans.get(position));
             id = videoItemBeans.get(position).getId();
             notifyDataSetChanged();
-        });
+        });*/
 
         holder.itemBinding.downloadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
