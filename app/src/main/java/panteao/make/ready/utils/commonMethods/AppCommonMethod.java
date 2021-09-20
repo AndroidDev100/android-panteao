@@ -634,9 +634,9 @@ public class AppCommonMethod {
 
     public static String calculateTimein_hh_mm_format(long milliseconds) {
 
-   /* if (milliseconds % 1000 > 0) {
-        milliseconds = milliseconds + (milliseconds % 1000);
-    }*/
+       /* if (milliseconds % 1000 > 0) {
+            milliseconds = milliseconds + (milliseconds % 1000);
+        }*/
 
         long hours = TimeUnit.SECONDS.toHours(milliseconds);
         long minute = TimeUnit.SECONDS.toMinutes(milliseconds) % TimeUnit.HOURS.toMinutes(1);
@@ -656,8 +656,8 @@ public class AppCommonMethod {
             if (second > 0) {
                 showTime =strMinute +  ":" +  strSecond;
             }
-            else if (second >= 0)
-                showTime = "00:" + strSecond;
+        else if (second >= 0)
+            showTime = "00:" + strSecond;
         return showTime;
     }
 
@@ -2134,7 +2134,6 @@ public class AppCommonMethod {
 
         Date today = calendar.getTime();
 
-        //Log.w("downloadExpiry-->",SDKConfig.DOWNLOAD_EXPIRY_DAYS+"");
         calendar.add(Calendar.DAY_OF_YEAR, SDKConfig.DOWNLOAD_EXPIRY_DAYS);
         Date tomorrow = calendar.getTime();
 
