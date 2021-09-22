@@ -83,10 +83,10 @@
 
                 <ImageView
                     android:id="@+id/home_icon"
-                    android:layout_width="@dimen/_37sdp"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_width="180dp"
+                    android:layout_height="33dp"
                     android:layout_toRightOf="@+id/back_layout"
-                    android:background="@drawable/logo_new"
+                    android:background="@drawable/logo_toolbar"
                     android:contentDescription="TODO" />
 
 
@@ -133,12 +133,12 @@
                     android:background="?attr/search_icon_background"
                     android:tint="@color/white" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/shadow"
-                />
+                android:background="@drawable/shadow" />
 
         </RelativeLayout>
 
