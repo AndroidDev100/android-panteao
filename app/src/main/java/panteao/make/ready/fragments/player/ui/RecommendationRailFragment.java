@@ -24,6 +24,7 @@ import panteao.make.ready.activities.listing.listui.ListActivity;
 import panteao.make.ready.activities.listing.ui.GridActivity;
 import panteao.make.ready.activities.privacypolicy.ui.WebViewActivity;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
+import panteao.make.ready.activities.show.ui.ShowActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
@@ -93,7 +94,8 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
 
         railCommonDataList.clear();
         RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
-/*
+
+        if (context!=null && context instanceof ShowActivity) {
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
             public void onSuccess(Object item) {
@@ -142,20 +144,23 @@ public class RecommendationRailFragment extends BaseBindingFragment<DetailFooter
                 }
             }
         });
-*/
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getBinding().progressBar.setVisibility(View.GONE);
-                        removeTab();
-                        hideProgressBar();
-                    }
-                },1000);
-            }
-        });
+
+        }else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getBinding().progressBar.setVisibility(View.GONE);
+                            removeTab();
+                            hideProgressBar();
+                        }
+                    },1000);
+                }
+            });
+
+        }
 
     }
 
