@@ -2,6 +2,7 @@ package panteao.make.ready.activities.membershipplans.ui;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Base64;
@@ -28,6 +29,8 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import panteao.make.ready.activities.ContactActivity;
 import panteao.make.ready.activities.membershipplans.adapter.MembershipAdapter;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
@@ -96,13 +99,13 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         preference = KsPreferenceKeys.getInstance();
         strToken = preference.getAppPrefAccessToken();
         getBinding().playerLayout.setOnClickListener(v -> {
-            createBottomSheet();
-            /*Intent intent = new Intent(MemberShipPlanActivity.this, ContactActivity.class);
-            startActivity(intent);*/
+          createBottomSheet();
+
         });
         getBinding().contact.setOnClickListener(v -> {
             if (NetworkConnectivity.isOnline(MemberShipPlanActivity.this)) {
                 createBottomSheet();
+
             }else {
                 new ToastHandler(MemberShipPlanActivity.this).show(getResources().getString(R.string.no_connection));
             }
@@ -296,9 +299,11 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         dialog.show();
 
         email.setOnClickListener(v -> {
-      /*      Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
-            intentEmail.setData(Uri.parse("mailto:info@mvhub.com"));
-            startActivity(intentEmail);*/
+            Intent intent = new Intent(MemberShipPlanActivity.this, ContactActivity.class);
+            startActivity(intent);
+//       Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
+//            intentEmail.setData(Uri.parse("info@panteaoproductions.com"));
+//            startActivity(intentEmail);
 
         });
         line.setOnClickListener(v -> {
