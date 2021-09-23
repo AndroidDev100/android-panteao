@@ -259,6 +259,7 @@
     <string name="my_history">My Watch History</string>
     <string name="membership_plan">Membership and Plans</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="about_us">About Us</string>
     <string name="sign_out">Logout</string>
     <string name="redeem_coupon">Redeem Coupon</string>
 
@@ -282,7 +283,7 @@
     <string name="go_to_my_downloads">View My Downloads</string>
     <string name="go_to_my_downloads_new">Go to My Downloads</string>
     <string name="download">Download</string>
-    <string name="no_downloads">Films and TV programmes that you download appear here.</string>
+    <string name="no_downloads">Videos that you download for viewing appear here</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>

@@ -71,7 +71,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:contentDescription="TODO"
-                                android:src="@drawable/panteao"
+                                android:src="@drawable/logo_toolbar"
                                  />
 
                             <LinearLayout

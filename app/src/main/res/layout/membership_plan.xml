@@ -367,11 +367,11 @@
                     <ImageView
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:contentDescription="TODO"
-                        android:visibility="invisible"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:src="@drawable/panteao" />
+                        android:contentDescription="TODO"
+                        android:src="@drawable/panteao"
+                        android:visibility="invisible" />
 
                     <LinearLayout
                         android:layout_marginTop="@dimen/_5sdp"

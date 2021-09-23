@@ -338,6 +338,29 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
             Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
+
+            //About us
+
+        } else if (caption.equals(getString(R.string.about_us))) {
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
+
+                AppCommonMethod.trackFcmEvent("About Us","", getContext(),0);
+
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
+
+                AppCommonMethod.trackFcmEvent("About Us","", getContext(),0);
+
+            }
+            // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
+            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
+
+
+
+
+
+
         } else if (caption.equals(getString(R.string.my_watchlist))) {
 
             if (loginStatus) {
