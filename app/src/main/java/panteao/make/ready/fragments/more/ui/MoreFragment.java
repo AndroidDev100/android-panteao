@@ -354,7 +354,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
-            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "2"));
+            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "3"));
 
 
 

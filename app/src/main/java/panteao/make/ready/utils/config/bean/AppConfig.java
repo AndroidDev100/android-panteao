@@ -43,6 +43,10 @@ public class AppConfig {
     @Expose
     private String privacyPolicyUrl;
 
+    @SerializedName("aboutUsUrl")
+    @Expose
+    private String aboutUsUrl;
+
     @SerializedName("subscriptionBaseUrl")
     @Expose
     private String subscriptionBaseUrl;
@@ -145,6 +149,14 @@ public class AppConfig {
 
     public String getPrivacyPolicyUrl() {
         return privacyPolicyUrl;
+    }
+
+    public String getAboutUs() {
+        return aboutUsUrl;
+    }
+
+    public void setAboutUsUrl(String aboutus) {
+        this.aboutUsUrl = aboutus;
     }
 
     public String getBrightcovePolicyKey() {

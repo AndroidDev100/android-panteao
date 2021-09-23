@@ -42,6 +42,8 @@ public class HelpActivity extends BaseBindingActivity<ActivityHelpBinding> {
         type = getIntent().getStringExtra("type");
         if (type.equalsIgnoreCase("1")) {
             new ToolBarHandler(this).setHelpAction(getBinding(), HelpActivity.this.getResources().getString(R.string.term_condition));
+        }else if (type.equalsIgnoreCase("3")){
+            new ToolBarHandler(this).setHelpAction(getBinding(), HelpActivity.this.getResources().getString(R.string.about_us));
         } else {
             new ToolBarHandler(this).setHelpAction(getBinding(), HelpActivity.this.getResources().getString(R.string.privacy_policy));
         }
@@ -68,7 +70,11 @@ public class HelpActivity extends BaseBindingActivity<ActivityHelpBinding> {
         } else if (type.equalsIgnoreCase("2")) {
 
             url = SDKConfig.getInstance().getPrivay_Policy_URL();
-        } else {
+        }
+        else if (type.equalsIgnoreCase("3")) {
+
+            url = SDKConfig.getInstance().getAboutUs_URL();
+        }else {
             url = "https://www.google.co.in/";
         }
         Log.e("LOAD ERROR", url);

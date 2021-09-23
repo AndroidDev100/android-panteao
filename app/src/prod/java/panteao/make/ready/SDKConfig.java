@@ -86,6 +86,10 @@ public class SDKConfig {
         return configBean == null ? "" : configBean.getData().getAppConfig().getPrivacyPolicyUrl();
     }
 
+    public String getAboutUs_URL() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getAboutUs();
+    }
+
     public String getOvpApiKey() {
         if (isTablet) {
             return API_KEY_TAB;
