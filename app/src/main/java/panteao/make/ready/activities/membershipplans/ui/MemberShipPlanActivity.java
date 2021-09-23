@@ -299,11 +299,9 @@ public class MemberShipPlanActivity extends BaseBindingActivity<MembershipPlanBi
         dialog.show();
 
         email.setOnClickListener(v -> {
-            Intent intent = new Intent(MemberShipPlanActivity.this, ContactActivity.class);
-            startActivity(intent);
-//       Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
-//            intentEmail.setData(Uri.parse("info@panteaoproductions.com"));
-//            startActivity(intentEmail);
+            Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
+            intentEmail.setData(Uri.parse("mailto:info@panteaoproductions.com"));
+            startActivity(intentEmail);
 
         });
         line.setOnClickListener(v -> {

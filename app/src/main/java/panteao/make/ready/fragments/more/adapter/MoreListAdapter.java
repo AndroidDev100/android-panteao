@@ -98,7 +98,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.about_us, v);
                             break;
                         case 9:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.log_out, v);
@@ -151,7 +151,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.about_us, v);
                             break;
                         case 9:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.log_out, v);
@@ -209,7 +209,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.about_us, v);
                             break;
 
                         default:
@@ -250,7 +250,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.about_us, v);
                             break;
 
                         default:
@@ -298,7 +298,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.about_us, v);
                             break;
                         case 9:
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.log_out, v);
@@ -356,7 +356,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             break;
 
                         case 8:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.about_us, v);
                             break;
                         case 9:
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.log_out, v);
@@ -414,7 +414,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.more_icon_color, R.drawable.about_us, v);
                             break;
 
                         default:
@@ -458,7 +458,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                             callDrawableHelper(mContext, R.color.icons_color, R.drawable.privacy_icon, v);
                             break;
                         case 8:
-                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.setting_icon, v);
+                            callDrawableHelper(mContext, R.color.icons_color, R.drawable.about_us, v);
                             break;
 
                         default:

@@ -2,6 +2,7 @@ package panteao.make.ready.activities.purchase.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Base64;
@@ -1250,9 +1251,9 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         dialog.show();
 
         email.setOnClickListener(v -> {
-          /*  Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
-            intentEmail.setData(Uri.parse("mailto:info@mvhub.com"));
-            startActivity(intentEmail);*/
+          Intent intentEmail= new Intent(Intent.ACTION_SENDTO);
+            intentEmail.setData(Uri.parse("mailto:info@panteaoproductions.com"));
+            startActivity(intentEmail);
 
         });
         line.setOnClickListener(v -> {
