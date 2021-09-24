@@ -942,22 +942,23 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         try {
             mListener = (OnPlayerInteractionListener) getActivity();
 
-            try {
-                DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
-                float ratio = ((float)metrics.heightPixels / (float)metrics.widthPixels);
 
-                int factor = greatestCommonFactor(metrics.widthPixels, metrics.heightPixels);
-
-                widthRatio = metrics.widthPixels / factor;
-                heightRatio = metrics.heightPixels / factor;
-
-                Log.w("phoneration-->>",heightRatio+":"+widthRatio);
-                Log.w("phoneration-->>",ratio+"");
-            }catch (Exception e){
-
-            }
         } catch (Exception ignored) {
             ignored.printStackTrace();
+        }
+        try {
+            DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+            float ratio = ((float)metrics.heightPixels / (float)metrics.widthPixels);
+
+            int factor = greatestCommonFactor(metrics.widthPixels, metrics.heightPixels);
+
+            widthRatio = metrics.widthPixels / factor;
+            heightRatio = metrics.heightPixels / factor;
+
+            Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+            Log.w("phoneration-->>",ratio+"");
+        }catch (Exception e){
+
         }
 
     }
