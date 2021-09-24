@@ -595,7 +595,7 @@
                 android:layout_centerInParent="true"
                 android:layout_height="match_parent">
 
-                <panteao.make.ready.utils.CustomProgressBar
+                <panteao.make.ready.utils.CustomProgressBarWhite
                     android:id="@+id/progress_bar"
                     android:layout_marginBottom="@dimen/NontonSize60"
                     style="@style/Widget.AppCompat.ProgressBar"
