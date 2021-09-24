@@ -167,6 +167,18 @@ public class PlayerControlsFragment extends Fragment {
         if (!seeking) {
             seekBar.setDuration(duration);
             currentPosition.setText(stringForTime(currentposition));
+            if (currentposition>10000){
+                btnRewind.setVisibility(View.VISIBLE);
+            }else {
+                btnRewind.setVisibility(View.INVISIBLE);
+            }
+            int totalDura=duration-10000;
+            if (totalDura>currentposition){
+                btnForward.setVisibility(View.VISIBLE);
+            }else {
+                btnForward.setVisibility(View.INVISIBLE);
+            }
+            Log.w("currentPosition-->>",stringForTime(currentposition)+"  "+currentposition+" "+duration + " "+totalDura);
             totalDuration.setText(stringForTime(duration));
             updateSeekbar(currentposition);
             this.playbackCurrentPosition = currentposition;
