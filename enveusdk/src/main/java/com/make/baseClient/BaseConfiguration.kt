@@ -1,7 +1,7 @@
 package com.make.baseClient
 
 class BaseConfiguration {
-    lateinit var clients: BaseClient
+    var clients: BaseClient? = null
     companion object {
         val instance = BaseConfiguration()
     }

@@ -442,5 +442,6 @@
     <string name="guidedstep_ok">Ok</string>
     <string name="guidedstep_cancel">Cancel</string>
     <string name="start_watching">Start Watching</string>
+    <string name="replay">Replay</string>
 
 </resources>

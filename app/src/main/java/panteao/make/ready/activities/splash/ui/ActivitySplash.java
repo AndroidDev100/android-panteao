@@ -236,6 +236,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 BaseClient client = new BaseClient(ActivitySplash.this, BaseGateway.ENVEU, SDKConfig.getInstance().getBASE_URL(), SDKConfig.getInstance().getSUBSCRIPTION_BASE_URL(), DEVICE_TYPE, API_KEY, BasePlatform.android.name(), isTablet, AppCommonMethod.getDeviceId(getContentResolver()));
                 BaseConfiguration.Companion.getInstance().clientSetup(client);
                 updateLanguage(configBean.getData().getAppConfig().getPrimaryLanguage());
+                KsPreferenceKeys.getInstance().setOVPBASEURL(SDKConfig.getInstance().getOVP_BASE_URL());
 
                 if (configBean != null) {
                     startClapAnimation(jsonObject, updateType);

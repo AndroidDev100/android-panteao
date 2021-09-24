@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -70,12 +71,23 @@ public class RequestConfig {
 
             OkHttpClient client = httpClient.build();
 
-            enveuRetrofit = new Retrofit.Builder()
-                    .baseUrl(SDKConfig.getInstance().getOVP_BASE_URL())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(client)
-                    .build();
+            if (SDKConfig.getInstance().getOVP_BASE_URL()!=null && !SDKConfig.getInstance().getOVP_BASE_URL().equalsIgnoreCase("")){
+                enveuRetrofit = new Retrofit.Builder()
+                        .baseUrl(SDKConfig.getInstance().getOVP_BASE_URL())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .client(client)
+                        .build();
+            }else {
+                if (!KsPreferenceKeys.getInstance().getOVPBASEURL().equalsIgnoreCase("")){
+                    enveuRetrofit = new Retrofit.Builder()
+                            .baseUrl(KsPreferenceKeys.getInstance().getOVPBASEURL())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .client(client)
+                            .build();
+                }
+            }
         }
         return enveuRetrofit;
     }

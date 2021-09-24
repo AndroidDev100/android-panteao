@@ -30,6 +30,7 @@ import android.os.Looper;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -605,7 +606,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     id.setBackgroundResource(R.drawable.exit_full_screen);
                     ConstraintSet constraintSet = new ConstraintSet();
                     constraintSet.clone(constraintMain);
-                    constraintSet.setDimensionRatio(playerRootMain.getId(), "29:15");
+                    constraintSet.setDimensionRatio(playerRootMain.getId(), heightRatio+":"+widthRatio);
                     constraintSet.applyTo(constraintMain);
 
                 }
@@ -933,15 +934,36 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         super.onDestroy();
     }
 
+    int widthRatio=9;
+    int heightRatio=16;
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         try {
             mListener = (OnPlayerInteractionListener) getActivity();
+
+            try {
+                DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+                float ratio = ((float)metrics.heightPixels / (float)metrics.widthPixels);
+
+                int factor = greatestCommonFactor(metrics.widthPixels, metrics.heightPixels);
+
+                widthRatio = metrics.widthPixels / factor;
+                heightRatio = metrics.heightPixels / factor;
+
+                Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+                Log.w("phoneration-->>",ratio+"");
+            }catch (Exception e){
+
+            }
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
 
+    }
+
+    public int greatestCommonFactor(int width, int height) {
+        return (height == 0) ? width : greatestCommonFactor(height, width % height);
     }
 
     static class ViewHolder1 extends RecyclerView.ViewHolder {
