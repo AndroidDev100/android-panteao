@@ -16,6 +16,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -81,7 +83,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private static final String ARG_PARAM2 = "param2";
     private OnPlayerInteractionListener mListener;
     private KalturaOvpPlayer player;
-    private FrameLayout playerLayout;
+    private FrameLayout playerLayout,playerRootMain;
+    private ConstraintLayout constraintMain;
     private Context mcontext;
     private View tracksSelectionMenu;
     private ProgressBar progressbar;
@@ -415,6 +418,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private void findViewById(View view) {
 
         playerLayout = (FrameLayout) view.findViewById(R.id.playerRoot);
+        playerRootMain = (FrameLayout) view.findViewById(R.id.playerRootMain);
+        constraintMain = (ConstraintLayout) view.findViewById(R.id.constraintMain);
         progressbar = (ProgressBar) view.findViewById(R.id.pBar);
         container = view.findViewById(R.id.container);
         playerLayout.setVisibility(View.GONE);
@@ -591,9 +596,18 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
                     id.setBackgroundResource(R.drawable.full_screen);
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(constraintMain);
+                    constraintSet.setDimensionRatio(playerRootMain.getId(), "16:9");
+                    constraintSet.applyTo(constraintMain);
                 } else {
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                     id.setBackgroundResource(R.drawable.exit_full_screen);
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(constraintMain);
+                    constraintSet.setDimensionRatio(playerRootMain.getId(), "29:15");
+                    constraintSet.applyTo(constraintMain);
+
                 }
 
             }

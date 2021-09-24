@@ -34,6 +34,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.kaltura.playkit.player.PKAspectRatioResizeMode;
 import com.kaltura.playkit.player.PKTracks;
 import com.kaltura.playkit.player.VideoTrack;
 import com.kaltura.playkit.providers.ovp.OVPMediaAsset;
@@ -1858,6 +1859,7 @@ public class AppCommonMethod {
     public static KalturaOvpPlayer loadPlayer(Context context, FrameLayout view) {
         PlayerInitOptions playerInitOptions = new PlayerInitOptions(KalturaPlayerActivity.Companion.getPARTNER_ID());
         playerInitOptions.setAutoPlay(true);
+        playerInitOptions.setAspectRatioResizeMode(PKAspectRatioResizeMode.fill);
         KalturaOvpPlayer player = KalturaOvpPlayer.create(context, playerInitOptions);
         player.setPlayerView(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         view.addView(player.getPlayerView());
