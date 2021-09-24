@@ -30,13 +30,13 @@ class RequestManager {
 
     fun categoryCall(screenId: String, enveuCallBacks: EnveuCallBacks) {
         val endPoint = NetworkSetup().client?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
-        val call = endPoint?.categoryService(BaseConfiguration.instance.clients.getDeviceType().toString(), BaseConfiguration.instance.clients.getPlatform().toString()!!, BaseConfiguration.instance.clients.getApiKey().toString(), screenId)
+        val call = endPoint?.categoryService(BaseConfiguration.instance.clients?.getDeviceType().toString(), BaseConfiguration.instance.clients?.getPlatform().toString()!!, BaseConfiguration.instance.clients?.getApiKey().toString(), screenId)
         call?.enqueue(object : Callback<EnveuCategory> {
             override fun onResponse(call: Call<EnveuCategory>, response: Response<EnveuCategory>) {
                 /*val requestMade=response.raw().sentRequestAtMillis();
                 val requestReceived=response.raw().receivedResponseAtMillis()
                 System.out.println("responsetime : "+(requestReceived - requestMade)+" ms");*/
-                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients.getGateway()).createModel(response)
+                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients?.getGateway()).createModel(response)
                // val sortedModel=getSortedList(model)
                 enveuCallBacks.success(true, model)
 
@@ -44,7 +44,7 @@ class RequestManager {
 
             override fun onFailure(call: Call<EnveuCategory>, t: Throwable) {
                 t.message?.let { enveuCallBacks.failure(false, 0, it) }
-                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients.getGateway()).createModel(t)
+                val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients?.getGateway()).createModel(t)
                 enveuCallBacks.success(false, model)
             }
         })

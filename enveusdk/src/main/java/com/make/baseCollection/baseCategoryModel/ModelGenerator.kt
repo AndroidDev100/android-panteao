@@ -30,7 +30,7 @@ class ModelGenerator {
             cat.name = i?.item?.title
             cat.type = i?.type
             cat.crousalType = i?.customFields?.carouselType.toString()
-            when (BaseConfiguration.instance.clients.getGateway()) {
+            when (BaseConfiguration.instance.clients?.getGateway()) {
                 BaseGateway.ENVEU.name -> {
                     cat.contentID = i?.item?.playlist?.kEntryId
                     cat.widgetImageType = i?.kalturaOttImageType;
@@ -64,7 +64,7 @@ class ModelGenerator {
             cat.manualImageAssetId = i?.item?.assetId
             cat.landingPageType = i?.item?.landingPage?.type
             cat.landingPageAssetId = i?.item?.landingPage?.assetID
-            when (BaseConfiguration.instance.clients.getGateway()) {
+            when (BaseConfiguration.instance.clients?.getGateway()) {
                 BaseGateway.ENVEU.name -> {
                     cat.landingPagePlayListId = i?.item?.landingPage?.playlist?.brightcovePlaylistId
                 }
