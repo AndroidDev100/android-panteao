@@ -399,6 +399,8 @@
     <dimen name="text_margin_left">15dp</dimen>
     <dimen name="selector_margin_top">5dp</dimen>
     <dimen name="_text_margin_top">12dp</dimen>
+    <dimen name="splash_bottom">25dp</dimen>
+    <dimen name="splash_icon_bottom">25dp</dimen>
 
     <declare-styleable name="CircularProgressBar">
         <attr format="integer" name="progress"/>

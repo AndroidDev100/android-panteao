@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+
+        android:drawable="@color/black"
+        />
+
+    <item
+        android:bottom="@dimen/splash_bottom"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/psplashimage"
+            android:gravity="center"/>
+    </item>
+
+
+
+    <!--<item -->
+    <!--android:id="@+id/ivRotate"-->
+    <!--android:gravity="center">-->
+
+    <!--<bitmap-->
+
+    <!--android:gravity="center"-->
+    <!--android:src="@drawable/splash_logo" />-->
+    <!--</item>-->
+
+</layer-list>

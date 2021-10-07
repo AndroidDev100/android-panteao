@@ -11,8 +11,9 @@
         tools:context="panteao.make.ready.panteao.make.ready.activities.splash.ui.ActivitySplash">
         <ImageView
             android:id="@+id/img_logo"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_marginTop="@dimen/splash_icon_bottom"
+            android:layout_width="@dimen/_125sdp"
+            android:layout_height="@dimen/_125sdp"
             android:background="@drawable/logo_new"
             android:visibility="visible"
 

@@ -117,6 +117,11 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //setFullScreen();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         if (TextUtils.isEmpty(KsPreferenceKeys.getInstance().getQualityName())) {
@@ -132,7 +137,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         }
         session = KsPreferenceKeys.getInstance();
         // session.setDownloadOverWifi(1);
-        AppCommonMethod.getPushToken(this);
+        AppCommonMethod.getPushToken(ActivitySplash.this);
         updateAndroidSecurityProvider(ActivitySplash.this);
 
         new AnalyticsController(ActivitySplash.this).callAnalytics("splash_screen", "Action", "Launch");
@@ -140,19 +145,19 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
         currentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
 
-        PanteaoApplication.getApplicationContext(this).getEnveuComponent().inject(this);
+        PanteaoApplication.getApplicationContext(ActivitySplash.this).getEnveuComponent().inject(ActivitySplash.this);
         dtgPrefrencesProvider.saveExpiryDays(3);
-        downloadHelper = new KTDownloadHelper(this,this);
-//        DownloadHelper downloadHelper = new DownloadHelper(this);
-
+        downloadHelper = new KTDownloadHelper(ActivitySplash.this,ActivitySplash.this);
 
         notificationCheck();
 
         connectionObserver();
         getBinding().noConnectionLayout.retryTxt.setOnClickListener(view -> connectionObserver());
         //getBinding().noConnectionLayout.btnMyDownloads.setOnClickListener(view -> new ActivityLauncher(this).launchMyDownloads());
-        Logger.e("IntentData", new Gson().toJson(this.getIntent().getData()));
+        Logger.e("IntentData", new Gson().toJson(ActivitySplash.this.getIntent().getData()));
         printHashKey();
+            }
+        },100);
 
     }
 
@@ -440,9 +445,14 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     @Override
     protected void onResume() {
         super.onResume();
-        boolean isTablet = ActivitySplash.this.getResources().getBoolean(R.bool.isTablet);
-        if (!isTablet)
+        try {
+            boolean isTablet = ActivitySplash.this.getResources().getBoolean(R.bool.isTablet);
+            if (!isTablet)
                 getBinding().buildNumber.setText(getResources().getString(R.string.app_name) + "  V " + BuildConfig.VERSION_NAME);
+        }catch (Exception e){
+
+        }
+
     }
 
     @Override
