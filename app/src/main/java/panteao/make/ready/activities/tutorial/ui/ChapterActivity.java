@@ -744,7 +744,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     public void comingSoon() {
-        if (isLogin) {
+
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
@@ -757,10 +757,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 startActivity(intent);
             }
 
-        } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
-        }
+
     }
 
     public void openLoginPage(String message) {

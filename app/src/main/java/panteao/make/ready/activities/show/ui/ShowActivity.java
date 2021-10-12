@@ -564,7 +564,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        if (isLogin) {
+
             //showDialog(DetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
             AppCommonMethod.seriesId = seriesId;
@@ -577,10 +577,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 startActivity(intent);
             }
 
-        } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
-        }
     }
 
     public void openLoginPage(String message) {
