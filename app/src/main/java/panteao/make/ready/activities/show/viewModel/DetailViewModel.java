@@ -82,6 +82,7 @@ public class DetailViewModel extends DetailBaseViewModel {
     }
 
     public LiveData<ResponseEntitle> hitApiEntitlement(String token, String sku) {
+
         return EntitlementLayer.getInstance().hitApiEntitlement(token, sku);
     }
 

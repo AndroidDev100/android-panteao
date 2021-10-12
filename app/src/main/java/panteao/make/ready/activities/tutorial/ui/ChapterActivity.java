@@ -599,6 +599,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 fromBingWatch = false;
                 //  seasonTabFragment=null;
                 seasonTabFragment.setSeasonAdapter(null);
+                token = preference.getAppPrefAccessToken();
                 refreshDetailPage(assestId);
             }
         }

@@ -381,6 +381,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 AppCommonMethod.isPurchase = false;
                 seriesId = AppCommonMethod.seriesId;
                 isHitPlayerApi = false;
+                token = preference.getAppPrefAccessToken();
                 refreshDetailPage(assestId);
             }
         }

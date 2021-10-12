@@ -35,9 +35,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseAdapter;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
 import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
+import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
 import panteao.make.ready.beanModel.entitle.EntitledAs;
@@ -51,17 +54,20 @@ import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.PurchaseBinding;
+import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
+import panteao.make.ready.utils.helpers.ActivityTrackers;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.StringUtils;
 import com.google.gson.JsonObject;
 import panteao.make.ready.utils.helpers.ToastHandler;
+import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.utils.inAppBilling.BillingProcessor;
 import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
@@ -274,8 +280,13 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
     private void purchaseTVOD() {
         if (clickedModel != null) {
-            showLoading(getBinding().progressBar, true);
-            hitApiDoPurchase();
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showLoading(getBinding().progressBar, true);
+                hitApiDoPurchase();
+            }else {
+                ActivityTrackers.getInstance().setAction(ActivityTrackers.PURCHASE);
+                new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
+            }
         }
     }
 
@@ -1024,7 +1035,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         showLoading(getBinding().progressBar, false);
         String token = preference.getAppPrefAccessToken();
         if (!StringUtils.isNullOrEmptyOrZero(token)) {
-            viewModel.getPlans(token).observe(PurchaseActivity.this, new Observer<ResponseMembershipAndPlan>() {
+            viewModel.getPlans("").observe(PurchaseActivity.this, new Observer<ResponseMembershipAndPlan>() {
                 @Override
                 public void onChanged(@Nullable ResponseMembershipAndPlan responseMembershipAndPlan) {
                     dismissLoading(getBinding().progressBar);
@@ -1055,6 +1066,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             });
 
         } else {
+            dismissLoading(getBinding().progressBar);
             Logger.e("MemberShipPlanActivity", "Token is empty/null");
         }
     }
@@ -1063,11 +1075,13 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
     @Override
     public void onBillingError(@Nullable BillingResult error) {
         try {
-            if (error != null && error.getDebugMessage() != null) {
-                billingError=error.getDebugMessage();
-                Log.w("billingError", error.getDebugMessage());
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                if (error != null && error.getDebugMessage() != null) {
+                    billingError=error.getDebugMessage();
+                    Log.w("billingError", error.getDebugMessage());
+                }
+                updatePayment(billingError,"FAILED","",paymentId);
             }
-            updatePayment(billingError,"FAILED","",paymentId);
 
         }catch (Exception ignored){
             updatePayment(billingError,"FAILED","",paymentId);
@@ -1226,6 +1240,20 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+            if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
+                ActivityTrackers.getInstance().setAction("");
+                Intent intent = new Intent(PurchaseActivity.this, PurchaseActivity.class);
+                intent.putExtra("response", response);
+                intent.putExtra("assestId", assetId);
+                intent.putExtra("contentType", contentType);
+                intent.putExtra("responseEntitlement", responseEntitlementModel);
+                if (responseEntitlementModel!=null){
+                    startActivity(intent);
+                }
+                finish();
+            }
+        }
     }
 
     @Override
