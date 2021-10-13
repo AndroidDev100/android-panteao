@@ -8,7 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
@@ -71,7 +71,7 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
     }
 
     private void callModel() {
-        viewModel = ViewModelProviders.of(this).get(VideoQualityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(VideoQualityViewModel.class);
     }
 
     private void connectionObserver() {

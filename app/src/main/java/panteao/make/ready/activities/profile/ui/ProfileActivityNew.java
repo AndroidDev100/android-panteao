@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -72,7 +72,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
     }
 
     private void callModel() {
-        viewModel = ViewModelProviders.of(ProfileActivityNew.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(ProfileActivityNew.this).get(RegistrationLoginViewModel.class);
     }
 
     private void connectionValidation(boolean connected) {

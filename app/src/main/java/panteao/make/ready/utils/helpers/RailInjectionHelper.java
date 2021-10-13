@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.bookmarking.bean.continuewatching.ContinueWatchingBookmark;
@@ -168,7 +168,7 @@ public class RailInjectionHelper extends AndroidViewModel {
             preference = KsPreferenceKeys.getInstance();
         if (preference.getAppPrefLoginStatus()) {
             String token = preference.getAppPrefAccessToken();
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of((FragmentActivity) activity).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider((FragmentActivity) activity).get(BookmarkingViewModel.class);
             bookmarkingViewModel.getMywatchListData(token, 0, contentSize).observe((LifecycleOwner) activity, getContinueWatchingBean -> {
                 String videoIds = "";
                 if (getContinueWatchingBean != null && getContinueWatchingBean.getData() != null) {
@@ -235,7 +235,7 @@ public class RailInjectionHelper extends AndroidViewModel {
             preference = KsPreferenceKeys.getInstance();
         if (preference.getAppPrefLoginStatus()) {
             String token = preference.getAppPrefAccessToken();
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of((FragmentActivity) activity).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider((FragmentActivity) activity).get(BookmarkingViewModel.class);
             bookmarkingViewModel.getContinueWatchingData(token, 0, contentSize).observe((LifecycleOwner) activity, getContinueWatchingBean -> {
                 String videoIds = "0,";
                 if (getContinueWatchingBean != null && getContinueWatchingBean.getData() != null) {

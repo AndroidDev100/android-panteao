@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.activities.detailspage.fragment.InstructorFragment
@@ -91,7 +91,7 @@ class TVInstructorDetailsActivity : TvBaseBindingActivity<ActivityTvInstructorBi
     private fun callDetailPageApi(id: Int, contentType: String?) {
         Logger.e("INSTRUCTOR_RESPONSE", Gson().toJson(instructorDetails));
         setUI(instructorDetails)
-        val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        val railInjectionHelper = ViewModelProvider(this)[RailInjectionHelper::class.java]
         railInjectionHelper.getInstructorRelatedContent(id, 0, AppConstants.PAGE_SIZE, -1)
             .observe(this,
                 { response ->

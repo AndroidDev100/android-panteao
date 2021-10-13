@@ -39,7 +39,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -236,7 +236,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
         if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
-        viewModel = ViewModelProviders.of(RelatedInstructorsActivity.this).get(DetailViewModel.class);
+        viewModel = new ViewModelProvider(RelatedInstructorsActivity.this).get(DetailViewModel.class);
         setupUI(getBinding().llParent);
         commentCounter = 0;
         isHitPlayerApi = false;
@@ -377,7 +377,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
             getBinding().tabLayout.setupWithViewPager(getBinding().viewPager);
             //AppCommonMethod.customTabWidth(getBinding().tabLayout);
             //AppCommonMethod.customTabWidth2(getBinding().tabLayout);
-            getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     showLoading(getBinding().progressBar, true);
@@ -808,7 +808,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
             callShimmer();
         }
         isPremium=false;
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper =  new ViewModelProvider(this).get(RailInjectionHelper.class);
         loadingComment = true;
         commentCounter = 0;
         getBinding().tvBuyNow.setVisibility(View.GONE);
@@ -1298,7 +1298,7 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
 
 
     private void addToWatchHistory() {
-        BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+        BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
         bookmarkingViewModel.addToWatchHistory(token, assestId);
     }
 

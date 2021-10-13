@@ -1,5 +1,6 @@
 package panteao.make.ready.activities.tutorial.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -33,13 +34,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -246,7 +251,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (preference.getAppPrefLoginStatus()) {
             isLoggedIn = true;
         }
-        viewModel = ViewModelProviders.of(ChapterActivity.this).get(DetailViewModel.class);
+        viewModel = new ViewModelProvider(ChapterActivity.this).get(DetailViewModel.class);
         setupUI(getBinding().llParent);
         commentCounter = 0;
         isHitPlayerApi = false;
@@ -416,7 +421,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             getBinding().tabLayout.setupWithViewPager(getBinding().viewPager);
             //AppCommonMethod.customTabWidth(getBinding().tabLayout);
             //AppCommonMethod.customTabWidth2(getBinding().tabLayout);
-            getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     showLoading(getBinding().progressBar, true);
@@ -642,7 +647,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                             .build();
             // audioManager.requestAudioFocus(focusRequest);
 
-            audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+         //   audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
             switch (audioManager.requestAudioFocus(focusRequest)) {
                 case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                     // don’t start playback
@@ -781,7 +786,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             callShimmer();
         }
         isPremium=false;
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         loadingComment = true;
         commentCounter = 0;
         getBinding().tvBuyNow.setVisibility(View.GONE);
@@ -1355,7 +1360,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     private void addToWatchHistory() {
-        BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+        BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
         bookmarkingViewModel.addToWatchHistory(token, assestId);
     }
 
@@ -1623,6 +1628,22 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             intent.putExtra("shimmerType", 0);
             intent.putExtra("baseCategory", data.getScreenWidget());
             startActivityForResult(intent, 1001);
+
+//            ActivityResultLauncher<Intent> getResult = null;
+//            getResult.launch(intent);
+//
+//            getResult = registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    new ActivityResultCallback<ActivityResult>() {
+//                        @Override
+//                        public void onActivityResult(ActivityResult result) {
+//                            if (result.getResultCode() == Activity.RESULT_OK) {
+//                                Intent data = result.getData();
+//                                // your operation....
+//                            }
+//                        }
+//                    });
+
         }
     }
 
@@ -1796,7 +1817,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onBookmarkCall(int currentPosition) {
         if (isLogin) {
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel =new ViewModelProvider(this).get(BookmarkingViewModel.class);
             bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
         }
     }
@@ -1804,7 +1825,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onBookmarkFinish() {
         if (isLogin) {
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
             bookmarkingViewModel.finishBookmark(token, assestId);
         }
     }

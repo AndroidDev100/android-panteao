@@ -27,7 +27,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -974,7 +974,7 @@ public class AppCommonMethod {
                 MediaTypeConstants.getInstance().getTrailor()
         )
         ) {
-            RailInjectionHelper railInjectionHelper = ViewModelProviders.of((TVBaseActivity) context).get(RailInjectionHelper.class);
+            RailInjectionHelper railInjectionHelper = new ViewModelProvider((TVBaseActivity) context).get(RailInjectionHelper.class);
             railInjectionHelper.getAssetDetailsV2(String.valueOf(id))
                     .observe((TVBaseActivity) context, new Observer<ResponseModel>() {
                         @Override
@@ -1054,10 +1054,14 @@ public class AppCommonMethod {
             );
             context.startActivity(playerIntent);
         } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
+            Log.e("msg","msg");
             if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
+                Log.e("msg",asset.getCustomLinkDetails()+"");
                 try {
+
                     new ActivityLauncher((BaseActivity) context).customExternalPageWebview((BaseActivity) context, CustomExternalPageWebview.class,asset.getCustomLinkDetails().replace("\"", ""),asset.getTitle());
                 } catch (Exception ex) {
+                    Log.e("msg","msg");
                     ex.printStackTrace();
                 }
             } else {

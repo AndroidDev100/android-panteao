@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
@@ -69,8 +70,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     private PremiumClick premiumClick;
     private SinetronClick sinetronClick;
     private String strCurrentTheme = "";
-    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private final NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -154,7 +155,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     };
     private BottomNavigationView navigation;
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "WrongConstant"})
     public static void removeNavigationShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         menuView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
@@ -238,7 +239,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
 
         initialFragment();
      // changeFragment(new HomeFragment(), "HomeFragment");
-        getBinding().navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        getBinding().navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
         new ToolBarHandler(HomeActivity.this).setHomeAction(getBinding().toolbar, HomeActivity.this);
 
 
@@ -323,7 +324,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
             navigation.setSelected(true);
         }
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 

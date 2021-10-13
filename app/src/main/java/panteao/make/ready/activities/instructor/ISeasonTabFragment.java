@@ -10,7 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -206,7 +206,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
     private void getEpisodeList() {
         getBinding().seriesRecyclerView.addItemDecoration(new SpacingItemDecoration(8, SpacingItemDecoration.HORIZONTAL));
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         if (seasonCount > 0) {
             getSeasonEpisodes();
         } else {

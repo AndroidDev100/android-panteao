@@ -22,7 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.make.enums.Layouts;
 
@@ -163,8 +163,8 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
             isLoggedIn = true;
         }
         AppCommonMethod.isPurchase = false;
-        viewModel = ViewModelProviders.of(LiveActivity.this).get(DetailViewModel.class);
-        bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+        viewModel = new ViewModelProvider(LiveActivity.this).get(DetailViewModel.class);
+        bookmarkingViewModel =new ViewModelProvider(this).get(BookmarkingViewModel.class);
 
         setupUI(getBinding().llParent);
         commentCounter = 0;
@@ -625,7 +625,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     public void getAssetDetails() {
         isHitPlayerApi = true;
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper =new ViewModelProvider(this).get(RailInjectionHelper.class);
         getBinding().pBar.setVisibility(View.VISIBLE);
         railInjectionHelper.getAssetDetailsV2(String.valueOf(assestId)).observe(LiveActivity.this, assetResponse -> {
             if (assetResponse != null) {

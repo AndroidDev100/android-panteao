@@ -11,7 +11,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -60,7 +60,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(SignUpActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel =  new ViewModelProvider(SignUpActivity.this).get(RegistrationLoginViewModel.class);
         getBinding().toolbar.backLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

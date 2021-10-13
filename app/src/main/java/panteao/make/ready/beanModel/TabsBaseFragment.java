@@ -8,7 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,7 +75,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private long mLastClickTime = 0;
 
     protected void setViewModel(Class<? extends HomeBaseViewModel> viewModelClass) {
-        viewModel = (T) ViewModelProviders.of(this).get(viewModelClass);
+       viewModel = (T) new ViewModelProvider(this).get(viewModelClass);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private void getBaseCategories() {
         railCommonDataList = new ArrayList<>();
         adapterNew = null;
-        RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
             public void onSuccess(Object item) {
@@ -364,11 +364,19 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         modelCall();
         viewModel.resetObject();
+
     }
+
+    //    @Override
+//    public void onViewCreated(@Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(savedInstanceState);
+//        modelCall();
+//        viewModel.resetObject();
+//    }
 
 
     @Override

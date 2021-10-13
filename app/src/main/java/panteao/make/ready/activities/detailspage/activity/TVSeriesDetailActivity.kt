@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import panteao.make.ready.R
 import panteao.make.ready.activities.detailspage.SeriesDetailManager
@@ -91,7 +91,7 @@ class TVSeriesDetailActivity : TvBaseBindingActivity<ActivityTvSeriesDetailsBind
     }
 
     private fun callDetailPageApi(id: Int?, contentType: String?) {
-        val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        val railInjectionHelper = ViewModelProvider(this)[RailInjectionHelper::class.java]
         railInjectionHelper.getSeriesDetailsV2(id.toString())
             .observe(this@TVSeriesDetailActivity,
                 { response ->

@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -41,7 +41,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(ForceLoginFbActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(ForceLoginFbActivity.this).get(RegistrationLoginViewModel.class);
         callBinding();
     }
 
@@ -52,7 +52,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
 
 
     public void callBinding() {
-        FacebookSdk.sdkInitialize(ForceLoginFbActivity.this);
+       // FacebookSdk.sdkInitialize(ForceLoginFbActivity.this);
         if (CheckInternetConnection.isOnline(ForceLoginFbActivity.this)) {
             final Bundle extra = getIntent().getExtras();
             if (extra != null) {

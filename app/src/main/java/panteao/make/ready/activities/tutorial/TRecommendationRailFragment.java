@@ -10,7 +10,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +91,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
         setRecyclerProperties(getBinding().recyclerView);
 
         railCommonDataList.clear();
-        RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
 /*
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override

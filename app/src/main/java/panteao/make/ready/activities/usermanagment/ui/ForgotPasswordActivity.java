@@ -8,7 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -41,7 +41,7 @@ public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBi
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(ForgotPasswordActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel =  new ViewModelProvider(ForgotPasswordActivity.this).get(RegistrationLoginViewModel.class);
         connectionObserver();
         connectObservors();
     }

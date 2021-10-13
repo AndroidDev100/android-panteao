@@ -28,7 +28,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -258,7 +258,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
 
     private void modelCall() {
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         assetListContinue = new ArrayList<>();
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         getBinding().player.setVisibility(View.VISIBLE);
@@ -271,7 +271,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();
         token = preference.getAppPrefAccessToken();
-        viewModel = ViewModelProviders.of(this).get(SeriesViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SeriesViewModel.class);
         if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
@@ -356,7 +356,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         modelCall();
         postCommentClick();
         isHitPlayerApi = true;
-        RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         railInjectionHelper.getSeriesDetailsV2(String.valueOf(seriesId)).observe(SeriesDetailActivity.this, new Observer<ResponseModel>() {
             @Override
             public void onChanged(ResponseModel response) {
@@ -660,7 +660,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
         }
 
-        getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+        getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 showLoading(getBinding().progressBar, true);

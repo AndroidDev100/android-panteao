@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import panteao.make.ready.R
 import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridFragment
 import panteao.make.ready.activities.internalpages.fragments.InternalPlaylistListingFragment
@@ -70,7 +70,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
     }
 
     private fun getAssetDetails(assestId: Int) {
-        val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        val railInjectionHelper = ViewModelProvider(this)[RailInjectionHelper::class.java]
         railInjectionHelper.getAssetDetailsV2(assestId.toString()).observe(this@CustomInternalPage,
             { assetResponse: ResponseModel<*>? ->
                 if (assetResponse != null) {

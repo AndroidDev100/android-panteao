@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -158,7 +158,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
 
     private void getRailData() {
         if (flag == 0) {
-            RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+            RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
             /*railInjectionHelper.getPlayListDetailsWithPaginationV2(this, playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
                 if (Objects.requireNonNull(playlistRailData) != null) {
                     try {
@@ -293,7 +293,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
     }
 
     private void modelCall() {
-        listingViewModel = ViewModelProviders.of(this).get(ListingViewModel.class);
+        listingViewModel = new ViewModelProvider(this).get(ListingViewModel.class);
     }
 
     @Override
