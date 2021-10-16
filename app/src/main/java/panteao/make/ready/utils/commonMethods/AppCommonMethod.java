@@ -1008,61 +1008,66 @@ public class AppCommonMethod {
     }
 
     public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium, EnveuVideoItemBean asset) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
-            return;
-        }
-        mLastClickTime = SystemClock.elapsedRealtime();
-        Logger.e("CLICKED_DETAILS", screenType + " " + new Gson().toJson(asset));
+        try {
 
-        if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
-            if (SDKConfig.getInstance().getShowDetailId().equalsIgnoreCase("")) {
-                //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.SHOW_ENVEU);
-            } else {
-                //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
-                new ActivityLauncher((BaseActivity) context).ShowScreenBrightCove((BaseActivity) context, ShowActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+                return;
             }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
-            new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
-            new ActivityLauncher((BaseActivity) context).seriesDetailScreen((BaseActivity) context, SeriesDetailActivity.class, id);
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.toUpperCase().equalsIgnoreCase("LIVE")) {
-            if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
-                // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-            } else {
-                // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
-            }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
-            if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
-                // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-            } else {
-                new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
-            }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
-            if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
-                // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
-            } else {
-                new ActivityLauncher((BaseActivity) context).chapterScreenBrightcove((BaseActivity) context, ChapterActivity.class, videoId, id, duration, isPremium);
-            }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
-            new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
-        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
-            Intent playerIntent =
-                    new Intent(context, CustomInternalPage.class);
-            playerIntent.putExtra(
-                    "asset",
-                    asset
-            );
-            context.startActivity(playerIntent);
-        } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
-            if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
-                try {
-                    new ActivityLauncher((BaseActivity) context).customExternalPageWebview((BaseActivity) context, CustomExternalPageWebview.class,asset.getCustomLinkDetails().replace("\"", ""),asset.getTitle());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+            mLastClickTime = SystemClock.elapsedRealtime();
+            Logger.e("CLICKED_DETAILS", screenType + " " + new Gson().toJson(asset));
+
+            if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getShow())) {
+                if (SDKConfig.getInstance().getShowDetailId().equalsIgnoreCase("")) {
+                    //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.SHOW_ENVEU);
+                } else {
+                    //new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
+                    new ActivityLauncher((BaseActivity) context).ShowScreenBrightCove((BaseActivity) context, ShowActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getShowDetailId());
                 }
-            } else {
-                Logger.e("EXTERNAL_PAGE", "EMPTY");
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
+                new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                new ActivityLauncher((BaseActivity) context).seriesDetailScreen((BaseActivity) context, SeriesDetailActivity.class, id);
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.toUpperCase().equalsIgnoreCase("LIVE")) {
+                if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
+                    // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
+                } else {
+                    // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
+                }
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
+                if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
+                    // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
+                } else {
+                    new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
+                }
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
+                if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
+                    // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
+                } else {
+                    new ActivityLauncher((BaseActivity) context).chapterScreenBrightcove((BaseActivity) context, ChapterActivity.class, videoId, id, duration, isPremium);
+                }
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
+                new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
+            } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
+                Intent playerIntent =
+                        new Intent(context, CustomInternalPage.class);
+                playerIntent.putExtra(
+                        "asset",
+                        asset
+                );
+                context.startActivity(playerIntent);
+            } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
+                if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
+                    try {
+                        new ActivityLauncher((BaseActivity) context).customExternalPageWebview((BaseActivity) context, CustomExternalPageWebview.class, asset.getCustomLinkDetails().replace("\"", ""), asset.getTitle());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    Logger.e("EXTERNAL_PAGE", "EMPTY");
+                }
             }
+        }catch (Exception ignored){
+
         }
     }
 

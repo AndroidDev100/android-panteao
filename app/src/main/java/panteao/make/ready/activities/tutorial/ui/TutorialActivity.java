@@ -570,10 +570,6 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     }
 
     public void comingSoon() {
-        if (preference!=null){
-            isLogin = preference.getAppPrefLoginStatus();
-        }
-        if (isLogin) {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.seriesId = seriesId;
             if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
@@ -586,10 +582,6 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 }
             }
 
-        } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
-        }
     }
 
 
