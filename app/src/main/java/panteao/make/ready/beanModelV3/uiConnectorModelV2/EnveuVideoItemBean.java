@@ -128,6 +128,7 @@ public class EnveuVideoItemBean implements Parcelable {
         responseCode = in.readInt();
         duration = in.readLong();
         name = in.readString();
+        seriesSku = in.readString();
         vodCount = in.readInt();
         seasonCount = in.readInt();
         thumbnailImage = in.readString();
@@ -1334,6 +1335,7 @@ public class EnveuVideoItemBean implements Parcelable {
         dest.writeInt(responseCode);
         dest.writeLong(duration);
         dest.writeString(name);
+        dest.writeString(seriesSku);
         dest.writeInt(vodCount);
         dest.writeInt(seasonCount);
         dest.writeString(thumbnailImage);

@@ -40,6 +40,7 @@ import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseAdapter;
 import panteao.make.ready.activities.purchase.ui.adapter.PurchaseShimmerAdapter;
 import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
@@ -393,7 +394,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                     handlePurchase(purchase);
                 } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
-                    PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
+                   // PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
                     // TODO: 8/24/2020 handle this in the next release.
@@ -1240,20 +1241,19 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
     @Override
     protected void onResume() {
         super.onResume();
-        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
-            if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
-                ActivityTrackers.getInstance().setAction("");
-                Intent intent = new Intent(PurchaseActivity.this, PurchaseActivity.class);
-                intent.putExtra("response", response);
-                intent.putExtra("assestId", assetId);
-                intent.putExtra("contentType", contentType);
-                intent.putExtra("responseEntitlement", responseEntitlementModel);
-                if (responseEntitlementModel!=null){
-                    startActivity(intent);
+        try {
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
+                    ActivityTrackers.getInstance().setAction("");
+                    if (response.getSeriesSku()!=null && !response.getSeriesSku().equalsIgnoreCase("")){
+                        hitApiEntitlement(response.getSeriesSku());
+                    }
                 }
-                finish();
             }
+        }catch (Exception e){
+
         }
+
     }
 
     @Override
@@ -1296,5 +1296,47 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
 
     }
 
+    public void hitApiEntitlement(String sku) {
+        try {
+            String token = KsPreferenceKeys.getInstance().getAppPrefAccessToken();
+            if (token != null && !token.equalsIgnoreCase("")) {
+                viewModel.hitApiEntitlement(token, sku).observe(PurchaseActivity.this, responseEntitlement -> {
+                    responseEntitlementModel = responseEntitlement;
+                    if (responseEntitlement.getStatus()) {
+                        if (responseEntitlement.getData().getEntitledAs() != null) {
+                            onBackPressed();
+                        }else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(PurchaseActivity.this, PurchaseActivity.class);
+                                    intent.putExtra("response", response);
+                                    intent.putExtra("assestId", assetId);
+                                    intent.putExtra("contentType", contentType);
+                                    intent.putExtra("responseEntitlement", responseEntitlementModel);
+                                    if (responseEntitlementModel != null) {
+                                        startActivity(intent);
+                                    }
+                                    finish();
+                                }
+                            });
+
+                        }
+                    } else {
+                        if (responseEntitlementModel != null && responseEntitlementModel.getResponseCode() != null && responseEntitlementModel.getResponseCode() > 0 && responseEntitlementModel.getResponseCode() == 4302) {
+                            isloggedout = true;
+                            // logoutUser();
+                            showDialog(PurchaseActivity.this.getResources().getString(R.string.logged_out), responseEntitlementModel.getDebugMessage() == null ? "" : responseEntitlementModel.getDebugMessage().toString());
+                        }
+                    }
+                });
+
+            } else {
+                onBackPressed();
+            }
+        }catch (Exception ignored){
+
+        }
+    }
 
 }

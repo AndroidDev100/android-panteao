@@ -159,7 +159,7 @@ public interface ApiInterface {
     @GET("v3/content/listAll")
     Call<EnveuCommonResponse> getRelatedContentWithoutSNo(@Query("linkedContentId") int seriesId, @Query("page") int pageNumber, @Query("size") int pageSize, @Query("locale") String locale);
 
-    @GET("v3/content/listAll")
+    @GET("v3/content/relatedContent")
     Call<EnveuCommonResponse> getInstructorRelatedContent(@Query("relatedContentId") int seriesId, @Query("page") int pageNumber, @Query("size") int pageSize, @Query("locale") String locale);
 
     //V2 PI for getting asset details

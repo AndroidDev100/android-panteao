@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import panteao.make.ready.activities.layers.EntitlementLayer;
 import panteao.make.ready.beanModel.cancelPurchase.ResponseCancelPurchase;
+import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.beanModel.membershipAndPlan.ResponseMembershipAndPlan;
 import panteao.make.ready.beanModel.purchaseModel.PurchaseModel;
 import panteao.make.ready.beanModel.purchaseModel.PurchaseResponseModel;
@@ -45,6 +47,12 @@ public class PurchaseViewModel extends AndroidViewModel {
     public LiveData<PurchaseResponseModel> updatePurchase(String billingError,String paymentStatus,String token,String purchaseToken,String paymentId,String orderId,PurchaseModel purchaseModel,String purchasedSKU) {
         return PurchaseRepository.getInstance().updatePurchase(billingError,paymentStatus,token,purchaseToken,paymentId,orderId,purchaseModel,purchasedSKU);
     }
+
+    public LiveData<ResponseEntitle> hitApiEntitlement(String token, String sku) {
+
+        return EntitlementLayer.getInstance().hitApiEntitlement(token, sku);
+    }
+
 
 
 }
