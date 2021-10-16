@@ -213,8 +213,8 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
                             }
 
                         }
-                        else if (selectedOption.equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
-                            if(selectedOptions.equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
+                        else if (selectedOption.equalsIgnoreCase(VodOfferType.PERPETUAL.name()) || selectedOption.equalsIgnoreCase(VodOfferType.RENTAL.name())){
+                            if(selectedOptions.equalsIgnoreCase(VodOfferType.PERPETUAL.name()) || selectedOptions.equalsIgnoreCase(VodOfferType.RENTAL.name())){
                                 list.get(j).setSelected(false);
                             }
                         }
