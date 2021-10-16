@@ -1245,9 +1245,18 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.PURCHASE)){
                     ActivityTrackers.getInstance().setAction("");
-                    if (response.getSeriesSku()!=null && !response.getSeriesSku().equalsIgnoreCase("")){
-                        hitApiEntitlement(response.getSeriesSku());
+                    if (contentType!=null && !contentType.equalsIgnoreCase("")){
+                        if (contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries()) || contentType.equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())){
+                            if (response.getSku()!=null && !response.getSku().equalsIgnoreCase("")){
+                                hitApiEntitlement(response.getSku());
+                            }
+                        }else {
+                            if (response.getSeriesSku()!=null && !response.getSeriesSku().equalsIgnoreCase("")){
+                                hitApiEntitlement(response.getSeriesSku());
+                            }
+                        }
                     }
+
                 }
             }
         }catch (Exception e){

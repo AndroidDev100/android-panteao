@@ -575,7 +575,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
                 Intent intent = new Intent(TutorialActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", seriesDetailBean);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
+                intent.putExtra("contentType", MediaTypeConstants.getInstance().getTutorial());
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
                 if (responseEntitlementModel!=null){
                     startActivity(intent);

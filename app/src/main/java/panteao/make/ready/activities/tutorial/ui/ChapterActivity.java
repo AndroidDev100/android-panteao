@@ -752,7 +752,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 Intent intent = new Intent(ChapterActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", videoDetails);
                 intent.putExtra("assestId", assestId);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
+                intent.putExtra("contentType", MediaTypeConstants.getInstance().getChapter());
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
                 startActivity(intent);
             }

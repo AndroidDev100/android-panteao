@@ -436,7 +436,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
                 Intent intent = new Intent(SeriesDetailActivity.this, PurchaseActivity.class);
                 intent.putExtra("response", seriesDetailBean);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
+                intent.putExtra("contentType", MediaTypeConstants.getInstance().getSeries());
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
                 if (responseEntitlementModel!=null){
                     startActivity(intent);
