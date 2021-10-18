@@ -1313,6 +1313,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                     responseEntitlementModel = responseEntitlement;
                     if (responseEntitlement.getStatus()) {
                         if (responseEntitlement.getData().getEntitledAs() != null) {
+                            AppCommonMethod.isPurchase=true;
                             onBackPressed();
                         }else {
                             runOnUiThread(new Runnable() {
