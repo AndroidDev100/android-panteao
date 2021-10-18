@@ -501,10 +501,14 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     private void updateBuyNowText(ResponseEntitle responseEntitlement, int type) {
         try {
             typeofTVOD="";
+            String subscriptionOfferPeriod = null;
             if (type == 1) {
                 if (responseEntitlement.getData().getEntitledAs() != null) {
                     List<EntitledAs> alpurchaseas = responseEntitlement.getData().getEntitledAs();
                     for (int i = 0 ; i<alpurchaseas.size();i++){
+                        if (alpurchaseas.get(i).getOfferType() != null) {
+                            subscriptionOfferPeriod = (String) alpurchaseas.get(i).getOfferType();
+                        }
                         String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
                         if (vodOfferType!=null){
                             if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
@@ -525,10 +529,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
                     }
                     String vodOfferType = alpurchaseas.get(0).getVoDOfferType();
-                    String subscriptionOfferPeriod = null;
-                    if (alpurchaseas.get(0).getOfferType() != null) {
-                        subscriptionOfferPeriod = (String) alpurchaseas.get(0).getOfferType();
-                    }
+
 
                     if (vodOfferType != null) {
                         if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
@@ -540,14 +541,11 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                         } else {
 
                         }
-                    } else {
-                        if (subscriptionOfferPeriod != null) {
-                            getBinding().tvPurchased.setVisibility(View.VISIBLE);
-                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
-                            typeofTVOD="";
-                        } else {
-
-                        }
+                    }
+                    if (subscriptionOfferPeriod != null) {
+                        getBinding().tvPurchased.setVisibility(View.VISIBLE);
+                        getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
+                        typeofTVOD="";
                     }
                     if (responseEntitlement.getData().getBrightcoveVideoId() != null) {
 
