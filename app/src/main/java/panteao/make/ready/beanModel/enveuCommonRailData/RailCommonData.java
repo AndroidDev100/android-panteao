@@ -158,9 +158,10 @@ public class RailCommonData implements Parcelable {
                 final RailCommonData railCommonData = this;
                 for (int i = 0; i < videos.size(); i++) {
                     VideosItem videoItem = videos.get(i).getContent();
+                    Log.w("mediaTypes",videoItem.getContentType()+"   "+MediaTypeConstants.getInstance().getChapter());
                     if (videoItem.getContentType()!=null && !videoItem.getContentType().equalsIgnoreCase("")){
-                        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor()) ||
-                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) ||
+                        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor()) &&
+                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) &&
                                 !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
                             Gson gson = new Gson();
                             String tmp = gson.toJson(videoItem);
