@@ -148,6 +148,9 @@ public class RailCommonData implements Parcelable {
         isSeries = false;
     }
 
+    /*if (videoItem.getContentType()!=null && !videoItem.getContentType().equalsIgnoreCase("")){
+        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())){*/
+
     // for related content listing constructor - Instructor page
     private void setEpisodesList(List<ItemsItem> videos, String imageType, MediaTypeConstants mediaTypeConstants) {
         try {
@@ -156,7 +159,9 @@ public class RailCommonData implements Parcelable {
                 for (int i = 0; i < videos.size(); i++) {
                     VideosItem videoItem = videos.get(i).getContent();
                     if (videoItem.getContentType()!=null && !videoItem.getContentType().equalsIgnoreCase("")){
-                        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())){
+                        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor()) ||
+                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) ||
+                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
                             Gson gson = new Gson();
                             String tmp = gson.toJson(videoItem);
                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
