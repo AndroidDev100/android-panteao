@@ -220,6 +220,7 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         railInjectionHelper.getInstructorRelatedContent(seriesId, totalPages, 50, -1).observe(getActivity(), new Observer<ResponseModel>() {
             @Override
             public void onChanged(ResponseModel response) {
+                try {
                 if (response != null) {
                     if (response.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
@@ -233,7 +234,15 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             } else {
                                 // all episode view to set here
                                 if (enveuCommonResponse.getPageTotal() - 1 > totalPages) {
-                                    getBinding().seasonMore.setVisibility(View.VISIBLE);
+                                    if (totalPages > 0) {
+                                        if (enveuCommonResponse.getEnveuVideoItemBeans().size() > 10) {
+                                            getBinding().seasonMore.setVisibility(View.VISIBLE);
+                                        } else {
+                                            getBinding().seasonMore.setVisibility(View.GONE);
+                                        }
+                                    } else {
+                                        getBinding().seasonMore.setVisibility(View.GONE);
+                                    }
 
                                 } else {
                                     getBinding().seasonMore.setVisibility(View.GONE);
@@ -265,23 +274,54 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             }
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
+                        getBinding().progressBar.setVisibility(View.GONE);
                         if (response.getErrorModel().getErrorCode() != 0) {
-                            getBinding().seasonHeader.setVisibility(View.GONE);
-                            getBinding().progressBar.setVisibility(View.GONE);
-                            getBinding().comingSoon.setVisibility(View.VISIBLE);
-                            getBinding().seriesRecyclerView.setVisibility(View.GONE);
-                            getBinding().seasonMore.setVisibility(View.GONE);
+                            if (totalPages > 0) {
+                                if (allEpiosdes != null && allEpiosdes.size() > 0) {
+                                    getBinding().comingSoon.setVisibility(View.GONE);
+                                } else {
+                                    getBinding().comingSoon.setVisibility(View.VISIBLE);
+                                    getBinding().seasonHeader.setVisibility(View.GONE);
+                                    getBinding().progressBar.setVisibility(View.GONE);
+                                    getBinding().seriesRecyclerView.setVisibility(View.GONE);
+                                    getBinding().seasonMore.setVisibility(View.GONE);
+                                }
+                            } else {
+                                getBinding().comingSoon.setVisibility(View.VISIBLE);
+                                getBinding().seasonHeader.setVisibility(View.GONE);
+                                getBinding().progressBar.setVisibility(View.GONE);
+                                getBinding().seriesRecyclerView.setVisibility(View.GONE);
+                                getBinding().seasonMore.setVisibility(View.GONE);
+                            }
                             hideProgressBar();
                         }
 
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-                        getBinding().seasonHeader.setVisibility(View.GONE);
-                        getBinding().comingSoon.setVisibility(View.VISIBLE);
                         getBinding().progressBar.setVisibility(View.GONE);
-                        getBinding().seriesRecyclerView.setVisibility(View.GONE);
-                        getBinding().seasonMore.setVisibility(View.GONE);
+                        if (totalPages > 0) {
+                            if (allEpiosdes != null && allEpiosdes.size() > 0) {
+                                getBinding().comingSoon.setVisibility(View.GONE);
+                            } else {
+                                getBinding().comingSoon.setVisibility(View.VISIBLE);
+                                getBinding().seasonHeader.setVisibility(View.GONE);
+                                getBinding().progressBar.setVisibility(View.GONE);
+                                getBinding().seriesRecyclerView.setVisibility(View.GONE);
+                                getBinding().seasonMore.setVisibility(View.GONE);
+                            }
+
+                        } else {
+                            getBinding().comingSoon.setVisibility(View.VISIBLE);
+                            getBinding().seasonHeader.setVisibility(View.GONE);
+                            getBinding().progressBar.setVisibility(View.GONE);
+                            getBinding().seriesRecyclerView.setVisibility(View.GONE);
+                            getBinding().seasonMore.setVisibility(View.GONE);
+                        }
+
                         hideProgressBar();
                     }
+
+                }
+            }catch (Exception ignored){
 
                 }
             }
