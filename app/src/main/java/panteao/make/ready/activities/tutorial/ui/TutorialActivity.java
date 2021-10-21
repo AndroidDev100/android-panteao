@@ -3,6 +3,7 @@ package panteao.make.ready.activities.tutorial.ui;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -204,8 +205,33 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
             getBinding().llParent.startAnimation(aniFade);
             setExpandable();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isPremium){
+                        showPremiumPopup();
+                    }
+                }
+            },500);
+
         }
 
+    }
+
+
+    private void showPremiumPopup() {
+        try {
+            isPremium=true;
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", TutorialActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", TutorialActivity.this);
+            }
+            showDialog("", getResources().getString(R.string.premium_popup_message));
+        }catch (Exception ignored){
+
+        }
     }
 
     public void numberOfEpisodes(int size) {
@@ -1200,6 +1226,11 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void onFinishDialog() {
+        if (isPremium){
+            isPremium=false;
+
+            return;
+        }
         isloggedout = false;
         if (isLogin) {
             hitApiLogout();

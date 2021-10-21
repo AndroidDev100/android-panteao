@@ -440,6 +440,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (event.newState == PlayerState.READY) {
 
 //            getBinding().playerImage.setVisibility(View.GONE);
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
             progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
             progressbar.setVisibility(View.VISIBLE);

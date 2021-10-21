@@ -866,10 +866,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (videoDetails.isSeriesPremium()) {
             isPremium = true;
             try {
-                if (!isLogin) {
-                    if (fromBingWatch) {
-                        showPremiumPopup();
-                    }
+                if (fromBingWatch) {
+                    showPremiumPopup();
                 }
             } catch (Exception ignored) {
 
@@ -1080,7 +1078,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
             }
-            //showDialog("", getResources().getString(R.string.premium_popup_message));
+            showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
 
         }

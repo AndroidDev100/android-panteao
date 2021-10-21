@@ -39,6 +39,7 @@ import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
@@ -205,9 +206,34 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
             getBinding().llParent.startAnimation(aniFade);
             setExpandable();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isPremium){
+                        showPremiumPopup();
+                    }
+                }
+            },500);
+
         }
 
     }
+
+    private void showPremiumPopup() {
+        try {
+            isPremium=true;
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", SeriesDetailActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", SeriesDetailActivity.this);
+            }
+            showDialog("", getResources().getString(R.string.premium_popup_message));
+        }catch (Exception ignored){
+
+        }
+    }
+
 
     public void numberOfEpisodes(int size) {
         if (size == 1) {
@@ -1183,6 +1209,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void onFinishDialog() {
+        if (isPremium){
+            isPremium=false;
+
+            return;
+        }
         isloggedout = false;
         if (isLogin) {
             hitApiLogout();

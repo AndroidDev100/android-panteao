@@ -878,11 +878,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (videoDetails.isSeriesPremium()) {
             isPremium=true;
             try {
-                if (!isLogin) {
                     if (fromBingWatch){
                         showPremiumPopup();
                     }
-                }
             }catch (Exception ignored){
 
             }
@@ -1087,7 +1085,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", ChapterActivity.this);
             }
-           // showDialog("", getResources().getString(R.string.premium_popup_message));
+            showDialog("", getResources().getString(R.string.premium_popup_message));
         }catch (Exception ignored){
 
         }
