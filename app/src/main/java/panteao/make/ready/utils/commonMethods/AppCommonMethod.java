@@ -1008,7 +1008,7 @@ public class AppCommonMethod {
     }
 
     public static void launchDetailScreen(Context context, String videoId, String screenType, int id, String duration, boolean isPremium, EnveuVideoItemBean asset) {
-        try {
+
 
             if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                 return;
@@ -1056,7 +1056,7 @@ public class AppCommonMethod {
                 );
                 context.startActivity(playerIntent);
             } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomExternalPage())) {
-                if (!asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
+                if (asset.getCustomLinkDetails()!=null && !asset.getCustomLinkDetails().equalsIgnoreCase("\"#\"") && !asset.getCustomLinkDetails().equalsIgnoreCase("#")) {
                     try {
                         new ActivityLauncher((BaseActivity) context).customExternalPageWebview((BaseActivity) context, CustomExternalPageWebview.class, asset.getCustomLinkDetails().replace("\"", ""), asset.getTitle());
                     } catch (Exception ex) {
@@ -1066,9 +1066,7 @@ public class AppCommonMethod {
                     Logger.e("EXTERNAL_PAGE", "EMPTY");
                 }
             }
-        }catch (Exception ignored){
 
-        }
     }
 
     public static void trackFcmEvent(String title, String assetType, Context activity, int position) {
