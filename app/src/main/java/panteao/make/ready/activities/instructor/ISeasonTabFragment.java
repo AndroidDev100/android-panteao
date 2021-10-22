@@ -235,11 +235,12 @@ public class ISeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                 // all episode view to set here
                                 if (enveuCommonResponse.getPageTotal() - 1 > totalPages) {
                                     if (totalPages > 0) {
-                                        if (enveuCommonResponse.getEnveuVideoItemBeans().size() > 10) {
+                                        getBinding().seasonMore.setVisibility(View.VISIBLE);
+                                        /*if (enveuCommonResponse.getEnveuVideoItemBeans().size() > 10) {
                                             getBinding().seasonMore.setVisibility(View.VISIBLE);
                                         } else {
                                             getBinding().seasonMore.setVisibility(View.GONE);
-                                        }
+                                        }*/
                                     } else {
                                         getBinding().seasonMore.setVisibility(View.GONE);
                                     }

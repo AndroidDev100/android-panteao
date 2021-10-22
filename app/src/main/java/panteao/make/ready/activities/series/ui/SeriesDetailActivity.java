@@ -228,7 +228,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", SeriesDetailActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+          //  showDialog("", getResources().getString(R.string.premium_popup_message));
         }catch (Exception ignored){
 
         }

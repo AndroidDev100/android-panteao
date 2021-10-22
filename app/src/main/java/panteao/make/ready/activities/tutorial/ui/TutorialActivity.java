@@ -228,7 +228,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", TutorialActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+            //showDialog("", getResources().getString(R.string.premium_popup_message));
         }catch (Exception ignored){
 
         }

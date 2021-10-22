@@ -1078,7 +1078,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+            //showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
 
         }

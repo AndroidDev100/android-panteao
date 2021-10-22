@@ -66,11 +66,11 @@ class ModelGenerator {
             cat.landingPageAssetId = i?.item?.landingPage?.assetID
             when (BaseConfiguration.instance.clients?.getGateway()) {
                 BaseGateway.ENVEU.name -> {
-                    cat.landingPagePlayListId = i?.item?.landingPage?.playlist?.brightcovePlaylistId
+                    cat.landingPagePlayListId = i?.item?.landingPage?.playlist?.kEntryId
                 }
 
                 BaseGateway.KALTURA.name -> {
-                    cat.landingPagePlayListId = i?.item?.landingPage?.playlist?.kalturaChannelId
+                    cat.landingPagePlayListId = i?.item?.landingPage?.playlist?.kEntryId
                 }
             }
 

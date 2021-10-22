@@ -230,7 +230,8 @@ public class APIServiceLayer {
         callBack.onStart();
         languageCode = LanguageLayer.getCurrentLanguageCode();
         if (endpoint!=null) {
-            endpoint.getInstructorRelatedContent(seriesId, pageNumber, size, languageCode).enqueue(new Callback<EnveuCommonResponse>() {
+            String mediaTypes=MediaTypeConstants.getInstance().getShow()+","+MediaTypeConstants.getInstance().getSeries()+","+MediaTypeConstants.getInstance().getTutorial()+","+MediaTypeConstants.getInstance().getInstructor();
+            endpoint.getInstructorRelatedContent(seriesId, pageNumber, size, languageCode,mediaTypes).enqueue(new Callback<EnveuCommonResponse>() {
                 @Override
                 public void onResponse(Call<EnveuCommonResponse> call, Response<EnveuCommonResponse> response) {
                     Gson gson = new Gson();

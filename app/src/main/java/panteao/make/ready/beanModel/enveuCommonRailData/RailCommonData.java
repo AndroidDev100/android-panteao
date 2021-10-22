@@ -160,9 +160,9 @@ public class RailCommonData implements Parcelable {
                     VideosItem videoItem = videos.get(i).getContent();
                     Log.w("mediaTypes",videoItem.getContentType()+"   "+MediaTypeConstants.getInstance().getChapter());
                     if (videoItem.getContentType()!=null && !videoItem.getContentType().equalsIgnoreCase("")){
-                        if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor()) &&
+                        /*if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor()) &&
                                 !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) &&
-                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
+                                !videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){*/
                             Gson gson = new Gson();
                             String tmp = gson.toJson(videoItem);
                             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(videoItem, videos.get(i).getContentOrder(), imageType);
@@ -189,7 +189,7 @@ public class RailCommonData implements Parcelable {
 
                                 enveuVideoItemBeans.add(enveuVideoItemBean);
                             }
-                        }
+
                     }
                 }
 
