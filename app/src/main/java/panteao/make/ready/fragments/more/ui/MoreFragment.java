@@ -13,7 +13,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,7 +102,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         res = getResources();
-        FacebookSdk.sdkInitialize(getActivity());
+   //     FacebookSdk.sdkInitialize(getActivity());
 //
 //        ((HomeActivity) Objects.requireNonNull(getActivity())).updateApi(click -> {
 //            if (click) {
@@ -181,7 +181,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 //    DownloadHelper downloadHelper;
     private void modelCall() {
 
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(HomeViewModel.class);
+        viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(HomeViewModel.class);
         String[] label1 = getActivity().getResources().getStringArray(R.array.more_with_verify);
 
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {

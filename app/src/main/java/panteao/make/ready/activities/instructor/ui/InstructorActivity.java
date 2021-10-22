@@ -26,7 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -259,7 +259,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
 
     private void modelCall() {
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         assetListContinue = new ArrayList<>();
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         getBinding().player.setVisibility(View.VISIBLE);
@@ -272,7 +272,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();
         token = preference.getAppPrefAccessToken();
-        viewModel = ViewModelProviders.of(this).get(SeriesViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SeriesViewModel.class);
         if (isLogin) {
             AppUserModel signInResponseModel = AppUserModel.getInstance();
             if (signInResponseModel != null) {
@@ -321,7 +321,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
     private void getSeriesDetail() {
         modelCall();
         postCommentClick();
-        RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         railInjectionHelper.getAssetDetailsV2(String.valueOf(assestId)).observe(InstructorActivity.this, assetResponse -> {
             if (assetResponse != null) {
                 if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
@@ -469,7 +469,7 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 //            });
         }
 
-        getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+        getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 showLoading(getBinding().progressBar, true);

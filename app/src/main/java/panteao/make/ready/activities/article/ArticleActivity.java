@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
@@ -105,7 +105,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
     }
 
     public void callDetailApI(int id) {
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
 /*
         railInjectionHelper.getAssetDetails(String.valueOf(assestId)).observe(ArticleActivity.this, enveuCommonResponse -> {
             if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {

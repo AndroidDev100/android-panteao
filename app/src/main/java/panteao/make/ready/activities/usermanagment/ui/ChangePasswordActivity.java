@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -82,7 +82,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(ChangePasswordActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(ChangePasswordActivity.this).get(RegistrationLoginViewModel.class);
 
         getBinding().tvChangePassword.setClickable(true);
         getBinding().radioPasswordEye.setChecked(false);

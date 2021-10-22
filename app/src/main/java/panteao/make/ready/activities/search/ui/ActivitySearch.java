@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,7 +76,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(ActivitySearch.this).get(SearchViewModel.class);
+        viewModel =new ViewModelProvider(ActivitySearch.this).get(SearchViewModel.class);
         clickListner();
         connectionObserver();
         getBinding().toolbar.searchView.setOnQueryTextListener(this);
@@ -325,7 +325,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     String popularSearchId = "";
 
     private void hitApiPopularSearch() {
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         if (!SDKConfig.getInstance().getPopularSearchId().equalsIgnoreCase("")) {
             railInjectionHelper.getPlayListDetailsWithPagination(this, SDKConfig.getInstance().getPopularSearchId(), 0, 5, null).observe(this, playlistRailData -> {
                 if (Objects.requireNonNull(playlistRailData) != null) {

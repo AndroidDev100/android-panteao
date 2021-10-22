@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 //import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 //import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -160,7 +160,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(LoginActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(LoginActivity.this).get(RegistrationLoginViewModel.class);
         getBinding().toolbar.backLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,11 +206,11 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 //        credentialsProvider();
 //        setTransferUtility();
         getBinding().signUpTxt.setClickable(true);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+   //     FacebookSdk.sdkInitialize(this.getApplicationContext());
         //  getBinding().fbButton.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         callbackManager = CallbackManager.Factory.create();
         preference = KsPreferenceKeys.getInstance();
-        getBinding().fbButton.setReadPermissions(permissionNeeds);
+        getBinding().fbButton.setPermissions(permissionNeeds);
         getBinding().errorEmail.setVisibility(View.INVISIBLE);
         getBinding().errorPassword.setVisibility(View.INVISIBLE);
         getBinding().etPassword.setLongClickable(false);

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +62,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
     }
 
     private void modelCall() {
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         connectionObserver();
     }
 
@@ -104,7 +104,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
     }
 
     private void UIinitialization() {
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         getBinding().noConnectionLayout.setVisibility(View.GONE);
         getBinding().root.setVisibility(View.VISIBLE);
 

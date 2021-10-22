@@ -10,7 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -270,7 +270,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 KsPreferenceKeys preference = KsPreferenceKeys.getInstance();
                 if (preference.getAppPrefLoginStatus()) {
                     String token = preference.getAppPrefAccessToken();
-                    BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+                    BookmarkingViewModel bookmarkingViewModel =new ViewModelProvider(this).get(BookmarkingViewModel.class);
                     bookmarkingViewModel.getContinueWatchingData(token, counter, AppConstants.PAGE_SIZE).observe(this, getContinueWatchingBean -> {
                         getBinding().transparentLayout.setVisibility(View.GONE);
                         String videoIds = "";
@@ -324,7 +324,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                     });
                 }
             } else {
-                RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+                RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
                 /*railInjectionHelper.getPlayListDetailsWithPagination(this, playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
                     getBinding().transparentLayout.setVisibility(View.GONE);
                     if (Objects.requireNonNull(playlistRailData) != null) {
@@ -705,7 +705,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     }
 
     private void modelCall() {
-        listingViewModel = ViewModelProviders.of(this).get(ListingViewModel.class);
+        listingViewModel =new ViewModelProvider(this).get(ListingViewModel.class);
 
     }
 

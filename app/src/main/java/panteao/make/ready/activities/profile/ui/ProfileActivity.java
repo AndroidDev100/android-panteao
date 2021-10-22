@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 //import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -158,7 +158,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(ProfileActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(ProfileActivity.this).get(RegistrationLoginViewModel.class);
         connectionObserver();
     }
 
@@ -192,10 +192,10 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
     }
 
     public void connectWithFb() {
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+      //  FacebookSdk.sdkInitialize(this.getApplicationContext());
         getBinding().fbButton.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         callbackManager = CallbackManager.Factory.create();
-        getBinding().fbButton.setReadPermissions(permissionNeeds);
+        getBinding().fbButton.setPermissions(permissionNeeds);
         getBinding().tvConnectFb.setOnClickListener(view -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 800) {
                 return;

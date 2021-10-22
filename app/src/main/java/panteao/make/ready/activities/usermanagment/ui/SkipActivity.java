@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 //import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 //import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -107,7 +107,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
     }
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(SkipActivity.this).get(RegistrationLoginViewModel.class);
+        viewModel = new ViewModelProvider(SkipActivity.this).get(RegistrationLoginViewModel.class);
 
 //        credentialsProvider();
 //        setTransferUtility();

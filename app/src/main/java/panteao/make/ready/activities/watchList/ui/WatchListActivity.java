@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,9 +86,9 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     private boolean isWatchHistory;
 
     private void callBinding() {
-        viewModel = ViewModelProviders.of(WatchListActivity.this).get(WatchListViewModel.class);
-        bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        viewModel = new ViewModelProvider(WatchListActivity.this).get(WatchListViewModel.class);
+        bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
+        railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         getBinding().connection.retryTxt.setOnClickListener(view -> connectionObserver());
         getBinding().retryLoadData.setOnClickListener(this);
         modelCall();

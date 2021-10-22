@@ -11,12 +11,13 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.JsonObject;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
@@ -106,6 +107,8 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     @Override
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        onDownloadClickInteraction = (OnDownloadClickInteraction) getActivity();
+        trailorCallBack = (TrailorCallBack) getActivity();
         try {
             getAssetId();
             hitApiIsLike();
@@ -127,12 +130,15 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        onDownloadClickInteraction = (OnDownloadClickInteraction) getActivity();
-        trailorCallBack = (TrailorCallBack) getActivity();
-    }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        onDownloadClickInteraction = (OnDownloadClickInteraction) getActivity();
+//        trailorCallBack = (TrailorCallBack) getActivity();
+//    }
+
+
+
 
     private void setClickListeners() {
         // getBinding().llLike.setOnClickListener(this);
@@ -171,7 +177,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
         if (getActivity() != null && preference == null)
             preference = KsPreferenceKeys.getInstance();
-        bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+        bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
 
         if (preference.getAppPrefLoginStatus()) {
             token = preference.getAppPrefAccessToken();

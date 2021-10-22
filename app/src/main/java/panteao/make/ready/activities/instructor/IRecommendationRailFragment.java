@@ -1,5 +1,6 @@
 package panteao.make.ready.activities.instructor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,7 +102,7 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
         setRecyclerProperties(getBinding().recyclerView);
 
         railCommonDataList.clear();
-        RailInjectionHelper railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
 /*
         railInjectionHelper.getScreenWidgets(getActivity(), tabId, new CommonApiCallBack() {
             @Override
@@ -316,7 +321,24 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
             intent.putExtra("flag", 0);
             intent.putExtra("shimmerType", 0);
             intent.putExtra("baseCategory", data.getScreenWidget());
-            startActivityForResult(intent, 1001);
+          //  startActivityForResult(intent, 1001);
+
+            ActivityResultLauncher<Intent> getResult = null;
+            getResult.launch(intent);
+
+            getResult = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+                                // your operation....
+                            }
+                        }
+                    });
+
+
         }
     }
     private void startGridActivity(RailCommonData data) {
@@ -332,7 +354,23 @@ public class IRecommendationRailFragment extends BaseBindingFragment<DetailFoote
             intent.putExtra("flag", 0);
             intent.putExtra("shimmerType", 0);
             intent.putExtra("baseCategory", data.getScreenWidget());
-            startActivityForResult(intent, 1001);
+           // startActivityForResult(intent, 1001);
+
+            ActivityResultLauncher<Intent> getResult = null;
+            getResult.launch(intent);
+
+            getResult = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+                                // your operation....
+                            }
+                        }
+                    });
+
         }
     }
     @Override

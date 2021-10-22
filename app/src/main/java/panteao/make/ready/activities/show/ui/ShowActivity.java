@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -200,8 +200,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             isLoggedIn = true;
         }
         AppCommonMethod.isPurchase = false;
-        viewModel = ViewModelProviders.of(ShowActivity.this).get(DetailViewModel.class);
-        bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+        viewModel = new ViewModelProvider(ShowActivity.this).get(DetailViewModel.class);
+        bookmarkingViewModel =new ViewModelProvider(this).get(BookmarkingViewModel.class);
 
         setupUI(getBinding().llParent);
         commentCounter = 0;
@@ -659,7 +659,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     public void getAssetDetails() {
         isHitPlayerApi = true;
-        railInjectionHelper = ViewModelProviders.of(this).get(RailInjectionHelper.class);
+        railInjectionHelper =new ViewModelProvider(this).get(RailInjectionHelper.class);
         railInjectionHelper.getAssetDetailsV2(String.valueOf(assestId)).observe(ShowActivity.this, assetResponse -> {
             if (assetResponse != null) {
                 if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
@@ -709,11 +709,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
 
-                if (isLogin) {
-                    hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
-                } else {
-                    getBinding().tvBuyNow.setVisibility(View.VISIBLE);
-                }
+
+                hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
+
             } else {
                 getBinding().pBar.setVisibility(View.VISIBLE);
                 if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
@@ -1740,7 +1738,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     public void onBookmarkCall(int currentPosition) {
         if (isLogin) {
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel = new ViewModelProvider(this).get(BookmarkingViewModel.class);
             bookmarkingViewModel.bookmarkVideo(token, assestId, (currentPosition / 1000));
         }
     }
@@ -1748,7 +1746,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     @Override
     public void onBookmarkFinish() {
         if (isLogin) {
-            BookmarkingViewModel bookmarkingViewModel = ViewModelProviders.of(this).get(BookmarkingViewModel.class);
+            BookmarkingViewModel bookmarkingViewModel =new ViewModelProvider(this).get(BookmarkingViewModel.class);
             bookmarkingViewModel.finishBookmark(token, assestId);
         }
     }

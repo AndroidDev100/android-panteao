@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -132,7 +132,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         bp.initializeBillingProcessor();
 
 
-        viewModel = ViewModelProviders.of(this).get(PurchaseViewModel.class);
+        viewModel = new ViewModelProvider(this).get(PurchaseViewModel.class);
         AppCommonMethod.isPurchase = false;
         isAlreadySubscribed = false;
         isOnFreePlan = false;

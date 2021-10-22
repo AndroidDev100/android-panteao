@@ -15,7 +15,7 @@ import androidx.leanback.app.HeadersSupportFragment
 import androidx.leanback.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.make.enums.Layouts
 import panteao.make.ready.R
@@ -71,7 +71,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         super.onAttach(activity)
         mActivity = activity as TVHomeActivity
         dataLoadingListener = activity
-        railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        railInjectionHelper =ViewModelProvider(this)[RailInjectionHelper::class.java]
         changeUi = activity
     }
 
@@ -92,7 +92,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
 
     protected fun setViewModel(viewModelClass: Class<*>) {
         viewModel =
-            ViewModelProviders.of(this).get<ViewModel>(viewModelClass as Class<ViewModel>) as T
+          ViewModelProvider(this).get<ViewModel>(viewModelClass as Class<ViewModel>) as T
     }
 
 

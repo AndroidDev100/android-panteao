@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import panteao.make.ready.R;
 import panteao.make.ready.activities.redeemcoupon.viewModel.RedeemViewModel;
@@ -44,7 +44,7 @@ public class RedeemCouponActivity extends BaseBindingActivity<ActivityRedeemCoup
     }
 
     private void callModel() {
-        redeemViewModel = ViewModelProviders.of(RedeemCouponActivity.this).get(RedeemViewModel.class);
+        redeemViewModel = new ViewModelProvider(RedeemCouponActivity.this).get(RedeemViewModel.class);
     }
 
     private void setClicks() {

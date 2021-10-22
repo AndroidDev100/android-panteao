@@ -1,6 +1,6 @@
 package panteao.make.ready.activities.videoquality.ui;
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,7 +63,7 @@ public class VideoQualityActivity extends BaseBindingActivity<VideoQualityActivi
     }
 
     private void callModel() {
-        viewModel = ViewModelProviders.of(this).get(VideoQualityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(VideoQualityViewModel.class);
     }
 
     private void connectionObserver() {

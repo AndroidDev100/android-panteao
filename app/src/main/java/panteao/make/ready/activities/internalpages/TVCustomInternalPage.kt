@@ -3,7 +3,7 @@ package panteao.make.ready.activities.internalpages
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import panteao.make.ready.R
 import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridFragment
 import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGridTVFragment
@@ -39,7 +39,7 @@ class TVCustomInternalPage : TvBaseBindingActivity<ActivityTvCustomInternalPageB
     }
 
     private fun getAssetDetails(assestId: Int) {
-        val railInjectionHelper = ViewModelProviders.of(this)[RailInjectionHelper::class.java]
+        val railInjectionHelper = ViewModelProvider(this)[RailInjectionHelper::class.java]
         railInjectionHelper.getAssetDetailsV2(assestId.toString()).observe(this@TVCustomInternalPage,
             { assetResponse: ResponseModel<*>? ->
                 if (assetResponse != null) {
