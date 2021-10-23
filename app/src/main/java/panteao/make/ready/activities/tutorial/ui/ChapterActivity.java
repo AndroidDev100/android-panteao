@@ -362,12 +362,15 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             Logger.d("ENTRY_ID", Entryid + "");
 
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        playerfragment.setArguments(args);
-        transaction.replace(R.id.player_frame, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            playerfragment = new KalturaFragment();
+            playerfragment.setArguments(args);
+            transaction.replace(R.id.player_frame, playerfragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
 
     }
     public void removeCommentFragment() {

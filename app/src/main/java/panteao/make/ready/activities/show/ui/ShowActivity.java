@@ -243,17 +243,17 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             args.putString("tvod_type",typeofTVOD);
             Logger.d("ENTRY_ID",Entryid+"");
         }
-       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-       playerfragment = new KalturaFragment();
-       playerfragment.setArguments(args);
-       transaction.replace(R.id.player_root, playerfragment);
-       transaction.addToBackStack(null);
-       transaction.commit();
-       if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
-           downloadHelper.getAssetInfo(videoDetails.getkEntryId());
+       if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+           FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+           playerfragment = new KalturaFragment();
+           playerfragment.setArguments(args);
+           transaction.replace(R.id.player_root, playerfragment);
+           transaction.addToBackStack(null);
+           transaction.commit();
+           if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
+               downloadHelper.getAssetInfo(videoDetails.getkEntryId());
+           }
        }
-
-
    }
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
