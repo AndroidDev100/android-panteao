@@ -391,7 +391,7 @@
 
             </ScrollView>
 
-            <panteao.make.ready.utils.CustomProgressBar
+            <panteao.make.ready.utils.CustomProgressBarWhite
                 android:id="@+id/progress_bar"
                 style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="wrap_content"
