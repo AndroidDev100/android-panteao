@@ -680,18 +680,17 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        if (playerFragment != null) {
-//            Log.w("windowFocusChanged=1",hasFocus+""+playerFragment.isPlaying());
-//            if (!hasFocus) {
-//                /*if (playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            } else {
-//                /*if (!playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            }
-//        }
+        try {
+            if (playerfragment != null) {
+                if (!hasFocus) {
+                    playerfragment.checkPlayerState(ChapterActivity.this,1);
+                }else {
+                    playerfragment.checkPlayerState(ChapterActivity.this,2);
+                }
+            }
+        }catch (Exception e){
+
+        }
     }
 
     public void setBroadcast() {
@@ -751,17 +750,20 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void comingSoon() {
 
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
-            AppCommonMethod.assetId = assestId;
-            AppCommonMethod.seriesId = seriesId;
-            if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
-                Intent intent = new Intent(ChapterActivity.this, PurchaseActivity.class);
-                intent.putExtra("response", videoDetails);
-                intent.putExtra("assestId", assestId);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getChapter());
-                intent.putExtra("responseEntitlement", responseEntitlementModel);
-                startActivity(intent);
-            }
+           if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed))){
 
+        }else {
+               AppCommonMethod.assetId = assestId;
+               AppCommonMethod.seriesId = seriesId;
+               if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
+                   Intent intent = new Intent(ChapterActivity.this, PurchaseActivity.class);
+                   intent.putExtra("response", videoDetails);
+                   intent.putExtra("assestId", assestId);
+                   intent.putExtra("contentType", MediaTypeConstants.getInstance().getChapter());
+                   intent.putExtra("responseEntitlement", responseEntitlementModel);
+                   startActivity(intent);
+               }
+           }
 
     }
 
@@ -2232,5 +2234,6 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             Log.e("ErrorIs",e.getLocalizedMessage());
         }
     }
+
 }
 

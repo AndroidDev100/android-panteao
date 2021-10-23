@@ -318,13 +318,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             Logger.d("ENTRY_ID", Entryid + "");
 
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        playerfragment = new KalturaFragment();
-        playerfragment.setArguments(args);
-        transaction.replace(R.id.player_frame, playerfragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
+        if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            playerfragment = new KalturaFragment();
+            playerfragment.setArguments(args);
+            transaction.replace(R.id.player_frame, playerfragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
 
     }
 
@@ -659,18 +660,17 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        if (playerFragment != null) {
-//            Log.w("windowFocusChanged=1",hasFocus+""+playerFragment.isPlaying());
-//            if (!hasFocus) {
-//                /*if (playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            } else {
-//                /*if (!playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            }
-//        }
+        try {
+            if (playerfragment != null) {
+            if (!hasFocus) {
+                playerfragment.checkPlayerState(EpisodeActivity.this,1);
+            }else {
+                playerfragment.checkPlayerState(EpisodeActivity.this,2);
+            }
+        }
+        }catch (Exception e){
+
+        }
     }
 
     public void setBroadcast() {
@@ -730,23 +730,23 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void comingSoon() {
        // if (isLogin) {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
-            AppCommonMethod.assetId = assestId;
-            AppCommonMethod.seriesId = seriesId;
-            if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
-                Intent intent = new Intent(EpisodeActivity.this, PurchaseActivity.class);
-                intent.putExtra("response", videoDetails);
-                intent.putExtra("assestId", assestId);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
-                intent.putExtra("responseEntitlement", responseEntitlementModel);
-                if (responseEntitlementModel!=null){
-                    startActivity(intent);
-                }
-            }
+          if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed))){
 
-       /* } else {
-            preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
-        }*/
+        }else {
+              AppCommonMethod.assetId = assestId;
+              AppCommonMethod.seriesId = seriesId;
+              if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
+                  Intent intent = new Intent(EpisodeActivity.this, PurchaseActivity.class);
+                  intent.putExtra("response", videoDetails);
+                  intent.putExtra("assestId", assestId);
+                  intent.putExtra("contentType", MediaTypeConstants.getInstance().getEpisode());
+                  intent.putExtra("responseEntitlement", responseEntitlementModel);
+                  if (responseEntitlementModel != null) {
+                      startActivity(intent);
+                  }
+              }
+          }
+
     }
 
     public void openLoginPage(String message) {
@@ -2240,4 +2240,5 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             Log.e("ErrorIs",e.getLocalizedMessage());
         }
     }
+
 }

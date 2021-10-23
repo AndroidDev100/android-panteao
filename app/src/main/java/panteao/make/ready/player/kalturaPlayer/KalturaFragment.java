@@ -4,6 +4,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -56,6 +59,7 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
+import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -440,7 +444,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         if (event.newState == PlayerState.READY) {
 
 //            getBinding().playerImage.setVisibility(View.GONE);
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            if (getActivity()!=null && !getActivity().isFinishing()){
+                if (android.provider.Settings.System.getInt(getActivity().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                }
+
+            }
             progressbar.setVisibility(View.GONE);
         } else if (event.newState == PlayerState.BUFFERING) {
             progressbar.setVisibility(View.VISIBLE);
@@ -460,6 +469,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 else
                     id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
                 player.pause();
+                pausedFromBtn=true;
             } else {
                 countDownTimer.start();
                 if (AppCommonMethod.isTV(requireActivity()))
@@ -467,6 +477,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 else
                     id.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_pause_24));
                 player.play();
+                pausedFromBtn=false;
             }
         }
     }
@@ -499,6 +510,19 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     public void onConfigurationChanged(Configuration newConfig) {
 
         super.onConfigurationChanged(newConfig);
+            int orientation = getActivity().getResources().getConfiguration().orientation;
+            Log.w("_orientation-->>",orientation+"");
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(constraintMain);
+                constraintSet.setDimensionRatio(playerRootMain.getId(), heightRatio+":"+widthRatio);
+                constraintSet.applyTo(constraintMain);
+            }else {
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(constraintMain);
+                constraintSet.setDimensionRatio(playerRootMain.getId(), "16:9");
+                constraintSet.applyTo(constraintMain);
+            }
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -576,9 +600,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         mListener.bingeWatchCall(entryID);
     }
 
+    boolean fullScreenFromBtnClick=false;
     @Override
     public void checkOrientation(ImageView id) {
         //  Log.d("gtgtgtgtg",fromTrailor);
+        fullScreenFromBtnClick=true;
         if (fromTrailor) {
             if (player != null) {
                 player.stop();
@@ -841,6 +867,39 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         this.fromOnstart = fromOnStart;
     }
 
+    public void checkPlayerState(Activity episodeActivity, int i) {
+        try {
+            if (player!=null){
+                if (i==1){
+                    if (player!=null && player.isPlaying()){
+                        player.pause();
+                    }
+                }else {
+                    if (!pausedFromBtn && player!=null){
+                        player.play();
+                        pausedFromBtn=false;
+                    }
+                    if (getActivity()!=null && !getActivity().isFinishing()){
+                        if (android.provider.Settings.System.getInt(getActivity().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+                            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        }else {
+                            int orientation = getActivity().getResources().getConfiguration().orientation;
+                            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                            }else {
+                                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        }catch (Exception ignored){
+
+        }
+    }
+
 
     public interface OnPlayerInteractionListener {
         void bingeWatchCall(String entryID);
@@ -854,6 +913,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         void onCurrentPosition(long currentPosition);
     }
 
+    boolean pausedFromBtn=false;
     @Override
     public void onPause() {
         super.onPause();
@@ -872,6 +932,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 else
                     play_pause.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_play_arrow_24));
             }
+            pausedFromBtn=true;
             player.pause();
             Log.d("ftyshhdh","EnterOnPause");
 
@@ -1113,6 +1174,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
 
     }
+
+
 
     private Handler handler;
     private Runnable runnable;

@@ -595,16 +595,20 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     public void comingSoon() {
             //showDialog(EpisodeActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
-            AppCommonMethod.seriesId = seriesId;
-            if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
-                Intent intent = new Intent(TutorialActivity.this, PurchaseActivity.class);
-                intent.putExtra("response", seriesDetailBean);
-                intent.putExtra("contentType", MediaTypeConstants.getInstance().getTutorial());
-                intent.putExtra("responseEntitlement", responseEntitlementModel);
-                if (responseEntitlementModel!=null){
-                    startActivity(intent);
-                }
-            }
+           if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed))){
+
+        }else {
+               AppCommonMethod.seriesId = seriesId;
+               if (responseEntitlementModel != null && responseEntitlementModel.getStatus()) {
+                   Intent intent = new Intent(TutorialActivity.this, PurchaseActivity.class);
+                   intent.putExtra("response", seriesDetailBean);
+                   intent.putExtra("contentType", MediaTypeConstants.getInstance().getTutorial());
+                   intent.putExtra("responseEntitlement", responseEntitlementModel);
+                   if (responseEntitlementModel != null) {
+                       startActivity(intent);
+                   }
+               }
+           }
 
     }
 

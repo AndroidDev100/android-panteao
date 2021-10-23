@@ -560,10 +560,13 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     public void comingSoon() {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-            return;
-        }
-        mLastClickTime = SystemClock.elapsedRealtime();
+        if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed))){
+
+        }else {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
 
             //showDialog(DetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.you_are_not_entitled));
             AppCommonMethod.assetId = assestId;
@@ -576,7 +579,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 intent.putExtra("responseEntitlement", responseEntitlementModel);
                 startActivity(intent);
             }
-
+        }
     }
 
     public void openLoginPage(String message) {
@@ -1452,19 +1455,17 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //    }
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        if (playerFragment != null) {
-//            if (!hasFocus) {
-//                /*if (playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            } else {
-//
-//
-//               /* if (!playerFragment.isPlaying()) {
-//                    playerFragment.playPause();
-//                }*/
-//            }
-//        }
+            try {
+                if (playerfragment != null) {
+                    if (!hasFocus) {
+                        playerfragment.checkPlayerState(ShowActivity.this,1);
+                    }else {
+                        playerfragment.checkPlayerState(ShowActivity.this,2);
+                    }
+                }
+            }catch (Exception e){
+
+            }
     }
 
     @Override
