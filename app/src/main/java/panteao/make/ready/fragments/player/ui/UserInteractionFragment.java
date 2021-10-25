@@ -152,9 +152,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         getBinding().pauseDownload.setOnClickListener(this);
         getBinding().trailor.setOnClickListener(this);
         getBinding().setDownloadStatus(DownloadStatus.START);
-        if (context instanceof SeriesDetailActivity) {
-            getBinding().down.setVisibility(View.GONE);
-        }
+
     }
 
     private void getAssetId() {

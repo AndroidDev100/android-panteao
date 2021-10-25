@@ -37,6 +37,7 @@ import panteao.make.ready.activities.downloads.SelectDownloadQualityAdapter;
 import panteao.make.ready.activities.downloads.VideoQualitySelectedListener;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.purchase.TVODENUMS;
+import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.LayoutDownloadQualityBottomSheetBinding;
 import panteao.make.ready.databinding.WifiDialogBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
@@ -895,5 +896,59 @@ public class KTDownloadHelper {
         }
     }
 
+/*series download Handling*/
+public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoItemBean> seasonEpisodesList) {
+    manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
+    manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
+
+    OfflineManager.PrepareCallback prepareCallback = new OfflineManager.PrepareCallback() {
+        @Override
+        public void onPrepared(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo, @Nullable Map<OfflineManager.TrackType, List<OfflineManager.Track>> selected) {
+            assetInf=assetInfo;
+            manager.startAssetDownload(assetInfo);
+            Log.w("downloadAssetAdded","onPrepareSuccess-->"+assetId+"  "+seasonEpisodesList.size());
+           // storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+        }
+
+        @Override
+        public void onPrepareError(@NonNull String assetId, @NonNull Exception error) {
+            Log.w("prepaireRelated","onPrepareError-->"+assetId+" "+error.getMessage());
+            // toastLong("onPrepareError: " + error);
+        }
+
+        @Override
+        public void onMediaEntryLoadError(@NonNull Exception error) {
+            Log.w("prepaireRelated","onMediaEntryLoadError-->"+" "+error.getMessage());
+            //  toastLong("onMediaEntryLoadError: " + error);
+        }
+
+        @Override
+        public void onMediaEntryLoaded(@NonNull String assetId, @NonNull PKMediaEntry mediaEntry) {
+            Log.w("prepaireRelated","onPrepareError-->"+assetId+" "+mediaEntry.toString());
+            // reduceLicenseDuration(mediaEntry, 300);
+        }
+
+        @Override
+        public void onSourceSelected(@NonNull String assetId, @NonNull PKMediaSource source, @Nullable PKDrmParams drmParams) {
+
+        }
+    };
+
+
+    for (int i = 0;i<seasonEpisodesList.size();i++){
+        try {
+            String kentryid=seasonEpisodesList.get(i).getkEntryId();
+            Log.w("downloadData-->>",kentryid);
+            if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
+                manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
+            }
+        }catch (Exception e){
+
+        }
+
+    }
+   }
 
 }

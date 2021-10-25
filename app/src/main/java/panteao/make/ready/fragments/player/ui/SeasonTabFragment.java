@@ -369,6 +369,13 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                         }
                     },1200);
 
+                }else if (context instanceof SeriesDetailActivity){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((SeriesDetailActivity) context).episodesList(seasonEpisodes);
+                        }
+                    },1200);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);
@@ -448,6 +455,12 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
     public void updateStatus() {
         if (seasonAdapter!=null){
             seasonAdapter.holdHolder();
+        }
+    }
+
+    public void updateAdapter(int progress) {
+        if (seasonAdapter!=null){
+            seasonAdapter.notifyDataSetChanged();
         }
     }
 }

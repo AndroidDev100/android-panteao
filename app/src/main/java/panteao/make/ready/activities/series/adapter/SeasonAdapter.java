@@ -12,11 +12,17 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kaltura.tvplayer.OfflineManager;
+
+import org.jetbrains.annotations.NotNull;
+
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -26,13 +32,14 @@ import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 import panteao.make.ready.utils.helpers.StringUtils;
+import panteao.make.ready.utils.helpers.downloads.downloadUtil.DownloadUtils;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>{
+public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder> implements KTDownloadEvents {
     private final Activity context;
     private List<EnveuVideoItemBean> videoItemBeans;
     private EpisodeItemClick listner;
@@ -44,6 +51,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     private HashMap indexMap = new HashMap<String, Integer>();
     private OnDownloadClickInteraction onDownloadClickInteraction;
     private String minutes = "";
+    KTDownloadHelper downloadHelper;
 
     public SeasonAdapter(Activity context, List<EnveuVideoItemBean> videoItemBeans, int id, int currentAssetId, EpisodeItemClick listner) {
         this.context = context;
@@ -54,7 +62,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
       //  Collections.sort(videoItemBeans, new SortSeasonAdapterItems());
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();
-//        downloadHelper = new DownloadHelper((Activity) context, this);
+        downloadHelper = new KTDownloadHelper(context, this);
         onDownloadClickInteraction = (OnDownloadClickInteraction) context;
         buildIndexMap();
     }
@@ -107,22 +115,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
         }
         if(AppCommonMethod.getCheckBCID(videoItemBeans.get(position).getBrightcoveVideoId())) {
-//            downloadHelper.findVideo(videoItemBeans.get(position).getBrightcoveVideoId(), new VideoListener() {
-//                @Override
-//                public void onVideo(Video video) {
-//                    if (SDKConfig.getInstance().isDownloadEnable()){
-//                        if (MediaTypeCheck.isMediaTypeSupported(videoItemBeans.get(position).getAssetType())){
-//                            if (video.isOfflinePlaybackAllowed()) {
-//                                holder.itemBinding.setIsDownloadable(false);
-//                                updateDownloadStatus(holder, position);
-//                            } else {
-//                                holder.itemBinding.setIsDownloadable(false);
-//                            }
-//                        }
-//
-//                    }
-//                }
-//            });
+            setDownloadStatus(holder,position,videoItemBeans.get(position));
         }
         if (videoItemBeans.get(position).getEpisodeNo() != null && videoItemBeans.get(position).getEpisodeNo() instanceof String && !((String) videoItemBeans.get(position).getEpisodeNo()).equalsIgnoreCase("")) {
             String episodeNum =  (String) videoItemBeans.get(position).getEpisodeNo();
@@ -255,153 +248,13 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         });
     }
 
-    private void updateDownloadStatus(SeasonViewHolder holder, int position) {
-//        downloadHelper.getCatalog().getVideoDownloadStatus(videoItemBeans.get(position).getBrightcoveVideoId(), new OfflineCallback<DownloadStatus>() {
-//            @Override
-//            public void onSuccess(DownloadStatus downloadStatus) {
-//                Logger.e("SeasonAdapter", String.valueOf(downloadStatus.getCode()));
-//                switch (downloadStatus.getCode()) {
-//                    case DownloadStatus.STATUS_NOT_QUEUED: {
-//                        holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
-//                    }
-//                    break;
-//                    case DownloadStatus.STATUS_PENDING:
-//                    case DownloadStatus.STATUS_QUEUEING: {
-//                        holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-//                    }
-//                    break;
-//                    case DownloadStatus.STATUS_COMPLETE: {
-//                        holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADED);
-//                    }
-//                    break;
-//                    case DownloadStatus.STATUS_CANCELLING: {
-//                        holder.itemBinding.videoDownloading.setProgress(0);
-//                    }
-//                    break;
-//                    case DownloadStatus.STATUS_PAUSED: {
-//                        holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.PAUSE);
-//                    }
-//                    break;
-//                    case DownloadStatus.STATUS_DOWNLOADING: {
-//                        holder.itemBinding.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-//                        holder.itemBinding.videoDownloading.setProgress((float) downloadStatus.getProgress());
-//                    }
-//                    break;
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable throwable) {
-//
-//            }
-//        });
-    }
 
     @Override
     public int getItemCount() {
         return videoItemBeans.size();
     }
 
-//    @Override
-//    public void onDownloadRequested(@NonNull Video video) {
-//        notifyVideoChanged(video.getId());
-//    }
-//
-//    private void notifyVideoDownloadRequested(String videoId) {
-//        if (indexMap.containsKey(videoId)) {
-//            int index = (int) indexMap.get(videoId);
-//            for (EnveuVideoItemBean videoItemBean :
-//                    videoItemBeans) {
-//                if (videoItemBean.getBrightcoveVideoId().equals(videoId)) {
-//                    videoItemBeans.set(index, videoItemBean);
-//                    notifyItemChanged(index);
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onDownloadStarted(@NonNull Video video, long l, @NonNull Map<String, Serializable> map) {
-//        notifyVideoChanged(video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadProgress(@NonNull Video video, @NonNull com.brightcove.player.network.DownloadStatus downloadStatus) {
-//        notifyVideoChanged(video.getId());
-//
-//    }
-//
-//    @Override
-//    public void onDownloadPaused(@NonNull Video video, @NonNull com.brightcove.player.network.DownloadStatus downloadStatus) {
-//        notifyVideoChanged(video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadCompleted(@NonNull Video video, @NonNull com.brightcove.player.network.DownloadStatus downloadStatus) {
-//        notifyVideoChanged(video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadCanceled(@NonNull Video video) {
-//        notifyVideoChanged(video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadDeleted(@NonNull Video video) {
-//        notifyVideoChanged(video.getId());
-//        onDownloadClickInteraction.onDownloadCompleteClicked(null, this, video.getId());
-//    }
-//
-//    @Override
-//    public void onDownloadFailed(@NonNull Video video, @NonNull com.brightcove.player.network.DownloadStatus downloadStatus) {
-//
-//    }
 
-//    @Override
-//    public void downloadVideo(@NonNull Video video) {
-//
-//    }
-//
-//    @Override
-//    public void pauseVideoDownload(Video video) {
-//
-//    }
-//
-//    @Override
-//    public void resumeVideoDownload(Video video) {
-//
-//    }
-//
-//    @Override
-//    public void deleteVideo(@NonNull Video video) {
-//
-//    }
-//
-//    @Override
-//    public void alreadyDownloaded(@NonNull Video video) {
-//
-//    }
-//
-//    @Override
-//    public void downloadedVideos(@Nullable List<? extends Video> p0) {
-//
-//    }
-//
-//    @Override
-//    public void videoFound(Video video) {
-//
-//    }
-//
-//    @Override
-//    public void downloadStatus(String videoId, DownloadStatus downloadStatus) {
-//
-//    }
-
-//    @Override
-//    public void downloadStatus(String videoId, com.brightcove.player.network.DownloadStatus downloadStatus) {
-//
-//    }
 
     public String getEpisodeNumber(String videoId) {
         for (EnveuVideoItemBean enveuVideoItemBean :
@@ -411,16 +264,6 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             }
         }
         return null;
-    }
-
-    public void updateCurrentId(int id) {
-        currentAssetId=id;
-    }
-
-    public interface EpisodeItemClick {
-
-        void onItemClick(EnveuVideoItemBean assetId, boolean isPremium);
-
     }
 
     public class SeasonViewHolder extends RecyclerView.ViewHolder {
@@ -433,4 +276,50 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
             this.itemBinding = binding;
         }
     }
+
+    public void updateCurrentId(int id) {
+        currentAssetId=id;
+    }
+
+    @Override
+    public void setDownloadProgressListener(float progress, String assetId) {
+
+    }
+
+    @Override
+    public void onDownloadPaused(@NonNull @NotNull String assetId) {
+
+    }
+
+    @Override
+    public void initialStatus(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+
+    }
+
+    @Override
+    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+
+    }
+
+    @Override
+    public void onAssetDownloadComplete(@NonNull @NotNull String assetId) {
+
+    }
+
+    @Override
+    public void onAssetDownloadFailed(@NonNull @NotNull String assetId, Exception e) {
+
+    }
+
+    public interface EpisodeItemClick {
+
+        void onItemClick(EnveuVideoItemBean assetId, boolean isPremium);
+
+    }
+
+
+    private void setDownloadStatus(SeasonViewHolder holder, int position, EnveuVideoItemBean enveuVideoItemBean) {
+        DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
+    }
+
 }
