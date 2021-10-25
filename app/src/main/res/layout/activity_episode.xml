@@ -219,7 +219,7 @@
                                             android:paddingTop="@dimen/detailMorePaddingTop"
                                             android:paddingRight="@dimen/detailMorePaddingLeft"
                                             android:paddingBottom="@dimen/detailMorePaddingTop"
-                                            android:text="@string/buy_now"
+                                            android:text="@string/purhcase_options"
                                             android:textColor="@color/rounded_button_text_color"
                                             android:textSize="@dimen/detailBuyNow"
                                             android:visibility="gone" />

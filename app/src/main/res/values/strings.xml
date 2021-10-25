@@ -50,6 +50,7 @@
     <string name="order_not_found">Order not found</string>
     <string name="order_completed_or_failed">This order has already been completed or failed. Please create a new order</string>
     <string name="sign_in_with_enveu">Sign in with Make Ready TV</string>
+    <string name="sign_up_with_enveu">Sign up with Make Ready TV</string>
     <string name="facebook">Facebook</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="google">Google +</string>
@@ -64,7 +65,7 @@
     <string name="email_id">Email for FB Login </string>
     <string name="watchlist_empty_message">Keep track of Movies, TV shows and clips you want to watch</string>
 
-    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="dont_have_an_account">OR Don\'t have an account?</string>
     <string name="title_more">More</string>
     <string name="listing_title_text"><b>Movie</b></string>
     <string name="title_trending">Trending</string>
