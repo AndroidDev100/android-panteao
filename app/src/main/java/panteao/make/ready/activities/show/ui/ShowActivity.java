@@ -560,7 +560,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     public void comingSoon() {
-        if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed))){
+        if (getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.subscribed)) || getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.purchased)) ||
+                getBinding().tvPurchased.getText().toString().equalsIgnoreCase(getResources().getString(R.string.rented))){
 
         }else {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {

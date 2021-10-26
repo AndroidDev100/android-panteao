@@ -1750,7 +1750,7 @@ public class AppCommonMethod {
     public static String getDateFromTimeStamp(double expiryDate) {
         String date = "";
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         date = formatter.format(new Date((long) expiryDate));
         Log.w("expiryDate", date);
         return date;

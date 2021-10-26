@@ -49,7 +49,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensorLandscape"/>
         <activity android:name=".activities.internalpages.TVCustomInternalPage" />
-        <activity android:name=".activities.internalpages.CustomInternalPage" />
+        <activity android:name=".activities.internalpages.CustomInternalPage"
+            android:screenOrientation="locked"/>
         <activity
             android:name=".activities.show.ui.ShowActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -119,6 +120,7 @@
             android:name=".activities.splash.ui.ActivitySplash"
             android:launchMode="singleTop"
             android:exported="true"
+            android:screenOrientation="locked"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -212,20 +214,24 @@
         <activity
             android:name=".activities.profile.ui.ProfileActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.profile.ui.ProfileActivityNew"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.homeactivity.ui.HomeActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|locale"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".activities.search.ui.ActivitySearch"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateVisible" />
 
         <meta-data
@@ -246,10 +252,12 @@
         <activity
             android:name=".activities.listing.ui.GridActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="locked"
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.usermanagment.ui.LoginActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.usermanagment.ui.SkipActivity"
@@ -257,6 +265,7 @@
         <activity
             android:name=".activities.usermanagment.ui.SignUpActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" />
         <activity
             android:name=".activities.usermanagment.ui.ForgotPasswordActivity"
@@ -306,6 +315,7 @@
 
         <activity
             android:name=".activities.privacypolicy.ui.ContactUsActivity"
+            android:screenOrientation="locked"
             android:launchMode="singleTop" />
         <activity
             android:name=".cms.HelpActivity"
@@ -320,10 +330,12 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.settings.ActivitySettings"
+            android:screenOrientation="locked"
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.listing.listui.ListActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="locked"
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.redeemcoupon.RedeemCouponActivity"
