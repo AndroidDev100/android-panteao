@@ -1336,12 +1336,13 @@ public class AppCommonMethod {
 
     public static void createManualHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails) {
         enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
+        enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
     public static void createAssetHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails, BaseCategory screenWidget) {
         enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
-
+        enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
 //        if (screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
 //            Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
 //            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getThumbnail() != null && enveuVideoDetails.getImages().getThumbnail().getSources() != null
