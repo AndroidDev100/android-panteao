@@ -745,6 +745,18 @@ public class AppCommonMethod {
     }
 
 
+    public static String setDownloadImage(String oldUrl, String imageSize) {
+        PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
+        StringBuilder stringBuilder = new StringBuilder("");
+        String urlImage = oldUrl.trim();
+        String one = SDKConfig.getInstance().getWebPUrl()+"fit-in/";
+        String two = imageSize + "/" + SDKConfig.WEBP_QUALITY;
+        stringBuilder.append(one).append(two).append(urlImage);
+        PrintLogging.printLog("", "ImageUrld-->>" + one + "  " + two + " " + urlImage);
+        PrintLogging.printLog("", "-->>StringBilder" + stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
     public static String setImage(String oldUrl, String imageSize) {
         PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
         StringBuilder stringBuilder = new StringBuilder("");
@@ -918,6 +930,13 @@ public class AppCommonMethod {
         int w = (int) context.getResources().getDimension(R.dimen.circle_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.circle_image_height);
         return setImage(posterURL, w + "x" + h);
+    }
+
+    public static String getListLDownloadImage(String posterURL, Context context) {
+        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        int w = (int) context.getResources().getDimension(R.dimen.landscape_image_width);
+        int h = (int) context.getResources().getDimension(R.dimen.landscape_image_height);
+        return setDownloadImage(posterURL, w + "x" + h);
     }
 
     public static String getListLDSImage(String posterURL, Context context) {

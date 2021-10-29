@@ -13,6 +13,11 @@ import com.kaltura.tvplayer.OfflineManager
 import panteao.make.ready.R
 import panteao.make.ready.databinding.ListDownloadItemBinding
 import panteao.make.ready.enums.DownloadStatus
+import panteao.make.ready.utils.Utils.dpToPx
+import panteao.make.ready.utils.Utils.getDownloadFilteredUrl
+import panteao.make.ready.utils.Utils.getFilteredUrl
+import panteao.make.ready.utils.commonMethods.AppCommonMethod
+import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.helpers.ImageHelper
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
@@ -214,8 +219,9 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             if (currentVideoItem.isSeries){
                 if (currentVideoItem.seriesImageUrl!=null && !currentVideoItem.seriesImageUrl.equals("", ignoreCase = true)){
-                    ImageHelper.getInstance(context)
-                        .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.seriesImageUrl)
+                    ImageHelper.getInstance(context).loadListImage(viewHolder?.itemBinding?.itemImage, AppCommonMethod.getListLDownloadImage(currentVideoItem.seriesImageUrl, context))
+                    /*ImageHelper.getInstance(context)
+                        .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.seriesImageUrl)*/
                 }
                 viewHolder?.itemBinding?.flDeleteWatchlist?.visibility = View.VISIBLE
                 viewHolder?.itemBinding?.arrowIcon?.visibility = View.VISIBLE
@@ -255,8 +261,8 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
 
             }else{
-                ImageHelper.getInstance(context)
-                    .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)
+                //ImageHelper.getInstance(context).loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL) ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, dpToPx(128f).toInt(), dpToPx(72f).toInt())
+                ImageHelper.getInstance(context).loadListImage(viewHolder?.itemBinding?.itemImage, AppCommonMethod.getListLDownloadImage(currentVideoItem.imageURL, context))
                 viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
                 viewHolder?.itemBinding?.arrowIcon?.visibility = View.GONE
                 viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name

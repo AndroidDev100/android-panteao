@@ -217,8 +217,9 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
             Log.d("imageURL",currentVideoItem.imageURL)
             viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
             updatedStatus(viewHolder?.itemBinding,currentVideoItem,position,context)
-            ImageHelper.getInstance(context)
-                .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)
+            ImageHelper.getInstance(context).loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)
+            /*ImageHelper.getInstance(context)
+                .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)*/
 
             if (currentVideoItem.isSeries){
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE

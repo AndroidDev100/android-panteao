@@ -88,7 +88,7 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
         }
         try {
             if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-                ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListLDSImage(list.get(position).getPosterURL(), context));
+                ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, list.get(position).getPosterURL());
             }
         } catch (Exception ignored) {
 

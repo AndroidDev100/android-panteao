@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import panteao.make.ready.PanteaoApplication
 import panteao.make.ready.R
+import panteao.make.ready.SDKConfig
 import panteao.make.ready.activities.videoquality.bean.TrackItem
 import panteao.make.ready.utils.constants.AppConstants
 import java.text.Format
@@ -95,7 +96,11 @@ object Utils {
     }
 
     fun getFilteredUrl(imageUrl: String, width: Int, Height: Int): String {
-        return AppConstants.VIDEO_CLOUD_FRONT_URL + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
+        return SDKConfig.getInstance().webPUrl+"/fit-in/" + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
+    }
+
+    fun getDownloadFilteredUrl(imageUrl: String, width: String, Height: String): String {
+        return SDKConfig.getInstance().webPUrl + width.toString() + "x" + Height.toString() + AppConstants.FILTER_PLAYER_BANNER + "/" + imageUrl
     }
 
     fun getDateDDMMMYYYY(milliSeconds: Long): String? {
