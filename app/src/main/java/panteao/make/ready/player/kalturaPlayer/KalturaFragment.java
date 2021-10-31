@@ -165,6 +165,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         return fragment;
     }
 
+    boolean from_binge;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +180,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             bingeWatchTimer = bundle.getInt("binge_watch_timer");
             bookmarkPosition = bundle.getLong("bookmark_position");
             fromActivity = bundle.getString("from_chapter");
+            from_binge = bundle.getBoolean("from_binge");
             if (bundle.getString("tvod_type")!=null){
                 typeofTVOD = bundle.getString("tvod_type");
             }
@@ -351,6 +353,22 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         }
                     }
 
+                    if (from_binge){
+                        int orientation = getActivity().getResources().getConfiguration().orientation;
+                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                            DisplayMetrics displayMetrics = new DisplayMetrics();
+                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                            heightRatio = displayMetrics.heightPixels;
+                            double ratio = 1.78;
+                            Double widthRatioo = heightRatio * ratio;
+                            widthRatio=widthRatioo.intValue();
+                            Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+                            View playerView=player.getPlayerView();
+                            playerView.setLayoutParams(new FrameLayout.LayoutParams(widthRatio, heightRatio, Gravity.CENTER));
+
+                        }
+                    }
+
                 }
                 canPlay = true;
                 bookmarking(player);
@@ -368,7 +386,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                playerControlsFragment.showReplayVisibility();
+                                if (fromTrailor) {
+                                    checkBackButtonOrientation(-1);
+                                }else {
+                                    playerControlsFragment.showReplayVisibility();
+                                }
+
                             }
                         }, 1000);
 
@@ -398,6 +421,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         player.stop();
                         isFirstCalled = true;
                         isBingeWatchTimeCalculate = false;
+                        if (countDownTimer!=null){
+                            countDownTimer.cancel();
+                        }
                         playerControlsFragment.hideBingeWatch();
                         mListener.bingeWatchCall(entryID);
                     }

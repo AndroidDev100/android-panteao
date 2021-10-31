@@ -359,6 +359,7 @@ public class PlayerControlsFragment extends Fragment {
         try {
             if (replay.getVisibility() == View.VISIBLE) {
                 backArrow.setVisibility(View.VISIBLE);
+                Log.w("showControls-->>","362");
             } else {
                 if (childControls.getVisibility() == View.GONE || childControls.getVisibility() == View.INVISIBLE && bingeLay.getVisibility() != View.VISIBLE) {
                     childControls.animate().alpha(1.0f).setDuration(600)
@@ -378,6 +379,7 @@ public class PlayerControlsFragment extends Fragment {
                                     childControls.setVisibility(View.VISIBLE);
                                     seekbarLayout.setVisibility(View.VISIBLE);
                                     backArrow.setVisibility(View.VISIBLE);
+                                    Log.w("showControls-->>","381");
                                     // qualitySettings.setVisibility(View.VISIBLE);
                                     if (childControls.getFocusedChild() != null) {
                                         childControls.getFocusedChild().requestFocus();
@@ -425,6 +427,7 @@ public class PlayerControlsFragment extends Fragment {
             bingeBtn.setVisibility(View.VISIBLE);
             skipduration.setVisibility(View.VISIBLE);
             backArrow.setVisibility(View.VISIBLE);
+            Log.w("showControls-->>","430");
             if (fromActivity.equalsIgnoreCase("Episode"))
                 binge_text.setText("Next Episode");
             else
@@ -713,6 +716,7 @@ public class PlayerControlsFragment extends Fragment {
       //  qualitySettings.setVisibility(View.GONE);
         replay.setVisibility(View.VISIBLE);
         backArrow.setVisibility(View.VISIBLE);
+        Log.w("showControls-->>","718");
     }
 
     public void IsFromTrailor(boolean fromTrailor) {

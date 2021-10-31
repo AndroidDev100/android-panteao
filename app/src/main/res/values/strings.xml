@@ -90,7 +90,7 @@
     <string name="my_profile">My Profile</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="password_length">Minimum 6 characters having atleast 1 number</string>
-    <string name="valid_email">Invalid Email</string>
+    <string name="valid_email">Invalid Email Address</string>
     <string name="empty_password">Please enter a password between 6 to 20 characters</string>
     <string name="empty_string">Please enter Email Address</string>
     <string name="credential_mismatch">Credentials Mismatch!</string>
@@ -114,7 +114,7 @@
     <string name="verify_account">Verify Account</string>
     <string name="account_verification_link">Are you sure you want to verify your acccount?</string>
     <string name="submit">Submit</string>
-    <string name="no_result_found">No results found</string>
+    <string name="no_result_found">No Results Found</string>
     <string name="no_result_found_title">No Results Found</string>
     <string name="popular_search">Popular Searches</string>
     <string name="recent_searches">Recent Searches</string>

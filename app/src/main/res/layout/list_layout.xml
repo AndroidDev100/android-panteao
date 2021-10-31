@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
-            android:text="@string/select_video_quality"
+            android:text="@string/title_video_quality"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
