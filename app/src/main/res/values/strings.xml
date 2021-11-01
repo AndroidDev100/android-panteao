@@ -245,8 +245,8 @@
     <string name="title_more1">More</string>
     <string name="delete_from_watchhistory">Video removed from Watch History</string>
     <string name="delete_from_watchhistory_error">Video can not be removed  from Watch History</string>
-    <string name="delete_from_watch_list_message">Video removed from Watch List</string>
-    <string name="delete_from_watch_list_message_error">Video can not be removed from Watch List</string>
+    <string name="delete_from_watch_list_message">Video removed from Watchlist</string>
+    <string name="delete_from_watch_list_message_error">Video can not be removed from Watchlist</string>
     <string name="player_error">We could not process your request, Please try again later</string>
 
     <string name="change_language_message">You are about to change language. This will translate the entire interface.You can change your language back at any time in Settings</string>
@@ -384,6 +384,7 @@
     <string name="you_can_change">*You can chnage this from settings</string>
 
     <string name="premium_popup_message">Please buy the package to enjoy the quality movies.</string>
+    <string name="premium_download_popup_message">Please buy the package to download the content</string>
 
     <string name="heading1">Firearms Training from Top Instructors.Watch\nFree Content or Subscribe and Watch All of Our\nVideos.</string>
     <string name="subscribe_now">Subscribe now</string>

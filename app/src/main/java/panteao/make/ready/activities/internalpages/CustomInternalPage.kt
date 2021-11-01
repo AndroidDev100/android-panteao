@@ -28,7 +28,12 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         super.onCreate(savedInstanceState)
         val videoItem = intent.getParcelableExtra("asset") as EnveuVideoItemBean?
         val assetId = intent.getIntExtra("asset_id", 0)
-        val images = intent.getSerializableExtra("images") as HashMap<String, Thumbnail>
+        try {
+            val images = intent.getSerializableExtra("images") as HashMap<String, Thumbnail>
+        }catch (ignored:Exception){
+
+        }
+
         binding.asset = videoItem
         if (videoItem?.description.isNullOrEmpty()) {
             binding.description.visibility = View.GONE
