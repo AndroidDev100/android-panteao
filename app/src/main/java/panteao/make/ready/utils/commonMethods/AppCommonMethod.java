@@ -1401,6 +1401,7 @@ public class AppCommonMethod {
                     Intent playerIntent =
                             new Intent(activity, CustomInternalPage.class);
                     playerIntent.putExtra("asset", railCommonData.getEnveuVideoItemBeans().get(0));
+                    playerIntent.putExtra("images",railCommonData.getEnveuVideoItemBeans().get(0).getImages());
                     playerIntent.putExtra("asset_id", Integer.parseInt(id));
                     activity.startActivity(playerIntent);
                 }
@@ -1408,7 +1409,7 @@ public class AppCommonMethod {
             }
 
         } catch (Exception ignored) {
-
+                Log.w("clickCrash-->>","Appcommon-->>"+ignored.toString());
         }
 
     }

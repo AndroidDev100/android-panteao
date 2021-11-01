@@ -201,8 +201,8 @@
     <string name="forgot_pwd">Forgot Password</string>
     <string name="delete_comment">Delete Comment</string>
 
-    <string name="delete_from_watchlist">Are you sure want to remove video from Watchlist?</string>
-    <string name="delete_from_watchhistory_message">Are you sure want to remove video from Watch History?</string>
+    <string name="delete_from_watchlist">Are you sure, you want to remove the video from Watchlist?</string>
+    <string name="delete_from_watchhistory_message">Are you sure, you want to remove the video from Watch History?</string>
 
     <string name="all_episode">All Episodes</string>
     <string name="purchased_successfully">Purchased Successfully</string>
