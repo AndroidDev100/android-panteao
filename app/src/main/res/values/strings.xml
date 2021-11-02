@@ -60,6 +60,8 @@
     <string name="or">Or</string>
     <string name="or_caps">- OR -</string>
     <string name="skip">Skip</string>
+    <string name="wrong_password">For Existing Customers for panteao.com, please select “Forgot Password” option below</string>
+
     <string name="forgot_password">Forgot Password?</string>
     <string name="forgot_password_u"><b><u>Forgot Password?</u></b></string>
     <string name="email_id">Email for FB Login </string>

@@ -8,6 +8,7 @@ public class PurchaseModel implements Serializable {
 
     private String purchaseOptions;
     private String price;
+    private String index;
     private boolean isSelected;
     private String subscribedText;
     private String currency;
@@ -59,6 +60,14 @@ public class PurchaseModel implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
     public boolean isSelected() {

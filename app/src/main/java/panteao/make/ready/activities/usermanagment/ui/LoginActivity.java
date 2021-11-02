@@ -374,6 +374,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         getBinding().tvForgotPassword.setOnClickListener(view -> {
             showLoading(getBinding().progressBar, false);
             clearEditView();
+            getBinding().tvWrongPassword.setVisibility(View.GONE);
             new ActivityLauncher(LoginActivity.this).forgotPasswordActivity(LoginActivity.this, ForgotPasswordActivity.class);
 
         });
@@ -433,6 +434,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
             if (validateEmptyEmail() && validateEmail() && validateEmptyPassword() && passwordCheck(getBinding().etPassword.getText().toString())) {
                 getBinding().errorEmail.setVisibility(View.INVISIBLE);
                 getBinding().errorPassword.setVisibility(View.INVISIBLE);
+                getBinding().tvWrongPassword.setVisibility(View.GONE);
                 showLoading(getBinding().progressBar, true);
                 viewModel.hitLoginAPI(LoginActivity.this, getBinding().etUserName.getText().toString(), getBinding().etPassword.getText().toString()).observe(LoginActivity.this, loginResponseModelResponse -> {
                     if (Objects.requireNonNull(loginResponseModelResponse).getResponseCode() == 2000) {
@@ -449,10 +451,10 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                         if (loginResponseModelResponse.getDebugMessage() != null) {
                             dismissLoading(getBinding().progressBar);
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+                            getBinding().tvWrongPassword.setVisibility(View.VISIBLE);
                         } else {
                             dismissLoading(getBinding().progressBar);
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), LoginActivity.this.getResources().getString(R.string.something_went_wrong));
-
                         }
                     }
                     /*else if (loginResponseModelResponse.getResponseCode() == 401 || loginResponseModelResponse.getResponseCode() == 404) {

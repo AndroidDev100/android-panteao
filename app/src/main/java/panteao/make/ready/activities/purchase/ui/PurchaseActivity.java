@@ -315,6 +315,36 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
                     }
                 }
             }
+            for (int i =0;i<alPurchaseOptions.size();i++){
+               if (alPurchaseOptions.get(i).getPurchaseOptions().equalsIgnoreCase(VodOfferType.RECURRING_SUBSCRIPTION​.name())){
+                   if (alPurchaseOptions.get(i).getIdentifier().contains("month_access")){
+                       alPurchaseOptions.get(i).setIndex("1");
+                   }else if (alPurchaseOptions.get(i).getIdentifier().contains("year_access")){
+                       alPurchaseOptions.get(i).setIndex("2");
+                   }
+
+                }else if (alPurchaseOptions.get(i).getPurchaseOptions().equalsIgnoreCase(VodOfferType.RENTAL.name())){
+                   if (alPurchaseOptions.get(i).getIdentifier().contains("___sd")){
+                       alPurchaseOptions.get(i).setIndex("3");
+                   }else  if (alPurchaseOptions.get(i).getIdentifier().contains("___hd")){
+                       alPurchaseOptions.get(i).setIndex("4");
+                   }
+                   else  if (alPurchaseOptions.get(i).getIdentifier().contains("___uhd")){
+                       alPurchaseOptions.get(i).setIndex("5");
+                   }
+
+                }
+               else if (alPurchaseOptions.get(i).getPurchaseOptions().equalsIgnoreCase(VodOfferType.PERPETUAL.name())){
+                   if (alPurchaseOptions.get(i).getIdentifier().contains("___sd")){
+                       alPurchaseOptions.get(i).setIndex("6");
+                   }else  if (alPurchaseOptions.get(i).getIdentifier().contains("___hd")){
+                       alPurchaseOptions.get(i).setIndex("7");
+                   }
+                   else  if (alPurchaseOptions.get(i).getIdentifier().contains("___uhd")){
+                       alPurchaseOptions.get(i).setIndex("8");
+                   }
+               }
+            }
 
             if (alPurchaseOptions.size() > 0) {
                 alPurchaseOptions=getSortedList(alPurchaseOptions);
@@ -330,16 +360,18 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
             }
 
         }catch (Exception e){
-
+          Log.w("crashOnList-->>",e.toString());
         }
 
     }
 
+    int counter=0;
+    List<PurchaseModel> newList=new ArrayList<>();
     private List<PurchaseModel> getSortedList(List<PurchaseModel> data) {
         Collections.sort(data, new Comparator<PurchaseModel>(){
             public int compare(PurchaseModel obj1, PurchaseModel obj2) {
                 // ## Ascending order
-                return obj1.getPrice().compareToIgnoreCase(obj2.getPrice()); // To compare string values
+                return obj1.getIndex().compareToIgnoreCase(obj2.getIndex()); // To compare string values
 
             }
         });
@@ -353,6 +385,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         subSkuList = new ArrayList<>();
         productSkuList = new ArrayList<>();
         if (bp!=null) {
+
             if (responseEntitlementModel.getData().getPurchaseAs().size() > 0 && responseEntitlementModel.getData().getPurchaseAs() != null) {
                 for (int i = 0; i < responseEntitlementModel.getData().getPurchaseAs().size(); i++) {
                     if (responseEntitlementModel.getData().getPurchaseAs()!=null && responseEntitlementModel.getData().getPurchaseAs().get(i).getOfferType()!=null && responseEntitlementModel.getData().getPurchaseAs().get(i).getOfferType().contains(VodOfferType.RECURRING_SUBSCRIPTION​.name())) {

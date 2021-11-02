@@ -55,7 +55,7 @@
                                     android:id="@+id/llHeader"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
                                     android:orientation="vertical">
 
                                     <TextView
@@ -77,6 +77,21 @@
                                         android:layout_gravity="center"
                                         android:contentDescription="TODO"
                                         android:src="@drawable/makereadytv_logo" />
+
+                                    <TextView
+                                        android:id="@+id/tv_wrong_password"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                                        android:gravity="center_horizontal"
+                                        android:paddingLeft="@dimen/DobPaddingBottom"
+                                        android:paddingRight="@dimen/DobPaddingBottom"
+                                        android:text="@string/wrong_password"
+                                        android:textColor="@color/popular_search_color"
+                                        android:textSize="@dimen/NontonSize14"
+                                        android:visibility="gone" />
+
 
                                     <LinearLayout
                                         android:layout_width="wrap_content"

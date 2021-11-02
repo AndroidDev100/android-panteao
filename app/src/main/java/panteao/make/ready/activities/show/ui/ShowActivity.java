@@ -795,7 +795,52 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     // showDialog(DetailActivity.this.getResources().getString(R.string.logged_out), responseEntitlementModel.getDebugMessage() == null ? "" : responseEntitlementModel.getDebugMessage().toString());
                 }
             }
-            userInteractionFragment.setDownloadable(true);
+           /* if (Objects.requireNonNull(responseEntitlement).isStatus()) {
+                Logger.e("EntitlementModel", "responseEntitlementModel" + responseEntitlementModel.toString());
+                if (responseEntitlement.getData().isState()) {
+
+                    getBinding().tvBuyNow.setVisibility(View.GONE);
+                    getBinding().tvPurchased.setVisibility(View.VISIBLE);
+
+                    if (responseEntitlement.getData().getPurchasedAs() != null) {
+                        List<String> alpurchaseas = (List<String>) responseEntitlement.getData().getPurchasedAs();
+                        if (alpurchaseas.contains("TVOD")) {
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.purchased));
+                        } else {
+                            getBinding().tvPurchased.setText("" + getResources().getString(R.string.subscribed));
+                        }
+                    }
+                    if (StringUtils.isNullOrEmptyOrZero(responseEntitlement.getData().getVideoLink())) {
+                        videoUrl = "";
+                        vastUrl = "";
+                    } else {
+                        bannerImage = "";
+                        videoUrl = endPoint + "/" + responseEntitlement.getData().getVideoLink();
+                        vastUrl = "";
+
+                    }
+                    showDetailScreen();
+                } else {
+                    getBinding().tvBuyNow.setVisibility(View.VISIBLE);
+                    getBinding().tvPurchased.setVisibility(View.GONE);
+                    getBinding().tvPurchased.setText("");
+
+                    fragment.showPremiumPlay(true, DetailActivity.this.getResources().getString(R.string.you_are_not_subscribed));
+                    videoUrl = "";
+                    vastUrl = "";
+                    showDetailScreen();
+
+                }
+
+            } else {
+                if (responseEntitlement.getResponseCode() == 401 || responseEntitlement.getResponseCode() == 403) {
+                    isloggedout = true;
+                    showDialog(DetailActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
+                } else {
+                    onBackPressed();
+                }
+
+            }*/
         });
     }
 
@@ -809,7 +854,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", ShowActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_download_popup_message));
+            showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
 
         }
@@ -1223,7 +1268,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     public void onFinishDialog() {
         Logger.w("onfinishdialog", "episode");
         if (isPremium) {
-           // isPremium = false;
+            isPremium = false;
             return;
         }
         if (isloggedout)
@@ -1455,41 +1500,37 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             if (!loginStatus)
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
             else {
-                if (!isPremium) {
-                    int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                    if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
-                        if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
-                            if (videoQuality != 3) {
-                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                                if (videoDetails != null && Entryid != null && !Entryid.equalsIgnoreCase("")) {
-                                    String[] array = getResources().getStringArray(R.array.download_quality);
-                                    userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                                    int pos = new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                                    downloadHelper.startDownload(pos, Entryid, videoDetails.getTitle(), videoDetails.getAssetType(), videoDetails.getSeriesId(), "", videoDetails.getPosterURL(), "", -1, "");
-                                }
-                            } else {
-                                selectDownloadVideoQuality();
-                            }
-                        } else {
-                            showWifiSettings(videoQuality);
-//                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
-                            //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
+                int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
+                    if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                         if (videoQuality != 3) {
                             userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                            if (videoDetails != null && Entryid != null && !Entryid.equalsIgnoreCase("")) {
+                            if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
                                 String[] array = getResources().getStringArray(R.array.download_quality);
                                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
-                                int pos = new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                                downloadHelper.startDownload(pos, Entryid, videoDetails.getTitle(), videoDetails.getAssetType(), videoDetails.getSeriesId(), "", videoDetails.getPosterURL(), "", -1, "");
+                                int pos =  new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                                downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL(),"",-1,"");
                             }
                         } else {
                             selectDownloadVideoQuality();
                         }
+                    } else {
+                        showWifiSettings(videoQuality);
+//                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
+                        //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    showDialog("", getResources().getString(R.string.premium_download_popup_message));
+                } else {
+                    if (videoQuality != 3) {
+                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                        if (videoDetails!=null && Entryid!=null && !Entryid.equalsIgnoreCase("")){
+                            String[] array = getResources().getStringArray(R.array.download_quality);
+                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            int pos =  new SharedPrefHelper(ShowActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
+                            downloadHelper.startDownload(pos,Entryid,videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),"",videoDetails.getPosterURL(),"",-1,"");
+                        }
+                    } else {
+                        selectDownloadVideoQuality();
+                    }
                 }
             }
         }
