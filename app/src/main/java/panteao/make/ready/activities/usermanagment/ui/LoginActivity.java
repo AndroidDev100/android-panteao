@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider;
 //import com.amazonaws.regions.Regions;
 //import com.amazonaws.services.s3.AmazonS3;
 //import com.amazonaws.services.s3.AmazonS3Client;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
@@ -430,6 +431,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     public void callLogin() {
+        getBinding().tvWrongPassword.setVisibility(View.GONE);
         if (CheckInternetConnection.isOnline(LoginActivity.this)) {
             if (validateEmptyEmail() && validateEmail() && validateEmptyPassword() && passwordCheck(getBinding().etPassword.getText().toString())) {
                 getBinding().errorEmail.setVisibility(View.INVISIBLE);
@@ -449,9 +451,13 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
                     } else {
                         if (loginResponseModelResponse.getDebugMessage() != null) {
+                            Log.w("responsecode-->",loginResponseModelResponse.getResponseCode()+"");
                             dismissLoading(getBinding().progressBar);
+                            if (loginResponseModelResponse.getDebugMessage().toString().equalsIgnoreCase(PanteaoApplication.getInstance().getResources().getString(R.string.username_password_doest_match))){
+                                getBinding().tvWrongPassword.setVisibility(View.VISIBLE);
+                            }
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
-                            getBinding().tvWrongPassword.setVisibility(View.VISIBLE);
+
                         } else {
                             dismissLoading(getBinding().progressBar);
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), LoginActivity.this.getResources().getString(R.string.something_went_wrong));
