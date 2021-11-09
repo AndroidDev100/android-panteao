@@ -1217,7 +1217,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Logger.e(TAG, "onDownloadProgress" +"  ------ "+"paused");
+                                Logger.e(TAG, "onDownloadProgress" +"  ------ "+"initDownload");
                                 userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(downloadState));
                             }
                         },50);
@@ -2183,8 +2183,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(state));
-                userInteractionFragment.setDownloadProgress(0);
+                try {
+                    userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(state));
+                    userInteractionFragment.setDownloadProgress(0);
+                }catch (Exception ignored){
+
+                }
             }
         });
     }

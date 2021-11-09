@@ -62,7 +62,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
       //  Collections.sort(videoItemBeans, new SortSeasonAdapterItems());
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();
-        downloadHelper = new KTDownloadHelper(context, this);
+      //  downloadHelper = new KTDownloadHelper(context, this);
         onDownloadClickInteraction = (OnDownloadClickInteraction) context;
         buildIndexMap();
     }
@@ -319,7 +319,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
 
     private void setDownloadStatus(SeasonViewHolder holder, int position, EnveuVideoItemBean enveuVideoItemBean) {
-        DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
+      //  DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
     }
 
 }

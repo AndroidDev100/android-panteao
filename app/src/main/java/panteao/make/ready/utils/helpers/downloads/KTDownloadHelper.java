@@ -230,7 +230,7 @@ public class KTDownloadHelper {
         manager.setDownloadProgressListener((assetId, bytesDownloaded, totalBytesEstimated, percentDownloaded) -> {
             long progress=bytesDownloaded/1000;
            // Log.e("",""[progress] " + assetId +": " + (bytesDownloaded / 1000) + "/" + (totalBytesEstimated / 1000));
-            Log.e("progress 1",percentDownloaded+"  "+progress);
+            Log.e("progress 1",percentDownloaded+"  "+progress+"  "+assetId+" "+ktDownloadEvents);
             if (ktDownloadEvents!=null){
                 Log.e("progress 2",percentDownloaded+"  "+progress);
                 ktDownloadEvents.setDownloadProgressListener(percentDownloaded,assetId);
@@ -934,21 +934,43 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
         }
     };
 
-
-    for (int i = 0;i<seasonEpisodesList.size();i++){
+    if (seasonEpisodesList!=null && seasonEpisodesList.size()>0){
         try {
-            String kentryid=seasonEpisodesList.get(i).getkEntryId();
+            String kentryid=seasonEpisodesList.get(0).getkEntryId();
             Log.w("downloadData-->>",kentryid);
             if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
                 OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
-                OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
+                OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
                 manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
             }
         }catch (Exception e){
 
         }
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1;i<seasonEpisodesList.size();i++){
+                    try {
+                        String kentryid=seasonEpisodesList.get(i).getkEntryId();
+                        Log.w("downloadData-->>",kentryid);
+                        if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                            OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                            OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
+                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
+                        }
+                    }catch (Exception e){
+
+                    }
+
+                }
+
+            }
+        },1000);
+
     }
+
+
    }
 
 }

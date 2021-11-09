@@ -1688,7 +1688,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
                         userInteractionFragment.setDownloadProgress((int)progress);
                         if (seasonTabFragment!=null){
-                            seasonTabFragment.updateAdapter((int)progress);
+                           // seasonTabFragment.updateAdapter((int)progress);
                         }
                     }
                 }
