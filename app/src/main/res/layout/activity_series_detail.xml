@@ -245,7 +245,7 @@
                                             android:paddingTop="@dimen/movie_metadata_txt_show_hide_padding_top"
                                             android:paddingRight="@dimen/movie_metadata_txt_show_hide_padding_right"
                                             android:paddingBottom="@dimen/movie_metadata_txt_show_hide_padding_bottom"
-                                            android:text="Purchased"
+                                            android:text=""
                                             android:textColor="@color/rounded_button_text_color"
                                             android:textSize="@dimen/detailBuyNow"
                                             android:visibility="gone" />
@@ -284,7 +284,7 @@
                                             android:paddingTop="@dimen/detailMorePaddingTop"
                                             android:paddingRight="@dimen/detailMorePaddingLeft"
                                             android:paddingBottom="@dimen/detailMorePaddingTop"
-                                            android:text="@string/buy_now"
+                                            android:text="@string/purhcase_options"
                                             android:textColor="@color/rounded_button_text_color"
                                             android:textSize="@dimen/detailBuyNow"
                                             android:visibility="gone" />

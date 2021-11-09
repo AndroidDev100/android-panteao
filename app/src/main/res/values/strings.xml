@@ -50,6 +50,7 @@
     <string name="order_not_found">Order not found</string>
     <string name="order_completed_or_failed">This order has already been completed or failed. Please create a new order</string>
     <string name="sign_in_with_enveu">Sign in with Make Ready TV</string>
+    <string name="sign_up_with_enveu">Sign up with Make Ready TV</string>
     <string name="facebook">Facebook</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="google">Google +</string>
@@ -59,6 +60,8 @@
     <string name="or">Or</string>
     <string name="or_caps">- OR -</string>
     <string name="skip">Skip</string>
+    <string name="wrong_password">For Existing Customers for panteao.com, please select “Forgot Password” option below</string>
+
     <string name="forgot_password">Forgot Password?</string>
     <string name="forgot_password_u"><b><u>Forgot Password?</u></b></string>
     <string name="email_id">Email for FB Login </string>
@@ -89,7 +92,7 @@
     <string name="my_profile">My Profile</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="password_length">Minimum 6 characters having atleast 1 number</string>
-    <string name="valid_email">Invalid Email</string>
+    <string name="valid_email">Invalid Email Address</string>
     <string name="empty_password">Please enter a password between 6 to 20 characters</string>
     <string name="empty_string">Please enter Email Address</string>
     <string name="credential_mismatch">Credentials Mismatch!</string>
@@ -113,7 +116,7 @@
     <string name="verify_account">Verify Account</string>
     <string name="account_verification_link">Are you sure you want to verify your acccount?</string>
     <string name="submit">Submit</string>
-    <string name="no_result_found">No results found</string>
+    <string name="no_result_found">No Results Found</string>
     <string name="no_result_found_title">No Results Found</string>
     <string name="popular_search">Popular Searches</string>
     <string name="recent_searches">Recent Searches</string>
@@ -200,8 +203,8 @@
     <string name="forgot_pwd">Forgot Password</string>
     <string name="delete_comment">Delete Comment</string>
 
-    <string name="delete_from_watchlist">Are you sure want to remove video from Watchlist?</string>
-    <string name="delete_from_watchhistory_message">Are you sure want to remove video from Watch History?</string>
+    <string name="delete_from_watchlist">Are you sure, you want to remove the video from Watchlist?</string>
+    <string name="delete_from_watchhistory_message">Are you sure, you want to remove the video from Watch History?</string>
 
     <string name="all_episode">All Episodes</string>
     <string name="purchased_successfully">Purchased Successfully</string>
@@ -244,8 +247,8 @@
     <string name="title_more1">More</string>
     <string name="delete_from_watchhistory">Video removed from Watch History</string>
     <string name="delete_from_watchhistory_error">Video can not be removed  from Watch History</string>
-    <string name="delete_from_watch_list_message">Video removed from Watch List</string>
-    <string name="delete_from_watch_list_message_error">Video can not be removed from Watch List</string>
+    <string name="delete_from_watch_list_message">Video removed from Watchlist</string>
+    <string name="delete_from_watch_list_message_error">Video can not be removed from Watchlist</string>
     <string name="player_error">We could not process your request, Please try again later</string>
 
     <string name="change_language_message">You are about to change language. This will translate the entire interface.You can change your language back at any time in Settings</string>
@@ -383,6 +386,7 @@
     <string name="you_can_change">*You can chnage this from settings</string>
 
     <string name="premium_popup_message">Please buy the package to enjoy the quality movies.</string>
+    <string name="premium_download_popup_message">Please buy the package to download the content</string>
 
     <string name="heading1">Firearms Training from Top Instructors.Watch\nFree Content or Subscribe and Watch All of Our\nVideos.</string>
     <string name="subscribe_now">Subscribe now</string>

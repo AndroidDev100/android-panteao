@@ -10,6 +10,7 @@ import panteao.make.ready.activities.internalpages.fragments.InternalPlayListGri
 import panteao.make.ready.activities.internalpages.fragments.InternalPlaylistListingFragment
 import panteao.make.ready.baseModels.BaseBindingActivity
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData
+import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean
 import panteao.make.ready.callbacks.commonCallbacks.OnKeywordSearchFragmentListener
 import panteao.make.ready.databinding.ActivityCustomInternalPageBinding
@@ -19,6 +20,7 @@ import panteao.make.ready.networking.apistatus.APIStatus
 import panteao.make.ready.networking.responsehandler.ResponseModel
 import panteao.make.ready.utils.constants.AppConstants
 import panteao.make.ready.utils.helpers.RailInjectionHelper
+import java.util.HashMap
 
 class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding>(),
     AlertDialogFragment.AlertDialogListener, OnKeywordSearchFragmentListener {
@@ -26,6 +28,12 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         super.onCreate(savedInstanceState)
         val videoItem = intent.getParcelableExtra("asset") as EnveuVideoItemBean?
         val assetId = intent.getIntExtra("asset_id", 0)
+        try {
+            val images = intent.getSerializableExtra("images") as HashMap<String, Thumbnail>
+        }catch (ignored:Exception){
+
+        }
+
         binding.asset = videoItem
         if (videoItem?.description.isNullOrEmpty()) {
             binding.description.visibility = View.GONE

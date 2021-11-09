@@ -2,6 +2,7 @@ package panteao.make.ready.adapters.commonRails;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,10 +89,10 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if (item.getScreenWidget().getWidgetImageType().equalsIgnoreCase("9x16")) {
                 imageType = KalturaImageType.PORTRAIT;
                 item.getEnveuVideoItemBeans().get(0).setPosterURL(
-                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 1080, 1920));
+                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 800, 450));
             } else {
                 item.getEnveuVideoItemBeans().get(0).setPosterURL(
-                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 1920, 1080));
+                        ImageLayer.getInstance().getFilteredImage(crousalImages, imageType, 800, 450));
             }
         }
         if (holder instanceof SquareHeroHolder) {
@@ -129,6 +130,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
         } else if (holder instanceof LandscapeHeroHolder) {
             ((LandscapeHeroHolder) holder).itemBinding.setPlaylistItem(item.getEnveuVideoItemBeans().get(0));
+            Log.w("posterImageHero",item.getEnveuVideoItemBeans().get(position).getPosterURL());
             ((LandscapeHeroHolder) holder).itemBinding.heroImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

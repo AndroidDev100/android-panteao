@@ -1,5 +1,7 @@
 package panteao.make.ready.utils.config;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -178,6 +180,8 @@ public class ImageLayer {
         if (crousalImages != null) {
             for (Map.Entry<String, Thumbnail> entry : crousalImages.entrySet()) {
                 if (imageType == KalturaImageType.CAROUSAL_FULL_IMAGE) {
+                   // Log.w("imageWi",entry.getValue().getSources().get(0).getWidth()+"----"+  entry.getValue().getSources().get(0).getHeight()+"  "+imageType);
+                    //Log.w("imageWi",entry.getValue().getSources().get(0).getWidth()/entry.getValue().getSources().get(0).getHeight()+"  "+imageType);
                     if ((entry.getValue().getSources().get(0).getWidth() / entry.getValue().getSources().get(0).getHeight()) > 3) {
                         imageUrl = entry.getValue().getSources().get(0).getSrc();
                     }

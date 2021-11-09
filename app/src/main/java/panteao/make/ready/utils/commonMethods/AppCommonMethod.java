@@ -745,6 +745,18 @@ public class AppCommonMethod {
     }
 
 
+    public static String setDownloadImage(String oldUrl, String imageSize) {
+        PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
+        StringBuilder stringBuilder = new StringBuilder("");
+        String urlImage = oldUrl.trim();
+        String one = SDKConfig.getInstance().getWebPUrl()+"fit-in/";
+        String two = imageSize + "/" + SDKConfig.WEBP_QUALITY;
+        stringBuilder.append(one).append(two).append(urlImage);
+        PrintLogging.printLog("", "ImageUrld-->>" + one + "  " + two + " " + urlImage);
+        PrintLogging.printLog("", "-->>StringBilder" + stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
     public static String setImage(String oldUrl, String imageSize) {
         PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
         StringBuilder stringBuilder = new StringBuilder("");
@@ -918,6 +930,13 @@ public class AppCommonMethod {
         int w = (int) context.getResources().getDimension(R.dimen.circle_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.circle_image_height);
         return setImage(posterURL, w + "x" + h);
+    }
+
+    public static String getListLDownloadImage(String posterURL, Context context) {
+        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        int w = (int) context.getResources().getDimension(R.dimen.landscape_image_width);
+        int h = (int) context.getResources().getDimension(R.dimen.landscape_image_height);
+        return setDownloadImage(posterURL, w + "x" + h);
     }
 
     public static String getListLDSImage(String posterURL, Context context) {
@@ -1336,12 +1355,13 @@ public class AppCommonMethod {
 
     public static void createManualHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails) {
         enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
+        enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
     public static void createAssetHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails, BaseCategory screenWidget) {
         enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
-
+        enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
 //        if (screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
 //            Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
 //            if (enveuVideoDetails.getImages() != null && enveuVideoDetails.getImages().getThumbnail() != null && enveuVideoDetails.getImages().getThumbnail().getSources() != null
@@ -1381,6 +1401,7 @@ public class AppCommonMethod {
                     Intent playerIntent =
                             new Intent(activity, CustomInternalPage.class);
                     playerIntent.putExtra("asset", railCommonData.getEnveuVideoItemBeans().get(0));
+                    playerIntent.putExtra("images",railCommonData.getEnveuVideoItemBeans().get(0).getImages());
                     playerIntent.putExtra("asset_id", Integer.parseInt(id));
                     activity.startActivity(playerIntent);
                 }
@@ -1388,7 +1409,7 @@ public class AppCommonMethod {
             }
 
         } catch (Exception ignored) {
-
+                Log.w("clickCrash-->>","Appcommon-->>"+ignored.toString());
         }
 
     }
@@ -1750,7 +1771,7 @@ public class AppCommonMethod {
     public static String getDateFromTimeStamp(double expiryDate) {
         String date = "";
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         date = formatter.format(new Date((long) expiryDate));
         Log.w("expiryDate", date);
         return date;

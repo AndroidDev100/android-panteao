@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider;
 //import com.amazonaws.regions.Regions;
 //import com.amazonaws.services.s3.AmazonS3;
 //import com.amazonaws.services.s3.AmazonS3Client;
+import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
@@ -374,6 +375,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         getBinding().tvForgotPassword.setOnClickListener(view -> {
             showLoading(getBinding().progressBar, false);
             clearEditView();
+            getBinding().tvWrongPassword.setVisibility(View.GONE);
             new ActivityLauncher(LoginActivity.this).forgotPasswordActivity(LoginActivity.this, ForgotPasswordActivity.class);
 
         });
@@ -429,10 +431,12 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     public void callLogin() {
+        getBinding().tvWrongPassword.setVisibility(View.GONE);
         if (CheckInternetConnection.isOnline(LoginActivity.this)) {
             if (validateEmptyEmail() && validateEmail() && validateEmptyPassword() && passwordCheck(getBinding().etPassword.getText().toString())) {
                 getBinding().errorEmail.setVisibility(View.INVISIBLE);
                 getBinding().errorPassword.setVisibility(View.INVISIBLE);
+                getBinding().tvWrongPassword.setVisibility(View.GONE);
                 showLoading(getBinding().progressBar, true);
                 viewModel.hitLoginAPI(LoginActivity.this, getBinding().etUserName.getText().toString(), getBinding().etPassword.getText().toString()).observe(LoginActivity.this, loginResponseModelResponse -> {
                     if (Objects.requireNonNull(loginResponseModelResponse).getResponseCode() == 2000) {
@@ -447,12 +451,16 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
                     } else {
                         if (loginResponseModelResponse.getDebugMessage() != null) {
+                            Log.w("responsecode-->",loginResponseModelResponse.getResponseCode()+"");
                             dismissLoading(getBinding().progressBar);
+                            if (loginResponseModelResponse.getDebugMessage().toString().equalsIgnoreCase(PanteaoApplication.getInstance().getResources().getString(R.string.username_password_doest_match))){
+                                getBinding().tvWrongPassword.setVisibility(View.VISIBLE);
+                            }
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+
                         } else {
                             dismissLoading(getBinding().progressBar);
                             showDialog(LoginActivity.this.getResources().getString(R.string.error), LoginActivity.this.getResources().getString(R.string.something_went_wrong));
-
                         }
                     }
                     /*else if (loginResponseModelResponse.getResponseCode() == 401 || loginResponseModelResponse.getResponseCode() == 404) {

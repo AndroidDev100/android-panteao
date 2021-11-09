@@ -4,7 +4,9 @@ package panteao.make.ready.beanModelV3.playListModelV2;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Source {
+import java.io.Serializable;
+
+public class Source implements Serializable {
 
     @SerializedName("src")
     @Expose

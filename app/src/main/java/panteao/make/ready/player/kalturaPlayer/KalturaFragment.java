@@ -35,6 +35,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,6 +165,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         return fragment;
     }
 
+    boolean from_binge;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +180,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             bingeWatchTimer = bundle.getInt("binge_watch_timer");
             bookmarkPosition = bundle.getLong("bookmark_position");
             fromActivity = bundle.getString("from_chapter");
+            from_binge = bundle.getBoolean("from_binge");
             if (bundle.getString("tvod_type")!=null){
                 typeofTVOD = bundle.getString("tvod_type");
             }
@@ -195,6 +198,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
         findViewById(view);
         player = AppCommonMethod.loadPlayer(getActivity(), playerLayout);
+
         setVideoQuality();
         callPlayerControlsFragment();
         startPlayer();
@@ -349,6 +353,22 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         }
                     }
 
+                    if (from_binge){
+                        int orientation = getActivity().getResources().getConfiguration().orientation;
+                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                            DisplayMetrics displayMetrics = new DisplayMetrics();
+                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                            heightRatio = displayMetrics.heightPixels;
+                            double ratio = 1.78;
+                            Double widthRatioo = heightRatio * ratio;
+                            widthRatio=widthRatioo.intValue();
+                            Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+                            View playerView=player.getPlayerView();
+                            playerView.setLayoutParams(new FrameLayout.LayoutParams(widthRatio, heightRatio, Gravity.CENTER));
+
+                        }
+                    }
+
                 }
                 canPlay = true;
                 bookmarking(player);
@@ -366,7 +386,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                playerControlsFragment.showReplayVisibility();
+                                if (fromTrailor) {
+                                    checkBackButtonOrientation(-1);
+                                }else {
+                                    playerControlsFragment.showReplayVisibility();
+                                }
+
                             }
                         }, 1000);
 
@@ -396,6 +421,9 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         player.stop();
                         isFirstCalled = true;
                         isBingeWatchTimeCalculate = false;
+                        if (countDownTimer!=null){
+                            countDownTimer.cancel();
+                        }
                         playerControlsFragment.hideBingeWatch();
                         mListener.bingeWatchCall(entryID);
                     }
@@ -512,16 +540,21 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         super.onConfigurationChanged(newConfig);
             int orientation = getActivity().getResources().getConfiguration().orientation;
             Log.w("_orientation-->>",orientation+"");
+
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(constraintMain);
-                constraintSet.setDimensionRatio(playerRootMain.getId(), heightRatio+":"+widthRatio);
-                constraintSet.applyTo(constraintMain);
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                heightRatio = displayMetrics.heightPixels;
+                double ratio = 1.78;
+                Double widthRatioo = heightRatio * ratio;
+                widthRatio=widthRatioo.intValue();
+                Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+                View playerView=player.getPlayerView();
+                playerView.setLayoutParams(new FrameLayout.LayoutParams(widthRatio, heightRatio, Gravity.CENTER));
+
             }else {
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(constraintMain);
-                constraintSet.setDimensionRatio(playerRootMain.getId(), "16:9");
-                constraintSet.applyTo(constraintMain);
+                View playerView=player.getPlayerView();
+                playerView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER));
             }
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -623,18 +656,22 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 int orientation = getActivity().getResources().getConfiguration().orientation;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-                    id.setBackgroundResource(R.drawable.full_screen);
+                   /* id.setBackgroundResource(R.drawable.full_screen);
                     ConstraintSet constraintSet = new ConstraintSet();
                     constraintSet.clone(constraintMain);
                     constraintSet.setDimensionRatio(playerRootMain.getId(), "16:9");
-                    constraintSet.applyTo(constraintMain);
+                    constraintSet.applyTo(constraintMain);*/
                 } else {
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                   // player.setPlayerView(widthRatio,heightRatio);
+                   // playerLayout.addView(player.getPlayerView());
+
+                   /* getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                     id.setBackgroundResource(R.drawable.exit_full_screen);
                     ConstraintSet constraintSet = new ConstraintSet();
                     constraintSet.clone(constraintMain);
                     constraintSet.setDimensionRatio(playerRootMain.getId(), heightRatio+":"+widthRatio);
-                    constraintSet.applyTo(constraintMain);
+                    constraintSet.applyTo(constraintMain);*/
 
                 }
 
@@ -1009,16 +1046,24 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             ignored.printStackTrace();
         }
         try {
-            DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+            /*DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
             float ratio = ((float)metrics.heightPixels / (float)metrics.widthPixels);
 
             int factor = greatestCommonFactor(metrics.widthPixels, metrics.heightPixels);
 
             widthRatio = metrics.widthPixels / factor;
-            heightRatio = metrics.heightPixels / factor;
+            heightRatio = metrics.heightPixels / factor;*/
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            heightRatio = displayMetrics.heightPixels;
+
+            double ratio = 1.78;
+            Double widthRatioo = heightRatio * ratio;
+            widthRatio=widthRatioo.intValue();
 
             Log.w("phoneration-->>",heightRatio+":"+widthRatio);
-            Log.w("phoneration-->>",ratio+"");
+           // Log.w("phoneration-->>",ratio+"");
         }catch (Exception e){
 
         }

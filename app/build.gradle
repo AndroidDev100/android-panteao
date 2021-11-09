@@ -20,11 +20,14 @@ repositories {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     defaultConfig {
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
         applicationId "panteao.make.ready"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 30
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         compileOptions {
@@ -60,8 +63,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 21
-            versionName "3.0"
+            versionCode 26
+            versionName "3.5"
             applicationId "panteao.make.ready"
         }
     }
@@ -211,7 +214,7 @@ dependencies {
 //    implementation project(':brightcovelibrary')
     implementation project(':enveusdk')
     implementation 'com.kaltura.player:tvplayer:4.14.0'
-    implementation 'androidx.work:work-runtime-ktx:2.7.0-rc01'
+   // implementation 'androidx.work:work-runtime-ktx:2.7.0-rc01'
 
 }
 

@@ -45,7 +45,7 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:singleLine="true"
-                    android:text="@string/listing_title_text"
+                    android:text=""
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textColor="?attr/toolbar_text_color"
