@@ -17,6 +17,7 @@ import com.kaltura.tvplayer.OfflineManager;
 import org.jetbrains.annotations.NotNull;
 
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
+import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
@@ -67,6 +68,10 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         buildIndexMap();
     }
 
+    public List<EnveuVideoItemBean> getAdapterList(){
+        return videoItemBeans;
+    }
+
     public List<EnveuVideoItemBean> getSeasonEpisodes() {
         return videoItemBeans;
     }
@@ -113,9 +118,12 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     public void onBindViewHolder(@NonNull SeasonAdapter.SeasonViewHolder holder, int position) {
         if (videoItemBeans.get(position) != null) {
             holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
+            holder.itemBinding.setIsDownloadable(true);
         }
+        Log.e("statusDown","innnnn");
+        setDownloadStatus(holder,position,videoItemBeans.get(position));
         if(AppCommonMethod.getCheckBCID(videoItemBeans.get(position).getBrightcoveVideoId())) {
-            setDownloadStatus(holder,position,videoItemBeans.get(position));
+
         }
         if (videoItemBeans.get(position).getEpisodeNo() != null && videoItemBeans.get(position).getEpisodeNo() instanceof String && !((String) videoItemBeans.get(position).getEpisodeNo()).equalsIgnoreCase("")) {
             String episodeNum =  (String) videoItemBeans.get(position).getEpisodeNo();
@@ -265,6 +273,54 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
         return null;
     }
+    KTDownloadHelper downloadHelpr;
+    public void setDownloadHelpr(KTDownloadHelper downloadHelper) {
+        if (downloadHelper!=null){
+            this.downloadHelpr=downloadHelper;
+        }
+    }
+
+    List<EnveuVideoItemBean> videoItemBeansList;
+    public void notifyDataSetChanged(int position, String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
+        videoItemBeansList=videoItemBeans;
+        for (int i=0;i<videoItemBeans.size();i++){
+            notifyItemChanged(i,PAY3);
+        }
+
+    }
+
+    public void downloadCompletChanged(int position, String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
+        videoItemBeansList=videoItemBeans;
+        for (int i=0;i<videoItemBeans.size();i++){
+            if (findAssetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())){
+                notifyItemChanged(i,PAY4);
+            }
+        }
+
+    }
+
+
+    String PAY3="payload3";
+    String PAY4="payload4";
+    @Override
+    public void onBindViewHolder(@NonNull SeasonViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads!=null && payloads.size()>0){
+            for (int i=0;i<payloads.size();i++){
+                if (payloads.get(i).equals(PAY3)){
+                    if (downloadHelpr!=null){
+                        Log.e("statusDown","ouut");
+                        holder.itemBinding.setDownloadStatus(DownloadStatus.DOWNLOADING);
+                    }
+
+                }else if (payloads.get(i).equals(PAY4)){
+                    holder.itemBinding.setDownloadStatus(DownloadStatus.DOWNLOADED);
+                }
+            }
+        }else {
+            super.onBindViewHolder(holder, position, payloads);
+        }
+
+    }
 
     public class SeasonViewHolder extends RecyclerView.ViewHolder {
 
@@ -319,7 +375,13 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
 
     private void setDownloadStatus(SeasonViewHolder holder, int position, EnveuVideoItemBean enveuVideoItemBean) {
-      //  DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
+       Log.w("statusDown",enveuVideoItemBean.getPosterURL());
+        if (downloadHelpr!=null){
+            DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelpr);
+        }else {
+            holder.itemBinding.setDownloadStatus(DownloadStatus.START);
+        }
+
     }
 
 }

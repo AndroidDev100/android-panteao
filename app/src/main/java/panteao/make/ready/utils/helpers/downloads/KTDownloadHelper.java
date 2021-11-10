@@ -738,6 +738,7 @@ public class KTDownloadHelper {
                 }
             }else {
                 Log.d("stateOfAsset","null");
+                listener.downloadState("asset_not_found",0,"");
                 if (downloadHelper!=null){
                     downloadHelper.removeFromDB(kentry);
                 }

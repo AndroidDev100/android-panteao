@@ -12,7 +12,7 @@ import panteao.make.ready.utils.helpers.downloads.downloadListing.DownloadStateL
 
 object DownloadUtils {
     fun setDownloadStatus(holder: RowEpisodeListBinding, position: Int, enveuVideoItemBean: EnveuVideoItemBean,downloadHelper:KTDownloadHelper) {
-        downloadHelper.getAssetDownloadState(enveuVideoItemBean.brightcoveVideoId,downloadHelper,
+        downloadHelper.getAssetDownloadState(enveuVideoItemBean.getkEntryId(),downloadHelper,
             object : DownloadStateListener {
                 override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
                     Log.d("downloadStatus 2",name!!)
@@ -46,7 +46,10 @@ object DownloadUtils {
                         itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
                             context.getResources().getColor(R.color.more_text_color_dark)
                         )*/
-                    }else{
+                    } else if (name.equals("asset_not_found", ignoreCase = true)){
+                        holder.downloadStatus = DownloadStatus.START
+                    }
+                    else{
 
                     }
                 }

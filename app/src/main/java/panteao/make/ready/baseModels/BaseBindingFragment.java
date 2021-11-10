@@ -31,4 +31,6 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding> extends Bas
     private B setupBinding(@NonNull LayoutInflater inflater) {
         return inflateBindingLayout(inflater);
     }
+
+
 }

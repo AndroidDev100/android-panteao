@@ -439,6 +439,16 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 getBinding().tvPurchased.setVisibility(View.GONE);
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 hitApiEntitlement(seriesDetailBean.getSku());
+            }else {
+                if (userInteractionFragment!=null){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            userInteractionFragment.setDownloadable(true);
+                        }
+                    },1000);
+
+                }
             }
 //            downloadHelper = new DownloadHelper(this, this);
 //            downloadHelper.setAssetType(MediaTypeConstants.getInstance().getEpisode());
@@ -624,7 +634,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         transaction.addToBackStack(null);
         transaction.commit();
 //        downloadHelper = new DownloadHelper(this, this, String.valueOf(seriesId), seriesDetailBean.getTitle(), MediaTypeConstants.getInstance().getEpisode(), seriesDetailBean);
-        userInteractionFragment.setDownloadable(false);
+       // userInteractionFragment.setDownloadable(false);
     }
 
     public void setTabs() {
@@ -1686,9 +1696,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 public void run() {
                     if (assetId!=null && !assetId.equalsIgnoreCase("") && assetId.equalsIgnoreCase(assetId)){
                         userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
-                        userInteractionFragment.setDownloadProgress((int)progress);
+                       // userInteractionFragment.setDownloadProgress((int)progress);
                         if (seasonTabFragment!=null){
-                           // seasonTabFragment.updateAdapter((int)progress);
+                            seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper);
                         }
                     }
                 }
@@ -1714,7 +1724,15 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void onAssetDownloadComplete(@NonNull @NotNull String assetId) {
+         if (seasonTabFragment!=null){
+             runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     seasonTabFragment.downloadComplete(assetId);
+                 }
+             });
 
+         }
     }
 
     @Override
