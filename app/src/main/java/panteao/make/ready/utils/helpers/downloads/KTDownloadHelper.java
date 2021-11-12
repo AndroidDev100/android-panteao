@@ -201,12 +201,12 @@ public class KTDownloadHelper {
 
                         //return String.format(Locale.ROOT, "%.3f", (Float.valueOf(sizeBytes) / (1000*1000))) + "mb";
                         if (ktDownloadEvents!=null){
-                            ktDownloadEvents.onStateChanged(assetInfo.getState());
+                            ktDownloadEvents.onStateChanged(assetInfo.getState(),assetId);
                         }
 
                     }else {
                         if (ktDownloadEvents!=null){
-                            ktDownloadEvents.onStateChanged(null);
+                            ktDownloadEvents.onStateChanged(null,null);
                         }
 
                     }
@@ -723,16 +723,21 @@ public class KTDownloadHelper {
     DownloadStateListener listener;
     public void getAssetDownloadState(String kentry, KTDownloadHelper downloadHelper,DownloadStateListener listener) {
         this.listener=listener;
+        Log.w("DownloadHelper",manager+" "+ktDownloadEvents);
         if (manager!=null && ktDownloadEvents!=null){
             OfflineManager.AssetInfo assetInfo=manager.getAssetInfo(kentry);
             if (assetInfo!=null){
                 if (assetInfo.getState()!=null){
-                    Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
-                    long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
-                    Log.d("stateOfAsset",percentage+"%");
-                    float per=percentage;
-                    Log.d("stateOfAsset",percentage+"%");
-                    listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
+                    try {
+                        Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
+                        long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
+                        Log.d("stateOfAsset",percentage+"%");
+                        float per=percentage;
+                        Log.d("stateOfAsset",percentage+"%");
+                        listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
+                    }catch (Exception ignored){
+
+                    }
                 }else {
                     Log.d("stateOfAsset","null");
                 }

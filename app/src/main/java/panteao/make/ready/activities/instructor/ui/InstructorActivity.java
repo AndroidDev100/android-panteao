@@ -71,6 +71,8 @@ import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.kaltura.tvplayer.OfflineManager;
+
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
@@ -1282,6 +1284,26 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void fromAdapterDownloadProgress(float process, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterPaused(@NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
 
     }
 

@@ -2264,4 +2264,18 @@ public class AppCommonMethod {
             SDKConfig.DOWNLOAD_EXPIRY_DAYS=30;
         }
     }
+
+    public static int getDownloadPosition(List<EnveuVideoItemBean> adapterList,String videoId) {
+        int position=0;
+        for (int i=0;i<adapterList.size();i++){
+            String kentryId=adapterList.get(i).getkEntryId();
+            if (videoId!=null && !videoId.equalsIgnoreCase("")){
+                if (kentryId.equalsIgnoreCase(videoId)){
+                    position=i;
+                    break;
+                }
+            }
+        }
+        return position;
+    }
 }

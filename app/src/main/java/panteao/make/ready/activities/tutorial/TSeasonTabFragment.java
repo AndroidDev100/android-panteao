@@ -36,6 +36,7 @@ import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.RecyclerAnimator;
 import panteao.make.ready.utils.helpers.SpacingItemDecoration;
 import panteao.make.ready.utils.helpers.StringUtils;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -443,6 +444,88 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     public void updateStatus() {
         if (seasonAdapter!=null){
             seasonAdapter.holdHolder();
+        }
+    }
+
+    String findAssetId = "";
+    int position = 0;
+    KTDownloadHelper downloadHelper;
+    public void downloadComplete(String assetId) {
+        try {
+            List<EnveuVideoItemBean> videoItemBeans = seasonAdapter.getAdapterList();
+            if (videoItemBeans != null && videoItemBeans.size() > 0) {
+                for (int i = 0; i < videoItemBeans.size(); i++) {
+                    if (assetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())) {
+                        if (getActivity() != null && !getActivity().isFinishing()) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    seasonAdapter.downloadCompletChanged(position, assetId, seasonAdapter.getAdapterList());
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        } catch (Exception ingbored) {
+
+        }
+    }
+
+    public void pauseDownload(KTDownloadHelper downloadHelper, String assetId) {
+        if (seasonAdapter != null) {
+            if (seasonAdapter.getAdapterList() != null) {
+                if (seasonAdapter.getAdapterList().size() > 0) {
+                    for (int i = 0; i < seasonAdapter.getAdapterList().size(); i++) {
+                        if (assetId.equalsIgnoreCase(seasonAdapter.getAdapterList().get(i).getkEntryId())) {
+                            if (getActivity() != null && !getActivity().isFinishing()) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        seasonAdapter.downloadStatusChanged(position, assetId, seasonAdapter.getAdapterList());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setDownloadHelper(KTDownloadHelper downloadHelp) {
+        if (downloadHelp!=null){
+            this.downloadHelper=downloadHelp;
+        }
+    }
+
+    public void updateAdapter(int progress, String assetId, KTDownloadHelper downloadHelpr) {
+        if (seasonAdapter != null) {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    seasonAdapter.itemChanged(assetId);
+                }
+            });
+
+        }
+    }
+
+
+    public void downloadStatusChanged(String assetID) {
+        if (seasonAdapter != null) {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    seasonAdapter.itemStatusChanged(assetID);
+                }
+            });
+        }
+    }
+
+    public void cancelDownload(String videoId) {
+        if (seasonAdapter != null) {
+            seasonAdapter.onDownloadPaused(videoId);
         }
     }
 }

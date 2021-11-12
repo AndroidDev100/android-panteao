@@ -1848,6 +1848,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+
     class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;
@@ -2174,7 +2175,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
     @Override
-    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state,String assetId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -2237,6 +2238,63 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }catch (Exception e){
             Log.e("ErrorIs",e.getLocalizedMessage());
         }
+    }
+
+    int countCall = 0;
+    int countCall2 = 2;
+    @Override
+    public void fromAdapterDownloadProgress(float progress, @NonNull String assetId) {
+        if (userInteractionFragment != null) {
+            //  String string = String.format(Locale.ROOT, "%.1f", progress);
+            // Log.e("finalPer",string);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Entryid!=null && !Entryid.equalsIgnoreCase("") && Entryid.equalsIgnoreCase(assetId)){
+                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.DOWNLOADING);
+                        userInteractionFragment.setDownloadProgress((int)progress);
+                    }
+                }
+            });
+
+        }
+        if (seasonTabFragment!=null){
+            seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper);
+        }
+    }
+
+    @Override
+    public void fromAdapterPaused(@NonNull String assetID) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Logger.e(TAG, "onDownloadProgress" +"  ------ "+"paused");
+                        OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetID);
+                        if (info!=null){
+                            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+                        }else {
+                            userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+                        }
+
+                    }
+                },1000);
+
+            }
+        });
+
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
     }
 
 }

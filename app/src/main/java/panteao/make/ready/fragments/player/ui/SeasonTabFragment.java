@@ -248,6 +248,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                     getBinding().seriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                                     ((SimpleItemAnimator) getBinding().seriesRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
                                     getBinding().seriesRecyclerView.setAdapter(seasonAdapter);
+                                    seasonAdapter.setDownloadHelpr(downloadHelper);
                                     hideProgressBar();
 
                                 } else {
@@ -262,7 +263,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                         public void run() {
                                             ((EpisodeActivity) context).episodesList(allEpiosdes);
                                         }
-                                    },1200);
+                                    }, 1200);
 
                                 }
                             }
@@ -357,6 +358,7 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                     getBinding().seriesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                     ((SimpleItemAnimator) getBinding().seriesRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
                     getBinding().seriesRecyclerView.setAdapter(seasonAdapter);
+                    seasonAdapter.setDownloadHelpr(downloadHelper);
                 } else {
 
                     seasonEpisodes.addAll(railCommonData.getEnveuVideoItemBeans());
@@ -368,15 +370,15 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                         public void run() {
                             ((EpisodeActivity) context).episodesList(seasonEpisodes);
                         }
-                    },1200);
+                    }, 1200);
 
-                }else if (context instanceof SeriesDetailActivity){
+                } else if (context instanceof SeriesDetailActivity) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             ((SeriesDetailActivity) context).episodesList(seasonEpisodes);
                         }
-                    },1200);
+                    }, 1200);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);
@@ -401,9 +403,9 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
 
         if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode()) || assetType.equalsIgnoreCase(AppConstants.Episode)) {
             if (AppCommonMethod.getCheckBCID(enveuVideoItemBean.getkEntryId())) {
-                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+                AppCommonMethod.launchDetailScreen(getActivity(), enveuVideoItemBean.getkEntryId(), MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(), enveuVideoItemBean);
             } else {
-                AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(),enveuVideoItemBean);
+                AppCommonMethod.launchDetailScreen(getActivity(), "0", MediaTypeConstants.getInstance().getEpisode(), enveuVideoItemBean.getId(), "0", enveuVideoItemBean.isPremium(), enveuVideoItemBean);
             }
 
         }
@@ -454,58 +456,92 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
     }
 
     public void updateStatus() {
-        if (seasonAdapter!=null){
+        if (seasonAdapter != null) {
             seasonAdapter.holdHolder();
         }
     }
 
-    String findAssetId="";
-    int position=0;
+    String findAssetId = "";
+    int position = 0;
     KTDownloadHelper downloadHelper;
-    public void updateAdapter(int progress, String assetId, KTDownloadHelper downloadHelpr) {
-        if (seasonAdapter!=null){
-            this.downloadHelper=downloadHelpr;
-            seasonAdapter.setDownloadHelpr(downloadHelper);
-            List<EnveuVideoItemBean> videoItemBeans=seasonAdapter.getAdapterList();
-            if (videoItemBeans!=null && videoItemBeans.size()>0){
-                if (!findAssetId.equalsIgnoreCase(assetId)){
-                    for (int i=0;i<videoItemBeans.size();i++){
-                        if (assetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())){
-                            findAssetId=assetId;
-                            position=i;
-                            if (position==0){
-                                seasonAdapter.notifyDataSetChanged(position,findAssetId,videoItemBeans);
-                            }
-                        }
-                    }
-                }
-                seasonAdapter.notifyItemChanged(position);
 
-            }
-
-        }
-    }
 
     public void downloadComplete(String assetId) {
         try {
-            List<EnveuVideoItemBean> videoItemBeans=seasonAdapter.getAdapterList();
-            if (videoItemBeans!=null && videoItemBeans.size()>0) {
-                for (int i=0;i<videoItemBeans.size();i++) {
+            List<EnveuVideoItemBean> videoItemBeans = seasonAdapter.getAdapterList();
+            if (videoItemBeans != null && videoItemBeans.size() > 0) {
+                for (int i = 0; i < videoItemBeans.size(); i++) {
                     if (assetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())) {
-                        if (getActivity()!=null && !getActivity().isFinishing()){
+                        if (getActivity() != null && !getActivity().isFinishing()) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    seasonAdapter.downloadCompletChanged(position,assetId,seasonAdapter.getAdapterList());
+                                    seasonAdapter.downloadCompletChanged(position, assetId, seasonAdapter.getAdapterList());
                                 }
                             });
                         }
                     }
                 }
             }
-        }catch (Exception ingbored){
+        } catch (Exception ingbored) {
 
         }
     }
 
+    public void pauseDownload(KTDownloadHelper downloadHelper, String assetId) {
+        if (seasonAdapter != null) {
+            if (seasonAdapter.getAdapterList() != null) {
+                if (seasonAdapter.getAdapterList().size() > 0) {
+                    for (int i = 0; i < seasonAdapter.getAdapterList().size(); i++) {
+                        if (assetId.equalsIgnoreCase(seasonAdapter.getAdapterList().get(i).getkEntryId())) {
+                            if (getActivity() != null && !getActivity().isFinishing()) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        seasonAdapter.downloadStatusChanged(position, assetId, seasonAdapter.getAdapterList());
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setDownloadHelper(KTDownloadHelper downloadHelp) {
+        if (downloadHelp!=null){
+            this.downloadHelper=downloadHelp;
+        }
+    }
+
+    public void updateAdapter(int progress, String assetId, KTDownloadHelper downloadHelpr) {
+        if (seasonAdapter != null) {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    seasonAdapter.itemChanged(assetId);
+                }
+            });
+
+        }
+    }
+
+
+    public void downloadStatusChanged(String assetID) {
+        if (seasonAdapter != null) {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    seasonAdapter.itemStatusChanged(assetID);
+                }
+            });
+        }
+    }
+
+    public void cancelDownload(String videoId) {
+        if (seasonAdapter != null) {
+            seasonAdapter.onDownloadPaused(videoId);
+        }
+    }
 }

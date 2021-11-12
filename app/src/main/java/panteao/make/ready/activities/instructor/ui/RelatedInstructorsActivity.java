@@ -46,6 +46,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.kaltura.tvplayer.OfflineManager;
 import com.make.bookmarking.bean.GetBookmarkResponse;
 import com.make.enums.Layouts;
 
@@ -1694,6 +1695,26 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
 
     @Override
     public void onClick(boolean isClicked) {
+
+    }
+
+    @Override
+    public void fromAdapterDownloadProgress(float process, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterPaused(@NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
 
     }
 

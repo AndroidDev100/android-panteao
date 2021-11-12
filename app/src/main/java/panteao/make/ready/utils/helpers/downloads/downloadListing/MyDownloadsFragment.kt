@@ -139,7 +139,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
 
     }
 
-    override fun onStateChanged(state: OfflineManager.AssetDownloadState) {
+    override fun onStateChanged(state: OfflineManager.AssetDownloadState,assetId: String) {
 
     }
 

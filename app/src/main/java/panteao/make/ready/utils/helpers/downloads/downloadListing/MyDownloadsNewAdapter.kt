@@ -50,7 +50,7 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
 
     }
 
-    override fun onStateChanged(state: OfflineManager.AssetDownloadState) {
+    override fun onStateChanged(state: OfflineManager.AssetDownloadState,assetId: String?) {
         android.util.Log.w("adapterCallBack 2","onStateChanged")
         if (context!=null && !NetworkConnectivity.isOnline(context)){
             if (downloadHelper!=null && downloadHelper.manager!=null) {

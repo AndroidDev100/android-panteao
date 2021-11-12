@@ -828,6 +828,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         if (getBinding() != null)
             getBinding().setDownloadStatus(downloadStatus);
         try {
+            Log.w("userInteraction","in6"+downloadStatus);
             if (downloadStatus==DownloadStatus.PAUSE){
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
@@ -839,11 +840,16 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
             }
             else if (downloadStatus==DownloadStatus.DOWNLOADED){
+                Log.w("userInteraction","in5");
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
             }
             else if (downloadStatus==DownloadStatus.REQUESTED){
 
+            }
+            else if (downloadStatus==DownloadStatus.SERIES_DOWNLOADING){
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
             }
             else {
                 getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
@@ -856,13 +862,42 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     public void setDownloadable(boolean isDownloadable) {
-        if (getBinding() != null)
+        if (getBinding() != null){
             getBinding().setIsDownloadable(isDownloadable);
+        }
+
     }
 
     public void setDownloadProgress(float progress) {
-        if (getBinding() != null)
-            getBinding().videoDownloading.setProgress(progress);
+        try {
+            if (getBinding() != null){
+                Log.w("userInteraction","in2");
+                if (getActivity()!=null && !getActivity().isFinishing()){
+                    Log.w("userInteraction","in3");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (getActivity() instanceof SeriesDetailActivity || getActivity() instanceof TutorialActivity){
+                                Log.w("userInteraction","in4");
+                                getBinding().videoDownloaded.setImageResource(R.drawable.series_downloading_icon);
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }else {
+                                Log.w("userInteraction","in5");
+                                getBinding().videoDownloading.setProgress(progress);
+                            }
+                        }
+                    });
+
+                }else {
+                    Log.w("userInteraction","in6");
+                    getBinding().videoDownloading.setProgress(progress);
+                }
+            }
+
+        }catch (Exception ignored){
+
+        }
     }
 
 }

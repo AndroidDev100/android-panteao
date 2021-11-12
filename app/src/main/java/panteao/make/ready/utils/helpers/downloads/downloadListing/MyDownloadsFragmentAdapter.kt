@@ -55,7 +55,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    override fun onStateChanged(state: OfflineManager.AssetDownloadState) {
+    override fun onStateChanged(state: OfflineManager.AssetDownloadState,assetId: String?) {
 
     }
 

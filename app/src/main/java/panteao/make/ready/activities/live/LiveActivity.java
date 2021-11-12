@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.kaltura.tvplayer.OfflineManager;
 import com.make.enums.Layouts;
 
 import org.jetbrains.annotations.NotNull;
@@ -1346,6 +1347,26 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     @Override
     public void onDownloadDeleted(@NotNull String videoId, @NotNull Object source) {
+
+    }
+
+    @Override
+    public void fromAdapterDownloadProgress(float process, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterPaused(@NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
 
     }
 

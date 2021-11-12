@@ -159,7 +159,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     }
 
-    override fun onStateChanged(state: OfflineManager.AssetDownloadState) {
+    override fun onStateChanged(state: OfflineManager.AssetDownloadState,assetId: String) {
 
     }
 

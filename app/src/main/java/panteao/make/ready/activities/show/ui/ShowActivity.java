@@ -1692,7 +1692,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     }
 
     @Override
-    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+    public void onStateChanged(@NonNull @NotNull OfflineManager.AssetDownloadState state,String assetId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1785,5 +1785,25 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         }catch (Exception e){
             Log.e("ErrorIs",e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void fromAdapterDownloadProgress(float process, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterPaused(@NonNull String assetID) {
+
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+
     }
 }

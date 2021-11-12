@@ -221,6 +221,17 @@
                         app:srcCompat="@drawable/download_icon" />
 
                     <ImageView
+                        android:id="@+id/series_downloaded"
+                        android:layout_width="@dimen/watchListWidth"
+                        android:layout_height="@dimen/watchListHeight"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/NontonSize8"
+                        android:contentDescription="TODO"
+                        android:visibility='@{downloadStatus==DownloadStatus.SERIES_DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
+                        app:srcCompat="@drawable/series_downloading_icon" />
+
+
+                    <ImageView
                         android:id="@+id/pause_download"
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
