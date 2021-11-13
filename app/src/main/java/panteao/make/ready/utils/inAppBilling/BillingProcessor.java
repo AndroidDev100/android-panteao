@@ -20,8 +20,14 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import panteao.make.ready.activities.purchaseNew.BillingConstants;
+import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
+import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -592,4 +598,36 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             return false;
         }
     }
+
+
+    String purchasedSKU="";
+    String purchasedToken="";
+    RestoreSubscriptionCallback callback;
+    public void queryPurchases(RestoreSubscriptionCallback calling) {
+        try {
+            this.callback=calling;
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+                if (myBillingClient!=null){
+                    final Purchase.PurchasesResult purchasesResult =
+                            myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                    final List<Purchase> purchases = new ArrayList<>();
+                    if (purchasesResult.getPurchasesList() != null) {
+                        purchases.addAll(purchasesResult.getPurchasesList());
+                    }
+                    if (purchases.size()>0){
+                        purchasedSKU=purchases.get(0).getSku();
+                        purchasedToken=purchases.get(0).getPurchaseToken();
+                    }
+
+                    PurchaseHandler.getInstance().checkPurchaseHistory(purchases,myBillingClient,callback);
+                }
+            }
+        }catch (Exception ignored){
+            Log.w("crashHap",ignored.toString());
+        }
+
+
+    }
+
 }
