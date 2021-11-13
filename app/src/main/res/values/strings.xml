@@ -305,6 +305,7 @@
 
     <string name="download_settings">Downloads Settings</string>
     <string name="download_over_wifi_only">Download on Wi-Fi Only</string>
+    <string name="restore_subscription">Restore Subscription</string>
     <string name="always_ask">Always ask</string>
     <string name="download_quality">Download quality</string>
     <string name="start_download">Start download</string>

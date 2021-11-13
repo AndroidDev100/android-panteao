@@ -7,27 +7,44 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Objects;
+
+import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
 import panteao.make.ready.activities.videoquality.ui.VideoQualityActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.SettingsActivityBinding;
+import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.BillingProcessor;
+import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
+import panteao.make.ready.utils.inAppBilling.RestoreSubscriptionCallback;
 
 
-public class ActivitySettings extends BaseBindingActivity<SettingsActivityBinding> implements View.OnClickListener {
+public class ActivitySettings extends BaseBindingActivity<SettingsActivityBinding> implements View.OnClickListener, InAppProcessListener, AlertDialogFragment.AlertDialogListener {
 
     @Override
     public SettingsActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
         return SettingsActivityBinding.inflate(inflater);
     }
 
+    private BillingProcessor bp;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +54,9 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
         }else {
             getBinding().switchThemeNew.setChecked(false);
         }
+
+        bp = new BillingProcessor(ActivitySettings.this,this);
+        bp.initializeBillingProcessor();
 
         getBinding().switchThemeNew.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -83,6 +103,34 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
             }
         });
 
+        getBinding().restoreSuscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getBinding().progressBar.setVisibility(View.VISIBLE);
+                if (bp!=null){
+                    if (bp.isReady()){
+                        bp.queryPurchases(new RestoreSubscriptionCallback() {
+                            @Override
+                            public void subscriptionStatus(boolean status, String message) {
+                                getBinding().progressBar.setVisibility(View.GONE);
+                                if (status){
+                                    showAlertDialog("", message);
+                                }else {
+                                    showAlertDialog(getResources().getString(R.string.error), message);
+                                }
+
+                            }
+                        });
+                    }else {
+                        getBinding().progressBar.setVisibility(View.GONE);
+                    }
+                }else {
+                    getBinding().progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         getBinding().switchTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -116,6 +164,13 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
         }catch (Exception ignored){
 
         }
+    }
+
+    private void showAlertDialog(String title, String msg) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
+        alertDialog.setAlertDialogCallBack(this);
+        alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }
 
     private void toolBar() {
@@ -196,5 +251,30 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
 ////            }
 //            break;
         }
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+    }
+
+    @Override
+    public void onPurchasesUpdated(@NonNull @NotNull BillingResult billingResult, @Nullable @org.jetbrains.annotations.Nullable List<Purchase> purchases) {
+
+    }
+
+    @Override
+    public void onListOfSKUFetched(@Nullable @org.jetbrains.annotations.Nullable List<SkuDetails> purchases) {
+
+    }
+
+    @Override
+    public void onBillingError(@Nullable @org.jetbrains.annotations.Nullable BillingResult error) {
+
+    }
+
+    @Override
+    public void onFinishDialog() {
+
     }
 }
