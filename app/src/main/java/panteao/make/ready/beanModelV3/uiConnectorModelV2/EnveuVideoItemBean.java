@@ -458,7 +458,32 @@ public class EnveuVideoItemBean implements Parcelable {
                 }
             }
 
-            Object linkedContent = details.getLinkedContent();
+            if (details.getLinkedContent()!=null){
+                this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(details.getLinkedContent().getImages(), imageType);
+                if (details.getLinkedContent().getContentType()!=null){
+                    if (details.getLinkedContent().getContentType().toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || details.getLinkedContent().getContentType().toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesPremium = details.getPremium();
+                    }
+                }
+
+                if (details.getLinkedContent().getSku()!=null){
+                    if (details.getLinkedContent().getContentType().toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || details.getLinkedContent().getContentType().toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
+                        this.seriesSku = details.getSku();
+                    }
+                }
+
+                if (details.getLinkedContent().getId()!=0){
+                        this.seriesId = String.valueOf(details.getLinkedContent().getId());
+                }
+
+                if (details.getLinkedContent().getTitle()!=null){
+                    this.name = details.getLinkedContent().getTitle();
+                }
+            }
+
+            Log.w("checkedValues","--->"+this.seriesPremium+" "+seriesSku+" "+seriesId+" "+name+"  "+seriesImageURL);
+
+           /* Object linkedContent = details.getLinkedContent();
             LinkedTreeMap<Object, Object> linkedContentObJ = (LinkedTreeMap) linkedContent;
             //Log.w("checkedValues",linkedContentObJ+"");
             if (linkedContentObJ!=null){
@@ -488,12 +513,14 @@ public class EnveuVideoItemBean implements Parcelable {
                     JsonObject jsonObject = new Gson().toJsonTree(linkedContentObJ).getAsJsonObject();
                     //Log.w("checkedValues","--->"+jsonObject);
                     JsonObject obj=jsonObject.getAsJsonObject("images");
+
                     HashMap<String, Thumbnail> yourHashMap = new Gson().fromJson(obj.toString(), HashMap.class);
                     Log.w("checkedValues","--->"+yourHashMap);
-                    this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(yourHashMap, imageType);
+                  //  this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(details.getData(), imageType);
+
                 }
 
-            }
+            }*/
             Log.w("checkedValues","--->"+this.seriesId);
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 

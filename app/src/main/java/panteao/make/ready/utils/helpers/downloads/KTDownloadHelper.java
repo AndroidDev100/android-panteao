@@ -905,36 +905,42 @@ public class KTDownloadHelper {
         }
     }
 
+    ArrayList<String> downloadAssets;
 /*series download Handling*/
 public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoItemBean> seasonEpisodesList) {
+    downloadAssets=new ArrayList<>();
     manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
     manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
 
-    OfflineManager.PrepareCallback prepareCallback = new OfflineManager.PrepareCallback() {
+    OfflineManager.PrepareCallback prepareCall = new OfflineManager.PrepareCallback() {
         @Override
         public void onPrepared(@NonNull String assetId, @NonNull OfflineManager.AssetInfo assetInfo, @Nullable Map<OfflineManager.TrackType, List<OfflineManager.Track>> selected) {
             assetInf=assetInfo;
             manager.startAssetDownload(assetInfo);
             Log.w("downloadAssetAdded","onPrepareSuccess-->"+assetId+"  "+seasonEpisodesList.size());
-            //storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
-
+            downloadAssets.add(assetId);
+            if (downloadAssets.size()==seasonEpisodesList.size() || downloadAssets.size()-1==seasonEpisodesList.size()){
+                storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
+            }
         }
 
         @Override
         public void onPrepareError(@NonNull String assetId, @NonNull Exception error) {
-            Log.w("prepaireRelated","onPrepareError-->"+assetId+" "+error.getMessage());
+            downloadAssets.add(null);
+            Log.w("prepaireRelated-->","onPrepareError-->"+assetId+" "+error.getMessage());
             // toastLong("onPrepareError: " + error);
         }
 
         @Override
         public void onMediaEntryLoadError(@NonNull Exception error) {
-            Log.w("prepaireRelated","onMediaEntryLoadError-->"+" "+error.getMessage());
+            Log.w("prepaireRelated-->","onMediaEntryLoadError-->"+" "+error.getMessage());
+            downloadAssets.add(null);
             //  toastLong("onMediaEntryLoadError: " + error);
         }
 
         @Override
         public void onMediaEntryLoaded(@NonNull String assetId, @NonNull PKMediaEntry mediaEntry) {
-            Log.w("prepaireRelated","onPrepareError-->"+assetId+" "+mediaEntry.toString());
+            Log.w("prepaireRelated-->","onMediaEntryLoaded-->"+assetId+" "+mediaEntry.toString());
             // reduceLicenseDuration(mediaEntry, 300);
         }
 
@@ -951,7 +957,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
                 OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
                 OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
-                manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
+                manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
             }
         }catch (Exception e){
 
@@ -967,7 +973,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                         if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
                             OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
                             OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
-                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCallback);
+                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
                         }
                     }catch (Exception e){
 
@@ -983,23 +989,32 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
    }
 
+   int dbCount=0;
     private void storeSeriesData(String assetId, List<EnveuVideoItemBean> seasonEpisodesList,int seasonNumber) {
-        for (int i = 0 ;i<seasonEpisodesList.size();i++){
-            EnveuVideoItemBean bean=seasonEpisodesList.get(i);
-            if (bean.getkEntryId().equalsIgnoreCase(assetId)){
-                String title=bean.getTitle();
-                String kentryid=bean.getkEntryId();
-                String assetType=bean.getAssetType();
-                String seriesID=bean.getSeriesId();
-                String seriesName=bean.getName();
-                String imageURL=bean.getPosterURL();
-                Object episodeNumber=bean.getEpisodeNo();
-                String seriesImageURL=bean.getSeriesImageURL();
-                storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber.toString(),seasonNumber,seriesImageURL);
-                break;
-            }
-
+        Log.w("dbvalues",dbCount+" "+seasonEpisodesList.size());
+        if (dbCount<seasonEpisodesList.size()) {
+            EnveuVideoItemBean bean = seasonEpisodesList.get(dbCount);
+            String title = bean.getTitle();
+            String kentryid = bean.getkEntryId();
+            String assetType = bean.getAssetType();
+            String seriesID = bean.getSeriesId();
+            String seriesName = bean.getName();
+            String imageURL = bean.getPosterURL();
+            Object episodeNumber = bean.getEpisodeNo();
+            String seriesImageURL = bean.getSeriesImageURL();
+            storeAssetInDB(title, kentryid, assetType, seriesID, seriesName, imageURL, episodeNumber.toString(), seasonNumber, seriesImageURL);
+            dbCount++;
+            callHandler(assetId,seasonEpisodesList, seasonNumber);
         }
+    }
+
+    private void callHandler(String assetId,List<EnveuVideoItemBean> seasonEpisodesList, int seasonNumber) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
+            }
+        },1000);
     }
 
 }

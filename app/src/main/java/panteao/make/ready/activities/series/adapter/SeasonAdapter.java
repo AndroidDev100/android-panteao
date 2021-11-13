@@ -68,6 +68,10 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         buildIndexMap();
     }
 
+    public void refreshDownloadHelper() {
+        downloadHelper = new KTDownloadHelper(context, this);
+    }
+
     public List<EnveuVideoItemBean> getAdapterList(){
         return videoItemBeans;
     }
@@ -165,7 +169,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 holder.itemBinding.duration.setText("00:00");
             }
         }catch (Exception ignored){
-
+            Log.w("OnBindViewException",ignored);
         }
 
 
@@ -272,10 +276,10 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
         return null;
     }
-    KTDownloadHelper downloadHelpr;
+   // KTDownloadHelper downloadHelpr;
     public void setDownloadHelpr(KTDownloadHelper downloadHelper) {
         if (downloadHelper!=null){
-            this.downloadHelpr=downloadHelper;
+           // this.downloadHelpr=downloadHelper;
         }
     }
 
@@ -344,6 +348,8 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
+
+
     public class SeasonViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -362,7 +368,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     String findAssetId = "";
     @Override
     public void setDownloadProgressListener(float progress, String assetId) {
-        Log.w("downloadPro->>progres->",assetId);
+        Log.w("downloadPro->>progres->",assetId+" "+onDownloadClickInteraction+" "+downloadHelper);
         if (!findAssetId.equalsIgnoreCase(assetId)) {
             findAssetId = assetId;
 
@@ -376,8 +382,8 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     String assetID="";
     int position=0;
     public void itemChanged(String assetId) {
-        try {
-            Log.w("Condition--1",assetId);
+
+            Log.w("Condition--1",assetId+" "+position);
             if (assetID.equalsIgnoreCase(assetId)){
                 Log.w("Condition--11",assetId);
                 notifyItemChanged(position);
@@ -392,9 +398,6 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 }
             }
 
-        }catch (Exception ignored){
-            Log.w("progress--Crash",ignored.toString());
-        }
 
     }
 

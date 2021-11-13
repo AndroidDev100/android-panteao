@@ -161,6 +161,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     @Override
     protected void onPause() {
         dismissLoading(getBinding().progressBar);
+        if (userInteractionFragment!=null){
+            userInteractionFragment.setItemFound();
+        }
         super.onPause();
     }
 
@@ -352,6 +355,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         }
 
         downloadHelper = new KTDownloadHelper(this,this);
+        if (seasonTabFragment!=null){
+            //seasonTabFragment.refreshAdapter()
+        }
 
         if (preference != null && userInteractionFragment != null) {
             AppCommonMethod.callSocialAction(preference, userInteractionFragment);
@@ -1809,22 +1815,8 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void setDownloadProgressListener(float progress, String assetId) {
-        Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress+"   "+assetId);
-        if (userInteractionFragment != null) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (assetId!=null && !assetId.equalsIgnoreCase("") && assetId.equalsIgnoreCase(assetId)){
-                        userInteractionFragment.setDownloadStatus(DownloadStatus.DOWNLOADED);
-                        userInteractionFragment.setDownloadProgress((int)progress);
-                        if (seasonTabFragment!=null){
-                            //seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper);
-                        }
-                    }
-                }
-            });
 
-        }
+
     }
 
     @Override
@@ -1902,20 +1894,27 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             }
             if (userInteractionFragment!=null){
                 Log.w("userInteraction","in1");
-                userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                //userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
                // userInteractionFragment.setDownloadProgress((int)progress);
             }
         }else {
             if (countCall==2 && countCall2==2){
                 if (seasonTabFragment!=null){
                     if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
-                        if (userInteractionFragment.getBinding().seriesDownloaded.getVisibility()==View.GONE){
-                            userInteractionFragment.getBinding().seriesDownloaded.setVisibility(View.VISIBLE);
-                            userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                        if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
+                            if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
+                                userInteractionFragment.checkDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                            }
                         }
                     }
                    // userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
-                    seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper);
+                    try {
+                       // Thread.sleep(60);
+                        seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper,SeriesDetailActivity.this);
+                    }catch (Exception e){
+
+                    }
+
                 }
             }
         }
@@ -1923,19 +1922,26 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
-        Log.w("adapterStaus",state+" "+assetID);
-        if (seasonTabFragment!=null){
-            OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetID);
-            if (info!=null){
-                  userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
-            }else {
-                 userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
-            }
-        }
+        Log.w("adapterStaus",state+" 2 "+assetID);
+
     }
 
     @Override
     public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
-        Log.w("adapterStaus",state+" "+assetID);
+        Log.w("adapterStaus",state+" 1 "+assetID);
+        if (userInteractionFragment!=null){
+            if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
+                if (userInteractionFragment.getBinding().seriesDownloaded.getVisibility()==View.GONE){
+                  //  userInteractionFragment.getBinding().seriesDownloaded.setVisibility(View.VISIBLE);
+                   // userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                }
+            }
+           /* OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetID);
+            if (info!=null){
+                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+            }else {
+                userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            }*/
+        }
     }
 }

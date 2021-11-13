@@ -20,6 +20,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.JsonObject;
+import com.kaltura.tvplayer.OfflineManager;
+
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
@@ -37,6 +39,7 @@ import panteao.make.ready.player.trailor.PlayerActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -54,6 +57,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.annotations.NonNull;
@@ -827,40 +831,49 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     public void setDownloadStatus(DownloadStatus downloadStatus) {
-        if (getBinding() != null)
-            getBinding().setDownloadStatus(downloadStatus);
-        try {
-            Log.w("userInteraction","in6"+downloadStatus);
-            if (downloadStatus==DownloadStatus.PAUSE){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }else if (downloadStatus==DownloadStatus.DOWNLOADING){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }else if (downloadStatus==DownloadStatus.started){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }
-            else if (downloadStatus==DownloadStatus.DOWNLOADED){
-                Log.w("userInteraction","in5");
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
-            }
-            else if (downloadStatus==DownloadStatus.REQUESTED){
+        if (getActivity()!=null && !getActivity().isFinishing()){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (getBinding() != null)
+                        getBinding().setDownloadStatus(downloadStatus);
+                    try {
+                        Log.w("userInteraction","in6"+downloadStatus);
+                        if (downloadStatus==DownloadStatus.PAUSE){
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                        }else if (downloadStatus==DownloadStatus.DOWNLOADING){
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                        }else if (downloadStatus==DownloadStatus.started){
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                        }
+                        else if (downloadStatus==DownloadStatus.DOWNLOADED){
+                            Log.w("userInteraction","in5");
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
+                        }
+                        else if (downloadStatus==DownloadStatus.REQUESTED){
 
-            }
-            else if (downloadStatus==DownloadStatus.SERIES_DOWNLOADING){
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }
-            else {
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
-                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-            }
+                        }
+                        else if (downloadStatus==DownloadStatus.SERIES_DOWNLOADING){
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                        }
+                        else {
+                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
+                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                        }
 
-        }catch (Exception e){
-            Log.e("crashhappen",e.toString());
+                    }catch (Exception e){
+                        Log.e("crashhappen",e.toString());
+                    }
+                }
+            });
+
         }
+
     }
 
     public void setDownloadable(boolean isDownloadable) {
@@ -902,4 +915,29 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
     }
 
+    public boolean itemFound=false;
+    public void checkDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+        if (adapterList!=null && adapterList.size()>0){
+            if (!itemFound) {
+                for (int i = 0; i < adapterList.size(); i++) {
+                    EnveuVideoItemBean videoItemBean = adapterList.get(i);
+                    String entryid = videoItemBean.getkEntryId();
+                    if (downloadHelper != null) {
+                        OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
+                        if (info == null) {
+
+                        } else {
+                            setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                            itemFound=true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setItemFound() {
+        this.itemFound=false;
+    }
 }

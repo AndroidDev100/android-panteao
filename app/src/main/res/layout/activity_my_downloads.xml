@@ -52,16 +52,23 @@
                 android:background="?attr/my_downloads_background"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/downloaded_recycler_view"
-                    style="@style/Custom.Widget.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical|center"
-                    android:nestedScrollingEnabled="false"
-                    android:numColumns="auto_fit"
-                    android:overScrollMode="never"
-                    android:stretchMode="columnWidth" />
+               <androidx.core.widget.NestedScrollView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   <androidx.recyclerview.widget.RecyclerView
+                       android:id="@+id/downloaded_recycler_view"
+                       style="@style/Custom.Widget.CardView"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_gravity="center_vertical|top"
+                       android:nestedScrollingEnabled="false"
+                       android:numColumns="auto_fit"
+                       android:overScrollMode="never"
+                       android:stretchMode="columnWidth" />
+
+
+               </androidx.core.widget.NestedScrollView>
+
 
             </LinearLayout>
 

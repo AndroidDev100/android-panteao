@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.List;
 
+import panteao.make.ready.beanModelV3.videoDetailsV2.LinkedContent;
+
 public class VideosItem {
     @SerializedName("dateCreated")
     @Expose
@@ -96,7 +98,7 @@ public class VideosItem {
     private Object contentMonetization;
     @SerializedName("linkedContent")
     @Expose
-    private Object linkedContent;
+    private LinkedContent linkedContent;
     @SerializedName("contentProvider")
     @Expose
     private String contentProvider;
@@ -345,11 +347,11 @@ public class VideosItem {
         this.contentMonetization = contentMonetization;
     }
 
-    public Object getLinkedContent() {
+    public LinkedContent getLinkedContent() {
         return linkedContent;
     }
 
-    public void setLinkedContent(Object linkedContent) {
+    public void setLinkedContent(LinkedContent linkedContent) {
         this.linkedContent = linkedContent;
     }
 
