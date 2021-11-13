@@ -8,9 +8,12 @@ import android.util.Log;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.LinkedTreeMap;
+
+import org.json.JSONObject;
 
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
@@ -368,6 +371,8 @@ public class EnveuVideoItemBean implements Parcelable {
                 this.imageType = "";
             }
 
+
+
             Object customeFiled = details.getCustomFields();
             LinkedTreeMap<Object, Object> t = (LinkedTreeMap) customeFiled;
             if (t != null) {
@@ -455,6 +460,7 @@ public class EnveuVideoItemBean implements Parcelable {
 
             Object linkedContent = details.getLinkedContent();
             LinkedTreeMap<Object, Object> linkedContentObJ = (LinkedTreeMap) linkedContent;
+            //Log.w("checkedValues",linkedContentObJ+"");
             if (linkedContentObJ!=null){
                 if (linkedContentObJ.get("contentType") != null && !linkedContentObJ.get("contentType").toString().equalsIgnoreCase("")) {
                     if (linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial()) || linkedContentObJ.get("contentType").toString().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
@@ -467,8 +473,28 @@ public class EnveuVideoItemBean implements Parcelable {
                         this.seriesSku = (String) linkedContentObJ.get("sku");
                     }
                 }
-            }
+                //Log.w("checkedValues","--->"+linkedContentObJ.get("id"));
+                if (linkedContentObJ.get("id") != null) {
+                        Double seriesiD = (Double) linkedContentObJ.get("id");
+                        int val=seriesiD.intValue();
+                        this.seriesId=val+"";
+                }
 
+                if (linkedContentObJ.get("title") != null && !linkedContentObJ.get("title").toString().equalsIgnoreCase("")) {
+                        this.name = (String) linkedContentObJ.get("title");
+                }
+
+                if (linkedContentObJ.get("images") != null) {
+                    JsonObject jsonObject = new Gson().toJsonTree(linkedContentObJ).getAsJsonObject();
+                    //Log.w("checkedValues","--->"+jsonObject);
+                    JsonObject obj=jsonObject.getAsJsonObject("images");
+                    HashMap<String, Thumbnail> yourHashMap = new Gson().fromJson(obj.toString(), HashMap.class);
+                    Log.w("checkedValues","--->"+yourHashMap);
+                    this.seriesImageURL = ImageLayer.getInstance().getSeriesPosterImageUrl(yourHashMap, imageType);
+                }
+
+            }
+            Log.w("checkedValues","--->"+this.seriesId);
             this.longDescription = details.getLongDescription() == null ? "" : details.getLongDescription().toString().trim();
 
 

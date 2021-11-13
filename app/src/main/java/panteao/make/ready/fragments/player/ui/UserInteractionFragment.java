@@ -80,6 +80,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
      * The policy key for the video cloud account.
      */
     private String seriesId;
+    private String entryid="";
 
 
     public UserInteractionFragment() {
@@ -163,6 +164,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             seriesDetailBean = (EnveuVideoItemBean) bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
             videoId = seriesDetailBean.getBrightcoveVideoId();
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
+            entryid = bundle.getString(AppConstants.BUNDLE_KENTRY_ID);
         }
 
         if (seriesDetailBean!=null && seriesDetailBean.getTrailerReferenceId()!=null && seriesDetailBean.getTrailerReferenceId()!=""){
@@ -800,19 +802,19 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             }
             break;
             case R.id.download_video: {
-                onDownloadClickInteraction.onDownloadClicked(null, 0, this);
+                onDownloadClickInteraction.onDownloadClicked(entryid+"", 0, this);
             }
             break;
             case R.id.video_downloaded: {
-                onDownloadClickInteraction.onDownloadCompleteClicked(view, this, null);
+                onDownloadClickInteraction.onDownloadCompleteClicked(view, this, entryid+"");
             }
             break;
             case R.id.video_downloading: {
-                onDownloadClickInteraction.onProgressbarClicked(view, this, null);
+                onDownloadClickInteraction.onProgressbarClicked(view, this, entryid+"");
             }
             break;
             case R.id.pause_download: {
-                onDownloadClickInteraction.onPauseClicked(null, this);
+                onDownloadClickInteraction.onPauseClicked(entryid+"", this);
             }
             break;
             case R.id.trailor: {

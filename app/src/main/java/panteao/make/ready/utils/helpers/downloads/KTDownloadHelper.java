@@ -241,6 +241,7 @@ public class KTDownloadHelper {
     }
     OfflineManager.AssetInfo assetInf;
     public void startDownload(int position,String kentryid,String title,String assetType,String seriesID,String seriesName,String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL) {
+       Log.w("valuesForDownload",kentryid+" "+title+" "+assetType+" "+seriesID+" "+seriesName+" "+imageURL+" "+episodeNumber+" "+seasonNumber+" "+seriesImageURL);
         manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
         manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
 
@@ -587,7 +588,9 @@ public class KTDownloadHelper {
     }
 
     public void resumeDownload(String entryId) {
-        manager.startAssetDownload(manager.getAssetInfo(entryId));
+        if (entryId!=null && !entryId.equalsIgnoreCase("")){
+            manager.startAssetDownload(manager.getAssetInfo(entryId));
+        }
     }
 
     public void updateDownload(List<? extends DownloadItemEntity> it) {
@@ -913,7 +916,8 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             assetInf=assetInfo;
             manager.startAssetDownload(assetInfo);
             Log.w("downloadAssetAdded","onPrepareSuccess-->"+assetId+"  "+seasonEpisodesList.size());
-           // storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL);
+            //storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
+
         }
 
         @Override
@@ -978,5 +982,24 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
 
    }
+
+    private void storeSeriesData(String assetId, List<EnveuVideoItemBean> seasonEpisodesList,int seasonNumber) {
+        for (int i = 0 ;i<seasonEpisodesList.size();i++){
+            EnveuVideoItemBean bean=seasonEpisodesList.get(i);
+            if (bean.getkEntryId().equalsIgnoreCase(assetId)){
+                String title=bean.getTitle();
+                String kentryid=bean.getkEntryId();
+                String assetType=bean.getAssetType();
+                String seriesID=bean.getSeriesId();
+                String seriesName=bean.getName();
+                String imageURL=bean.getPosterURL();
+                Object episodeNumber=bean.getEpisodeNo();
+                String seriesImageURL=bean.getSeriesImageURL();
+                storeAssetInDB(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber.toString(),seasonNumber,seriesImageURL);
+                break;
+            }
+
+        }
+    }
 
 }

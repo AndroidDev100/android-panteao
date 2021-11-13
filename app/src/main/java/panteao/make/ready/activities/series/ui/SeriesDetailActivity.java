@@ -1577,10 +1577,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     }
 
-    @Override
-    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
 
-    }
 
 
 //    @Override
@@ -1926,8 +1923,19 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+        Log.w("adapterStaus",state+" "+assetID);
         if (seasonTabFragment!=null){
-           // seasonTabFragment.downloadStatusChanged(assetID);
+            OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetID);
+            if (info!=null){
+                  userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+            }else {
+                 userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+            }
         }
+    }
+
+    @Override
+    public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+        Log.w("adapterStaus",state+" "+assetID);
     }
 }

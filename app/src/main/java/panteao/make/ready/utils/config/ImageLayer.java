@@ -226,6 +226,23 @@ public class ImageLayer {
         return finalUrl;
     }
 
+    public String getSeriesPosterImageUrl(HashMap<String,Thumbnail> videoItem, String imageType) {
+        String finalUrl = "";
+        try {
+            if (videoItem != null && videoItem.containsKey(imageType)) {
+                finalUrl = videoItem.get(imageType).getSources().get(0).getSrc();
+            } else {
+                Map.Entry<String, Thumbnail> entry = videoItem.entrySet().iterator().next();
+                finalUrl = videoItem.get(entry.getKey()).getSources().get(0).getSrc();
+            }
+        } catch (Exception ignored) {
+
+        }
+        Logger.e("IMAGE_TYPE", imageType + " " + finalUrl);
+        return finalUrl;
+    }
+
+
     public String getFilteredDetailImage(HashMap<String, Thumbnail> crousalImages, KalturaImageType imageType, int i, int i1) {
         int width = i;
         int height = i1;

@@ -195,6 +195,7 @@ public interface AppConstants {
     String BUNDLE_VIDEO_ID_BRIGHTCOVE = "videoId";
     String BUNDLE_TAB_ID = "tabId";
     String BUNDLE_ASSET_ID = "assestId";
+    String BUNDLE_KENTRY_ID = "kentryid";
     String BUNDLE_SERIES_ID = "seriesId";
     String BUNDLE_IS_PREMIUM = "isPremium";
     String BUNDLE_DURATION = "duration";
