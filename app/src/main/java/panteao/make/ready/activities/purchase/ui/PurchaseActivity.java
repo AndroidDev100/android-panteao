@@ -283,7 +283,8 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         if (clickedModel != null) {
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 showLoading(getBinding().progressBar, true);
-                hitApiDoPurchase();
+                buySubscription();
+                //hitApiDoPurchase();
             }else {
                 ActivityTrackers.getInstance().setAction(ActivityTrackers.PURCHASE);
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);

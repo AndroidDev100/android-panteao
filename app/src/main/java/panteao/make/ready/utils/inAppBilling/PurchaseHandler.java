@@ -1,5 +1,6 @@
 package panteao.make.ready.utils.inAppBilling;
 
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -60,14 +61,14 @@ public class PurchaseHandler {
                         callGetPlansAPI(purchases,callback);
                     }
                 }else {
-                    callback.subscriptionStatus(false,"No Subscription found");
+                    callback.subscriptionStatus(false,"We could not find any active subscription on your account. In case of any issues, please contact support"+ " " + "info@panteaoproductions.com");
                 }
 
             }catch (Exception ignored){
 
             }
         }else {
-            callback.subscriptionStatus(false,"No Subscription found");
+            callback.subscriptionStatus(false,"No Subscription found"+" 2");
         }
     }
 
@@ -86,7 +87,7 @@ public class PurchaseHandler {
                         checkEntitlementState(purchaseResponseModel,purchases,callback);
                     } else {
                         purchaseResponseModel.setStatus(false);
-                        callback.subscriptionStatus(false,"No Subscription found");
+                        callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                     }
 
                 }
@@ -108,16 +109,32 @@ public class PurchaseHandler {
     }
 
     int count=0;
+    String purchasedSKU="";
+    String newSKU="";
+    String finalSKU="";
     private void checkEntitlementState(ResponseMembershipAndPlan purchaseResponseModel, List<Purchase> purchases, RestoreSubscriptionCallback callback) {
         try {
             if (purchaseResponseModel!=null && purchaseResponseModel.getData().size()>0 && purchaseResponseModel.isStatus()){
                 for (int i = 0; i < purchaseResponseModel.getData().size(); i++) {
                     if (!purchaseResponseModel.getData().get(i).getEntitlementState()) {
                         Purchase purchase=purchases.get(count);
-                        String sku = purchase.getSku();
-                        String newSKU=sku.replace(".","_");
-                        String finalSKU="svod_"+newSKU;
-                        Log.w("finalSKU",finalSKU);
+                        purchasedSKU = purchase.getSku();
+                        if (purchasedSKU.contains("panteao.one.month.access.ads")){
+                            purchasedSKU="svod_panteao_one_month_access";
+                            newSKU=purchasedSKU.replace(".","_");
+                            finalSKU="svod_"+newSKU;
+                            Log.w("finalSKU",finalSKU);
+                        }else if (purchasedSKU.contains("panteao.one.year.access.ads")){
+                            purchasedSKU="svod_panteao_one_year_access";
+                            newSKU=purchasedSKU.replace(".","_");
+                            finalSKU="svod_"+newSKU;
+                            Log.w("finalSKU",finalSKU);
+                        }else {
+                            newSKU=purchasedSKU.replace(".","_");
+                            finalSKU="svod_"+newSKU;
+                            Log.w("finalSKU",finalSKU);
+                        }
+
                         if (finalSKU.equalsIgnoreCase(purchaseResponseModel.getData().get(i).getIdentifier())){
                             Log.w("identifiers",purchaseResponseModel.getData().get(i).getIdentifier());
                             Log.w("identifiers",purchase.getSku());
@@ -125,9 +142,12 @@ public class PurchaseHandler {
                             break;
                         }else {
                             getPlans=false;
-                            callback.subscriptionStatus(false,"No Subscription found");
+                          //  callback.subscriptionStatus(false,"No Subscription found"+" 4");
                         }
                     }
+                }
+                if (purchasedSKU.equalsIgnoreCase("")){
+                    callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                 }
             }else {
                 getPlans=false;
@@ -160,7 +180,7 @@ public class PurchaseHandler {
                                 callCreateNewPurchase(purchaseModel,purchase,dataItem,callback);
                             }else {
                                 getPlans=false;
-                                callback.subscriptionStatus(false,"No Subscription found");
+                                callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                             }
                         }
                     });
@@ -181,13 +201,13 @@ public class PurchaseHandler {
                     jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                     jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                     jsonObject1.put("enveuSMSOfferType", model.getPurchaseOptions());
-                    jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                    jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
                     jsonObject1.put("enveuSMSOfferContentSKU", purchase.getSku());
                 }else {
                     jsonObject1.put("enveuSMSPlanName", model.getIdentifier());
                     jsonObject1.put("enveuSMSPlanTitle", model.getTitle());
                     jsonObject1.put("enveuSMSSubscriptionOfferType", model.getPurchaseOptions());
-                    jsonObject1.put("enveuSMSPurchaseCurrency", model.getCurrency());
+                    jsonObject1.put("enveuSMSPurchaseCurrency", "USD");
                 }
 
 
@@ -201,7 +221,7 @@ public class PurchaseHandler {
 
 
             String planName=model.getIdentifier()+"_PLAN/";
-            String paymentURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/offer/"+planName;
+            String paymentURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/offer/"+planName;
             APIDetails endpoint = RequestConfig.paymentClient(KsPreferenceKeys.getInstance().getAppPrefAccessToken(),paymentURL).create(APIDetails.class);
             Call<PurchaseResponseModel> call = endpoint.getCreateNewPurchase(gsonObject);
             call.enqueue(new Callback<PurchaseResponseModel>() {
@@ -218,7 +238,7 @@ public class PurchaseHandler {
 
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().createNewOrder(response);
                         getPlans=false;
-                        callback.subscriptionStatus(false,"No Subscription found");
+                        callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                     }
 
                 }
@@ -230,12 +250,12 @@ public class PurchaseHandler {
                     purchaseResponseModel.setResponseCode(500);
                     purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                     getPlans=false;
-                    callback.subscriptionStatus(false,"No Subscription found");
+                    callback.subscriptionStatus(false,"No Subscription found"+" 7");
                 }
             });
         }catch (Exception ignored){
             getPlans=false;
-            callback.subscriptionStatus(false,"No Subscription found");
+            callback.subscriptionStatus(false,"No Subscription found"+" 8");
         }
 
     }
@@ -253,7 +273,7 @@ public class PurchaseHandler {
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject)jsonParser.parse(jsonObject.toString());
 
-            String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/order/"+orderID+"/";
+            String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/order/"+orderID+"/";
 
             APIDetails endpoint = RequestConfig.paymentClient(KsPreferenceKeys.getInstance().getAppPrefAccessToken(),initiateURL).create(APIDetails.class);
             Call<PurchaseResponseModel> call = endpoint.initiatePurchase(gsonObject);
@@ -270,7 +290,7 @@ public class PurchaseHandler {
                     } else {
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().initiateOrder(response);
                         getPlans=false;
-                        callback.subscriptionStatus(false,"No Subscription found");
+                        callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                     }
 
                 }
@@ -282,12 +302,12 @@ public class PurchaseHandler {
                     purchaseResponseModel.setResponseCode(500);
                     purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                     getPlans=false;
-                    callback.subscriptionStatus(false,"No Subscription found");
+                    callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                 }
             });
         }catch (Exception ignored){
             getPlans=false;
-            callback.subscriptionStatus(false,"No Subscription found");
+            callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
         }
 
 
@@ -310,11 +330,12 @@ public class PurchaseHandler {
 
                 if (purchaseModel!=null){
                     jsonObject1.put("purchasePrice", purchaseModel.getPrice());
-                    jsonObject1.put("purchaseCurrency", purchaseModel.getCurrency());
+                    jsonObject1.put("purchaseCurrency", "USD");
                 }else {
                     jsonObject1.put("purchasePrice", "");
                     jsonObject1.put("purchaseCurrency", "");
                 }
+                jsonObject1.put("playStoreProductId", Base64.encodeToString(purchasedSKU.getBytes(),Base64.NO_WRAP));
                 jsonObject.put("paymentStatus", paymentStatus);
                 jsonObject.put("notes",jsonObject1);
             }catch (Exception ignored){
@@ -325,7 +346,7 @@ public class PurchaseHandler {
             JsonObject gsonObject = (JsonObject)jsonParser.parse(jsonObject.toString());
 
 
-            String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v1/order/"+orderId+"/";
+            String initiateURL= SDKConfig.getInstance().getPAYMENT_BASE_URL()+"v2/order/"+orderId+"/";
 
             APIDetails endpoint = RequestConfig.paymentClient(KsPreferenceKeys.getInstance().getAppPrefAccessToken(),initiateURL).create(APIDetails.class);
             Call<PurchaseResponseModel> call = endpoint.updatePurchase(paymentId,gsonObject);
@@ -337,12 +358,12 @@ public class PurchaseHandler {
                     if (response.code() == 200) {
                         purchaseResponseModel.setStatus(true);
                         purchaseResponseModel.setData(response.body().getData());
-                        callback.subscriptionStatus(true,"Subscriptions Restored");
+                        callback.subscriptionStatus(true,"We’ve found an active subscription on your account and restored it");
                         getPlans=false;
                     } else {
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().updateOrder(response);
                         getPlans=false;
-                        callback.subscriptionStatus(false,"No Subscription found");
+                        callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                     }
 
 
@@ -356,12 +377,12 @@ public class PurchaseHandler {
                     purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                     //liveDataPurchaseResponse.postValue(purchaseResponseModel);
                     getPlans=false;
-                    callback.subscriptionStatus(false,"No Subscription found");
+                    callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                 }
             });
         }catch (Exception ignored){
             getPlans=false;
-            callback.subscriptionStatus(false,"No Subscription found");
+            callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
         }
 
     }

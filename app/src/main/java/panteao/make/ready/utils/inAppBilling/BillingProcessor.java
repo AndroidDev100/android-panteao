@@ -219,7 +219,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                         for (Purchase purchase : purchases) {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                                 if (purchaseType!=null && !purchaseType.equalsIgnoreCase("") &purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
-                                    handleConsumablePurchasesAsync(purchase);
+                                   // handleConsumablePurchasesAsync(purchase);
                                 }
                             }
                         }
