@@ -68,7 +68,7 @@ public class PurchaseHandler {
 
             }
         }else {
-            callback.subscriptionStatus(false,"No Subscription found"+" 2");
+            callback.subscriptionStatus(false,"We could not find any active subscription on your account. In case of any issues, please contact support"+ " " + "info@panteaoproductions.com");
         }
     }
 
@@ -112,8 +112,10 @@ public class PurchaseHandler {
     String purchasedSKU="";
     String newSKU="";
     String finalSKU="";
+    boolean initiatePurchase=false;
     private void checkEntitlementState(ResponseMembershipAndPlan purchaseResponseModel, List<Purchase> purchases, RestoreSubscriptionCallback callback) {
         try {
+            initiatePurchase=false;
             if (purchaseResponseModel!=null && purchaseResponseModel.getData().size()>0 && purchaseResponseModel.isStatus()){
                 for (int i = 0; i < purchaseResponseModel.getData().size(); i++) {
                     if (!purchaseResponseModel.getData().get(i).getEntitlementState()) {
@@ -138,6 +140,7 @@ public class PurchaseHandler {
                         if (finalSKU.equalsIgnoreCase(purchaseResponseModel.getData().get(i).getIdentifier())){
                             Log.w("identifiers",purchaseResponseModel.getData().get(i).getIdentifier());
                             Log.w("identifiers",purchase.getSku());
+                            initiatePurchase=true;
                             initiatePurchaseFlow(purchase,purchaseResponseModel.getData().get(i),callback);
                             break;
                         }else {
@@ -146,8 +149,8 @@ public class PurchaseHandler {
                         }
                     }
                 }
-                if (purchasedSKU.equalsIgnoreCase("")){
-                    callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
+                if (!initiatePurchase){
+                    callback.subscriptionStatus(false,"We could not find any active subscription on your account. In case of any issues, please contact support"+ " " + "info@panteaoproductions.com");
                 }
             }else {
                 getPlans=false;
@@ -250,12 +253,12 @@ public class PurchaseHandler {
                     purchaseResponseModel.setResponseCode(500);
                     purchaseResponseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong_at_our_end));
                     getPlans=false;
-                    callback.subscriptionStatus(false,"No Subscription found"+" 7");
+                    callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
                 }
             });
         }catch (Exception ignored){
             getPlans=false;
-            callback.subscriptionStatus(false,"No Subscription found"+" 8");
+            callback.subscriptionStatus(false,"We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support"+ " " + "info@panteaoproductions.com");
         }
 
     }
