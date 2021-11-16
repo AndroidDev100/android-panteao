@@ -8,6 +8,7 @@ class BaseCategory() : Parcelable {
     var screen: String? = ""
     var responseCode: Int? = 0
     var name: Any? = ""
+    var heroTitle: Any? = ""
     var type: String? = ""
     var contentID: String? = ""
     var referenceName: String? = ""

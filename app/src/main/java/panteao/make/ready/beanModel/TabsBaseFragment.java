@@ -447,42 +447,53 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     @Override
     public void moreRailClick(RailCommonData data, int position) {
+       try {
+           if (data.getScreenWidget() != null) {
+               if (data.getScreenWidget().getContentID() != null)
+                   playListId = data.getScreenWidget().getContentID();
+               else
+                   playListId = data.getScreenWidget().getLandingPagePlayListId();
 
-        if (data.getScreenWidget() != null) {
-            if (data.getScreenWidget().getContentID() != null)
-                playListId = data.getScreenWidget().getContentID();
-            else
-                playListId = data.getScreenWidget().getLandingPagePlayListId();
+               if (data.getScreenWidget().getName() != null && data.getScreenWidget().getReferenceName() != null && (data.getScreenWidget().getReferenceName().equalsIgnoreCase(AppConstants.ContentType.CONTINUE_WATCHING.name()) || data.getScreenWidget().getReferenceName().equalsIgnoreCase("special_playlist"))) {
+                   new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
+               } else if (data.getScreenWidget().getName() != null && data.getScreenWidget().getReferenceName() != null && (data.getScreenWidget().getReferenceName().equalsIgnoreCase(AppConstants.ContentType.MY_WATCHLIST.name()))) {
+                   new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, data.getScreenWidget().getName().toString(), false);
+               } else {
+                   if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
+                       if (data.getScreenWidget().getName() != null) {
+                           new ActivityLauncher(getActivity()).listActivity(getActivity(), ListActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget());
+                       } else {
+                           new ActivityLauncher(getActivity()).listActivity(getActivity(), ListActivity.class, playListId, "", 0, 0, data.getScreenWidget());
+                       }
+                   } else if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
+                       Logger.e("getRailData", "GRD");
+                       if (data.getScreenWidget().getName() != null) {
+                           new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
+                       } else {
+                           new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, "", 0, 0, data.getScreenWidget(),position);
+                       }
+                   } else {
+                       Logger.e("getRailData", "PDF");
+                       if (data.getScreenWidget().getType() != null && data.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())){
+                           if (data.getScreenWidget().getHeroTitle() != null) {
+                               new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getHeroTitle().toString(), 0, 0, data.getScreenWidget(),position);
+                           } else {
+                               new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, "", 0, 0, data.getScreenWidget(),position);
+                           }
+                       }else {
+                           if (data.getScreenWidget().getName() != null) {
+                               new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
+                           } else {
+                               new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, "", 0, 0, data.getScreenWidget(),position);
+                           }
+                       }
 
-            if (data.getScreenWidget().getName() != null && data.getScreenWidget().getReferenceName() != null && (data.getScreenWidget().getReferenceName().equalsIgnoreCase(AppConstants.ContentType.CONTINUE_WATCHING.name()) || data.getScreenWidget().getReferenceName().equalsIgnoreCase("special_playlist"))) {
-                new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
-            } else if (data.getScreenWidget().getName() != null && data.getScreenWidget().getReferenceName() != null && (data.getScreenWidget().getReferenceName().equalsIgnoreCase(AppConstants.ContentType.MY_WATCHLIST.name()))) {
-                new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, data.getScreenWidget().getName().toString(), false);
-            } else {
-                if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
-                    if (data.getScreenWidget().getName() != null) {
-                        new ActivityLauncher(getActivity()).listActivity(getActivity(), ListActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget());
-                    } else {
-                        new ActivityLauncher(getActivity()).listActivity(getActivity(), ListActivity.class, playListId, "", 0, 0, data.getScreenWidget());
-                    }
-                } else if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
-                    Logger.e("getRailData", "GRD");
-                    if (data.getScreenWidget().getName() != null) {
-                        new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
-                    } else {
-                        new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, "", 0, 0, data.getScreenWidget(),position);
-                    }
-                } else {
-                    Logger.e("getRailData", "PDF");
-                    if (data.getScreenWidget().getName() != null) {
-                        new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, data.getScreenWidget().getName().toString(), 0, 0, data.getScreenWidget(),position);
-                    } else {
-                        new ActivityLauncher(getActivity()).portraitListing(getActivity(), GridActivity.class, playListId, "", 0, 0, data.getScreenWidget(),position);
-                    }
-                }
-            }
-        }
+                   }
+               }
+           }
+       }catch (Exception ignored){
 
+       }
     }
 
     public interface OnFragmentInteractionListener {

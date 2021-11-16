@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+import panteao.make.ready.BuildConfig;
 import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
@@ -61,6 +62,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
 
         bp = new BillingProcessor(ActivitySettings.this,this);
         bp.initializeBillingProcessor();
+        getBinding().buildNumber.setText(getResources().getString(R.string.app_name) + "  v" + BuildConfig.VERSION_NAME);
 
         getBinding().switchThemeNew.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

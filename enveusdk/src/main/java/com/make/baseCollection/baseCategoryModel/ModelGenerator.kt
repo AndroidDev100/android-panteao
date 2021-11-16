@@ -28,6 +28,7 @@ class ModelGenerator {
             cat.screen = response.body()?.data?.screen
             cat.responseCode = response.body()?.responseCode
             cat.name = i?.item?.title
+            cat.heroTitle = i?.item?.landingPage?.playlist?.playlistName
             cat.type = i?.type
             cat.crousalType = i?.customFields?.carouselType.toString()
             when (BaseConfiguration.instance.clients?.getGateway()) {
