@@ -352,6 +352,21 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
 
+
+        <TextView
+            android:id="@+id/buildNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
     </RelativeLayout>
 
 </layout>

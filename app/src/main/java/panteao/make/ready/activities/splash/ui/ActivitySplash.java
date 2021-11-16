@@ -449,7 +449,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         try {
             boolean isTablet = ActivitySplash.this.getResources().getBoolean(R.bool.isTablet);
             if (!isTablet)
-                getBinding().buildNumber.setText(getResources().getString(R.string.app_name) + "  V " + BuildConfig.VERSION_NAME);
+                getBinding().buildNumber.setText(getResources().getString(R.string.app_name) + "  v" + BuildConfig.VERSION_NAME);
         }catch (Exception e){
 
         }
