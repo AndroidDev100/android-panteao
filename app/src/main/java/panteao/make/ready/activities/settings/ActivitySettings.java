@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
 import panteao.make.ready.activities.videoquality.ui.VideoQualityActivity;
@@ -30,14 +31,17 @@ import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 
 import panteao.make.ready.utils.constants.SharedPrefesConstants;
+import panteao.make.ready.utils.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
+import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.utils.inAppBilling.BillingProcessor;
 import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
+import panteao.make.ready.utils.inAppBilling.RestoreSubcriptionsDialod;
 import panteao.make.ready.utils.inAppBilling.RestoreSubscriptionCallback;
 
 
-public class ActivitySettings extends BaseBindingActivity<SettingsActivityBinding> implements View.OnClickListener, InAppProcessListener, AlertDialogFragment.AlertDialogListener {
+public class ActivitySettings extends BaseBindingActivity<SettingsActivityBinding> implements View.OnClickListener, InAppProcessListener, RestoreSubcriptionsDialod.RestoreSubcriptionsDialodListener {
 
     @Override
     public SettingsActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -114,9 +118,14 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
                             public void subscriptionStatus(boolean status, String message) {
                                 getBinding().progressBar.setVisibility(View.GONE);
                                 if (status){
-                                    showAlertDialog("", message);
+                                    showAlertDialog("", message,1);
                                 }else {
-                                    showAlertDialog(getResources().getString(R.string.error), message);
+                                    if (message.contains("We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support")){
+                                        showAlertDialog(getResources().getString(R.string.error), message,2);
+                                    }else {
+                                        showAlertDialog(getResources().getString(R.string.error), message,3);
+                                    }
+
                                 }
 
                             }
@@ -166,9 +175,9 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
         }
     }
 
-    private void showAlertDialog(String title, String msg) {
+    private void showAlertDialog(String title, String msg,int type) {
         FragmentManager fm = getSupportFragmentManager();
-        AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
+        RestoreSubcriptionsDialod alertDialog = RestoreSubcriptionsDialod.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel),type);
         alertDialog.setAlertDialogCallBack(this);
         alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }
@@ -274,7 +283,19 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
     }
 
     @Override
-    public void onFinishDialog() {
+    public void onFinishDialog(int btnType) {
+        if (btnType==1){
+            if (NetworkConnectivity.isOnline(ActivitySettings.this)) {
+                Intent intent = new Intent(ActivitySettings.this, MemberShipPlanActivity.class);
+                startActivity(intent);
 
+            }else {
+                new ToastHandler(ActivitySettings.this).show(getResources().getString(R.string.no_connection));
+            }
+        }else if (btnType==2){
+
+        }else {
+
+        }
     }
 }

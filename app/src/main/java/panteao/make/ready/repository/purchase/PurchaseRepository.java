@@ -207,7 +207,7 @@ public class PurchaseRepository {
                 ResponseMembershipAndPlan purchaseResponseModel = new ResponseMembershipAndPlan();
                 if (response.code() == 200) {
                     purchaseResponseModel.setStatus(true);
-                    //                 purchaseResponseModel.setDebugMessage(response.body().getDebugMessage());
+                  //purchaseResponseModel.setDebugMessage(response.body().getDebugMessage());
                     purchaseResponseModel.setData(response.body().getData());
                     liveDataPurchaseResponse.postValue(purchaseResponseModel);
                 } else {
