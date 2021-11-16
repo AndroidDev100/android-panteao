@@ -283,8 +283,8 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         if (clickedModel != null) {
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 showLoading(getBinding().progressBar, true);
-                buySubscription();
-                //hitApiDoPurchase();
+                //buySubscription();
+                hitApiDoPurchase();
             }else {
                 ActivityTrackers.getInstance().setAction(ActivityTrackers.PURCHASE);
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
@@ -426,7 +426,7 @@ public class PurchaseActivity extends BaseBindingActivity<PurchaseBinding> imple
         try {
             for (Purchase purchase : purchases) {
                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                   // handlePurchase(purchase);
+                    handlePurchase(purchase);
                 } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
                    // PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
