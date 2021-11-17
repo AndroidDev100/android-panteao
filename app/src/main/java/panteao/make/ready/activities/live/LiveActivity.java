@@ -1370,6 +1370,11 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     }
 
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
+
 //    @Override
 //    public void onDownloadRequested(@androidx.annotation.NonNull Video video) {
 //

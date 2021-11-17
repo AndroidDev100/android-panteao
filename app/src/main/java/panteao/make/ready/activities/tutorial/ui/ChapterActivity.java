@@ -1849,6 +1849,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
+
 
     class SeasonListAdapter extends RecyclerView.Adapter<ChapterActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;

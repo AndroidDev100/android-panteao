@@ -1746,6 +1746,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     }
 
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<EpisodeActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;

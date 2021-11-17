@@ -56,6 +56,7 @@ import panteao.make.ready.utils.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.SharedPrefHelper;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
+import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -178,7 +179,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     String[] label2;
     String[] label3;
-//    DownloadHelper downloadHelper;
+    KTDownloadHelper downloadHelper;
     private void modelCall() {
 
         viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(HomeViewModel.class);
@@ -227,7 +228,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }
 
         if (getActivity()!=null){
-//            downloadHelper = new DownloadHelper(getActivity());
+            downloadHelper = new KTDownloadHelper(getActivity());
         }
 
 
@@ -530,6 +531,13 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 //                    if (downloadHelper!=null && getActivity()!=null){
 //                        downloadHelper.deleteAllVideos(getActivity());
 //                    }
+
+                    if (downloadHelper!=null){
+                        if (downloadHelper.getManager()!=null){
+                            downloadHelper.getManager().pauseDownloads();
+                        }
+                    }
+
                 }catch (Exception ignored){
 
                 }

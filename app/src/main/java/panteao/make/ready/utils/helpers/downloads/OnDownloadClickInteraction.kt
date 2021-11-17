@@ -9,6 +9,8 @@ interface OnDownloadClickInteraction {
 
     fun onProgressbarClicked(view: View, source: Any, videoId: String)
 
+    fun onSeriesDownloadClicked(view: View, source: Any, videoId: String)
+
     fun onDownloadCompleteClicked(view: View, source: Any, videoId: String)
 
     fun onPauseClicked(videoId: String, source: Any)

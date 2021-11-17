@@ -3,6 +3,7 @@ package panteao.make.ready.utils.helpers.downloads;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ import panteao.make.ready.utils.helpers.downloads.db.DownloadDataBase;
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity;
 import panteao.make.ready.utils.helpers.downloads.downloadListing.DownloadStateListener;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.CancelCallBack;
 
 public class KTDownloadHelper {
     Activity zContext;
@@ -532,6 +534,36 @@ public class KTDownloadHelper {
 
     }
 
+    int deleteCount=0;
+    CancelCallBack cancelCallBack;
+    public void cancelAllVideo(List<EnveuVideoItemBean> seasonEpisodesList, CancelCallBack callBack) {
+        try {
+            cancelCallBack=callBack;
+            deleteCount=0;
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                cancelAllVideosOneByOne(seasonEpisodesList,cancelCallBack);
+                            }
+                        },1000);
+                    }catch (Exception ignored){
+                        Log.w("sortedChapters",ignored.toString()+" ");
+                    }
+
+                }
+            });
+
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+
+    }
+
+
     private void updateDataBase(String entryI) {
         try {
             DBExecuter.getInstance().diskIO().execute(new Runnable() {
@@ -907,7 +939,8 @@ public class KTDownloadHelper {
 
     ArrayList<String> downloadAssets;
 /*series download Handling*/
-public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoItemBean> seasonEpisodesList) {
+public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoItemBean> seasonEpisodesList,CancelCallBack callBack) {
+    cancelCallBack=callBack;
     downloadAssets=new ArrayList<>();
     manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
     manager.setKalturaServerUrl(SDKConfig.KALTURA_SERVER_URL);
@@ -983,12 +1016,41 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
     }
 
-    storeSeriesData("",seasonEpisodesList,seasonNumber);
+    storeSeriesData("",seasonEpisodesList,seasonNumber,cancelCallBack);
 
    }
 
-   int dbCount=0;
-    private void storeSeriesData(String assetId, List<EnveuVideoItemBean> seasonEpisodesList,int seasonNumber) {
+    private void cancelAllVideosOneByOne(List<EnveuVideoItemBean> seasonEpisodesList,CancelCallBack callBack) {
+        try {
+            Log.w("deletedEntryid",deleteCount +" ");
+            if (deleteCount<seasonEpisodesList.size()) {
+                EnveuVideoItemBean bean = seasonEpisodesList.get(deleteCount);
+                if (bean.getkEntryId() != null && !bean.getkEntryId().equalsIgnoreCase("")) {
+                    Log.w("deletedEntryid",bean.getkEntryId() +" ");
+                    updateDataBase(bean.getkEntryId());
+                    deleteCount++;
+                    callDeleteHandler(seasonEpisodesList,callBack);
+                }
+
+            }else {
+                callBack.cancelVideos();
+            }
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+    }
+
+    private void callDeleteHandler(List<EnveuVideoItemBean> seasonEpisodesList, CancelCallBack callBack) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cancelAllVideosOneByOne(seasonEpisodesList,callBack);
+            }
+        },1000);
+    }
+
+    int dbCount=0;
+    private void storeSeriesData(String assetId, List<EnveuVideoItemBean> seasonEpisodesList,int seasonNumber,CancelCallBack callBack) {
         Log.w("dbvalues",dbCount+" "+seasonEpisodesList.size());
         if (dbCount<seasonEpisodesList.size()) {
             EnveuVideoItemBean bean = seasonEpisodesList.get(dbCount);
@@ -1002,15 +1064,17 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             String seriesImageURL = bean.getSeriesImageURL();
             storeAssetInDB(title, kentryid, assetType, seriesID, seriesName, imageURL, episodeNumber.toString(), seasonNumber, seriesImageURL);
             dbCount++;
-            callHandler(assetId,seasonEpisodesList, seasonNumber);
+            callHandler(assetId,seasonEpisodesList, seasonNumber,callBack);
+        }else {
+            callBack.startDownload();
         }
     }
 
-    private void callHandler(String assetId,List<EnveuVideoItemBean> seasonEpisodesList, int seasonNumber) {
+    private void callHandler(String assetId,List<EnveuVideoItemBean> seasonEpisodesList, int seasonNumber,CancelCallBack callBack) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
+                storeSeriesData(assetId,seasonEpisodesList,seasonNumber,callBack);
             }
         },1000);
     }

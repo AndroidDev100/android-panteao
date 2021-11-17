@@ -527,21 +527,32 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
 
     public void updateAdapter(int progress, String assetId, KTDownloadHelper downloadHelpr, Activity context) {
         Log.w("downlaodContext",context+"");
-        if (seasonAdapter != null) {
-            getBinding().seriesRecyclerView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (context!=null && !context.isFinishing()){
-                        context.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                seasonAdapter.itemChanged(assetId);
-                            }
-                        });
+        try {
+            if (seasonAdapter != null) {
+                getBinding().seriesRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (context!=null && !context.isFinishing()){
+                            context.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        if (seasonAdapter!=null){
+                                            seasonAdapter.itemChanged(assetId);
+                                        }
+                                    }catch (Exception ignored){
 
+                                    }
+
+                                }
+                            });
+
+                        }
                     }
-                }
-            });
+                });
+
+            }
+        }catch (Exception ignored){
 
         }
     }

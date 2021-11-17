@@ -91,6 +91,7 @@ import com.google.gson.JsonObject;
 import com.kaltura.tvplayer.OfflineManager;
 
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.CancelCallBack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -1444,10 +1445,20 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
 
             }else {
-                downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList);
+                downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
+                    @Override
+                    public void startDownload() {
+
+                    }
+                });
             }
         }else {
-            downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList);
+            downloadHelper.startSeriesDownload(pos, seasonTabFragment.getSelectedSeason(), seasonEpisodesList, new CancelCallBack() {
+                @Override
+                public void startDownload() {
+
+                }
+            });
         }
     }
 
@@ -1554,19 +1565,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void onDownloadCompleteClicked(View view, Object source, String videoId) {
-        if (source instanceof UserInteractionFragment) {
-            AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
-                switch (item.getItemId()) {
-                    case R.id.delete_download:
-//                        downloadHelper.deleteVideo(downloadAbleVideo);
-                        break;
-                }
-                return false;
-            });
-        } else {
-            if (videoId.equals(String.valueOf(seriesId)))
-                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
-        }
+
     }
 
     @Override
@@ -1580,6 +1579,32 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void fromAdapterPaused(@NonNull String assetID) {
+
+    }
+
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+            AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
+                switch (item.getItemId()) {
+                    case R.id.delete_download:
+                        if (seasonTabFragment!=null){
+                            if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
+                                if (userInteractionFragment!=null){
+                                    userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                }
+                                downloadHelper.cancelAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
+                                    @Override
+                                    public void cancelVideos() {
+                                        userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                    }
+                                });
+                            }
+                        }
+
+                        break;
+                }
+                return false;
+            });
 
     }
 
@@ -1715,6 +1740,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
                 for (int i = 0; i < seasonEpisodes.size(); i++) {
                     seasonEpisodesList.add(seasonEpisodes.get(i));
+                }
+                if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
+                    userInteractionFragment.isItemCheck();
+                    userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
                 }
 
             }

@@ -1718,6 +1718,11 @@ public class RelatedInstructorsActivity extends BaseBindingActivity<ActivityEpis
 
     }
 
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
+
     class SeasonListAdapter extends RecyclerView.Adapter<RelatedInstructorsActivity.SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
         private int selectedPos;

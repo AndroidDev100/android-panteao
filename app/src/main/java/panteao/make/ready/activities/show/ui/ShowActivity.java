@@ -1806,4 +1806,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
     public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
 
     }
+
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
 }

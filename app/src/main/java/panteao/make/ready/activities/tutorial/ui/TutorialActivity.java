@@ -48,6 +48,7 @@ import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
 import panteao.make.ready.beanModel.entitle.EntitledAs;
 import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
+import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
@@ -87,6 +88,7 @@ import com.google.gson.JsonObject;
 import com.kaltura.tvplayer.OfflineManager;
 
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.CancelCallBack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -1442,10 +1444,20 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 }
 
             }else {
-                downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList);
+                downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
+                    @Override
+                    public void startDownload() {
+
+                    }
+                });
             }
         }else {
-            downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList);
+            downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
+                @Override
+                public void startDownload() {
+
+                }
+            });
         }
     }
 
@@ -1573,17 +1585,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     @Override
     public void onDownloadCompleteClicked(View view, Object source, String videoId) {
         if (source instanceof UserInteractionFragment) {
-            AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
-                switch (item.getItemId()) {
-                    case R.id.delete_download:
-//                        downloadHelper.deleteVideo(downloadAbleVideo);
-                        break;
-                }
-                return false;
-            });
+
         } else {
-            if (videoId.equals(String.valueOf(seriesId)))
-                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.START);
+
         }
     }
 
@@ -1619,6 +1623,32 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void onAssetDownloadFailed(@NonNull @NotNull String assetId, Exception e) {
+
+    }
+
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+        AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
+            switch (item.getItemId()) {
+                case R.id.delete_download:
+                    if (seasonTabFragment!=null){
+                        if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
+                            if (userInteractionFragment!=null){
+                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            }
+                            downloadHelper.cancelAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
+                                @Override
+                                public void cancelVideos() {
+                                    userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                }
+                            });
+                        }
+                    }
+
+                    break;
+            }
+            return false;
+        });
 
     }
 

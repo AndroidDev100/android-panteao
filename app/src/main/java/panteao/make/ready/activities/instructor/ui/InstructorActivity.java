@@ -1307,6 +1307,11 @@ public class InstructorActivity extends BaseBindingActivity<ActivitySeriesDetail
 
     }
 
+    @Override
+    public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
+
+    }
+
 //    @Override
 //    public void onDownloadRequested(@androidx.annotation.NonNull Video video) {
 //        Logger.i(TAG, String.format(

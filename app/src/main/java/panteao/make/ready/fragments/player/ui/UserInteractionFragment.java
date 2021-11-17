@@ -152,6 +152,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         //  getBinding().watchList.setOnClickListener(this);
         getBinding().downloadVideo.setOnClickListener(this);
         getBinding().videoDownloaded.setOnClickListener(this);
+        getBinding().seriesDownloaded.setOnClickListener(this);
         getBinding().videoDownloading.setProgress(0);
         getBinding().videoDownloading.setOnClickListener(this);
         getBinding().pauseDownload.setOnClickListener(this);
@@ -813,6 +814,10 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 onDownloadClickInteraction.onDownloadCompleteClicked(view, this, entryid+"");
             }
             break;
+            case R.id.series_downloaded: {
+                onDownloadClickInteraction.onSeriesDownloadClicked(view, this, entryid+"");
+            }
+            break;
             case R.id.video_downloading: {
                 onDownloadClickInteraction.onProgressbarClicked(view, this, entryid+"");
             }
@@ -832,48 +837,52 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public void setDownloadStatus(DownloadStatus downloadStatus) {
         if (getActivity()!=null && !getActivity().isFinishing()){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (getBinding() != null)
-                        getBinding().setDownloadStatus(downloadStatus);
-                    try {
-                        Log.w("userInteraction","in6"+downloadStatus);
-                        if (downloadStatus==DownloadStatus.PAUSE){
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-                        }else if (downloadStatus==DownloadStatus.DOWNLOADING){
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-                        }else if (downloadStatus==DownloadStatus.started){
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-                        }
-                        else if (downloadStatus==DownloadStatus.DOWNLOADED){
-                            Log.w("userInteraction","in5");
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
-                        }
-                        else if (downloadStatus==DownloadStatus.REQUESTED){
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getBinding() != null)
+                            getBinding().setDownloadStatus(downloadStatus);
+                        try {
+                            Log.w("userInteraction","in6"+downloadStatus);
+                            if (downloadStatus==DownloadStatus.PAUSE){
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Resume));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }else if (downloadStatus==DownloadStatus.DOWNLOADING){
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }else if (downloadStatus==DownloadStatus.started){
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }
+                            else if (downloadStatus==DownloadStatus.DOWNLOADED){
+                                Log.w("userInteraction","in5");
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloaded));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.more_text_color_dark));
+                            }
+                            else if (downloadStatus==DownloadStatus.REQUESTED){
 
-                        }
-                        else if (downloadStatus==DownloadStatus.SERIES_DOWNLOADING){
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-                        }
-                        else {
-                            getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
-                            getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
-                        }
+                            }
+                            else if (downloadStatus==DownloadStatus.SERIES_DOWNLOADING){
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }
+                            else {
+                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
+                                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+                            }
 
-                    }catch (Exception e){
-                        Log.e("crashhappen",e.toString());
+                        }catch (Exception e){
+                            Log.e("crashhappen",e.toString());
+                        }
                     }
-                }
-            });
+                });
 
+            }else {
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
+            }
         }
-
     }
 
     public void setDownloadable(boolean isDownloadable) {
@@ -937,7 +946,36 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
     }
 
+    public boolean itemCheck=false;
+    public void checkSeriesDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+        if (adapterList!=null && adapterList.size()>0){
+            if (!itemCheck) {
+                for (int i = 0; i < adapterList.size(); i++) {
+                    EnveuVideoItemBean videoItemBean = adapterList.get(i);
+                    String entryid = videoItemBean.getkEntryId();
+                    if (downloadHelper != null) {
+                        OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
+                        if (info == null) {
+
+                        } else {
+                            setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                            itemCheck=true;
+                            break;
+                        }
+                    }
+                }
+                if (!itemCheck){
+                    setDownloadStatus(DownloadStatus.START);
+                }
+            }
+        }
+    }
+
     public void setItemFound() {
         this.itemFound=false;
+    }
+
+    public boolean isItemCheck() {
+        return itemCheck=false;
     }
 }

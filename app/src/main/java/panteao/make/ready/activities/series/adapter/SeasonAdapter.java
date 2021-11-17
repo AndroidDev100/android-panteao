@@ -211,8 +211,8 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         holder.itemBinding.downloadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickBinding=holder.itemBinding;
-                onDownloadClickInteraction.onDownloadClicked(videoItemBeans.get(position).getkEntryId(), videoItemBeans.get(position).getEpisodeNo(), context);
+                    clickBinding=holder.itemBinding;
+                    onDownloadClickInteraction.onDownloadClicked(videoItemBeans.get(position).getkEntryId(), videoItemBeans.get(position).getEpisodeNo(), context);
             }
         });
         holder.itemBinding.videoDownloaded.setOnClickListener(new View.OnClickListener() {
@@ -464,12 +464,15 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
     private void setDownloadStatus(SeasonViewHolder holder, int position, EnveuVideoItemBean enveuVideoItemBean) {
        Log.w("statusDown","condition--"+ downloadHelper);
-        if (downloadHelper!=null){
-            DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+            if (downloadHelper!=null){
+                DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);
+            }else {
+                holder.itemBinding.setDownloadStatus(DownloadStatus.START);
+            }
         }else {
             holder.itemBinding.setDownloadStatus(DownloadStatus.START);
         }
-
     }
 
 }
