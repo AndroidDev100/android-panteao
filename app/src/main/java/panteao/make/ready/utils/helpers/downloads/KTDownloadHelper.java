@@ -919,9 +919,6 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             manager.startAssetDownload(assetInfo);
             Log.w("downloadAssetAdded","onPrepareSuccess-->"+assetId+"  "+seasonEpisodesList.size());
             downloadAssets.add(assetId);
-            if (downloadAssets.size()==seasonEpisodesList.size() || downloadAssets.size()-1==seasonEpisodesList.size()){
-                storeSeriesData(assetId,seasonEpisodesList,seasonNumber);
-            }
         }
 
         @Override
@@ -986,6 +983,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
     }
 
+    storeSeriesData("",seasonEpisodesList,seasonNumber);
 
    }
 

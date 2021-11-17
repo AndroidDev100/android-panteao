@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
+import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
@@ -365,6 +366,13 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             ((ChapterActivity) context).episodesList(seasonEpisodes);
                         }
                     },1200);
+                }else if (context instanceof TutorialActivity) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TutorialActivity) context).episodesList(seasonEpisodes);
+                        }
+                    }, 1200);
                 }
             } else {
                 getBinding().seasonHeader.setVisibility(View.GONE);
