@@ -458,6 +458,16 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 getBinding().tvPurchased.setVisibility(View.GONE);
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
                 hitApiEntitlement(seriesDetailBean.getSku());
+            }else {
+                if (userInteractionFragment!=null){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            userInteractionFragment.setDownloadable(true);
+                        }
+                    },1000);
+
+                }
             }
 //            downloadHelper = new DownloadHelper(this, this);
 //            downloadHelper.setAssetType(MediaTypeConstants.getInstance().getEpisode());
@@ -507,6 +517,15 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                         }
                     });
                 }
+                if (userInteractionFragment!=null){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            userInteractionFragment.setDownloadable(true);
+                        }
+                    },1000);
+
+                }
             } else {
                 if (!isLogin){
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
@@ -515,6 +534,17 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                     isloggedout = true;
                     logoutUser();
                 }
+
+                if (userInteractionFragment!=null){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            userInteractionFragment.setDownloadable(true);
+                        }
+                    },1000);
+
+                }
+
             }
         });
 
@@ -584,7 +614,10 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
                         preference.setEntitlementState(true);
                     }
-
+                    if(userInteractionFragment!=null) {
+                        userInteractionFragment.setDownloadable(true);
+                        // initDownload(Entryid);
+                    }
                 }
             } else {
 
@@ -1540,7 +1573,7 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     @Override
     public void onDownloadCompleteClicked(View view, Object source, String videoId) {
         if (source instanceof UserInteractionFragment) {
-            AppCommonMethod.showPopupMenu(this, view, R.menu.delete_menu, item -> {
+            AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
                 switch (item.getItemId()) {
                     case R.id.delete_download:
 //                        downloadHelper.deleteVideo(downloadAbleVideo);

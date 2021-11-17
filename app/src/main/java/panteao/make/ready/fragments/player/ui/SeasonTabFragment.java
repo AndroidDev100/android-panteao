@@ -267,6 +267,15 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                                     }, 1200);
 
                                 }
+                                else if (context instanceof SeriesDetailActivity) {
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ((SeriesDetailActivity) context).episodesList(allEpiosdes);
+                                        }
+                                    }, 1200);
+
+                                }
                             }
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
