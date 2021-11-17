@@ -99,7 +99,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
                 Logger.d("priceIs", "" + list.get(position).getPrice());
 
                 if (list.get(position).getExpiryDate() > 0) {
-                    holder.planExpLay.setVisibility(View.VISIBLE);
+                    holder.planExpLay.setVisibility(View.GONE);
                     holder.planExpiryDateTxt.setText(AppCommonMethod.getDateFromTimeStamp(list.get(position).getExpiryDate()).toString());
                 } else {
                     holder.planExpLay.setVisibility(View.GONE);
