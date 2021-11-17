@@ -112,6 +112,7 @@ public class PurchaseHandler {
     String purchasedSKU="";
     String newSKU="";
     String finalSKU="";
+    String playstoreSKU="";
     boolean initiatePurchase=false;
     private void checkEntitlementState(ResponseMembershipAndPlan purchaseResponseModel, List<Purchase> purchases, RestoreSubscriptionCallback callback) {
         try {
@@ -121,17 +122,19 @@ public class PurchaseHandler {
                     if (!purchaseResponseModel.getData().get(i).getEntitlementState()) {
                         Purchase purchase=purchases.get(count);
                         purchasedSKU = purchase.getSku();
+                        Log.w("finalSKU",purchasedSKU);
                         if (purchasedSKU.contains("panteao.one.month.access.ads")){
+                            playstoreSKU=purchasedSKU;
                             purchasedSKU="svod_panteao_one_month_access";
-                            newSKU=purchasedSKU.replace(".","_");
-                            finalSKU="svod_"+newSKU;
+                            finalSKU=purchasedSKU;
                             Log.w("finalSKU",finalSKU);
                         }else if (purchasedSKU.contains("panteao.one.year.access.ads")){
+                            playstoreSKU=purchasedSKU;
                             purchasedSKU="svod_panteao_one_year_access";
-                            newSKU=purchasedSKU.replace(".","_");
-                            finalSKU="svod_"+newSKU;
+                            finalSKU=purchasedSKU;
                             Log.w("finalSKU",finalSKU);
                         }else {
+                            playstoreSKU=purchasedSKU;
                             newSKU=purchasedSKU.replace(".","_");
                             finalSKU="svod_"+newSKU;
                             Log.w("finalSKU",finalSKU);
@@ -338,7 +341,7 @@ public class PurchaseHandler {
                     jsonObject1.put("purchasePrice", "");
                     jsonObject1.put("purchaseCurrency", "");
                 }
-                jsonObject1.put("playStoreProductId", Base64.encodeToString(purchasedSKU.getBytes(),Base64.NO_WRAP));
+                jsonObject1.put("playStoreProductId", Base64.encodeToString(playstoreSKU.getBytes(),Base64.NO_WRAP));
                 jsonObject.put("paymentStatus", paymentStatus);
                 jsonObject.put("notes",jsonObject1);
             }catch (Exception ignored){
