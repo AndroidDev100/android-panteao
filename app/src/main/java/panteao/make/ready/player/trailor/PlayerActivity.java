@@ -34,6 +34,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     long bookmarkPosition = 0l;
     private KalturaFragment playerfragment;
     private PlayerControlsFragment playerControlsFragment;
+    boolean fromTrailor=false;
 
     @Override
     public ActivityPlayerBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
