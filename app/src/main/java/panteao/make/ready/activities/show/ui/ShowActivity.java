@@ -951,6 +951,9 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
         args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
+        if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+            args.putString(AppConstants.BUNDLE_KENTRY_ID, Entryid);
+        }
         userInteractionFragment = new UserInteractionFragment();
         userInteractionFragment.setArguments(args);
         transaction.replace(R.id.fragment_user_interaction, userInteractionFragment);

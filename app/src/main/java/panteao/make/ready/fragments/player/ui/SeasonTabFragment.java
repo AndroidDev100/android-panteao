@@ -580,6 +580,16 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
         super.onResume();
         if (seasonAdapter!=null){
             seasonAdapter.refreshDownloadHelper();
+            try {
+                getBinding().seriesRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        seasonAdapter.notifyDataSetChanged();
+                    }
+                });
+            }catch (Exception ignored){
+
+            }
         }
     }
 }

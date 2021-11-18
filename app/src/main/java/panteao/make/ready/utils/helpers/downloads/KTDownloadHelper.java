@@ -608,8 +608,10 @@ public class KTDownloadHelper {
             @Override
             public void run() {
                 if (entryId != null && !entryId.equalsIgnoreCase("")) {
-                    manager.pauseAssetDownload(entryId);
-                    updateItemStatus(entryId);
+                    if (manager!=null){
+                        manager.pauseAssetDownload(entryId);
+                        updateItemStatus(entryId);
+                    }
                 }
             }
         });

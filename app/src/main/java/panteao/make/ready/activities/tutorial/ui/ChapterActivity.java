@@ -1207,6 +1207,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
         args.putParcelable(AppConstants.BUNDLE_SERIES_DETAIL, videoDetails);
         args.putString(AppConstants.BUNDLE_SERIES_ID, seriesId);
+        if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+            args.putString(AppConstants.BUNDLE_KENTRY_ID, Entryid);
+        }
 
         userInteractionFragment = new UserInteractionFragment();
         userInteractionFragment.setArguments(args);

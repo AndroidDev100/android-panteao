@@ -620,6 +620,8 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                         purchasedToken=purchases.get(0).getPurchaseToken();
                     }
 
+                  //  Log.w("purchasedata",purchases.get(0).getOriginalJson());
+
                     PurchaseHandler.getInstance().checkPurchaseHistory(purchases,myBillingClient,callback);
                 }
             }

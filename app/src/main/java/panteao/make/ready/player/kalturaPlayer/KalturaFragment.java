@@ -185,7 +185,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                 typeofTVOD = bundle.getString("tvod_type");
             }
             fromTrailor = bundle.getBoolean("from_trailor", false);
-//            Log.d("gtgtgtgt",fromTrailor);
+            Log.d("fromTrailorIn",fromTrailor+"");
         }
 
     }
@@ -339,39 +339,44 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         player.addListener(this, PlayerEvent.canPlay, new PKEvent.Listener() {
             @Override
             public void onEvent(PKEvent event) {
-                playerLayout.setVisibility(View.VISIBLE);
-                isFirstCalled = true;
-                mListener.onPlayerStart();
-                countDownTimer.start();
-                playerControlsFragment.showControls();
-                if (playerControlsFragment != null) {
-                    if (!isBingeWatchTimeCalculate) {
-                        int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
-                        if (timeCalculation > bingeWatchTimer) {
-                            isBingeWatchTimeCalculate = true;
-                            bingeWatchTimer = (int) (player.getDuration() - bingeWatchTimer * 1000);
+                try {
+                    playerLayout.setVisibility(View.VISIBLE);
+                    isFirstCalled = true;
+                    mListener.onPlayerStart();
+                    countDownTimer.start();
+                    playerControlsFragment.showControls();
+                    if (playerControlsFragment != null) {
+                        if (!isBingeWatchTimeCalculate) {
+                            int timeCalculation = (int) (player.getDuration() - bingeWatchTimer * 1000);
+                            if (timeCalculation > bingeWatchTimer) {
+                                isBingeWatchTimeCalculate = true;
+                                bingeWatchTimer = (int) (player.getDuration() - bingeWatchTimer * 1000);
+                            }
                         }
-                    }
 
-                    if (from_binge){
-                        int orientation = getActivity().getResources().getConfiguration().orientation;
-                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            DisplayMetrics displayMetrics = new DisplayMetrics();
-                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                            heightRatio = displayMetrics.heightPixels;
-                            double ratio = 1.78;
-                            Double widthRatioo = heightRatio * ratio;
-                            widthRatio=widthRatioo.intValue();
-                            Log.w("phoneration-->>",heightRatio+":"+widthRatio);
-                            View playerView=player.getPlayerView();
-                            playerView.setLayoutParams(new FrameLayout.LayoutParams(widthRatio, heightRatio, Gravity.CENTER));
+                        if (from_binge){
+                            int orientation = getActivity().getResources().getConfiguration().orientation;
+                            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                DisplayMetrics displayMetrics = new DisplayMetrics();
+                                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                heightRatio = displayMetrics.heightPixels;
+                                double ratio = 1.78;
+                                Double widthRatioo = heightRatio * ratio;
+                                widthRatio=widthRatioo.intValue();
+                                Log.w("phoneration-->>",heightRatio+":"+widthRatio);
+                                View playerView=player.getPlayerView();
+                                playerView.setLayoutParams(new FrameLayout.LayoutParams(widthRatio, heightRatio, Gravity.CENTER));
 
+                            }
                         }
+
                     }
+                    canPlay = true;
+                    bookmarking(player);
+                }catch (Exception ignored){
 
                 }
-                canPlay = true;
-                bookmarking(player);
+
             }
         });
         player.addListener(this, PlayerEvent.ended, new PKEvent.Listener() {
@@ -474,7 +479,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 //            getBinding().playerImage.setVisibility(View.GONE);
             if (getActivity()!=null && !getActivity().isFinishing()){
                 if (android.provider.Settings.System.getInt(getActivity().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                    if (fromTrailor){
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }else {
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                    }
+
                 }
 
             }
@@ -918,7 +928,12 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                     }
                     if (getActivity()!=null && !getActivity().isFinishing()){
                         if (android.provider.Settings.System.getInt(getActivity().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-                            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                            if (fromTrailor){
+                                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                            }else {
+                                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                            }
+
                         }else {
                             int orientation = getActivity().getResources().getConfiguration().orientation;
                             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
