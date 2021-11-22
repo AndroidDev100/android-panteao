@@ -100,7 +100,7 @@
                             android:paddingTop="@dimen/NontonSize2"
                             android:paddingLeft="@dimen/_3sdp"
                             android:textColor="?attr/watchlist_item_title_color"
-                            android:textSize="@dimen/_11sdp" />
+                            android:textSize="@dimen/TextSize14" />
 
                         <TextView
                             android:id="@+id/tvDescription"
@@ -114,7 +114,7 @@
                             android:paddingLeft="@dimen/_3sdp"
                             android:paddingBottom="@dimen/_2sdp"
                             android:textColor="?attr/watchlist_item_title_color"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/TextSize12" />
 
 
                     </LinearLayout>

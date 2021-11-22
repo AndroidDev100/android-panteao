@@ -212,4 +212,11 @@
     <dimen name="list_des_margin_top">1dp</dimen>
     <dimen name="list_genre_margin_top">1dp</dimen>
 
+    <dimen name="TextSize10">12sp</dimen>
+    <dimen name="TextSize12">14sp</dimen>
+    <dimen name="TextSize13">15sp</dimen>
+    <dimen name="TextSize14">16sp</dimen>
+    <dimen name="TextSize15">17sp</dimen>
+    <dimen name="TextSize16">18sp</dimen>
+
 </resources>
