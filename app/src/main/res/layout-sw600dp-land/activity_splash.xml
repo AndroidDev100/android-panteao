@@ -12,13 +12,15 @@
 
         <ImageView
             android:id="@+id/img_logo"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_90sdp"
-            android:background="@drawable/panteao_splash"
+            android:layout_marginTop="@dimen/splash_icon_bottom"
+            android:layout_width="@dimen/_125sdp"
+            android:layout_height="@dimen/_125sdp"
+            android:background="@drawable/logo_new"
             android:visibility="visible"
+
             app:layout_constraintBottom_toTopOf="@+id/buildNumber"
-            app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
