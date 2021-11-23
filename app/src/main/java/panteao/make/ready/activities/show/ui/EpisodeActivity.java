@@ -71,6 +71,7 @@ import panteao.make.ready.activities.purchase.callBack.EntitlementStatus;
 import panteao.make.ready.activities.purchase.planslayer.GetPlansLayer;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
+import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.adapters.player.EpisodeTabAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;
@@ -93,6 +94,7 @@ import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
@@ -866,6 +868,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
         ImageHelper.getInstance(EpisodeActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+
         if (videoDetails.isSeriesPremium()) {
             isPremium = true;
             try {
@@ -1205,6 +1208,17 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 //          downloadHelper.findVideo(videoDetails.getBrightcoveVideoId());
         }
+
+        if (userInteractionFragment!=null){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    userInteractionFragment.setDownloadable(true);
+                }
+            },1000);
+
+        }
+
 
     }
 
@@ -1992,6 +2006,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     String downloadId="";
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
+        if (getBinding().tvBuyNow.getVisibility()==View.VISIBLE){
+            showDownloadPopup();
+            return;
+        }
         if (source instanceof UserInteractionFragment){
             downloadId=Entryid;
         }else {
@@ -2036,6 +2054,32 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
         }
+    }
+
+    private void showDownloadPopup() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", EpisodeActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
+            }
+            showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private void showDownloadDialog(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.ok));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     private void startDownload(int pos, String videoId) {

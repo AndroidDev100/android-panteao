@@ -50,6 +50,7 @@ import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.SDKConfig;
@@ -1340,6 +1341,10 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     String downloadId="";
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
+        if (getBinding().tvBuyNow.getVisibility()==View.VISIBLE){
+            showDownloadPopup();
+            return;
+        }
         clickSource=source;
         downloadId=videoId;
         Log.w("instanceof",clickSource+"");
@@ -1423,6 +1428,32 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             }
         }
 
+    }
+
+    private void showDownloadPopup() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", TutorialActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", TutorialActivity.this);
+            }
+            showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private void showDownloadDialog(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.ok));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     private KTDownloadHelper downloadHelper;
@@ -1640,6 +1671,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                                 @Override
                                 public void cancelVideos() {
                                     userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                    if (seasonTabFragment!=null){
+                                        seasonTabFragment.notifyAdapter();
+                                    }
                                 }
                             });
                         }

@@ -227,6 +227,13 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 onDownloadClickInteraction.onProgressbarClicked(v, this, videoItemBeans.get(position).getkEntryId());
             }
         });
+
+        holder.itemBinding.videoDownloadedFailed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDownloadedVideo(v, videoItemBeans.get(position), position);
+            }
+        });
         holder.itemBinding.pauseDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,7 +258,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 switch (item.getItemId()) {
                     case R.id.delete_download:
 //                        downloadHelper.deleteVideo(enveuVideoItemBean.getBrightcoveVideoId());
-                        onDownloadClickInteraction.onDownloadDeleted(enveuVideoItemBean.getBrightcoveVideoId(),enveuVideoItemBean);
+                        onDownloadClickInteraction.onDownloadDeleted(enveuVideoItemBean.getkEntryId(),enveuVideoItemBean);
                         break;
                 }
                 return false;
@@ -324,7 +331,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 if (payloads.get(i).equals(PAY3)){
                     if (downloadHelper!=null){
                         Log.e("statusDown","ouut");
-                        holder.itemBinding.setDownloadStatus(DownloadStatus.DOWNLOADING);
+                        holder.itemBinding.setDownloadStatus(DownloadStatus.REQUESTED);
                     }
 
                 }else if (payloads.get(i).equals(PAY4)){
@@ -348,6 +355,13 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
+    public void downloadStatusChanged(List<EnveuVideoItemBean> adapterList) {
+        for (int i = 0; i < videoItemBeans.size(); i++) {
+            if (videoItemBeans.get(i).getkEntryId()!=null && !videoItemBeans.get(i).getkEntryId().equalsIgnoreCase("")) {
+                notifyItemChanged(i,PAY3);
+            }
+        }
+    }
 
 
     public class SeasonViewHolder extends RecyclerView.ViewHolder {
@@ -463,7 +477,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
 
     private void setDownloadStatus(SeasonViewHolder holder, int position, EnveuVideoItemBean enveuVideoItemBean) {
-       Log.w("statusDown","condition--"+ downloadHelper);
+       Log.w("statusDown","condition--"+position+" "+enveuVideoItemBean.getkEntryId()+" "+ downloadHelper);
         if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
             if (downloadHelper!=null){
                 DownloadUtils.INSTANCE.setDownloadStatus(holder.itemBinding,position,enveuVideoItemBean,downloadHelper);

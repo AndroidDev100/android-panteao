@@ -15,7 +15,7 @@ object DownloadUtils {
         downloadHelper.getAssetDownloadState(enveuVideoItemBean.getkEntryId(),downloadHelper,
             object : DownloadStateListener {
                 override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
-                    Log.d("downloadStatus 2",name!!)
+                    Log.d("downloadStatus "+position+"--->  ",name!!)
                     // Log.d("stateOfAsset 2",currentVideoItem.name!!)
                     //Log.d("stateOfAsset 2",percentage.toString())
                     if (name == null) {
@@ -46,7 +46,34 @@ object DownloadUtils {
                         itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
                             context.getResources().getColor(R.color.more_text_color_dark)
                         )*/
-                    } else if (name.equals("asset_not_found", ignoreCase = true)){
+                    }
+                    else if (name.equals("failed", ignoreCase = true)){
+                        holder.downloadStatus = DownloadStatus.FAILED
+                        /* holder.descriptionTxt?.text = downloadSize
+                         holder.tvGenre?.visibility = View.VISIBLE
+                         itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                         itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                             context.getResources().getColor(R.color.more_text_color_dark)
+                         )
+                         itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                             context.getResources().getColor(R.color.more_text_color_dark)
+                         )*/
+                    }
+                    else if (name.equals("none", ignoreCase = true)){
+                        holder.downloadStatus = DownloadStatus.START
+                        /* holder.descriptionTxt?.text = downloadSize
+                         holder.tvGenre?.visibility = View.VISIBLE
+                         itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+
+                         itemBinding?.itemBinding?.tvGenre?.setTextColor(
+                             context.getResources().getColor(R.color.more_text_color_dark)
+                         )
+                         itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
+                             context.getResources().getColor(R.color.more_text_color_dark)
+                         )*/
+                    }
+                    else if (name.equals("asset_not_found", ignoreCase = true)){
                         holder.downloadStatus = DownloadStatus.START
                     }
                     else{

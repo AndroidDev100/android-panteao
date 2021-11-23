@@ -51,6 +51,7 @@ import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
+import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
 import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.SDKConfig;
@@ -1342,6 +1343,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     String downloadId="";
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
+        if (getBinding().tvBuyNow.getVisibility()==View.VISIBLE){
+            showDownloadPopup();
+            return;
+        }
         clickSource=source;
         downloadId=videoId;
         Log.w("instanceof",clickSource+"");
@@ -1427,6 +1432,32 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     }
 
+    private void showDownloadPopup() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", SeriesDetailActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", SeriesDetailActivity.this);
+            }
+              showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private void showDownloadDialog(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.ok));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
     private void startDownload(int pos,String videoId) {
         Log.w("instanceof",clickSource+"");
         if (clickSource!=null){
@@ -1451,6 +1482,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
                     }
                 });
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.setProgressStatus();
+                }
             }
         }else {
             downloadHelper.startSeriesDownload(pos, seasonTabFragment.getSelectedSeason(), seasonEpisodesList, new CancelCallBack() {
@@ -1596,6 +1630,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                                     @Override
                                     public void cancelVideos() {
                                         userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                        if (seasonTabFragment!=null){
+                                            seasonTabFragment.notifyAdapter();
+                                        }
                                     }
                                 });
                             }
@@ -1674,7 +1711,22 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void onDownloadDeleted(@NotNull String videoId, @NotNull Object source) {
+         try {
+              Log.w("cancelVideo","-->onDownloadDeleted");
+              if (videoId!=null && !videoId.equalsIgnoreCase("")){
+                   downloadHelper.cancelVideo(videoId);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (seasonTabFragment!=null){
+                                    seasonTabFragment.cancelDownload(videoId);
+                                }
+                            }
+                        },500);
+              }
+         }catch (Exception ignored){
 
+         }
     }
 
     @Override

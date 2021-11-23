@@ -573,7 +573,9 @@ public class KTDownloadHelper {
                         DownloadItemEntity entity=getAssetFromDB(entryI);
                         getManager().removeAsset(entryI);
                         removeFromDB(entryI);
-                        getAllEpdFromDB(entity.getSeriesId(),entity.getSeasonNumber());
+                        if (entity!=null && entity.getSeriesId()!=null){
+                            getAllEpdFromDB(entity.getSeriesId(),entity.getSeasonNumber());
+                        }
                         if (zContext!=null){
                             if(zContext instanceof Activity){
                                 zContext.runOnUiThread(new Runnable() {
@@ -767,13 +769,18 @@ public class KTDownloadHelper {
                 if (assetInfo.getState()!=null){
                     try {
                         Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
-                        long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
-                        Log.d("stateOfAsset",percentage+"%");
-                        float per=percentage;
-                        Log.d("stateOfAsset",percentage+"%");
+                        float per=0;
+                        if (assetInfo.getEstimatedSize()>0){
+                            long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
+                            Log.d("stateOfAsset",percentage+"%");
+                            per=percentage;
+                            Log.d("stateOfAsset",percentage+"%");
+                        }
+
                         listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
                     }catch (Exception ignored){
-
+                        Log.d("stateOfAsset--",ignored.toString());
+                        listener.downloadState("failed",0,"");
                     }
                 }else {
                     Log.d("stateOfAsset","null");
@@ -1001,7 +1008,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                 for (int i = 1;i<seasonEpisodesList.size();i++){
                     try {
                         String kentryid=seasonEpisodesList.get(i).getkEntryId();
-                        Log.w("downloadData-->>",kentryid);
+                        Log.w("downloadData-->>",kentryid+"  "+seasonEpisodesList.get(i).getEpisodeNo());
                         if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
                             OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
                             OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());

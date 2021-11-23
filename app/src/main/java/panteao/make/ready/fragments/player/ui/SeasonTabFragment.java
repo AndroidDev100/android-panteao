@@ -592,4 +592,32 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
             }
         }
     }
+
+    public void notifyAdapter() {
+        try {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (seasonAdapter!=null){
+                        seasonAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }catch (Exception ignored){
+
+        }
+    }
+
+    public void setProgressStatus() {
+        if (seasonAdapter!=null){
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (seasonAdapter!=null){
+                        seasonAdapter.downloadStatusChanged(seasonAdapter.getAdapterList());
+                    }
+                }
+            });
+        }
+    }
 }

@@ -584,4 +584,20 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             }
         }
     }
+
+    public void notifyAdapter() {
+        try {
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (seasonAdapter!=null){
+                        seasonAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }catch (Exception ignored){
+
+        }
+    }
+
 }

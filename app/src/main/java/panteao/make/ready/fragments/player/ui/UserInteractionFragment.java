@@ -955,7 +955,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                     String entryid = videoItemBean.getkEntryId();
                     if (downloadHelper != null) {
                         OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
-                        if (info == null) {
+                        if (info == null && info.getState().name().equalsIgnoreCase("none")) {
 
                         } else {
                             setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);

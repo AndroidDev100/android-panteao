@@ -100,6 +100,7 @@ import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -887,6 +888,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         dismissLoading(getBinding().progressBar);
         sharingClick(videoDetails);
         ImageHelper.getInstance(ChapterActivity.this).loadListImage(getBinding().playerImage, videoDetails.getPosterURL());
+
         if (videoDetails.isSeriesPremium()) {
             isPremium=true;
             try {
@@ -910,6 +912,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails.getSeriesSku()!=null && !videoDetails.getSeriesSku().equalsIgnoreCase("")){
                 hitApiEntitlement(videoDetails.getSeriesSku());
             }
+
 
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
@@ -1223,6 +1226,17 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 //            downloadHelper.findVideo(videoDetails.getBrightcoveVideoId());
         }
+
+        if (userInteractionFragment!=null){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    userInteractionFragment.setDownloadable(true);
+                }
+            },1000);
+
+        }
+
 
     }
 
@@ -1987,6 +2001,10 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     String downloadId="";
     @Override
     public void onDownloadClicked(String videoId, Object position, Object source) {
+        if (getBinding().tvBuyNow.getVisibility()==View.VISIBLE){
+            showDownloadPopup();
+            return;
+        }
          if (source instanceof UserInteractionFragment){
             downloadId=Entryid;
         }else {
@@ -2031,6 +2049,32 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
         }
+    }
+
+    private void showDownloadPopup() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
+                AppCommonMethod.resetLanguage("th", ChapterActivity.this);
+            } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
+                AppCommonMethod.resetLanguage("en", ChapterActivity.this);
+            }
+            showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private void showDownloadDialog(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.ok));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     private void startDownload(int pos, String videoId) {
