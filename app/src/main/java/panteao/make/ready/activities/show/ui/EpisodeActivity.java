@@ -92,6 +92,7 @@ import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.dialog.LoginPopupDialog;
+import panteao.make.ready.fragments.dialog.PremiumDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
@@ -329,13 +330,15 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
     }
 
+    boolean loginClicked=false;
     private void showloginPopup() {
         FragmentManager fm = getSupportFragmentManager();
-        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", "");
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
             @Override
             public void onFinishDialog() {
+                loginClicked=true;
                 new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
             }
         });
@@ -539,6 +542,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (isPremium){
             if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
             showloginPopup();
+            }else {
+                showPremiumDialog();
             }
         }
     }
@@ -605,12 +610,16 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 seasonTabFragment.setSeasonAdapter(null);
                 token = preference.getAppPrefAccessToken();
                 refreshDetailPage(assestId);
+            }else {
+
             }
         }
         setBroadcast();
         if (preference != null && userInteractionFragment != null) {
             AppCommonMethod.callSocialAction(preference, userInteractionFragment);
         }
+
+       // Log.w("loginClicked",loginClicked+" "+isPremium+" "+preference.getAppPrefLoginStatus());
 
         try {
              downloadHelper = new KTDownloadHelper(this,this);
@@ -622,6 +631,21 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         }
 
+    }
+
+    private void showPremiumDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                loginClicked=false;
+                comingSoon();
+               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     public void requestAudioFocus() {
@@ -726,6 +750,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     public void refreshDetailPage(int assestId) {
+        loginClicked=false;
         this.assestId = assestId;
 //        if (playerFragment != null)
 //            playerFragment.stopPlayer();
@@ -780,6 +805,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         preference.setAppPrefHasSelectedId(true);
         preference.setAppPrefSelectodSeasonId(selectedSeasonId);
+        loginClicked=true;
         new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
     }
 
@@ -2001,9 +2027,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     public void onDownloadClicked(String videoId, Object position, Object source) {
         if (source instanceof UserInteractionFragment) {
             boolean loginStatus = preference.getAppPrefLoginStatus();
-            if (!loginStatus)
+            if (!loginStatus) {
+                loginClicked = true;
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
-            else {
+            }else {
                 int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {

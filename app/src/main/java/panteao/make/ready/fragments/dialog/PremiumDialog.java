@@ -12,16 +12,16 @@ import java.util.Objects;
 
 import panteao.make.ready.R;
 
-public class LoginPopupDialog extends DialogFragment {
+public class PremiumDialog extends DialogFragment {
 
 
-    private LoginPopupDialog.AlertDialogListener alertDialogListener;
+    private PremiumDialog.AlertDialogListener alertDialogListener;
 
-    public LoginPopupDialog() {
+    public PremiumDialog() {
     }
 
-    public static LoginPopupDialog newInstance(String title, String message) {
-        LoginPopupDialog frag = new LoginPopupDialog();
+    public static PremiumDialog newInstance(String title, String message) {
+        PremiumDialog frag = new PremiumDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("message", message);
@@ -29,7 +29,7 @@ public class LoginPopupDialog extends DialogFragment {
         return frag;
     }
 
-    public void setAlertDialogCallBack(LoginPopupDialog.AlertDialogListener alertDialogListener) {
+    public void setAlertDialogCallBack(PremiumDialog.AlertDialogListener alertDialogListener) {
         this.alertDialogListener = alertDialogListener;
     }
 
@@ -41,7 +41,7 @@ public class LoginPopupDialog extends DialogFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.AppAlertTheme);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setPositiveButton("Login", (dialog, which) -> {
+        alertDialogBuilder.setPositiveButton("Purchase Options", (dialog, which) -> {
             alertDialogListener.onFinishDialog();
             dialog.dismiss();
         });

@@ -100,6 +100,7 @@ import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.dialog.LoginPopupDialog;
+import panteao.make.ready.fragments.dialog.PremiumDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -550,13 +551,30 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (isPremium){
             if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 showloginPopup();
+            }else {
+                showPremiumDialog();
             }
         }
     }
 
+        private void showPremiumDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                comingSoon();
+               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+
     private void showloginPopup() {
         FragmentManager fm = getSupportFragmentManager();
-        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", "");
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
             @Override

@@ -449,4 +449,8 @@
     <string name="start_watching">Start Watching</string>
     <string name="replay">Replay</string>
 
+    <string name="login_popup_message">Please login to play this content</string>
+    <string name="premium_popup_message_new">To watch uninterrupted Premium content? Purchase now.</string>
+
+
 </resources>
