@@ -77,6 +77,8 @@ import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityShowBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
+import panteao.make.ready.fragments.dialog.PremiumDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
@@ -299,7 +301,44 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
         }
 
+        if (isPremium) {
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showloginPopup();
+            }else {
+                showPremiumDialog();
+            }
+        }
+
     }
+
+    private void showPremiumDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                comingSoon();
+               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                new ActivityLauncher(ShowActivity.this).loginActivity(ShowActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
 
     public void playPlayerWhenShimmer() {
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {

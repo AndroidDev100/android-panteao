@@ -101,6 +101,8 @@ import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
+import panteao.make.ready.fragments.dialog.PremiumDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -548,9 +550,45 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             showPremiumPopup();
         }
         // playPlayerWhenShimmer();
+        if (isPremium){
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showloginPopup();
+            }else {
+                showPremiumDialog();
+            }
+        }
     }
 
-        public void playPlayerWhenShimmer() {
+        private void showPremiumDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                comingSoon();
+               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                new ActivityLauncher(ChapterActivity.this).loginActivity(ChapterActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+
+    public void playPlayerWhenShimmer() {
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
@@ -1831,6 +1869,12 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
             playerfragment.skipIntroStatus(false);
+
+            if (playerfragment!=null){
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.isPlayerStart(true);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

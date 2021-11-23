@@ -600,4 +600,23 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
+
+    public void isPlayerStart(boolean b) {
+        if (b){
+            if (seasonAdapter!=null){
+                seasonAdapter.isPlayerStart(b);
+                if (seasonAdapter!=null){
+                    getBinding().seriesRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (seasonAdapter!=null){
+                                seasonAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
 }

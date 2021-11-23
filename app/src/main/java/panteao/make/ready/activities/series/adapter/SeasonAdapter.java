@@ -489,4 +489,10 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
+    boolean isPlayerStart=false;
+    public void isPlayerStart(boolean b) {
+        isPlayerStart=b;
+    }
+
+
 }

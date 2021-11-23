@@ -95,6 +95,8 @@ import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
+import panteao.make.ready.fragments.dialog.PremiumDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
@@ -330,7 +332,21 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             transaction.addToBackStack(null);
             transaction.commit();
         }
+    }
 
+    boolean loginClicked=false;
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                loginClicked=true;
+                new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     public void postCommentClick() {
@@ -526,6 +542,14 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         if (isPremium) {
             showPremiumPopup();
         }
+
+        if (isPremium){
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+            showloginPopup();
+            }else {
+                showPremiumDialog();
+            }
+        }
     }
 
     public void playPlayerWhenShimmer() {
@@ -590,12 +614,16 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 seasonTabFragment.setSeasonAdapter(null);
                 token = preference.getAppPrefAccessToken();
                 refreshDetailPage(assestId);
+            }else {
+
             }
         }
         setBroadcast();
         if (preference != null && userInteractionFragment != null) {
             AppCommonMethod.callSocialAction(preference, userInteractionFragment);
         }
+
+       // Log.w("loginClicked",loginClicked+" "+isPremium+" "+preference.getAppPrefLoginStatus());
 
         try {
              downloadHelper = new KTDownloadHelper(this,this);
@@ -607,6 +635,21 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         }
 
+    }
+
+    private void showPremiumDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                loginClicked=false;
+                comingSoon();
+               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     public void requestAudioFocus() {
@@ -711,6 +754,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     public void refreshDetailPage(int assestId) {
+        loginClicked=false;
         this.assestId = assestId;
 //        if (playerFragment != null)
 //            playerFragment.stopPlayer();
@@ -765,6 +809,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
         preference.setAppPrefHasSelectedId(true);
         preference.setAppPrefSelectodSeasonId(selectedSeasonId);
+        loginClicked=true;
         new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
     }
 
@@ -892,7 +937,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails.getSeriesSku()!=null && !videoDetails.getSeriesSku().equalsIgnoreCase("")){
                 hitApiEntitlement(videoDetails.getSeriesSku());
             }
-
 
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
@@ -1989,6 +2033,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
             playerfragment.skipIntroStatus(false);
+
+            if (playerfragment!=null){
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.isPlayerStart(true);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2017,9 +2067,10 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }
         if (source instanceof UserInteractionFragment || source instanceof EpisodeActivity) {
             boolean loginStatus = preference.getAppPrefLoginStatus();
-            if (!loginStatus)
+            if (!loginStatus) {
+                loginClicked = true;
                 new ActivityLauncher(this).loginActivity(this, LoginActivity.class);
-            else {
+            }else {
                 int videoQuality = new SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {

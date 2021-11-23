@@ -205,6 +205,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:visibility='@{isDownloadable ? View.VISIBLE : View.GONE,default="visible"}'>
 
@@ -263,7 +264,9 @@
                     android:id="@+id/loading_download"
                     android:layout_width="@dimen/watch_ListWidth"
                     android:layout_height="@dimen/watch_ListWidth"
-                    android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}' />
+                    android:layout_gravity="center|center_horizontal"
+                    android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}'
+                     />
             </LinearLayout>
 
             <LinearLayout
