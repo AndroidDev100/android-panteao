@@ -99,6 +99,7 @@ import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -546,9 +547,28 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             showPremiumPopup();
         }
         // playPlayerWhenShimmer();
+        if (isPremium){
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showloginPopup();
+            }
+        }
     }
 
-        public void playPlayerWhenShimmer() {
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", "");
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                new ActivityLauncher(ChapterActivity.this).loginActivity(ChapterActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
+
+    public void playPlayerWhenShimmer() {
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
             @Override
             public void onChanged(GetBookmarkResponse getBookmarkResponse) {
@@ -1813,6 +1833,12 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
             playerfragment.skipIntroStatus(false);
+
+            if (playerfragment!=null){
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.isPlayerStart(true);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -91,6 +91,7 @@ import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityEpisodeBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.SeasonTabFragment;
@@ -326,7 +327,19 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             transaction.addToBackStack(null);
             transaction.commit();
         }
+    }
 
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", "");
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
     }
 
     public void postCommentClick() {
@@ -521,6 +534,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         getBinding().mShimmer.sfShimmer3.startShimmer();
         if (isPremium) {
             showPremiumPopup();
+        }
+
+        if (isPremium){
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+            showloginPopup();
+            }
         }
     }
 
@@ -887,7 +906,6 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (videoDetails.getSeriesSku()!=null && !videoDetails.getSeriesSku().equalsIgnoreCase("")){
                 hitApiEntitlement(videoDetails.getSeriesSku());
             }
-
 
         } else {
             if (AppCommonMethod.getCheckBCID(videoDetails.getkEntryId())) {
@@ -1959,6 +1977,12 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 }
             }
             playerfragment.skipIntroStatus(false);
+
+            if (playerfragment!=null){
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.isPlayerStart(true);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

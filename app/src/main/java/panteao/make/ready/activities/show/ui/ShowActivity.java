@@ -77,6 +77,7 @@ import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.databinding.ActivityShowBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
+import panteao.make.ready.fragments.dialog.LoginPopupDialog;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
 import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
 import panteao.make.ready.fragments.player.ui.PlayerControlsFragment;
@@ -299,7 +300,27 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
         }
 
+        if (isPremium) {
+            if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showloginPopup();
+            }
+        }
+
     }
+
+    private void showloginPopup() {
+        FragmentManager fm = getSupportFragmentManager();
+        LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", "");
+        alertDialog.setCancelable(false);
+        alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
+            @Override
+            public void onFinishDialog() {
+                new ActivityLauncher(ShowActivity.this).loginActivity(ShowActivity.this, LoginActivity.class);
+            }
+        });
+        alertDialog.show(fm, "fragment_alert");
+    }
+
 
     public void playPlayerWhenShimmer() {
         viewModel.getBookMarkByVideoId(token, videoDetails.getId()).observe(this, new Observer<GetBookmarkResponse>() {
