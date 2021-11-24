@@ -1468,6 +1468,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         Log.w("instanceof",clickSource+" "+2);
                         int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                         EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
+                        seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
                         downloadHelper.startDownload(pos,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
                     }
 

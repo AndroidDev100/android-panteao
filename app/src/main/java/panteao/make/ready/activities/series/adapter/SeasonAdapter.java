@@ -363,6 +363,14 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
+    public void notifySingleItem(String getkEntryId) {
+        for (int i = 0; i < videoItemBeans.size(); i++) {
+            if (getkEntryId!=null && !getkEntryId.equalsIgnoreCase("") && videoItemBeans.get(i).getkEntryId().equalsIgnoreCase(getkEntryId)) {
+                notifyItemChanged(i,PAY3);
+            }
+        }
+    }
+
 
     public class SeasonViewHolder extends RecyclerView.ViewHolder {
 
