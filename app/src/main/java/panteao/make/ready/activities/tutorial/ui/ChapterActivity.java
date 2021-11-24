@@ -575,7 +575,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     private void showloginPopup() {
-        FragmentManager fm = getSupportFragmentManager();
+        try {
+            FragmentManager fm = getSupportFragmentManager();
         LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new LoginPopupDialog.AlertDialogListener() {
@@ -585,6 +586,10 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
         });
         alertDialog.show(fm, "fragment_alert");
+        }catch (Exception ignored){
+
+        }
+
     }
 
 

@@ -619,4 +619,18 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
+    public void notifySingleItem(String getkEntryId) {
+        if (seasonAdapter!=null && getkEntryId!=null && !getkEntryId.equalsIgnoreCase("")){
+            getBinding().seriesRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (seasonAdapter!=null){
+                        seasonAdapter.notifySingleItem(getkEntryId);
+                    }
+                }
+            });
+        }
+    }
+
+
 }

@@ -549,7 +549,7 @@ public class KTDownloadHelper {
                             public void run() {
                                 cancelAllVideosOneByOne(seasonEpisodesList,cancelCallBack);
                             }
-                        },1000);
+                        },600);
                     }catch (Exception ignored){
                         Log.w("sortedChapters",ignored.toString()+" ");
                     }
@@ -993,13 +993,20 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
         try {
             String kentryid=seasonEpisodesList.get(0).getkEntryId();
             Log.w("downloadData-->>",kentryid);
-            if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
-                OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
-                OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
-                manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+            OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryid);
+           // Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
+            if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
+            && info.getState().name().equalsIgnoreCase("completed")){
+                Log.w("downloadData-->>in","completed");
+            }else {
+                if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                    OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                    OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
+                    manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                }
             }
         }catch (Exception e){
-
+            Log.w("downloadData-->>in",e.toString());
         }
 
         new Handler().postDelayed(new Runnable() {
@@ -1009,13 +1016,22 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                     try {
                         String kentryid=seasonEpisodesList.get(i).getkEntryId();
                         Log.w("downloadData-->>",kentryid+"  "+seasonEpisodesList.get(i).getEpisodeNo());
-                        if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
-                            OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
-                            OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
-                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                        Log.w("downloadData-->>",kentryid);
+                        OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryid);
+                      //  Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
+                        if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
+                                && info.getState().name().equalsIgnoreCase("completed")){
+                            Log.w("downloadData-->>in","completed");
+                        }else {
+                            if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                                Log.w("downloadData-->>in",kentryid);
+                                OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                                OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(i).getTitle());
+                                manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                            }
                         }
                     }catch (Exception e){
-
+                        Log.w("downloadData-->>in",e.toString());
                     }
 
                 }
@@ -1035,8 +1051,19 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             if (deleteCount<seasonEpisodesList.size()) {
                 EnveuVideoItemBean bean = seasonEpisodesList.get(deleteCount);
                 if (bean.getkEntryId() != null && !bean.getkEntryId().equalsIgnoreCase("")) {
-                    Log.w("deletedEntryid",bean.getkEntryId() +" ");
-                    updateDataBase(bean.getkEntryId());
+                    String kentry=bean.getkEntryId();
+                    OfflineManager.AssetInfo info=getManager().getAssetInfo(kentry);
+                    Log.w("deletedEntryid",info.getState().name()+" "+deleteCount);
+                    if (!info.getState().name().equalsIgnoreCase("completed")){
+                        Log.w("deletedEntryid",bean.getkEntryId() +" "+deleteCount);
+                        updateDataBase(bean.getkEntryId());
+                        deleteCount++;
+                        callDeleteHandler(seasonEpisodesList,callBack);
+                    }else {
+                        deleteCount++;
+                        callDeleteHandler(seasonEpisodesList,callBack);
+                    }
+                }else {
                     deleteCount++;
                     callDeleteHandler(seasonEpisodesList,callBack);
                 }

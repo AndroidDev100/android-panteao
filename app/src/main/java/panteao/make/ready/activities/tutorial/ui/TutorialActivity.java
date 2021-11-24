@@ -1460,13 +1460,14 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     private void startDownload(int pos,String videoId) {
         Log.w("instanceof",clickSource+"");
         if (clickSource!=null){
-            if (clickSource instanceof SeriesDetailActivity){
+            if (clickSource instanceof TutorialActivity){
                 Log.w("instanceof",clickSource+" "+1);
                 if (seasonTabFragment!=null && seasonTabFragment.getSeasonAdapter()!=null){
                     if (seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                         Log.w("instanceof",clickSource+" "+2);
                         int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                         EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
+                        seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
                         downloadHelper.startDownload(pos,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
                     }
 
