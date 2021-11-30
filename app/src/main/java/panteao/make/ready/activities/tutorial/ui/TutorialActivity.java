@@ -1482,6 +1482,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
                     }
                 });
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.setProgressStatus();
+                }
             }
         }else {
             downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
@@ -1490,6 +1493,9 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
                 }
             });
+            if (seasonTabFragment!=null){
+                seasonTabFragment.setProgressStatus();
+            }
         }
     }
 
@@ -1626,9 +1632,13 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
     @Override
     public void onPauseClicked(String videoId, Object source) {
         if (source instanceof UserInteractionFragment) {
-//            downloadHelper.resumeDownload(downloadAbleVideo.getId());
+            if (downloadHelper!=null){
+                downloadHelper.resumeDownload(videoId);
+            }
         } else {
-//            downloadHelper.resumeDownload(videoId);
+            if (downloadHelper!=null){
+                downloadHelper.resumeDownload(videoId);
+            }
         }
     }
 

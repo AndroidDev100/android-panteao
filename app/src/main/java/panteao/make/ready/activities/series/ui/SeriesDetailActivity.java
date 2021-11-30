@@ -1494,6 +1494,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
                 }
             });
+            if (seasonTabFragment!=null){
+                seasonTabFragment.setProgressStatus();
+            }
         }
     }
 
@@ -1619,7 +1622,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     @Override
     public void onSeriesDownloadClicked(@NotNull View view, @NotNull Object source, @NotNull String videoId) {
-            AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
+            if (seasonTabFragment!=null){
+               // int status=seasonTabFragment.checkProgressStatus(downloadHelper);
+                AppCommonMethod.showPopupMenu(this, view, R.menu.series_cancel_downloads, item -> {
                 switch (item.getItemId()) {
                     case R.id.delete_download:
                         if (seasonTabFragment!=null){
@@ -1633,6 +1638,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                                         userInteractionFragment.setDownloadStatus(DownloadStatus.START);
                                         if (seasonTabFragment!=null){
                                             seasonTabFragment.notifyAdapter();
+                                            userInteractionFragment.setDownloadStatus(DownloadStatus.START);
                                         }
                                     }
                                 });
@@ -1643,6 +1649,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
                 return false;
             });
+
+            }
+
 
     }
 

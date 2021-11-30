@@ -356,10 +356,20 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     public void downloadStatusChanged(List<EnveuVideoItemBean> adapterList) {
-        for (int i = 0; i < videoItemBeans.size(); i++) {
-            if (videoItemBeans.get(i).getkEntryId()!=null && !videoItemBeans.get(i).getkEntryId().equalsIgnoreCase("")) {
-                notifyItemChanged(i,PAY3);
+        try {
+            for (int i = 0; i < videoItemBeans.size(); i++) {
+                if (videoItemBeans.get(i).getkEntryId()!=null && !videoItemBeans.get(i).getkEntryId().equalsIgnoreCase("")) {
+                    OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(videoItemBeans.get(i).getkEntryId());
+                    Log.w("infoValue-->",info+"");
+                    if (info!=null){
+
+                    }else {
+                        notifyItemChanged(i,PAY3);
+                    }
+                }
             }
+        }catch (Exception ignored){
+
         }
     }
 

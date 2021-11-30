@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import com.kaltura.tvplayer.OfflineManager;
+
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
@@ -650,5 +652,31 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
                 }
             });
         }
+    }
+
+    public int checkProgressStatus(KTDownloadHelper downloadHelper) {
+        int status=0;
+        if (downloadHelper==null){
+            return 0;
+        }
+        if (seasonAdapter != null) {
+            if (seasonAdapter.getAdapterList() != null) {
+                if (seasonAdapter.getAdapterList().size() > 0) {
+                    for (int i = 0; i < seasonAdapter.getAdapterList().size(); i++) {
+                        OfflineManager.AssetInfo assetInfo=downloadHelper.getManager().getAssetInfo(seasonAdapter.getAdapterList().get(i).getkEntryId());
+                        if (assetInfo!=null && assetInfo.getState()!=null){
+                            String name=assetInfo.getState().name();
+                            if (name.equalsIgnoreCase("started")){
+                                status=1;
+                            }else if (name.equalsIgnoreCase("paused")){
+                                status=2;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return status;
     }
 }
