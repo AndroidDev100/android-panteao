@@ -67,6 +67,7 @@ import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
 import panteao.make.ready.activities.purchase.TVODENUMS;
+import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.show.viewModel.DetailViewModel;
@@ -2107,20 +2108,28 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", ChapterActivity.this);
             }
-            showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message),1,getResources().getString(R.string.purhcase_options));
+            }else {
+                showDownloadDialog("", getResources().getString(R.string.premium_download_loginpopup_message),2,getResources().getString(R.string.login));
+            }
         }catch (Exception ignored){
 
         }
     }
 
-    private void showDownloadDialog(String title, String message) {
+    private void showDownloadDialog(String title, String message,int type,String buttonText) {
         FragmentManager fm = getSupportFragmentManager();
-        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.purhcase_options));
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, buttonText);
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
             @Override
             public void onFinishDialog() {
-                comingSoon();
+                if (type==1){
+                    comingSoon();
+                }else {
+                    new ActivityLauncher(ChapterActivity.this).loginActivity(ChapterActivity.this, LoginActivity.class);
+                }
             }
         });
         alertDialog.show(fm, "fragment_alert");

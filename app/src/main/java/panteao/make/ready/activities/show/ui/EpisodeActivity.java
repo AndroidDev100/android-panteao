@@ -2114,20 +2114,28 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", EpisodeActivity.this);
             }
-            showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message));
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message),1,getResources().getString(R.string.purhcase_options));
+            }else {
+                showDownloadDialog("", getResources().getString(R.string.premium_download_loginpopup_message),2,getResources().getString(R.string.login));
+            }
         }catch (Exception ignored){
 
         }
     }
 
-    private void showDownloadDialog(String title, String message) {
+    private void showDownloadDialog(String title, String message,int type,String buttonText) {
         FragmentManager fm = getSupportFragmentManager();
-        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.purhcase_options));
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, buttonText);
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
             @Override
             public void onFinishDialog() {
-                comingSoon();
+                if (type==1){
+                    comingSoon();
+                }else {
+                    new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+                }
             }
         });
         alertDialog.show(fm, "fragment_alert");

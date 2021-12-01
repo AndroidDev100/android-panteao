@@ -173,7 +173,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
 
 
-        if (videoItemBeans.get(position).getId() == currentAssetId) {
+        if (videoItemBeans.get(position).getId() == currentAssetId && isPlayerStart) {
             holder.itemBinding.nowPlaying.setVisibility(View.VISIBLE);
             holder.itemBinding.playIcon.setVisibility(View.GONE);
         } else {

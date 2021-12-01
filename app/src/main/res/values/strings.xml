@@ -453,6 +453,7 @@
     <string name="login_popup_message">Please login to play this content</string>
     <string name="premium_popup_message_new">To watch uninterrupted Premium content? Purchase now.</string>
     <string name="premium_download_popup_message">To download Premium content? Purchase now.</string>
+    <string name="premium_download_loginpopup_message">To download Premium content? Login now.</string>
 
 
 </resources>
