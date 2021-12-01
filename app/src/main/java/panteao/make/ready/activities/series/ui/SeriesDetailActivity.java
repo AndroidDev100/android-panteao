@@ -1447,12 +1447,12 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     private void showDownloadDialog(String title, String message) {
         FragmentManager fm = getSupportFragmentManager();
-        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.ok));
+        PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, getResources().getString(R.string.purhcase_options));
         alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new PremiumDownloadPopup.AlertDialogListener() {
             @Override
             public void onFinishDialog() {
-
+                comingSoon();
             }
         });
         alertDialog.show(fm, "fragment_alert");
