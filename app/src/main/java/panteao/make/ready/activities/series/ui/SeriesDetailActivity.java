@@ -3,6 +3,7 @@ package panteao.make.ready.activities.series.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
 import panteao.make.ready.beanModel.entitle.EntitledAs;
 import panteao.make.ready.beanModel.entitle.ResponseEntitle;
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
@@ -103,7 +105,7 @@ import java.util.Objects;
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
 
-public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDetailBinding> implements AlertDialogFragment.AlertDialogListener, OnDownloadClickInteraction, TrailorCallBack ,VideoListListener, KTDownloadEvents {
+public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDetailBinding> implements AlertDialogFragment.AlertDialogListener, OnDownloadClickInteraction, TrailorCallBack ,VideoListListener, KTDownloadEvents,NetworkChangeReceiver.ConnectivityReceiverListener {
     private final String TAG = this.getClass().getSimpleName();
     public String userName = "";
     public boolean isloggedout = false;
@@ -167,6 +169,16 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             userInteractionFragment.setItemFound();
         }
         super.onPause();
+        try {
+            if (receiver != null) {
+            this.unregisterReceiver(receiver);
+            if (NetworkChangeReceiver.connectivityReceiverListener != null)
+                NetworkChangeReceiver.connectivityReceiverListener = null;
+        }
+        }catch (Exception e){
+
+        }
+
     }
 
     public void onSeriesCreate() {
@@ -388,6 +400,30 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     refreshDetailPage(seriesId);
                 }
             }
+        }
+
+        setBroadcast();
+    }
+
+    private NetworkChangeReceiver receiver = null;
+    public void setBroadcast() {
+        receiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        SeriesDetailActivity.this.registerReceiver(receiver, filter);
+        setConnectivityListener(this);
+    }
+
+    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener listener) {
+        NetworkChangeReceiver.connectivityReceiverListener = listener;
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (seasonTabFragment!=null){
+            seasonTabFragment.notifyAdapter();
         }
     }
 
@@ -1480,6 +1516,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                         EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
                         seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
+                        countCall = 0;
+                        countCall2 = 2;
+                        if (userInteractionFragment!=null){
+                            userInteractionFragment.setItemFound();
+                        }
                         downloadHelper.startDownload(pos,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
                     }
 
@@ -1488,6 +1529,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
 
             }else {
+                countCall = 0;
+                countCall2 = 2;
+                if (userInteractionFragment!=null){
+                    userInteractionFragment.setItemFound();
+                }
                 downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
                     @Override
                     public void startDownload() {
@@ -1499,6 +1545,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
             }
         }else {
+            countCall = 0;
+            countCall2 = 2;
+            if (userInteractionFragment!=null){
+                userInteractionFragment.setItemFound();
+            }
             downloadHelper.startSeriesDownload(pos, seasonTabFragment.getSelectedSeason(), seasonEpisodesList, new CancelCallBack() {
                 @Override
                 public void startDownload() {
@@ -1593,6 +1644,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                             public void run() {
                                 if (seasonTabFragment!=null){
                                     seasonTabFragment.cancelDownload(videoId);
+                                    if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
+                                        userInteractionFragment.isItemCheck();
+                                        userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                    }
                                 }
                             }
                         },500);
@@ -1831,6 +1886,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     int countCall2 = 2;
     @Override
     public void fromAdapterDownloadProgress(float progress, @NonNull String assetId) {
+        Log.w("countValues-->>",countCall+"  "+countCall2);
         if (countCall==0 && countCall2==2){
             if (seasonTabFragment!=null){
                 countCall=1;

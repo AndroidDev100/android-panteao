@@ -926,6 +926,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public boolean itemFound=false;
     public void checkDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+        Log.w("itemFoundValue-->",itemFound+"");
         if (adapterList!=null && adapterList.size()>0){
             if (!itemFound) {
                 for (int i = 0; i < adapterList.size(); i++) {
@@ -948,20 +949,35 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public boolean itemCheck=false;
     public void checkSeriesDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+        Log.w("itemChecked 1",adapterList.size()+"");
         if (adapterList!=null && adapterList.size()>0){
+            Log.w("itemChecked 2",itemCheck+"");
             if (!itemCheck) {
                 for (int i = 0; i < adapterList.size(); i++) {
                     EnveuVideoItemBean videoItemBean = adapterList.get(i);
                     String entryid = videoItemBean.getkEntryId();
+                    Log.w("itemChecked 3",entryid+" "+downloadHelper);
                     if (downloadHelper != null) {
                         OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
-                        if (info == null && info.getState().name().equalsIgnoreCase("none")) {
+                        Log.w("itemChecked 4",info+"");
+                        if (info!=null){
+                            if(info.getState().name().equalsIgnoreCase("none")){
+
+                            }else {
+                                Log.w("itemChecked 5",itemCheck+"");
+                                setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                                itemCheck=true;
+                                break;
+                            }
+                        }
+                       /* if (info == null && info.getState().name().equalsIgnoreCase("none")) {
 
                         } else {
+                            Log.w("itemChecked 5",itemCheck+"");
                             setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
                             itemCheck=true;
                             break;
-                        }
+                        }*/
                     }
                 }
                 if (!itemCheck){

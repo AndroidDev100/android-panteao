@@ -141,6 +141,17 @@
                 android:id="@+id/video_downloaded"/>
 
             <ImageView
+                android:id="@+id/video_downloaded_failed"
+                android:layout_width="@dimen/watchListWidth"
+                android:layout_height="@dimen/watchListHeight"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/NontonSize8"
+                android:contentDescription="TODO"
+                android:visibility='@{downloadStatus==DownloadStatus.FAILED ? View.VISIBLE : View.GONE, default="gone"}'
+                app:srcCompat="@drawable/download_error" />
+
+
+            <ImageView
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
                 android:layout_gravity="center"

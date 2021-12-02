@@ -2,9 +2,10 @@ package panteao.make.ready.utils.helpers.downloads.db;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "assetdownload")
+@Entity(tableName = "assetdownload", indices = @Index(value = {"entryId"}, unique = true))
 public class DownloadItemEntity {
 
     @PrimaryKey(autoGenerate = true)

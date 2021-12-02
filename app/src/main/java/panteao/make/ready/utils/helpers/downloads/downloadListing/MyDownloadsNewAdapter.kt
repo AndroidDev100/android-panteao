@@ -334,6 +334,18 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                 })
         }
 
+        itemBinding?.videoDownloadedFailed?.setOnClickListener { v ->
+            downloadHelper.getAssetDownloadState(currentVideoItem.entryId,downloadHelper,
+                object : DownloadStateListener {
+                    override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
+                        if (name.equals("failed", ignoreCase = true)){
+                            deleteVideo(v!!, currentVideoItem, position)
+                        }
+                    }
+                })
+        }
+
+
 
     }
 

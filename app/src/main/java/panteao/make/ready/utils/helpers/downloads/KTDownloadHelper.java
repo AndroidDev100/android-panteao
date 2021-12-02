@@ -716,11 +716,7 @@ public class KTDownloadHelper {
             public void run() {
                 if (db!=null) {
                     List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId,seasonNumber);
-                    if (downloadItemEntityList.size() > 0) {
-                        allDataFromDB.postValue(downloadItemEntityList);
-                    } else {
-                        allDataFromDB.postValue(new ArrayList<>());
-                    }
+                    checkDownloadStatus(downloadItemEntityList,allDataFromDB,seriesId,seasonNumber);
                 }else {
                     allDataFromDB.postValue(new ArrayList<>());
                 }
@@ -728,8 +724,6 @@ public class KTDownloadHelper {
         });
         return allDataFromDB;
     }
-
-
 
 
     private void removeFromDB(String entryIds) {
@@ -1053,8 +1047,8 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                 if (bean.getkEntryId() != null && !bean.getkEntryId().equalsIgnoreCase("")) {
                     String kentry=bean.getkEntryId();
                     OfflineManager.AssetInfo info=getManager().getAssetInfo(kentry);
-                    Log.w("deletedEntryid",info.getState().name()+" "+deleteCount);
-                    if (!info.getState().name().equalsIgnoreCase("completed")){
+                    //Log.w("deletedEntryid",info.getState().name()+" "+deleteCount);
+                    if (info!=null && !info.getState().name().equalsIgnoreCase("completed")){
                         Log.w("deletedEntryid",bean.getkEntryId() +" "+deleteCount);
                         updateDataBase(bean.getkEntryId());
                         deleteCount++;
@@ -1114,5 +1108,71 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             }
         },1000);
     }
+
+    int checkStatusCount=0;
+    private void checkDownloadStatus(List<DownloadItemEntity> downloadItemEntityList, MutableLiveData<List<DownloadItemEntity>> allDataFromDB,String seriesId,int seasonNumber) {
+        if (downloadItemEntityList.size() > 0) {
+            if (checkStatusCount<downloadItemEntityList.size()) {
+                DownloadItemEntity downloadItemEntity=downloadItemEntityList.get(checkStatusCount);
+                if (downloadItemEntity!=null){
+                    if (downloadItemEntity.getEntryId()!=null && !downloadItemEntity.getEntryId().equalsIgnoreCase("")){
+                        OfflineManager.AssetInfo info=getManager().getAssetInfo(downloadItemEntity.getEntryId());
+                        if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")){
+                            Log.w("removeIds-->>",info.getState().name());
+                            if (info.getState().name().equalsIgnoreCase("none")){
+                                removeFromDB(downloadItemEntity.getEntryId());
+                            }
+                        }
+                    }
+                    checkStatusCount++;
+                    callDeleteHandler(downloadItemEntityList,allDataFromDB,seriesId,seasonNumber);
+                }
+
+            }else {
+
+                DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (db!=null) {
+                            List<DownloadItemEntity> downloadItemEntityList = db.downloadDao().loadEpisodesBySeriesID(seriesId,seasonNumber);
+                            if (downloadItemEntityList.size()>0){
+                                allDataFromDB.postValue(downloadItemEntityList);
+                            }else {
+                                allDataFromDB.postValue(new ArrayList<>());
+                            }
+                        }else {
+                            allDataFromDB.postValue(new ArrayList<>());
+                        }
+                    }
+                });
+
+            }
+        }
+
+    }
+
+    private void callDeleteHandler(List<DownloadItemEntity> downloadItemEntityList, MutableLiveData<List<DownloadItemEntity>> allDataFromDB,String seriesId,int seasonNumber) {
+
+        Thread thread = new Thread() {
+            public void run() {
+                Looper.prepare();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do Work
+                        checkDownloadStatus(downloadItemEntityList,allDataFromDB,seriesId,seasonNumber);
+                        handler.removeCallbacks(this);
+                        Looper.myLooper().quit();
+                    }
+                }, 500);
+
+                Looper.loop();
+            }
+        };
+        thread.start();
+    }
+
 
 }
