@@ -13,18 +13,14 @@ import com.kaltura.tvplayer.OfflineManager
 import panteao.make.ready.R
 import panteao.make.ready.databinding.ListDownloadItemBinding
 import panteao.make.ready.enums.DownloadStatus
-import panteao.make.ready.utils.Utils.dpToPx
-import panteao.make.ready.utils.Utils.getDownloadFilteredUrl
-import panteao.make.ready.utils.Utils.getFilteredUrl
 import panteao.make.ready.utils.commonMethods.AppCommonMethod
-import panteao.make.ready.utils.config.ImageLayer
 import panteao.make.ready.utils.helpers.ImageHelper
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper
 import panteao.make.ready.utils.helpers.downloads.db.DownloadItemEntity
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
-import java.lang.StringBuilder
+import java.util.*
 
 class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>, KTDownloadEvents {
     private lateinit var context : Activity
@@ -238,7 +234,9 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (currentVideoItem.episodesCount==0){
                         builder.append("1")
                     }else{
-                        builder.append(currentVideoItem.episodesCount.toString())
+                        var occurance=accuranceOfEpisodes(AppCommonMethod.occuranceList,currentVideoItem.seriesId)
+                        Log.w("occurance-->",occurance.toString()+"")
+                        builder.append(occurance.toString())
                     }
                     if (currentVideoItem.episodesCount>1){
                         builder.append(" Episodes")
@@ -290,6 +288,12 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
     }
+
+    private fun accuranceOfEpisodes(occuranceList: java.util.ArrayList<String>?,seriesId:String) : Int{
+        val occurrences = Collections.frequency(occuranceList, seriesId)
+        return occurrences;
+    }
+
 
     private fun failedDownloadPopUpMenu(view: View, video: DownloadItemEntity, position: Int) {
         val popup = PopupMenu(context, view)

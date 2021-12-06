@@ -191,6 +191,7 @@ public class AppCommonMethod {
     private static String sharingURL = "";
     private static WeakReference<Activity> mActivity;
     private static long mLastClickTime = 0;
+    public static ArrayList<String> occuranceList;
 
     public static long showDatePickerNonton(final TextView viewToUpdate, Context context) {
         DatePickerDialog datePicker;
@@ -2055,25 +2056,31 @@ public class AppCommonMethod {
     @NotNull
     public static ArrayList<DownloadItemEntity> getSortedList(@NotNull List<? extends DownloadItemEntity> it) {
         ArrayList<DownloadItemEntity> list=new ArrayList<>();
+        ArrayList<String> str=new ArrayList<>();
         int temp = 1;
         HashMap map=new HashMap();
+
         for (int i=0;i<it.size();i++){
             boolean notFound=false;
+            //Log.w("CheckingCondition 1","isSeries-->>"+i+"<<----->>"+it.get(i).getSeriesId());
+            //Log.w("CheckingCondition 1","isSeries-->>"+it.size());
+            str.add(it.get(i).getSeriesId());
             if (list.size()>0) {
                 DownloadItemEntity value = it.get(i);
-                Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries());
+                //Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries()+" "+value.getSeriesId());
                 if (value.isSeries()) {
                     String seriesId = value.getSeriesId();
+                   // Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries()+" "+seriesId);
                     int seasonNumber = value.getSeasonNumber();
-                    Log.w("CheckingCondition 2","seriesid-->>"+value.getSeriesId());
+                   // Log.w("CheckingCondition 2","seriesid-->>"+value.getSeriesId());
                     for (int j = 0; j < list.size(); j++) {
                         DownloadItemEntity value2 = list.get(j);
                         String seriesId2 = value2.getSeriesId();
                         int seasonNumber2 = value2.getSeasonNumber();
-                        Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
+                       // Log.w("CheckingCondition 3","seriesid2-->>"+value.getSeriesId()+"  "+seriesId+"<<---->>"+seriesId2+"   "+value2.isSeries());
                         // if (value2.isSeries()) {
                         if (seriesId.equalsIgnoreCase(seriesId2) && seasonNumber==seasonNumber2) {
-                            Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
+                         //   Log.w("CheckingCondition 4","in-->>"+seriesId+"<<---->>"+seriesId2+"  "+temp);
                             notFound=true;
                         }
                         // }
@@ -2081,8 +2088,6 @@ public class AppCommonMethod {
                     if (!notFound){
                         list.add(value);
                     }
-
-
                 }else {
                     list.add(value);
                 }
@@ -2091,9 +2096,15 @@ public class AppCommonMethod {
             }
 
         }
-
+        AppCommonMethod.occuranceList=str;
         return getSortedList(list);
     }
+
+    private static void checkAccurances(ArrayList<String> str, String i) {
+        int occurrences = Collections.frequency(str, i);
+        Log.w("occurances-->",occurrences+"");
+    }
+
 
     private static ArrayList<DownloadItemEntity> getSortedListBasedOnepisodeNo(ArrayList<DownloadItemEntity> list) {
         Collections.sort(list, new Comparator<DownloadItemEntity>() {

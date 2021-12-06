@@ -1511,6 +1511,11 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                         int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                         EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
                         seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
+                        countCall = 0;
+                        countCall2 = 2;
+                        if (userInteractionFragment!=null){
+                            userInteractionFragment.setItemFound();
+                        }
                         downloadHelper.startDownload(pos,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
                     }
 
@@ -1519,6 +1524,11 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 }
 
             }else {
+                countCall = 0;
+                countCall2 = 2;
+                if (userInteractionFragment!=null){
+                    userInteractionFragment.setItemFound();
+                }
                 downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
                     @Override
                     public void startDownload() {
@@ -1530,6 +1540,11 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                 }
             }
         }else {
+            countCall = 0;
+            countCall2 = 2;
+            if (userInteractionFragment!=null){
+                userInteractionFragment.setItemFound();
+            }
             downloadHelper.startSeriesDownload(pos,seasonTabFragment.getSelectedSeason(),seasonEpisodesList, new CancelCallBack() {
                 @Override
                 public void startDownload() {
