@@ -1166,7 +1166,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                         handler.removeCallbacks(this);
                         Looper.myLooper().quit();
                     }
-                }, 500);
+                }, 300);
 
                 Looper.loop();
             }
