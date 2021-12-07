@@ -934,6 +934,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                     String entryid = videoItemBean.getkEntryId();
                     if (downloadHelper != null) {
                         OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
+                        Log.w("itemFoundValue-->",info+"");
                         if (info == null) {
 
                         } else {
@@ -942,6 +943,10 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                             break;
                         }
                     }
+                }
+
+                if (!itemFound){
+                    setDownloadStatus(DownloadStatus.START);
                 }
             }
         }

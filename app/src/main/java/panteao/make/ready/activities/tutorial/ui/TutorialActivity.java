@@ -1712,6 +1712,30 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void onDownloadDeleted(@NotNull String videoId, @NotNull Object source) {
+        try {
+            Log.w("cancelVideo","-->onDownloadDeleted");
+            if (videoId!=null && !videoId.equalsIgnoreCase("")){
+                downloadHelper.cancelVideo(videoId);
+                seasonTabFragment.cancelDownload(videoId);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (seasonTabFragment!=null){
+                            if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
+                                if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
+                                    if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
+                                        userInteractionFragment.checkDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                },500);
+            }
+        }catch (Exception ignored){
+
+        }
 
     }
 
