@@ -27,6 +27,7 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public static final String VIDEO_DOWNLOAD_ACTION = "video_download_action";
     public static final String VIDEO_DOWNLOAD_EMAIL = "video_download_email";
     public static final String OVP_BASE_URL = "OVP_BASE_URL";
+    public static final String NUMBER_OF_EPISODES = "NUMBER_OF_EPISODES";
 
 
     private static final String DOWNLOADED_ITEM_DELETED = "download_item_deleted";
@@ -421,5 +422,21 @@ public class KsPreferenceKeys extends SharedPrefHelper {
 
     public void setOVPBASEURL(String AppLanguage) {
         setString(OVP_BASE_URL, AppLanguage);
+    }
+
+    public String getNumberOfEpisodes(String episodes) {
+        return getString(episodes, "");
+    }
+
+    public void setNumberOfEpisodes(String episodes) {
+        setString(episodes, episodes);
+    }
+
+    public String getNumberEpisodes(String episodes) {
+        return getString(episodes, "");
+    }
+
+    public void setNumberEpisodes(String episodes) {
+        setString(episodes, episodes);
     }
 }

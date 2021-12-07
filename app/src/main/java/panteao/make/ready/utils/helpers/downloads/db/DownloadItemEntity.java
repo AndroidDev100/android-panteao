@@ -24,6 +24,7 @@ public class DownloadItemEntity {
     long timeStamp;
     String seriesImageUrl;
     int episodesCount;
+    String seriesIdWithNumber;
 
     @Ignore
     public DownloadItemEntity(String name, String assetType, boolean isSeries, String downloadSize, String expiryDate,String entryId,
@@ -42,6 +43,7 @@ public class DownloadItemEntity {
         this.episodeNumber=episodeNumber;
         this.seriesImageUrl=seriesImageUrl;
         this.episodesCount=episodesCount;
+        this.seriesIdWithNumber=seriesId+seasonNumber;
     }
 
     public DownloadItemEntity(int id, String name, String assetType, boolean isSeries, String downloadSize, String expiryDate,String entryId,
@@ -61,6 +63,7 @@ public class DownloadItemEntity {
         this.episodeNumber=episodeNumber;
         this.seriesImageUrl=seriesImageUrl;
         this.episodesCount=episodesCount;
+        this.seriesIdWithNumber=seriesId+seasonNumber;
     }
 
     public int getId() {
@@ -181,5 +184,13 @@ public class DownloadItemEntity {
 
     public int getEpisodesCount() {
         return episodesCount;
+    }
+
+    public String getSeriesIdWithNumber() {
+        return seriesIdWithNumber;
+    }
+
+    public void setSeriesIdWithNumber(String seriesIdWithNumber) {
+        this.seriesIdWithNumber = seriesIdWithNumber;
     }
 }

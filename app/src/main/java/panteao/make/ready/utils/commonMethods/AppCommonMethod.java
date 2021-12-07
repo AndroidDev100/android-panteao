@@ -2064,7 +2064,7 @@ public class AppCommonMethod {
             boolean notFound=false;
             //Log.w("CheckingCondition 1","isSeries-->>"+i+"<<----->>"+it.get(i).getSeriesId());
             //Log.w("CheckingCondition 1","isSeries-->>"+it.size());
-            str.add(it.get(i).getSeriesId());
+            str.add(it.get(i).getSeriesIdWithNumber());
             if (list.size()>0) {
                 DownloadItemEntity value = it.get(i);
                 //Log.w("CheckingCondition 1","isSeries-->>"+value.isSeries()+" "+value.getSeriesId());

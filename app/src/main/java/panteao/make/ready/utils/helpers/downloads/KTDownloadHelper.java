@@ -986,12 +986,14 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
     if (seasonEpisodesList!=null && seasonEpisodesList.size()>0){
         try {
             String kentryid=seasonEpisodesList.get(0).getkEntryId();
-            Log.w("downloadData-->>",kentryid);
+            //Log.w("downloadData-->>",kentryid);
             OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryid);
            // Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
+
+
             if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
-            && info.getState().name().equalsIgnoreCase("completed")){
-                Log.w("downloadData-->>in","completed");
+            && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
+                Log.w("downloadData-->>in",info.getState().name());
             }else {
                 if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
                     OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
@@ -1012,9 +1014,12 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                         Log.w("downloadData-->>",kentryid+"  "+seasonEpisodesList.get(i).getEpisodeNo());
                         Log.w("downloadData-->>",kentryid);
                         OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryid);
+                        if (info!=null){
+                            Log.w("downloadData-->>in",info.getState().name());
+                        }
                       //  Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
                         if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
-                                && info.getState().name().equalsIgnoreCase("completed")){
+                                && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
                             Log.w("downloadData-->>in","completed");
                         }else {
                             if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
@@ -1173,6 +1178,75 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
         };
         thread.start();
     }
+
+
+    public void removeAllVideo(List<EnveuVideoItemBean> seasonEpisodesList, CancelCallBack callBack) {
+        try {
+            cancelCallBack=callBack;
+            deleteCount=0;
+            DBExecuter.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                removeAllVideosOneByOne(seasonEpisodesList,cancelCallBack);
+                            }
+                        },600);
+                    }catch (Exception ignored){
+                        Log.w("sortedChapters",ignored.toString()+" ");
+                    }
+
+                }
+            });
+
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+
+    }
+
+    private void removeAllVideosOneByOne(List<EnveuVideoItemBean> seasonEpisodesList,CancelCallBack callBack) {
+        try {
+            Log.w("deletedEntryid",deleteCount +" ");
+            if (deleteCount<seasonEpisodesList.size()) {
+                EnveuVideoItemBean bean = seasonEpisodesList.get(deleteCount);
+                if (bean.getkEntryId() != null && !bean.getkEntryId().equalsIgnoreCase("")) {
+                    String kentry=bean.getkEntryId();
+                    OfflineManager.AssetInfo info=getManager().getAssetInfo(kentry);
+                    //Log.w("deletedEntryid",info.getState().name()+" "+deleteCount);
+                    if (info!=null){
+                        Log.w("deletedEntryid",bean.getkEntryId() +" "+deleteCount);
+                        updateDataBase(bean.getkEntryId());
+                        deleteCount++;
+                        callRemoveHandler(seasonEpisodesList,callBack);
+                    }else {
+                        deleteCount++;
+                        callRemoveHandler(seasonEpisodesList,callBack);
+                    }
+                }else {
+                    deleteCount++;
+                    callRemoveHandler(seasonEpisodesList,callBack);
+                }
+
+            }else {
+                callBack.cancelVideos();
+            }
+        }catch (Exception ignored){
+            Log.w("sortedChapters",ignored.toString()+" ");
+        }
+    }
+
+    private void callRemoveHandler(List<EnveuVideoItemBean> seasonEpisodesList, CancelCallBack callBack) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                removeAllVideosOneByOne(seasonEpisodesList,callBack);
+            }
+        },700);
+    }
+
 
 
 }

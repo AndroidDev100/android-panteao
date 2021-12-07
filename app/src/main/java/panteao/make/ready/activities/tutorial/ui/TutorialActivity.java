@@ -1690,11 +1690,32 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void onDownloadCompleteClicked(View view, Object source, String videoId) {
-        if (source instanceof UserInteractionFragment) {
+        AppCommonMethod.showPopupMenu(this, view, R.menu.remove_downloads, item -> {
+            switch (item.getItemId()) {
+                case R.id.delete_download:
+                    if (seasonTabFragment!=null){
+                        if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
+                            if (userInteractionFragment!=null){
+                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            }
+                            downloadHelper.removeAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
+                                @Override
+                                public void cancelVideos() {
+                                    userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                    if (seasonTabFragment!=null){
+                                        seasonTabFragment.notifyAdapter();
+                                        userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                    }
+                                }
+                            });
+                        }
+                    }
 
-        } else {
+                    break;
+            }
+            return false;
+        });
 
-        }
     }
 
     @Override
@@ -2059,6 +2080,14 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+        try {
+            if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
+                userInteractionFragment.isItemCheck();
+                userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+            }
+        }catch (Exception e){
+
+        }
 
     }
 

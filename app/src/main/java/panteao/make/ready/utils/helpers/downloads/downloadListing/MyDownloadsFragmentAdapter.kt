@@ -234,7 +234,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (currentVideoItem.episodesCount==0){
                         builder.append("1")
                     }else{
-                        var occurance=accuranceOfEpisodes(AppCommonMethod.occuranceList,currentVideoItem.seriesId)
+                        var occurance=accuranceOfEpisodes(AppCommonMethod.occuranceList,currentVideoItem.seriesIdWithNumber)
                         Log.w("occurance-->",occurance.toString()+"")
                         builder.append(occurance.toString())
                     }

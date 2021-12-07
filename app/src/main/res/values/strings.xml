@@ -289,6 +289,7 @@
     <string name="no_downloads">Videos that you download for viewing appear here</string>
     <string name="cancel_download">Cancel Download</string>
     <string name="cancel_downloads">Cancel Downloads</string>
+    <string name="remove_downloads">Remove Downloads</string>
     <string name="pause_download">Pause Download</string>
     <string name="delete_download">Delete Download</string>
     <string name="resume_download">Resume Download</string>

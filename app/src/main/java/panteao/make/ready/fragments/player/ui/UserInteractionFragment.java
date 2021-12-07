@@ -57,6 +57,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -925,27 +926,29 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     public boolean itemFound=false;
+    ArrayList list;
     public void checkDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
         Log.w("itemFoundValue-->",itemFound+"");
         if (adapterList!=null && adapterList.size()>0){
             if (!itemFound) {
+                list=new ArrayList();
                 for (int i = 0; i < adapterList.size(); i++) {
                     EnveuVideoItemBean videoItemBean = adapterList.get(i);
                     String entryid = videoItemBean.getkEntryId();
                     if (downloadHelper != null) {
                         OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
                         Log.w("itemFoundValue-->",info+"");
-                        if (info == null) {
-
-                        } else {
-                            setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
-                            itemFound=true;
-                            break;
+                        if (info != null) {
+                            list.add(info);
                         }
                     }
                 }
 
-                if (!itemFound){
+                itemFound=true;
+                Log.w("adapterListSize",adapterList.size() +" "+list.size());
+                if (list.size()==adapterList.size()){
+                    setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                }else {
                     setDownloadStatus(DownloadStatus.START);
                 }
             }
@@ -953,26 +956,39 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     public boolean itemCheck=false;
+    ArrayList itemList;
+    ArrayList completeItemList;
     public void checkSeriesDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
         Log.w("itemChecked 1",adapterList.size()+"");
         if (adapterList!=null && adapterList.size()>0){
             Log.w("itemChecked 2",itemCheck+"");
             if (!itemCheck) {
+                itemList=new ArrayList();
+                completeItemList=new ArrayList();
                 for (int i = 0; i < adapterList.size(); i++) {
                     EnveuVideoItemBean videoItemBean = adapterList.get(i);
                     String entryid = videoItemBean.getkEntryId();
-                    Log.w("itemChecked 3",entryid+" "+downloadHelper);
+                   // Log.w("itemChecked 3",entryid+" "+downloadHelper);
                     if (downloadHelper != null) {
                         OfflineManager.AssetInfo info = downloadHelper.getManager().getAssetInfo(entryid);
-                        Log.w("itemChecked 4",info+"");
+                       // Log.w("itemChecked 4",info+"");
                         if (info!=null){
+                            Log.w("itemChecked 4",info.getState()+"");
                             if(info.getState().name().equalsIgnoreCase("none")){
 
+                            }
+                            else if (info.getState().name().equalsIgnoreCase("completed")){
+                                completeItemList.add(info);
+                                itemList.add(info);
+                            }
+                            else if (info.getState().name().equalsIgnoreCase("failed")){
+
                             }else {
-                                Log.w("itemChecked 5",itemCheck+"");
+                                itemList.add(info);
+                                /*Log.w("itemChecked 5",itemCheck+"");
                                 setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
                                 itemCheck=true;
-                                break;
+                                break;*/
                             }
                         }
                        /* if (info == null && info.getState().name().equalsIgnoreCase("none")) {
@@ -985,9 +1001,18 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                         }*/
                     }
                 }
-                if (!itemCheck){
+
+                Log.w("itemChecked 4",itemList.size()+" "+adapterList.size());
+                if (completeItemList.size()==adapterList.size()){
+                    setDownloadStatus(DownloadStatus.DOWNLOADED);
+                }else if (itemList.size()==adapterList.size()){
+                    setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                }else {
                     setDownloadStatus(DownloadStatus.START);
                 }
+                /*if (!itemCheck){
+                    setDownloadStatus(DownloadStatus.START);
+                }*/
             }
         }
     }
