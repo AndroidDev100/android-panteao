@@ -1395,7 +1395,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                         if (videoQuality != 3) {
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
                             if (seasonEpisodesList!=null){
                                 String[] array = getResources().getStringArray(R.array.download_quality);
                                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
