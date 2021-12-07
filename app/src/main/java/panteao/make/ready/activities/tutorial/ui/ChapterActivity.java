@@ -555,7 +555,13 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 showloginPopup();
             }else {
-                showPremiumDialog();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showPremiumDialog();
+                    }
+                },300);
+
             }
         }
     }
@@ -2142,6 +2148,9 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                 int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                 EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
                 downloadHelper.startDownload(pos,videoDetails.getkEntryId(),videoDetails.getTitle(),videoDetails.getAssetType(),videoDetails.getSeriesId(),videoDetails.getName(),videoDetails.getPosterURL(),String.valueOf(videoDetails.getEpisodeNo()),seasonTabFragment.getSelectedSeason(),videoDetails.getSeriesImageURL());
+                if (seasonTabFragment!=null){
+                    seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
+                }
             }
 
         }
@@ -2496,6 +2505,19 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     @Override
     public void fromAdapterStatus(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (seasonTabFragment!=null && downloadHelper!=null){
+                    OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetID);
+                    if (info!=null){
+                        userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(info.getState()));
+                    }else {
+                        userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
+                    }
+                }
+            }
+        },500);
 
     }
 

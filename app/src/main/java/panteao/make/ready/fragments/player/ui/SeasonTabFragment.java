@@ -679,4 +679,5 @@ public class SeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayoutB
         }
         return status;
     }
+
 }
