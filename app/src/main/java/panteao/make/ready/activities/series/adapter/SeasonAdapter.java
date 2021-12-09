@@ -16,6 +16,7 @@ import com.kaltura.tvplayer.OfflineManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
@@ -122,7 +123,16 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     public void onBindViewHolder(@NonNull SeasonAdapter.SeasonViewHolder holder, int position) {
         if (videoItemBeans.get(position) != null) {
             holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
-            holder.itemBinding.setIsDownloadable(true);
+            try {
+                if (context instanceof InstructorActivity){
+                    holder.itemBinding.setIsDownloadable(false);
+                }else {
+                    holder.itemBinding.setIsDownloadable(true);
+                }
+            }catch (Exception e){
+
+            }
+
         }
         Log.e("statusDown","innnnn");
         setDownloadStatus(holder,position,videoItemBeans.get(position));
