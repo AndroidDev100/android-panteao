@@ -643,18 +643,25 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
     private void showPremiumDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
-        alertDialog.setCancelable(false);
-        alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
-            @Override
-            public void onFinishDialog() {
-                loginClicked=false;
-                comingSoon();
-               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+        if(!this.isFinishing()) {
+            try {
+                FragmentManager fm = getSupportFragmentManager();
+            PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+            alertDialog.setCancelable(false);
+            alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
+                @Override
+                public void onFinishDialog() {
+                    loginClicked = false;
+                    comingSoon();
+                    // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+                }
+            });
+            alertDialog.show(fm, "fragment_alert");
+            }catch (Exception e){
+
             }
-        });
-        alertDialog.show(fm, "fragment_alert");
+
+        }
     }
 
     public void requestAudioFocus() {

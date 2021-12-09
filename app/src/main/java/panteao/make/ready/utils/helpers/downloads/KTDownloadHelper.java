@@ -625,7 +625,11 @@ public class KTDownloadHelper {
 
     public void resumeDownload(String entryId) {
         if (entryId!=null && !entryId.equalsIgnoreCase("")){
-            manager.startAssetDownload(manager.getAssetInfo(entryId));
+            try {
+                manager.startAssetDownload(manager.getAssetInfo(entryId));
+            }catch (Exception e){
+
+            }
         }
     }
 

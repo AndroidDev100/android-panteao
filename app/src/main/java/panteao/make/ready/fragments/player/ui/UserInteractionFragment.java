@@ -869,7 +869,15 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
                             }
                             else {
-                                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
+                                if (getActivity()!=null && getActivity() instanceof SeriesDetailActivity){
+                                    getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download_all));
+                                }
+                                else if (getActivity()!=null && getActivity() instanceof TutorialActivity){
+                                    getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download_all));
+                                }else {
+                                    getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
+                                }
+
                                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
                             }
 
@@ -880,7 +888,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 });
 
             }else {
-                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.Downloading));
+                getBinding().downloadText.setText(getActivity().getResources().getString(R.string.download));
                 getBinding().downloadText.setTextColor(getActivity().getResources().getColor(R.color.subtitlecolor));
             }
         }

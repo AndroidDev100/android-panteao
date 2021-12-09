@@ -1722,6 +1722,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                             if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                                 if (userInteractionFragment!=null){
                                     userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                    userInteractionFragment.getBinding().downloadText.setText(getResources().getString(R.string.canceling_download));
                                 }
                                 downloadHelper.cancelAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
                                     @Override

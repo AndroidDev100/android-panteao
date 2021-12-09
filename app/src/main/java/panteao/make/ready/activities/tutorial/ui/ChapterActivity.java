@@ -567,9 +567,11 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
     }
 
         private void showPremiumDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
-        alertDialog.setCancelable(false);
+            if(!this.isFinishing()) {
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                 PremiumDialog alertDialog = PremiumDialog.newInstance("", getResources().getString(R.string.premium_popup_message_new));
+                  alertDialog.setCancelable(false);
         alertDialog.setAlertDialogCallBack(new PremiumDialog.AlertDialogListener() {
             @Override
             public void onFinishDialog() {
@@ -578,6 +580,12 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
         });
         alertDialog.show(fm, "fragment_alert");
+                }catch (Exception e){
+
+                }
+
+            }
+
     }
 
 
