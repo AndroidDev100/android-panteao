@@ -2165,6 +2165,17 @@ public class AppCommonMethod {
         return list;
     }
 
+    @NotNull
+    public static ArrayList<DownloadItemEntity> getSortChapters(@NotNull ArrayList<DownloadItemEntity> list) {
+        Collections.sort(list, new Comparator<DownloadItemEntity>() {
+            @Override
+            public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
+                return Long.compare(o1.getTimeStamp(), o2.getTimeStamp());
+            }
+        });
+        return list;
+    }
+
     private static String formattedDate;
     public static String getCurrentDateTimeStamp(int type) {
         Calendar calendar = Calendar.getInstance();

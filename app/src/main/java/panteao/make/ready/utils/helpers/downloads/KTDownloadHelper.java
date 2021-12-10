@@ -759,38 +759,43 @@ public class KTDownloadHelper {
     }
     DownloadStateListener listener;
     public void getAssetDownloadState(String kentry, KTDownloadHelper downloadHelper,DownloadStateListener listener) {
-        this.listener=listener;
-        Log.w("DownloadHelper",manager+" "+ktDownloadEvents);
-        if (manager!=null && ktDownloadEvents!=null){
-            OfflineManager.AssetInfo assetInfo=manager.getAssetInfo(kentry);
-            if (assetInfo!=null){
-                if (assetInfo.getState()!=null){
-                    try {
-                        Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
-                        float per=0;
-                        if (assetInfo.getEstimatedSize()>0){
-                            long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
-                            Log.d("stateOfAsset",percentage+"%");
-                            per=percentage;
-                            Log.d("stateOfAsset",percentage+"%");
-                        }
+        try {
+            this.listener=listener;
+            Log.w("DownloadHelper",manager+" "+ktDownloadEvents);
+            if (manager!=null && ktDownloadEvents!=null){
+                OfflineManager.AssetInfo assetInfo=manager.getAssetInfo(kentry);
+                if (assetInfo!=null){
+                    if (assetInfo.getState()!=null){
+                        try {
+                            Log.d("stateOfAsset",assetInfo.getEstimatedSize()+"   "+assetInfo.getBytesDownloaded());
+                            float per=0;
+                            if (assetInfo.getEstimatedSize()>0){
+                                long percentage=assetInfo.getBytesDownloaded()*100/assetInfo.getEstimatedSize();
+                                Log.d("stateOfAsset",percentage+"%");
+                                per=percentage;
+                                Log.d("stateOfAsset",percentage+"%");
+                            }
 
-                        listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
-                    }catch (Exception ignored){
-                        Log.d("stateOfAsset--",ignored.toString());
-                        listener.downloadState("failed",0,"");
+                            listener.downloadState(assetInfo.getState().name(),per,getDownloadedSize(assetInfo.getEstimatedSize()));
+                        }catch (Exception ignored){
+                            Log.d("stateOfAsset--",ignored.toString());
+                            listener.downloadState("failed",0,"");
+                        }
+                    }else {
+                        Log.d("stateOfAsset","null");
                     }
                 }else {
                     Log.d("stateOfAsset","null");
-                }
-            }else {
-                Log.d("stateOfAsset","null");
-                listener.downloadState("asset_not_found",0,"");
-                if (downloadHelper!=null){
-                    downloadHelper.removeFromDB(kentry);
+                    listener.downloadState("asset_not_found",0,"");
+                    if (downloadHelper!=null){
+                        downloadHelper.removeFromDB(kentry);
+                    }
                 }
             }
+        }catch (Exception e){
+
         }
+
     }
 
     private String getDownloadedSize(long estimatedSize) {

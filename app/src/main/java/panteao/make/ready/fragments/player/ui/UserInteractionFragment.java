@@ -993,24 +993,14 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
                             }else {
                                 itemList.add(info);
-                                /*Log.w("itemChecked 5",itemCheck+"");
-                                setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
-                                itemCheck=true;
-                                break;*/
+
                             }
                         }
-                       /* if (info == null && info.getState().name().equalsIgnoreCase("none")) {
 
-                        } else {
-                            Log.w("itemChecked 5",itemCheck+"");
-                            setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
-                            itemCheck=true;
-                            break;
-                        }*/
                     }
                 }
 
-                Log.w("itemChecked 4",itemList.size()+" "+adapterList.size());
+                Log.w("itemChecked 4",itemList.size()+" "+adapterList.size()+"  "+completeItemList.size());
                 if (completeItemList.size()==adapterList.size()){
                     setDownloadStatus(DownloadStatus.DOWNLOADED);
                 }else if (itemList.size()==adapterList.size()){

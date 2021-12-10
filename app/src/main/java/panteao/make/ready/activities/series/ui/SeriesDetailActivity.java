@@ -1676,6 +1676,8 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                             if (userInteractionFragment!=null){
                                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                userInteractionFragment.getBinding().downloadText.setText(getResources().getString(R.string.removing_download));
+                                userInteractionFragment.getBinding().downloadText.setTextColor(getResources().getColor(R.color.subtitlecolor));
                             }
                             downloadHelper.removeAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
                                 @Override
@@ -1826,7 +1828,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                                     if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
                                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
                                             if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
-                                                userInteractionFragment.checkDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                                userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
                                             }
                                         }
                                     }
@@ -1887,6 +1889,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                  public void run() {
                      if (userInteractionFragment!=null){
                          try {
+                             userInteractionFragment.isItemCheck();
                              userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
                          }catch (Exception e){
 
@@ -1972,6 +1975,24 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     @Override
     public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
         Log.w("adapterStaus",state+" 2 "+assetID);
+        if (seasonTabFragment!=null){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (userInteractionFragment!=null){
+                        try {
+                            userInteractionFragment.isItemCheck();
+                            userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                        }catch (Exception e){
+
+                        }
+                    }
+                    //  seasonTabFragment.downloadComplete(assetId);
+                }
+            });
+
+        }
+
 
     }
 

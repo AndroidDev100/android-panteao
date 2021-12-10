@@ -490,6 +490,10 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 }
             });
         }
+        Log.w("assetDownloadCompleted",assetId);
+        if (onDownloadClickInteraction!=null){
+            onDownloadClickInteraction.fromAdapterStatusChanged(null,assetId);
+        }
     }
 
     @Override

@@ -89,7 +89,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
                 }
             }else{
-                var listNew=AppCommonMethod.getSortedChapters(ArrayList<DownloadItemEntity>(it))
+                var listNew=AppCommonMethod.getSortChapters(ArrayList<DownloadItemEntity>(it))
                 populateAdapter(listNew)
                 try {
                     if (downloadHelper!=null){

@@ -1697,6 +1697,8 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                             if (userInteractionFragment!=null){
                                 userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                userInteractionFragment.getBinding().downloadText.setText(getResources().getString(R.string.removing_download));
+                                userInteractionFragment.getBinding().downloadText.setTextColor(getResources().getColor(R.color.subtitlecolor));
                             }
                             downloadHelper.removeAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
                                 @Override
@@ -2071,7 +2073,23 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
 
     @Override
     public void fromAdapterStatusChanged(@NonNull OfflineManager.AssetDownloadState state, @NonNull String assetID) {
+        Log.w("adapterStaus",state+" 2 "+assetID);
+        if (seasonTabFragment!=null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (userInteractionFragment != null) {
+                        try {
+                            userInteractionFragment.isItemCheck();
+                            userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(), downloadHelper);
+                        } catch (Exception e) {
 
+                        }
+                    }
+                    //  seasonTabFragment.downloadComplete(assetId);
+                }
+            });
+        }
     }
 
     @Override
