@@ -9,6 +9,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -212,6 +214,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     @Override
     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
        // PrintLogging.printLog(TAG, "onPurchasesUpdate() responseCode: " + billingResult.getResponseCode());
+        String purchaseType=PurchaseType.SUBSCRIPTION.name();
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             if (inAppProcessListener!=null){
                 try {
@@ -231,6 +234,28 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 inAppProcessListener.onPurchasesUpdated(billingResult,purchases);
             }
           //  processPurchases(purchases);
+
+
+            try {
+                if (purchaseType!=null && !purchaseType.equalsIgnoreCase("") && purchaseType.equalsIgnoreCase(PurchaseType.SUBSCRIPTION.name())){
+                    if (myBillingClient!=null && myBillingClient.isReady()){
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+                            if (purchases.get(0).getPurchaseToken() != null) {
+                                for (Purchase purchase : purchases) {
+                                    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                        acknowledgeNonConsumablePurchasesAsync(purchase);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }catch (Exception e){
+
+            }
+
+
         } else {
             // Handle any other error codes.
             logErrorType(billingResult);
@@ -345,10 +370,33 @@ public class BillingProcessor implements PurchasesUpdatedListener {
             if (purchase.getSku().equals(BillingConstants.SKU_BUY_APPLE)) {
                 // handleConsumablePurchasesAsync(purchase);
             } else {
-                // acknowledgeNonConsumablePurchasesAsync(purchase);
+                 acknowledgeNonConsumablePurchasesAsync(purchase);
             }
         }
     }
+
+    public void acknowledgeNonConsumablePurchasesAsync(Purchase purchase) {
+        final AcknowledgePurchaseParams params =
+                AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+        final AcknowledgePurchaseResponseListener listener =
+                billingResult -> {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getResponseCode());
+                    } else {
+                        PrintLogging.printLog(
+                                TAG,
+                                "onAcknowledgePurchaseResponse: "
+                                        + billingResult.getDebugMessage());
+                    }
+                };
+        executeServiceRequest(() -> myBillingClient.acknowledgePurchase(params, listener));
+    }
+
 
     public void initiatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails) {
         if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
