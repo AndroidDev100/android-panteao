@@ -462,7 +462,7 @@ public class KTDownloadHelper {
                     videoQualitySelectedListener.videoQualitySelected(selectedVideoQualityPosition);
                     dialog.dismiss();
                 }else {
-                    zContext.runOnUiThread(() -> { Toast.makeText(zContext, "Selection Required!", Toast.LENGTH_LONG).show();});
+                    zContext.runOnUiThread(() -> { Toast.makeText(zContext, "Please Select Download quality", Toast.LENGTH_LONG).show();});
                 }
 
             }
