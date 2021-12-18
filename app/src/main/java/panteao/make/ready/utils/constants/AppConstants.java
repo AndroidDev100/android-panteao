@@ -21,7 +21,7 @@ public interface AppConstants {
     String VIDEO_CLOUD_FRONT_URL = "https://d3uz5dkbsevwkn.cloudfront.net/fit-in/";
     String FILTER_PLAYER_BANNER = "/filters:fill(auto):format(webp):quality(60)";
     String FILTER = "/filters:";
-    String LINE_URI = "https://line.me/R/oaMessage/@mvhub";
+    String LINE_URI = "https://line.me/R/oaMessage/@";
 
 
     //  private static String hlsvideouri = "https://d228i5jh7v5l96.cloudfront.net/deval_dabeli/d5369610-7f07-dc54-71c3-56ca1b972a25.m3u8";

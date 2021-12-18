@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,6 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
 import com.make.baseCollection.baseCategoryServices.BaseCategoryServices;
 import com.make.userManagement.callBacks.LogoutCallBack;
 import com.facebook.login.LoginManager;
@@ -41,8 +45,11 @@ import panteao.make.ready.utils.BaseActivityAlertDialog;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.BillingProcessor;
+import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
 import panteao.make.ready.utils.inAppUpdate.ApplicationUpdateManager;
 
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -495,6 +502,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
                 popupSnackbarForCompleteUpdate();
             }
         });
+        initializeBillingProcessor();
     }
 
     @Override
@@ -514,6 +522,45 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
         snackbar.setActionTextColor(
                 getResources().getColor(R.color.moretitlecolor));
         snackbar.show();
+    }
+
+
+    BillingProcessor bp;
+    private void initializeBillingProcessor() {
+        try {
+            if (bp==null){
+                bp = new BillingProcessor(this, new InAppProcessListener() {
+                    @Override
+                    public void onBillingInitialized() {
+                        if (bp!=null && bp.isReady()){
+                            // if (BaseActivity.this instanceof PurchaseActivity || BaseActivity.this instanceof MemberShipPlanActivity){
+                            Log.w("BaseActivityClass-->>","in");
+                            // }
+                            bp.queryPurchasesForConsume();
+                        }
+                    }
+
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+
+                    }
+
+                    @Override
+                    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+
+                    }
+
+                    @Override
+                    public void onBillingError(@Nullable BillingResult error) {
+
+                    }
+                });
+                bp.initializeBillingProcessor();
+            }
+
+        }catch (Exception ignored){
+
+        }
     }
 
 }

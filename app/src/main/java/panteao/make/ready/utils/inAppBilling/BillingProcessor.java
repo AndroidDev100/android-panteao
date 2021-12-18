@@ -218,16 +218,22 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     if (purchases.get(0).getPurchaseToken() != null) {
                         for (Purchase purchase : purchases) {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                                if (purchaseType!=null && !purchaseType.equalsIgnoreCase("") &purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
-                                   // handleConsumablePurchasesAsync(purchase);
+                                Log.w("productType",productType);
+                                if (productType!=null && !productType.equalsIgnoreCase("") &productType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
+                                   handleConsumablePurchasesAsync(purchase);
                                 }
                             }
                         }
                     }
 
                     }catch (Exception e){
-
+                    Log.w("productType",e.toString());
                 }
+               /* try {
+                    queryPurchasesForConsume();
+                }catch (Exception e){
+
+                }*/
                 inAppProcessListener.onPurchasesUpdated(billingResult,purchases);
             }
           //  processPurchases(purchases);
@@ -244,11 +250,17 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     (billingResult, purchaseToken) -> {
                         // If billing service was disconnected, we try to reconnect 1 time
                         // (feel free to introduce your retry policy here).
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                             Log.w("tvod","consumed");
-                        } else {
-                            Log.w("tvod","failed");
+                        try {
+                            Log.w("tvod",billingResult.getDebugMessage()+" "+billingResult.getResponseCode());
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                Log.w("tvod","consumed");
+                            } else {
+                                Log.w("tvod","failed");
+                            }
+                        }catch (Exception e){
+
                         }
+
                     };
             // Consume the purchase async
             final ConsumeParams consumeParams =
@@ -259,6 +271,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
         }
     }
+
 
     /**
      * Queries SKU Details from Google Play Remote Server of SKU Types (InApp and Subscription).
@@ -350,16 +363,28 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         }
     }
 
+    BillingFlowParams purchaseParams;
     public void initiatePurchaseFlow(@NonNull Activity activity, @NonNull SkuDetails skuDetails) {
-        if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
-                || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
-            final BillingFlowParams purchaseParams =
-                    BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
-            executeServiceRequest(
-                    () -> {
-                        PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
-                        myBillingClient.launchBillingFlow(activity, purchaseParams);
-                    });
+        try {
+            if (skuDetails.getType().equals(BillingClient.SkuType.SUBS) && areSubscriptionsSupported()
+                    || skuDetails.getType().equals(BillingClient.SkuType.INAPP)) {
+                if (KsPreferenceKeys.getInstance().getAppPrefUserId()!=null && !KsPreferenceKeys.getInstance().getAppPrefUserId().equalsIgnoreCase("")){
+                    purchaseParams =
+                            BillingFlowParams.newBuilder().setSkuDetails(skuDetails).setObfuscatedAccountId(KsPreferenceKeys.getInstance().getAppPrefUserId()).build();
+                }else {
+                    purchaseParams  =
+                            BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build();
+                }
+
+                executeServiceRequest(
+                        () -> {
+                            PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+                            myBillingClient.launchBillingFlow(activity, purchaseParams);
+                        });
+            }
+
+        }catch (Exception e){
+
         }
     }
 
@@ -380,15 +405,19 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     }
 
     String purchaseType="";
+    String productType="";
     public void purchase(Activity activity, String sku, String developer_payload, String purchaseType) {
         this.purchaseType="";
+        this.productType="";
         if (purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
             this.purchaseType=PurchaseType.PRODUCT.name();
+            this.productType=PurchaseType.PRODUCT.name();
             if (myBillingClient!=null && myBillingClient.isReady()){
                 getProductSkuDetails(activity,sku);
             }
         }else {
             if (myBillingClient!=null && myBillingClient.isReady()){
+                this.productType=PurchaseType.SUBSCRIPTION.name();
                 getSubscriptionSkuDetails(activity,sku);
             }
         }
@@ -630,6 +659,29 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         }
 
 
+    }
+
+    public void queryPurchasesForConsume() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+                if (!KsPreferenceKeys.getInstance().getConsumeProduct()){
+                    Log.w("consumeCall",KsPreferenceKeys.getInstance().getConsumeProduct()+"");
+                    if (myBillingClient!=null){
+                        final Purchase.PurchasesResult purchasesResult =
+                                myBillingClient.queryPurchases(BillingClient.SkuType.INAPP);
+
+                        if (purchasesResult.getPurchasesList() != null && purchasesResult.getPurchasesList().size()>0) {
+                            for (Purchase purchase : purchasesResult.getPurchasesList()) {
+                                handleConsumablePurchasesAsync(purchase);
+                            }
+                            KsPreferenceKeys.getInstance().setConsumeProduct(true);
+                        }
+                    }
+                }
+            }
+        }catch (Exception ignored){
+            Log.w("crashHap",ignored.toString());
+        }
     }
 
 }

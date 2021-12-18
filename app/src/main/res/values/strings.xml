@@ -384,7 +384,7 @@
     <string name="waiting_for_wifi">waiting for wifi</string>
     <string name="download_will_begin">Your download will begin once you are come on WiFi. Or you can change the setting below:</string>
     <string name="download_over_wifi">Download over WiFi</string>
-    <string name="you_can_change">*You can chnage this from settings</string>
+    <string name="you_can_change">*You can change this from settings</string>
 
     <string name="premium_popup_message">Please buy the package to enjoy the quality movies.</string>
     <string name="premium_download_popup_message">Please buy the package to download the content</string>

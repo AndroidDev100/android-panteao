@@ -4,7 +4,7 @@
     <string name="facebook_app_id">199207785291668</string>
     <string name="branch_key">key_live_egG0oap83Po2jiMG3GGEXhmorrpmtOVA</string>
     <string name="branch_key_test">key_test_pnO3bgp87Ma6jkQI9UUzZdjfqthasVGG</string>
-    <string name="branch_host">share.mvhub.com</string>
+    <string name="branch_host">link.panteao.com</string>
     <string name="playstore_base_24">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp/i4yKlipdOfi+00OpClOEx/2GAz43qWiaQ1rEyB3izFnj3owF7lA699uWPvCFMgBmGL1tAWNwrdAOIkfjFP89Z+1d/4qdFdDv171MBwGbgeYlcQqcx7TSFbS7GO3NXMnAqX5VJWOcXFXQC61OsjxVVYhY5uiK13aDyRKeV4667ZMnB8b9qU1vIQMu1fFRpd7Itr/q2GsfxZ7cEZVkLzeV6rKopZgDRWNyI8kwlz7fXuhLR4ozWJoRpLCqkB3g+YXunwgeJFfkE3PLlqWm2qcQ+631KB06d8nElbB0jpFSULoGsmXi93q8oxRlVad7weqegTA6yB8jMUjHMh2NCnzQIDAQAB</string>
     <string name="playstore_subscription_monthly">monthly</string>
     <string name="playstore_subscription_weekly">weekly</string>
