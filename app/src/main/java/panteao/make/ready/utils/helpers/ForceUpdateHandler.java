@@ -1,6 +1,7 @@
 package panteao.make.ready.utils.helpers;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -47,21 +48,25 @@ public class ForceUpdateHandler {
 
     PanteaoApplication application;
     private void checkVersion(ConfigBean configBean) {
+        try {
+
         if (configBean!=null){
            application= ((PanteaoApplication) activity.getApplication());
            //configBean.getData().getAppConfig().getVersion().setForceUpdate(false);
            Version version=configBean.getData().getAppConfig().getVersion();
+            //Log.w("versions",version.getForceUpdate()+" "+version.getRecommendedUpdate());
            if (version.getForceUpdate()){
                String appversion = application.getVersionName().replace(".", "");
                int appCurrentVersion = Integer.parseInt(appversion);
                String configVersion= version.getUpdatedVersion();
+               Log.w("versions",appversion+" "+appCurrentVersion+" "+configVersion);
                if (!configVersion.equalsIgnoreCase("")) {
                    if (configVersion.contains(".")) {
                        configVersion = configVersion.replace(".", "");
                        if (!configVersion.equalsIgnoreCase("")) {
                            int configAppCurrentVersion = Integer.parseInt(configVersion);
                               if (appCurrentVersion<configAppCurrentVersion){
-                                  versionValidator.version(false, appCurrentVersion, configAppCurrentVersion,FORCE);
+                                  versionValidator.version(true, appCurrentVersion, configAppCurrentVersion,FORCE);
                               }else {
                                   versionValidator.version(false, appCurrentVersion, configAppCurrentVersion,FORCE);
                               }
@@ -80,6 +85,7 @@ public class ForceUpdateHandler {
                String appversion = application.getVersionName().replace(".", "");
                int appCurrentVersion = Integer.parseInt(appversion);
                String configVersion= version.getUpdatedVersion();
+               Log.w("versions",appversion+" "+appCurrentVersion+" "+configVersion);
                if (!configVersion.equalsIgnoreCase("")) {
                    if (configVersion.contains(".")) {
                        configVersion = configVersion.replace(".", "");
@@ -100,6 +106,9 @@ public class ForceUpdateHandler {
            }else {
                versionValidator.version(false, 0, 0, RECOMMENDED);
            }
+        }
+        }catch (Exception e){
+            versionValidator.version(false, 0, 0,FORCE);
         }
     }
 
