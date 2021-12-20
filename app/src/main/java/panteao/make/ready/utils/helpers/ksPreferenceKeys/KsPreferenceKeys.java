@@ -28,6 +28,7 @@ public class KsPreferenceKeys extends SharedPrefHelper {
     public static final String VIDEO_DOWNLOAD_EMAIL = "video_download_email";
     public static final String OVP_BASE_URL = "OVP_BASE_URL";
     public static final String NUMBER_OF_EPISODES = "NUMBER_OF_EPISODES";
+    public static final String PRODUCT_CONSUMED = "PRODUCT_CONSUMED";
 
 
     private static final String DOWNLOADED_ITEM_DELETED = "download_item_deleted";
@@ -438,5 +439,13 @@ public class KsPreferenceKeys extends SharedPrefHelper {
 
     public void setNumberEpisodes(String episodes) {
         setString(episodes, episodes);
+    }
+
+    public Boolean getConsumeProduct() {
+        return getBoolean(PRODUCT_CONSUMED, false);
+    }
+
+    public void setConsumeProduct(boolean consumed) {
+        setBoolean(PRODUCT_CONSUMED, consumed);
     }
 }
