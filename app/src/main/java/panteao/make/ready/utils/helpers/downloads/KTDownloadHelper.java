@@ -308,9 +308,9 @@ public class KTDownloadHelper {
             }
 
         }else {
-            DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"",expiryTimeStamp,kentryid,
+           /* DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,false,"",expiryTimeStamp,kentryid,
                     -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),"",count);
-            db.downloadDao().insertDownloadItem(downloadItemEntity);
+            db.downloadDao().insertDownloadItem(downloadItemEntity);*/
         }
     }
 
@@ -951,9 +951,10 @@ public class KTDownloadHelper {
 
     ArrayList<String> downloadAssets;
 /*series download Handling*/
-    int seriesDownloadCount=1;
+    int seriesDownloadCount=0;
     OfflineManager.PrepareCallback prepareCall=null;
 public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoItemBean> seasonEpisodesList,CancelCallBack callBack) {
+    seriesDownloadCount=0;
     cancelCallBack=callBack;
     downloadAssets=new ArrayList<>();
     manager.setKalturaParams(KalturaPlayer.Type.ovp, SDKConfig.PARTNER_ID);
@@ -966,8 +967,20 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
             manager.startAssetDownload(assetInfo);
             Log.w("downloadAssetAdded","onPrepareSuccess-->"+assetId+"  "+seasonEpisodesList.size());
             downloadAssets.add(assetId);
-            seriesDownloadCount++;
-            addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,assetId);
+            try {
+                String assetType=seasonEpisodesList.get(seriesDownloadCount).getAssetType();
+                seriesDownloadCount++;
+                if (assetType!=null && !assetType.equalsIgnoreCase("")){
+                    if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+                        addChapterDownload(seasonEpisodesList,manager,position,prepareCall,assetId);
+                    }else {
+                        addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,assetId);
+                    }
+                }
+            }catch (Exception e){
+
+            }
+
         }
 
         @Override
@@ -1001,6 +1014,7 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
     if (seasonEpisodesList!=null && seasonEpisodesList.size()>0){
         try {
             String kentryid=seasonEpisodesList.get(0).getkEntryId();
+            String assetType=seasonEpisodesList.get(0).getAssetType();
             Log.w("downloadData-->>",kentryid+" "+seasonEpisodesList.get(0).getEpisodeNo());
             OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryid);
            // Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
@@ -1008,13 +1022,37 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
             if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
             && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
-                Log.w("downloadData-->>in",info.getState().name());
-            }else {
-                if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
-                    OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
-                    OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
-                    manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                Log.w("downloadData-->>in",info.getState().name()+" "+assetType);
+                seriesDownloadCount++;
+                if (assetType!=null && !assetType.equalsIgnoreCase("")){
+                    if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+                        addChapterDownload(seasonEpisodesList,manager,position,prepareCall,kentryid);
+                    }else {
+                        addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryid);
+                    }
                 }
+            }else {
+                Log.w("downloadData-->>in"," "+assetType);
+                if (assetType!=null && !assetType.equalsIgnoreCase("")){
+                    if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
+                        if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                            OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                            OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
+                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                        }
+                    }else if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+                        if (kentryid!=null && !kentryid.equalsIgnoreCase("")){
+                            OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                            OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryid,null,seasonEpisodesList.get(0).getTitle());
+                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                        }
+                    }else {
+                       seriesDownloadCount++;
+                       addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryid);
+                    }
+
+                }
+
             }
         }catch (Exception e){
             Log.w("downloadData-->>in",e.toString());
@@ -1026,13 +1064,103 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
 
    }
 
+    private void addChapterDownload(List<EnveuVideoItemBean> seasonEpisodesList, OfflineManager manager, int position, OfflineManager.PrepareCallback prepareCall, String assetId) {
+    try {
+        String assetType=seasonEpisodesList.get(seriesDownloadCount).getAssetType();
+        if (!assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || !assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
+
+
+            String kentryids=seasonEpisodesList.get(seriesDownloadCount).getkEntryId();
+
+            Log.w("downloadData-->>",kentryids+" "+assetId+"<-->");
+            OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryids);
+            if (info!=null){
+                Log.w("downloadData-->>in",info.getState().name());
+            }
+            if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
+                    && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
+                seriesDownloadCount++;
+                if (assetType!=null && !assetType.equalsIgnoreCase("")){
+                    if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+                        addChapterDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+                    }else {
+                        addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+                    }
+                }
+            }else {
+                if (kentryids!=null && !kentryids.equalsIgnoreCase("")){
+                    OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                    OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryids,null,seasonEpisodesList.get(seriesDownloadCount).getTitle());
+                    manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                }
+            }
+
+        }else {
+            seriesDownloadCount++;
+            addChapterDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+        }
+
+    }catch (Exception e){
+
+    }
+
+    }
+
+    boolean finished = false;
+    String kentryids="";
     private void addSeriesDownload(List<EnveuVideoItemBean> seasonEpisodesList, OfflineManager manager,int position,OfflineManager.PrepareCallback prepareCall,String assetId) {
-            for (int i = 0;i<seasonEpisodesList.size();i++){
-                Log.w("downloadData-->>","prepaire" + " "+prepareCall);
-                if (prepareCall!=null){
-                    try {
-                        String kentryid=seasonEpisodesList.get(i).getkEntryId();
-                        Log.w("downloadData-->>",kentryid+" "+assetId+"11<-->11"+seasonEpisodesList.get(i).getEpisodeNo());
+        try {
+           // Log.w("downloadData-->>extra"," "+seriesDownloadCount);
+            String kentryids=seasonEpisodesList.get(seriesDownloadCount).getkEntryId();
+            String assetType=seasonEpisodesList.get(seriesDownloadCount).getAssetType();
+            Log.w("downloadData-->>extra"," "+seriesDownloadCount+"  "+assetType);
+            if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
+                Log.w("downloadData-->>extra"," innnnn");
+
+                Log.w("downloadData-->>",kentryids+" "+assetId+"<-->");
+                OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryids);
+                if (info!=null){
+                    Log.w("downloadData-->>in",info.getState().name());
+                }
+                if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
+                        && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
+                    seriesDownloadCount++;
+                    if (assetType!=null && !assetType.equalsIgnoreCase("")){
+                        if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
+                            addChapterDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+                        }else {
+                            addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+                        }
+                    }
+                }else {
+                    if (kentryids!=null && !kentryids.equalsIgnoreCase("")){
+                        OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                        OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryids,null,seasonEpisodesList.get(seriesDownloadCount).getTitle());
+                        manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                    }
+                }
+
+            }else {
+                seriesDownloadCount++;
+                addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+
+            }
+
+        }catch (Exception e){
+            Log.w("downloadData-->>",e.toString());
+        }
+
+    }
+
+    private void addSeriesDownload(List<EnveuVideoItemBean> seasonEpisodesList, OfflineManager manager,int position,OfflineManager.PrepareCallback prepareCall,String assetId,boolean finished) {
+        for (int i = 0;i<seasonEpisodesList.size() ;i++){
+            Log.w("downloadData-->>","prepaire" + " "+prepareCall);
+            if (prepareCall!=null){
+                try {
+                    String kentryid=seasonEpisodesList.get(i).getkEntryId();
+                    String assetType=seasonEpisodesList.get(i).getAssetType();
+                    Log.w("downloadData-->>",kentryid+" "+assetId+"11<-->11"+seasonEpisodesList.get(i).getEpisodeNo()+" "+assetType);
+                    if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())){
                         if (kentryid.equalsIgnoreCase(assetId)){
                             Double episodenumner=(Double) seasonEpisodesList.get(i).getEpisodeNo();
                             int value=(int) Math.round(episodenumner);
@@ -1040,6 +1168,51 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                             for (int j = 0;j<seasonEpisodesList.size();j++){
                                 Double episodenumners=(Double) seasonEpisodesList.get(j).getEpisodeNo();
                                 int values=(int) Math.round(episodenumners);
+                                int finalEpisodes=values;
+                                Log.w("downloadData-->>","finalEpisodes"+" "+finalEpisode+"  "+finalEpisodes);
+                                if (finalEpisode==finalEpisodes){
+                                    kentryids =seasonEpisodesList.get(j).getkEntryId();
+                                    Log.w("downloadData-->>",kentryids+" "+assetId+"<-->"+seasonEpisodesList.get(i).getEpisodeNo());
+                                    //Log.w("downloadData-->>",kentryid+"  "+seasonEpisodesList.get(i).getEpisodeNo());
+                                    //Log.w("downloadData-->>",kentryid);
+                                    OfflineManager.AssetInfo info=getManager().getAssetInfo(kentryids);
+                                    if (info!=null){
+                                        Log.w("downloadData-->>in",info.getState().name());
+                                    }
+                                    //  Log.w("downloadData-->>",info+" "+info.getState()+" "+info.getState().name());
+                                    if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
+                                            && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
+                                        //Log.w("downloadData-->>in","completed");
+                                        finished=true;
+                                        break;
+                                    }else {
+                                        if (kentryids!=null && !kentryids.equalsIgnoreCase("")){
+                                            //Log.w("downloadData-->>in",kentryid);
+                                            OfflineManager.SelectionPrefs defaultPrefs=createUserPrefrences(position);
+                                            OVPItem ovpItem=new OVPItem(SDKConfig.PARTNER_ID,kentryids,null,seasonEpisodesList.get(i).getTitle());
+                                            manager.prepareAsset(((KalturaItem) ovpItem).mediaOptions(), defaultPrefs, prepareCall);
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            if (finished){
+                                seriesDownloadCount++;
+                                addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+
+                            }
+                            break;
+                        }
+
+                    }else {
+                        if (kentryid.equalsIgnoreCase(assetId)){
+                            String episodenumner=(String) seasonEpisodesList.get(i).getEpisodeNo();
+                            Log.w("downloadData-->>",kentryid+" "+assetId+"11<-->11"+seasonEpisodesList.get(i).getEpisodeNo()+" "+assetType);
+                            int value=Integer.parseInt(episodenumner);
+                            int finalEpisode=value+1;
+                            for (int j = 0;j<seasonEpisodesList.size();j++){
+                                String episodenumners=(String) seasonEpisodesList.get(j).getEpisodeNo();
+                                int values=Integer.parseInt(episodenumners);
                                 int finalEpisodes=values;
                                 Log.w("downloadData-->>","finalEpisodes"+" "+finalEpisode+"  "+finalEpisodes);
                                 if (finalEpisode==finalEpisodes){
@@ -1055,6 +1228,10 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                                     if (info!=null && info.getState()!=null && info.getState().name()!=null && !info.getState().name().equalsIgnoreCase("")
                                             && (info.getState().name().equalsIgnoreCase("completed") || info.getState().name().equalsIgnoreCase("paused") || info.getState().name().equalsIgnoreCase("started"))){
                                         //Log.w("downloadData-->>in","completed");
+                                        // seriesDownloadCount++;
+                                        finished=true;
+                                        //  addChapterDownload(seasonEpisodesList,manager,position,prepareCall,kentryid);
+                                        break;
                                     }else {
                                         if (kentryids!=null && !kentryids.equalsIgnoreCase("")){
                                             //Log.w("downloadData-->>in",kentryid);
@@ -1066,18 +1243,24 @@ public void startSeriesDownload(int position,int seasonNumber,List<EnveuVideoIte
                                     break;
                                 }
                             }
-
+                            if (finished){
+                                seriesDownloadCount++;
+                                addSeriesDownload(seasonEpisodesList,manager,position,prepareCall,kentryids);
+                            }
                             break;
                         }
 
-                    }catch (Exception e){
-                        Log.w("downloadData-->>in",e.toString());
                     }
 
+                }catch (Exception e){
+                    Log.w("downloadData-->>in",e.toString());
                 }
 
             }
+
+        }
     }
+
 
     private void cancelAllVideosOneByOne(List<EnveuVideoItemBean> seasonEpisodesList,CancelCallBack callBack) {
         try {

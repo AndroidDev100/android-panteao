@@ -732,4 +732,28 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         }
     }
 
+    public void queryPurchases() {
+        try {
+            if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+                if (myBillingClient!=null){
+                    final Purchase.PurchasesResult purchasesResult =
+                            myBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+
+                    final List<Purchase> purchases = new ArrayList<>();
+                    if (purchasesResult.getPurchasesList() != null) {
+                        purchases.addAll(purchasesResult.getPurchasesList());
+                    }
+                    if (purchases.size()>0){
+                        purchasedSKU=purchases.get(0).getSku();
+                        purchasedToken=purchases.get(0).getPurchaseToken();
+                    }
+
+                    PurchaseHandling.getInstance().checkPurchaseHistory(purchases,myBillingClient);
+                }
+            }
+        }catch (Exception ignored){
+            Log.w("crashHap",ignored.toString());
+        }
+    }
+
 }

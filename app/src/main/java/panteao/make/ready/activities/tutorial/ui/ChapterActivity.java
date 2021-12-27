@@ -590,7 +590,8 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
 
     private void showloginPopup() {
-        try {
+        if(!this.isFinishing()) {
+            try {
             FragmentManager fm = getSupportFragmentManager();
         LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
         alertDialog.setCancelable(false);
@@ -604,7 +605,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         }catch (Exception ignored){
 
         }
-
+        }
     }
 
 
@@ -2256,11 +2257,19 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         AppCommonMethod.showPopupMenu(this, view, R.menu.delete_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.delete_download:
-                    //Log.w("downloadVideo 1",Entryid);
+                    Log.w("downloadVideo 1",videoId);
                     if (userInteractionFragment!=null){
                         userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
                     }
-                    downloadHelper.cancelVideo(downloadId);
+                    downloadHelper.cancelVideo(videoId);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (seasonTabFragment!=null){
+                                seasonTabFragment.cancelDownload(videoId);
+                            }
+                        }
+                    },500);
                     break;
             }
             return false;

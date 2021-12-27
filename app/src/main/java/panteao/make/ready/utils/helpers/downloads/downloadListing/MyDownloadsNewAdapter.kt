@@ -223,6 +223,7 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
 
             if (currentVideoItem.isSeries){
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
+                Log.d("episodeNumber",currentVideoItem.episodeNumber)
                 viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name
             }else{
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE

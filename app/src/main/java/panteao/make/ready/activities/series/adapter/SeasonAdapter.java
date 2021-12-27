@@ -133,6 +133,14 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
             }
 
+            try {
+                if (videoItemBeans.get(position).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor())){
+                    holder.itemBinding.setIsDownloadable(false);
+                }
+            }catch (Exception e){
+
+            }
+
         }
         Log.e("statusDown","innnnn");
         setDownloadStatus(holder,position,videoItemBeans.get(position));

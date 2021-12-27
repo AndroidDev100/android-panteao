@@ -1068,6 +1068,7 @@ public class AppCommonMethod {
             } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getTutorial())) {
                 new ActivityLauncher((BaseActivity) context).tutorialDetailScreen((BaseActivity) context, TutorialActivity.class, id);
             } else if (screenType.equalsIgnoreCase(MediaTypeConstants.getInstance().getCustomInternalPage())) {
+                Log.w("customeInternalPage","true");
                 Intent playerIntent =
                         new Intent(context, CustomInternalPage.class);
                 playerIntent.putExtra(
@@ -2110,7 +2111,7 @@ public class AppCommonMethod {
         Collections.sort(list, new Comparator<DownloadItemEntity>() {
             @Override
             public int compare(DownloadItemEntity o1, DownloadItemEntity o2) {
-                return o1.getEpisodeNumber().compareTo(o2.getEpisodeNumber());
+                return ((o1.getEpisodeNumber().charAt(1)-o2.getEpisodeNumber().charAt(1))*10 + o1.getEpisodeNumber().charAt(0)-o2.getEpisodeNumber().charAt(0));
             }
         });
         //  Collections.sort(list, (o1, o2) -> o1.getTimeStamp().compareTo(o2.getTimeStamp()));
@@ -2135,8 +2136,10 @@ public class AppCommonMethod {
         for (int i=0;i<it.size();i++){
             if (list.size()>0) {
                 DownloadItemEntity value = it.get(i);
+                Log.d("episodeNumber",value.getEpisodeNumber());
                 list.add(value);
             }else {
+                Log.d("episodeNumber",it.get(0).getEpisodeNumber());
                 list.add(it.get(0));
             }
         }

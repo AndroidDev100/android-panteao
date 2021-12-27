@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.Presenter
@@ -68,6 +69,7 @@ class InternalPlaylistListingFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.w("internalPage","list")
         railInjectionHelper = RailInjectionHelper(activity?.application!!)
     }
 
@@ -117,6 +119,7 @@ class InternalPlaylistListingFragment :
         recyclerView.setHasFixedSize(false)
         val mLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         recyclerView.layoutManager = mLayoutManager
+        //ViewCompat.setNestedScrollingEnabled(recyclerView, false);
         getPlayListDetails(requireActivity())
     }
 

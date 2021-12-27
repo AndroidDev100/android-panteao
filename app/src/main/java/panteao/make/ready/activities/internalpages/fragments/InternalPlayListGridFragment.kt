@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -125,6 +126,7 @@ class InternalPlayListGridFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.w("internalPage","grid")
     }
 
     private fun setupEventListeners() {
@@ -148,9 +150,9 @@ class InternalPlayListGridFragment :
     }
     var shimmerAdapter : CommonListingAdapter?=null
     private fun callShimmer() {
+        binding.listRecyclerview.isNestedScrollingEnabled = false
         shimmerAdapter = CommonListingAdapter(requireActivity())
         binding.listRecyclerview.hasFixedSize()
-        binding.listRecyclerview.isNestedScrollingEnabled = false
         playLists[0].split("|").forEachIndexed { i, s ->
             if (i == 0) {
             } else if (i == 2) {
@@ -331,6 +333,7 @@ class InternalPlayListGridFragment :
                             .configuration.orientation == 2
                     ) 4 else 3
             }
+            binding.listRecyclerview.isNestedScrollingEnabled = false
             shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(4))
             binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
             var gridLayoutManager = GridLayoutManager(requireActivity(), num)

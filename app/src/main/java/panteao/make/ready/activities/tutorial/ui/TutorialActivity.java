@@ -1739,15 +1739,16 @@ public class TutorialActivity extends BaseBindingActivity<ActivitySeriesDetailBi
             Log.w("cancelVideo","-->onDownloadDeleted");
             if (videoId!=null && !videoId.equalsIgnoreCase("")){
                 downloadHelper.cancelVideo(videoId);
-                seasonTabFragment.cancelDownload(videoId);
+                userInteractionFragment.setItemFound();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (seasonTabFragment!=null){
+                            seasonTabFragment.cancelDownload(videoId);
                             if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
                                 if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
                                     if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
-                                        userInteractionFragment.checkDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                        userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
                                     }
                                 }
                             }

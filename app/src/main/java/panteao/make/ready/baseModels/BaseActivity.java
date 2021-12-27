@@ -537,6 +537,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
                             Log.w("BaseActivityClass-->>","in");
                             // }
                             bp.queryPurchasesForConsume();
+                            bp.queryPurchases();
                         }
                     }
 

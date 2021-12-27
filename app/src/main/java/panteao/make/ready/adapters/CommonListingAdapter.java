@@ -2,6 +2,7 @@ package panteao.make.ready.adapters;
 
 import android.app.Activity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class CommonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int itemHeight;
 
     public CommonListingAdapter(Activity activity) {
+        Log.w("common-->","CommonListingAdapter");
         DisplayMetrics displaymetrics = new DisplayMetrics();
         (activity).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need three fix imageview in width

@@ -4,6 +4,7 @@ package panteao.make.ready.adapters.commonRails;
 import android.app.Activity;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -69,6 +70,7 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 80) / num;
         itemHeight = (int) (itemWidth * 9) / 16;
+        Log.w("common-->","LandscapeListingAdapter");
     }
 
     public void notifydata(List<EnveuVideoItemBean> i) {

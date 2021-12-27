@@ -61,6 +61,10 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
+
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
@@ -73,6 +77,8 @@ import com.facebook.login.LoginResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
+import panteao.make.ready.utils.inAppBilling.BillingProcessor;
+import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
 
 import org.json.JSONException;
 
@@ -542,6 +548,16 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         } catch (Exception e) {
 
         }
+
+        try {
+            callQueryPurchases();
+        }catch (Exception ignored){
+
+        }
+    }
+
+    private void callQueryPurchases() {
+        initializeBillingProcessor();
     }
 
     private void removeDownloadsFromDB() {
@@ -872,6 +888,43 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                 // Notify user that an error occurred while downloading image
                 //Snackbar.make(mCLayout,"Error", Snackbar.LENGTH_LONG).show();
             }
+        }
+    }
+
+    BillingProcessor bp;
+    private void initializeBillingProcessor() {
+        try {
+            if (bp==null){
+                bp = new BillingProcessor(this, new InAppProcessListener() {
+                    @Override
+                    public void onBillingInitialized() {
+                        if (bp!=null && bp.isReady()){
+                            // if (BaseActivity.this instanceof PurchaseActivity || BaseActivity.this instanceof MemberShipPlanActivity){
+                            Log.w("BaseActivityClass-->>","in");
+                            bp.queryPurchases();
+                        }
+                    }
+
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+
+                    }
+
+                    @Override
+                    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+
+                    }
+
+                    @Override
+                    public void onBillingError(@Nullable BillingResult error) {
+
+                    }
+                });
+                bp.initializeBillingProcessor();
+            }
+
+        }catch (Exception ignored){
+
         }
     }
 

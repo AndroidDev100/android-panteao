@@ -10,9 +10,14 @@
             type="panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean" />
     </data>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
         tools:context=".activities.internalpages.TVCustomInternalPage">
 
@@ -40,66 +45,86 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <panteao.make.ready.utils.helpers.ExpandableTextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:lineSpacingExtra="2dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="6dp"
-            android:textColor="?attr/title_color"
-            android:fontFamily="@font/sarabun_v7_thai_latin_regular"
-            android:text="@{asset.description}"
-            app:layout_constraintEnd_toEndOf="@id/page_image_view"
-            app:layout_constraintStart_toStartOf="@id/page_image_view"
-            app:layout_constraintTop_toBottomOf="@id/page_image_view" />
-
-        <LinearLayout
-            android:id="@+id/less_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:layout_marginEnd="1dp"
-            app:layout_constraintEnd_toEndOf="@id/description"
-            app:layout_constraintTop_toBottomOf="@id/description"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/text_expandable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
-                android:maxLines="2"
-                android:padding="5dp"
-                android:textAllCaps="true"
-                android:text="@string/more"
-                android:textColor="?attr/more_less_text_color"
-                android:textSize="@dimen/font_medium" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/page_image_view"
-            app:layout_constraintStart_toStartOf="@id/page_image_view"
-            app:layout_constraintTop_toBottomOf="@id/less_button" />
-
-        <FrameLayout
-            android:id="@+id/frame_interal_playlists"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/page_image_view"
+            app:layout_constraintStart_toStartOf="@id/page_image_view"
+            app:layout_constraintTop_toBottomOf="@id/page_image_view">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:descendantFocusability="beforeDescendants"
+                android:background="?attr/backgroundColor">
+
+                <panteao.make.ready.utils.helpers.ExpandableTextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:lineSpacingExtra="2dp"
+                    android:maxLines="2"
+                    android:text="@{asset.description}"
+                    android:textColor="?attr/title_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/less_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="1dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@id/description"
+                    app:layout_constraintTop_toBottomOf="@id/description">
+
+                    <TextView
+                        android:id="@+id/text_expandable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                        android:maxLines="2"
+                        android:padding="5dp"
+                        android:text="@string/more"
+                        android:textAllCaps="true"
+                        android:textColor="?attr/more_less_text_color"
+                        android:textSize="@dimen/font_medium" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_semibold"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/less_button" />
+
+                <FrameLayout
+                    android:id="@+id/frame_interal_playlists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>

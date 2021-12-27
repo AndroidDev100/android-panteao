@@ -336,6 +336,8 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
 
     boolean loginClicked=false;
     private void showloginPopup() {
+        if(!this.isFinishing()) {
+            try {
         FragmentManager fm = getSupportFragmentManager();
         LoginPopupDialog alertDialog = LoginPopupDialog.newInstance("", getResources().getString(R.string.login_popup_message));
         alertDialog.setCancelable(false);
@@ -347,6 +349,11 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
             }
         });
         alertDialog.show(fm, "fragment_alert");
+            } catch (Exception e) {
+
+            }
+        }
+
     }
 
     public void postCommentClick() {
@@ -2260,11 +2267,20 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
         AppCommonMethod.showPopupMenu(this, view, R.menu.delete_menu, item -> {
             switch (item.getItemId()) {
                 case R.id.delete_download:
-                    //Log.w("downloadVideo 1",Entryid);
+                    Log.w("onDownloadCompleteClik",videoId);
                     if (userInteractionFragment!=null){
                         userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
                     }
-                    downloadHelper.cancelVideo(downloadId);
+                    downloadHelper.cancelVideo(videoId);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (seasonTabFragment!=null){
+                                seasonTabFragment.cancelDownload(videoId);
+                            }
+                        }
+                    },500);
+
                     break;
             }
             return false;
