@@ -220,7 +220,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 tabId = extras.getString(AppConstants.BUNDLE_DETAIL_TYPE, AppConstants.MOVIE_ENVEU);
                 downloadHelper = new KTDownloadHelper(this,this);
                 //downloadHelper.startDownload();
-               //x downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
+                //x downloadHelper.findVideo(String.valueOf(brightCoveVideoId));
             }
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras " + "Search_Show_All");
@@ -237,26 +237,26 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             connectionValidation(false);
         }
     }
-   private void setPlayerFragment(){
-       Bundle args = new Bundle();
-       if (videoDetails != null) {
+    private void setPlayerFragment(){
+        Bundle args = new Bundle();
+        if (videoDetails != null) {
             args.putString(AppConstants.ENTRY_ID, Entryid);
             args.putLong("bookmark_position",bookmarkPosition);
             args.putString("tvod_type",typeofTVOD);
             Logger.d("ENTRY_ID",Entryid+"");
         }
-       if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
-           FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-           playerfragment = new KalturaFragment();
-           playerfragment.setArguments(args);
-           transaction.replace(R.id.player_root, playerfragment);
-           transaction.addToBackStack(null);
-           transaction.commit();
-           if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
-               downloadHelper.getAssetInfo(videoDetails.getkEntryId());
-           }
-       }
-   }
+        if (Entryid!=null && !Entryid.equalsIgnoreCase("")){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            playerfragment = new KalturaFragment();
+            playerfragment.setArguments(args);
+            transaction.replace(R.id.player_root, playerfragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            if (videoDetails != null && videoDetails.getkEntryId()!=null && !videoDetails.getkEntryId().equalsIgnoreCase("")) {
+                downloadHelper.getAssetInfo(videoDetails.getkEntryId());
+            }
+        }
+    }
     private void connectionValidation(Boolean aBoolean) {
         if (aBoolean) {
             UIinitialization();
@@ -293,7 +293,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                 @Override
                 public void run() {
                     if (isPremium) {
-                       // showPremiumPopup();
+                        showPremiumPopup();
                     }
                 }
             }, 1000);
@@ -301,13 +301,19 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
         }
 
-        if (isPremium) {
+        if (isPremium){
             if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 showloginPopup();
             }else {
-                showPremiumDialog();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //  showPremiumDialog();
+                    }
+                },400);
             }
         }
+
 
     }
 
@@ -319,7 +325,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             @Override
             public void onFinishDialog() {
                 comingSoon();
-               // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
+                // new ActivityLauncher(EpisodeActivity.this).loginActivity(EpisodeActivity.this, LoginActivity.class);
             }
         });
         alertDialog.show(fm, "fragment_alert");
@@ -433,8 +439,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
         try {
             downloadHelper = new KTDownloadHelper(this,this);
             if (KsPreferenceKeys.getInstance().getVideoDownloadAction()==3){
-            videoDeletedFromList();
-        }
+                videoDeletedFromList();
+            }
         }catch (Exception e){
 
         }
@@ -820,6 +826,18 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         public void run() {
                             try {
                                 isPremium = true;
+                                if (isPremium){
+                                    if (!KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
+                                    //    showloginPopup();
+                                    }else {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                showPremiumDialog();
+                                            }
+                                        },400);
+                                    }
+                                }
                             } catch (Exception ignored) {
 
                             }
@@ -887,13 +905,13 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
     private void showPremiumPopup() {
         try {
-            isPremium = true;
+            // isPremium = true;
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.resetLanguage("th", ShowActivity.this);
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.resetLanguage("en", ShowActivity.this);
             }
-            showDialog("", getResources().getString(R.string.premium_popup_message));
+            // showDialog("", getResources().getString(R.string.premium_popup_message));
         } catch (Exception ignored) {
 
         }
@@ -911,8 +929,8 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                         }
                         String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
                         if (vodOfferType!=null){
-                             if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
-                                 AppCommonMethod.setDownloadExpiry(alpurchaseas.get(i).getRentalPeriod());
+                            if (vodOfferType.contains(VodOfferType.RENTAL.name())) {
+                                AppCommonMethod.setDownloadExpiry(alpurchaseas.get(i).getRentalPeriod());
                                 if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___sd.name())){
                                     typeofTVOD=TVODENUMS.___sd.name();
                                 }else if (alpurchaseas.get(i).getIdentifier().contains(TVODENUMS.___hd.name())){
@@ -1363,7 +1381,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
                     Logger.e(TAG, "AUDIOFOCUS_LOSS");
                     //Loss of audio focus for a long time
                     //Stop playing the sound
-                        break;
+                    break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     Logger.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
                     //Loss of audio focus for a short time
@@ -1498,17 +1516,17 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 //    }
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-            try {
-                if (playerfragment != null) {
-                    if (!hasFocus) {
-                        playerfragment.checkPlayerState(ShowActivity.this,1);
-                    }else {
-                        playerfragment.checkPlayerState(ShowActivity.this,2);
-                    }
+        try {
+            if (playerfragment != null) {
+                if (!hasFocus) {
+                    playerfragment.checkPlayerState(ShowActivity.this,1);
+                }else {
+                    playerfragment.checkPlayerState(ShowActivity.this,2);
                 }
-            }catch (Exception e){
-
             }
+        }catch (Exception e){
+
+        }
     }
 
     @Override
@@ -1683,13 +1701,13 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
 
 
 
-//    @Override
+    //    @Override
     @Override
     public void setDownloadProgressListener(float progress,String assetId) {
         Logger.e(TAG, "onDownloadProgress" + progress+"  ------ "+(int)progress);
         if (userInteractionFragment != null) {
-          //  String string = String.format(Locale.ROOT, "%.1f", progress);
-           // Log.e("finalPer",string);
+            //  String string = String.format(Locale.ROOT, "%.1f", progress);
+            // Log.e("finalPer",string);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1763,7 +1781,7 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             OfflineManager.AssetInfo info=downloadHelper.getManager().getAssetInfo(assetId);
             if (info!=null){
                 downloadHelper.pauseVideo(assetId);
-               // userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(OfflineManager.AssetDownloadState.paused));
+                // userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(OfflineManager.AssetDownloadState.paused));
             }else {
                 userInteractionFragment.setDownloadStatus(AppCommonMethod.getDownloadStatus(null));
             }

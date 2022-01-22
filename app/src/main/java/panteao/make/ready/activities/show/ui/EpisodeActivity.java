@@ -559,7 +559,7 @@ public class EpisodeActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     public void run() {
                         showPremiumDialog();
                     }
-                },300);
+                },400);
             }
         }
     }

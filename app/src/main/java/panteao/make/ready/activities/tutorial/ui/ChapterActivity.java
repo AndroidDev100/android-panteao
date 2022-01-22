@@ -560,7 +560,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     public void run() {
                         showPremiumDialog();
                     }
-                },300);
+                },400);
 
             }
         }
