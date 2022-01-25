@@ -63,8 +63,8 @@ android {
         }
         prod {
             dimension 'default'
-            versionCode 38
-            versionName "4.7"
+            versionCode 1004
+            versionName "1004"
             applicationId "panteao.make.ready"
         }
     }
