@@ -59,7 +59,9 @@ public class SDKConfig {
     public String getCoupon_BASE_URL() {
         return configBean == null ? "" : configBean.getData().getAppConfig().getCouponBaseUrl();
     }
-
+    public String getAboutUs_URL() {
+        return configBean == null ? "" : configBean.getData().getAppConfig().getAboutUs();
+    }
     public String getPAYMENT_BASE_URL() {
         return configBean == null ? "" : configBean.getData().getAppConfig().getPaymentBaseUrl();
     }

@@ -221,6 +221,9 @@ public interface AppConstants {
     String BUNDLE_CURRENT_ASSET_ID = "currentAssetId";
     String TAG_NO_INTERNET_FRAGMENT = "NO_INTERNET_CONNECTION";
     String ENTRY_ID = "entry_id";
+    String FROM_MORE_FRAGMENT = "FROM_MORE_FRAGMENT";
+    String MY_PURCHASES = "My Purchases";
+    String API_PARAM_ORDER_STATUS="API_PARAM_ORDER_STATUS";
 
     enum UserLoginType {
         Manual,

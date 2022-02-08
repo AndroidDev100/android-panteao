@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="panteao.make.ready">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -18,7 +17,6 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
-
 
     <application
         android:name=".PanteaoApplication"
@@ -35,13 +33,17 @@
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.myPurchases.ui.MyPurchasesActivity"
+            android:exported="false" />
+        <activity
             android:name=".player.trailor.PlayerActivity"
-            android:exported="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensorLandscape"/>
+            android:exported="true"
+            android:screenOrientation="sensorLandscape" />
         <activity android:name=".activities.internalpages.TVCustomInternalPage" />
-        <activity android:name=".activities.internalpages.CustomInternalPage"
-            android:screenOrientation="locked"/>
+        <activity
+            android:name=".activities.internalpages.CustomInternalPage"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.show.ui.ShowActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -109,8 +111,8 @@
             android:label="@string/app_name" />
         <activity
             android:name=".activities.splash.ui.ActivitySplash"
-            android:launchMode="singleTop"
             android:exported="true"
+            android:launchMode="singleTop"
             android:screenOrientation="locked"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -145,8 +147,8 @@
         </activity>
         <activity
             android:name=".activities.splash.ui.TVSplashActivity"
-            android:screenOrientation="landscape"
             android:exported="false"
+            android:screenOrientation="landscape"
             android:theme="@style/MyMaterialTheme"
             tools:replace="android:theme">
             <intent-filter>
@@ -243,8 +245,8 @@
         <activity
             android:name=".activities.listing.ui.GridActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.usermanagment.ui.LoginActivity"
             android:launchMode="singleTop"
@@ -285,8 +287,8 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.purchaseNew.PurchaseActivityNew"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.membershipplans.ui.MemberShipPlanActivity"
             android:screenOrientation="locked" />
@@ -306,8 +308,8 @@
 
         <activity
             android:name=".activities.privacypolicy.ui.ContactUsActivity"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".cms.HelpActivity"
             android:launchMode="singleTop"
@@ -321,13 +323,13 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".activities.settings.ActivitySettings"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.listing.listui.ListActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="locked"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.redeemcoupon.RedeemCouponActivity"
             android:launchMode="singleTop" />

@@ -15,6 +15,7 @@ import com.make.watchHistory.beans.ResponseWatchHistoryAssetList
 import com.make.watchHistory.callbacks.GetWatchHistoryCallBack
 import com.google.gson.JsonObject
 import com.make.enveuCategoryServices.EnveuCategory
+import panteao.make.ready.beanModel.responseModels.MyPurchasesResponseModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,6 +47,21 @@ class RequestManager {
                 t.message?.let { enveuCallBacks.failure(false, 0, it) }
                 val model = ModelGenerator.instance.setGateWay(BaseConfiguration.instance.clients?.getGateway()).createModel(t)
                 enveuCallBacks.success(false, model)
+            }
+        })
+    }
+
+    fun muPurchasesCall(auth:String?,page: String?,size:String?, myPurchasesCallBack: MyPurchasesCallBack) {
+        val endPoint = NetworkSetup().client?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
+        val call = endPoint?.myPurchasesService(auth!!,BaseConfiguration.instance.clients?.getApiKey().toString(),page!!,size!!)
+        call?.enqueue(object : Callback<MyPurchasesResponseModel> {
+            override fun onResponse(call: Call<MyPurchasesResponseModel>, response: Response<MyPurchasesResponseModel>) {
+                myPurchasesCallBack.success(true, response)
+            }
+
+            override fun onFailure(call: Call<MyPurchasesResponseModel>, t: Throwable) {
+                t.message?.let { myPurchasesCallBack.failure(false, 0, it) }
+                myPurchasesCallBack.failure(false,0,"")
             }
         })
     }

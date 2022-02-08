@@ -10,6 +10,7 @@ import panteao.make.ready.beanModel.purchaseModel.PurchaseResponseModel;
 import panteao.make.ready.beanModel.responseGetWatchlist.ResponseGetIsWatchlist;
 import panteao.make.ready.beanModel.responseIsLike.ResponseIsLike;
 import panteao.make.ready.beanModel.responseModels.LoginResponse.LoginResponseModel;
+import panteao.make.ready.beanModel.responseModels.MyPurchasesResponseModel;
 import panteao.make.ready.beanModel.responseModels.SignUp.SignupResponseAccessToken;
 import panteao.make.ready.redeemcoupon.RedeemCouponResponseModel;
 import panteao.make.ready.repository.redeemCoupon.RedeemModel;
@@ -156,6 +157,49 @@ public class ErrorCodesIntercepter {
         LoginResponseModel responseModel = null;
         try {
             responseModel = new LoginResponseModel();
+            JSONObject errorObject = new JSONObject(response.errorBody().string());
+            responseModel.setResponseCode(400);
+            if (errorObject.getInt("responseCode") != 0) {
+                if (errorObject.getInt("responseCode") != 0) {
+                    if (errorObject.getInt("responseCode") == 4003) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.password_cannot_be_blank));
+
+                    } else if (errorObject.getInt("responseCode") == 4004) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.please_provide_valid_name));
+
+                    } else if (errorObject.getInt("responseCode") == 4401) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_does_not_exists));
+
+                    } else if (errorObject.getInt("responseCode") == 4103) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_deactivated));
+
+                    } else if (errorObject.getInt("responseCode") == 4006) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.user_can_not_login));
+
+                    } else if (errorObject.getInt("responseCode") == 4002) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.username_password_doest_match));
+
+                    } else if (errorObject.getInt("responseCode") == 4005) {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.email_id_cannot_be_blank));
+                    } else {
+                        responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong));
+
+                    }
+                } else {
+                    responseModel.setDebugMessage(PanteaoApplication.getInstance().getResources().getString(R.string.something_went_wrong));
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return responseModel;
+    }
+
+    public MyPurchasesResponseModel MyPurchase(Response<MyPurchasesResponseModel> response) {
+        MyPurchasesResponseModel responseModel = null;
+        try {
+            responseModel = new MyPurchasesResponseModel();
             JSONObject errorObject = new JSONObject(response.errorBody().string());
             responseModel.setResponseCode(400);
             if (errorObject.getInt("responseCode") != 0) {

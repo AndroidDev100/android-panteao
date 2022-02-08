@@ -110,7 +110,6 @@ class ModelGenerator {
 
         return list
     }
-
     fun createModel(t: Throwable): List<BaseCategory> {
         val cat = BaseCategory();
         val list = ArrayList<BaseCategory>()

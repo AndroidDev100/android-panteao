@@ -25,6 +25,7 @@ import panteao.make.ready.SDKConfig;
 import panteao.make.ready.activities.flutter.SampleActivity;
 import panteao.make.ready.activities.flutter.WebViewFlutterActivity;
 import panteao.make.ready.activities.homeactivity.viewmodel.HomeViewModel;
+import panteao.make.ready.activities.myPurchases.ui.MyPurchasesActivity;
 import panteao.make.ready.activities.notification.ui.NotificationActivity;
 import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
 import panteao.make.ready.activities.redeemcoupon.RedeemCouponActivity;
@@ -58,9 +59,11 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
+
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
+
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import org.jetbrains.annotations.NotNull;
@@ -103,7 +106,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         res = getResources();
-   //     FacebookSdk.sdkInitialize(getActivity());
+        //     FacebookSdk.sdkInitialize(getActivity());
 //
 //        ((HomeActivity) Objects.requireNonNull(getActivity())).updateApi(click -> {
 //            if (click) {
@@ -180,9 +183,10 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     String[] label2;
     String[] label3;
     KTDownloadHelper downloadHelper;
+
     private void modelCall() {
 
-        viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(HomeViewModel.class);
+        viewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(HomeViewModel.class);
         String[] label1 = getActivity().getResources().getStringArray(R.array.more_with_verify);
 
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
@@ -201,7 +205,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }*/
 
         label2 = getActivity().getResources().getStringArray(R.array.more_with_login);
-        label3= getActivity().getResources().getStringArray(R.array.more_logout);
+        label3 = getActivity().getResources().getStringArray(R.array.more_logout);
 
         mListVerify = new ArrayList<>();
         mListVerify.addAll(Arrays.asList(label1));
@@ -222,12 +226,12 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         } else {
             getBinding().loginBtn.setVisibility(View.VISIBLE);
 
-            AppCommonMethod.guestTitle(getBaseActivity(),getBinding().userNameWords, getBinding().usernameTv, preference);
+            AppCommonMethod.guestTitle(getBaseActivity(), getBinding().userNameWords, getBinding().usernameTv, preference);
             getBinding().usernameTv.setVisibility(View.VISIBLE);
             setUIComponets(mListLogOut, false);
         }
 
-        if (getActivity()!=null){
+        if (getActivity() != null) {
             downloadHelper = new KTDownloadHelper(getActivity());
         }
 
@@ -236,7 +240,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     private void setUIComponets(List<String> mList, boolean isLogin) {
 
-        MoreListAdapter adapter = new MoreListAdapter(getActivity(), mList, MoreFragment.this, isLogin,SDKConfig.getInstance().isDownloadEnable());
+        MoreListAdapter adapter = new MoreListAdapter(getActivity(), mList, MoreFragment.this, isLogin, SDKConfig.getInstance().isDownloadEnable());
         getBinding().recyclerViewMore.hasFixedSize();
         getBinding().recyclerViewMore.setNestedScrollingEnabled(false);
         getBinding().recyclerViewMore.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -266,7 +270,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 }
             });
 
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -298,13 +302,19 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (loginStatus)
               /*  if (isFacebook.equalsIgnoreCase(AppConstants.UserLoginType.FbLogin.toString())) {
 
-                } else {*/
-            {
+                } else {*/ {
                 new ActivityLauncher(getActivity()).changePassword(getActivity(), ChangePasswordActivity.class);
-                AppCommonMethod.trackFcmEvent("Change password","", getContext(),0);}
+                AppCommonMethod.trackFcmEvent("Change password", "", getContext(), 0);
+            }
 
             /* }*/
             else
+                mListener.onLoginClicked();
+        } else if (caption.equals(getString(R.string.my_purchases))) {
+            if (loginStatus) {
+                new ActivityLauncher(getActivity()).myPurchases(getActivity(), MyPurchasesActivity.class,AppConstants.FROM_MORE_FRAGMENT);
+                AppCommonMethod.trackFcmEvent(AppConstants.MY_PURCHASES, "", getContext(), 0);
+            } else
                 mListener.onLoginClicked();
         } else if (caption.equals(getString(R.string.notification))) {
             if (loginStatus)
@@ -315,26 +325,26 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Terms and Conditons","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext(), 0);
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Terms and Conditons","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext(), 0);
 
             }
-        //    Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), SampleActivity.class).putExtra("type", "1").putExtra("url",getString(R.string.term_condition)));
-           Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
+            //    Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), SampleActivity.class).putExtra("type", "1").putExtra("url",getString(R.string.term_condition)));
+            Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "1"));
         } else if (caption.equals(getString(R.string.privacy_policy))) {
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Privacy Policy","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext(), 0);
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Privacy Policy","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext(), 0);
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
@@ -346,20 +356,16 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("About Us","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("About Us", "", getContext(), 0);
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("About Us","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("About Us", "", getContext(), 0);
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
             Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), HelpActivity.class).putExtra("type", "3"));
-
-
-
-
 
 
         } else if (caption.equals(getString(R.string.my_watchlist))) {
@@ -367,30 +373,24 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (loginStatus) {
                 new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, getString(R.string.my_watchlist), false);
 
-                AppCommonMethod.trackFcmEvent("My Watchlist","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("My Watchlist", "", getContext(), 0);
 
-            }
-
-            else
+            } else
                 mListener.onLoginClicked();
 
         } else if (caption.equals(getString(R.string.my_history))) {
             if (loginStatus) {
                 new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, Objects.requireNonNull(getActivity()).getResources().getString(R.string.my_history), true);
-                AppCommonMethod.trackFcmEvent("My Watch History","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("My Watch History", "", getContext(), 0);
 
-            }
-
-            else
+            } else
                 mListener.onLoginClicked();
-        }
-        else if (caption.equals(getString(R.string.my_downloads))) {
+        } else if (caption.equals(getString(R.string.my_downloads))) {
             if (loginStatus)
                 new ActivityLauncher(getActivity()).launchMyDownloads();
             else
                 mListener.onLoginClicked();
-        }
-        else if (caption.equals(Objects.requireNonNull(getActivity()).getResources().getString(R.string.sign_out))) {
+        } else if (caption.equals(Objects.requireNonNull(getActivity()).getResources().getString(R.string.sign_out))) {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
 
                 return;
@@ -406,9 +406,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (NetworkConnectivity.isOnline(getActivity())) {
                 Intent intent = new Intent(getActivity(), MemberShipPlanActivity.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Membership and Plans","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Membership and Plans", "", getContext(), 0);
 
-            }else {
+            } else {
                 new ToastHandler(getActivity()).show(getResources().getString(R.string.no_connection));
             }
             /*if (loginStatus) {
@@ -422,20 +422,20 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (loginStatus) {
                 Intent intent = new Intent(getActivity(), RedeemCouponActivity.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Redeem Coupon","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Redeem Coupon", "", getContext(), 0);
 
             } else {
                 mListener.onLoginClicked();
             }
 
         } else if (caption.equalsIgnoreCase(getActivity().getResources().getString(R.string.setting_title))) {
-            if(loginStatus){
+            if (loginStatus) {
 
                 Intent intent = new Intent(getActivity(), ActivitySettings.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Settings","", getContext(),0);
+                AppCommonMethod.trackFcmEvent("Settings", "", getContext(), 0);
 
-            }  else
+            } else
                 mListener.onLoginClicked();
 
         }
@@ -495,13 +495,13 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 dismissLoading(getBinding().progressBar, getActivity());
                 String strCurrentTheme = KsPreferenceKeys.getInstance().getCurrentTheme();
                 String strCurrentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
-                int languagePosition=KsPreferenceKeys.getInstance().getAppPrefLanguagePos();
-                int downloadOverWifi=KsPreferenceKeys.getInstance().getDownloadOverWifi();
-                String downloadEmail=KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
-               // preference.setAppPrefLoginStatus(false);
+                int languagePosition = KsPreferenceKeys.getInstance().getAppPrefLanguagePos();
+                int downloadOverWifi = KsPreferenceKeys.getInstance().getDownloadOverWifi();
+                String downloadEmail = KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
+                // preference.setAppPrefLoginStatus(false);
                 preference.clear();
 //                preference.setAppPrefUserId("");
-                Log.d("getIdLogout",preference.getAppPrefUserId());
+                Log.d("getIdLogout", preference.getAppPrefUserId());
                 KsPreferenceKeys.getInstance().setLoginEmailForDownloadCheck(downloadEmail);
                 KsPreferenceKeys.getInstance().setDownloadOverWifi(downloadOverWifi);
                 KsPreferenceKeys.getInstance().setCurrentTheme(strCurrentTheme);
@@ -509,10 +509,10 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 KsPreferenceKeys.getInstance().setAppPrefLanguagePos(languagePosition);
                 new SharedPrefHelper(getActivity()).setInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
                 modelCall();
-                Logger.w("currentLang-->>",strCurrentLanguage);
-                if (strCurrentLanguage.equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
+                Logger.w("currentLang-->>", strCurrentLanguage);
+                if (strCurrentLanguage.equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                     AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
-                } else if (strCurrentLanguage.equalsIgnoreCase("English")){
+                } else if (strCurrentLanguage.equalsIgnoreCase("English")) {
                     AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
                 }
 
@@ -532,13 +532,13 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 //                        downloadHelper.deleteAllVideos(getActivity());
 //                    }
 
-                    if (downloadHelper!=null){
-                        if (downloadHelper.getManager()!=null){
+                    if (downloadHelper != null) {
+                        if (downloadHelper.getManager() != null) {
                             downloadHelper.getManager().pauseDownloads();
                         }
                     }
 
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
 
                 }
 
@@ -604,15 +604,15 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     @Override
     public void onFinishDialog() {
 
-        if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी") ){
+        if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
             AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
-        } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
+        } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
             AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
         if (flagLogIn) {
-            AppCommonMethod.guestTitle(getBaseActivity(),getBinding().userNameWords, getBinding().usernameTv, preference);
+            AppCommonMethod.guestTitle(getBaseActivity(), getBinding().userNameWords, getBinding().usernameTv, preference);
             hitApiLogout();
-            AppCommonMethod.trackFcmCustomEvent(getContext(), AppConstants.LOGOUT, "", "", "", 0, " ", 0, "", 0, 0, "", "","","");
+            AppCommonMethod.trackFcmCustomEvent(getContext(), AppConstants.LOGOUT, "", "", "", 0, " ", 0, "", 0, 0, "", "", "", "");
 
             flagLogIn = false;
         } else if (flagVerify) {
@@ -620,7 +620,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             flagVerify = false;
         } else if (isloggedout) {
             hitApiLogout();
-            AppCommonMethod.trackFcmCustomEvent(getContext(), AppConstants.LOGOUT, "", "", "", 0, " ", 0, "", 0, 0, "", "","","");
+            AppCommonMethod.trackFcmCustomEvent(getContext(), AppConstants.LOGOUT, "", "", "", 0, " ", 0, "", 0, 0, "", "", "", "");
 //            preference.setAppPrefUserId("");
 //            Log.d("getIdLogout",preference.getAppPrefUserId());
 
@@ -636,6 +636,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             AppUserModel dataModel = new Gson().fromJson(tempResponse, AppUserModel.class);
             getBinding().loginBtn.setVisibility(View.GONE);
             getBinding().usernameTv.setVisibility(View.VISIBLE);
+
             getBinding().userNameWords.setText(AppCommonMethod.getUserName(dataModel.getName()));
             getBinding().usernameTv.setText(dataModel.getName());
             if (!StringUtils.isNullOrEmpty(dataModel.getProfilePicURL()))

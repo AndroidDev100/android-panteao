@@ -10,6 +10,7 @@ import android.util.Log;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import panteao.make.ready.activities.article.ArticleActivity;
 import panteao.make.ready.activities.instructor.ui.InstructorActivity;
+import panteao.make.ready.activities.myPurchases.ui.MyPurchasesActivity;
 import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.homeactivity.ui.HomeActivity;
 import panteao.make.ready.activities.show.ui.ShowActivity;
@@ -58,6 +59,11 @@ public class ActivityLauncher {
     }
 
     public void signUpActivity(Activity source, Class<SignUpActivity> destination, String from) {
+        Intent intent = new Intent(source, destination);
+        intent.putExtra("loginFrom",from);
+        activity.startActivity(intent);
+    }
+    public void myPurchases(Activity source, Class<MyPurchasesActivity> destination, String from) {
         Intent intent = new Intent(source, destination);
         intent.putExtra("loginFrom",from);
         activity.startActivity(intent);

@@ -257,6 +257,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="profile">My Profile</string>
     <string name="setting_title">Settings</string>
+    <string name="my_purchases">My Purchases</string>
     <string name="term_condition">Terms and Conditions</string>
     <string name="my_watchlist">My Watchlist</string>
     <string name="my_history">My Watch History</string>
