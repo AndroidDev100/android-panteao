@@ -21,7 +21,7 @@ data class Item(
     var id: Int = 0,
     var offerIdentifier: String = "",
     var offerTitle: String = "",
-    var orderAmount: Double = 0.0,
+    var orderAmount: String = "",
     var orderCurrency: String = "",
     var orderId: String = "",
     var orderStatus: String = "",
