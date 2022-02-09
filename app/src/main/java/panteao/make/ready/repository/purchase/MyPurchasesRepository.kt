@@ -75,9 +75,12 @@ class MyPurchasesRepository private constructor() {
                 if (status) {
                     var cl: MyPurchasesResponseModel
                     if (response.body() != null) {
-                        val token = response.headers()["x-auth"]
+                        /*val token = response.headers()["x-auth"]
                         val preference = KsPreferenceKeys.getInstance()
                         preference.appPrefAccessToken = token
+                        val gson = Gson()
+                        val tmp = gson.toJson(response.body())
+                        val loginItemBean = gson.fromJson(tmp, MyPurchasesResponseModel::class.java)*/
                         val gson = Gson()
                         val tmp = gson.toJson(response.body())
                         val loginItemBean = gson.fromJson(tmp, MyPurchasesResponseModel::class.java)

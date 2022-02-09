@@ -13,6 +13,7 @@ class NetworkSetup {
     private var retrofitApi: Retrofit? = null
     private var userMngmtRetrofit: Retrofit? = null
     private lateinit var subscriptionManagementRetrofit: Retrofit
+    private lateinit var paymentHistory: Retrofit
 
     val client: Retrofit?
         get() {
@@ -109,4 +110,42 @@ class NetworkSetup {
 
         return subscriptionManagementRetrofit
     }
+
+    fun paymentHistory(token:String): Retrofit {
+
+        val loggingInterceptor = HttpLoggingInterceptor()
+        if (BuildConfig.DEBUG)
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        else
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
+
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val original = chain.request()
+            // Request customization: add request headers
+            val requestBuilder = original.newBuilder()
+                .addHeader("x-api-key", BaseConfiguration.instance.clients?.getOVPApiKey())
+                .addHeader("x-auth",token)
+            val request = requestBuilder.build()
+
+            chain.proceed(request)
+        }
+        httpClient.readTimeout(120, TimeUnit.SECONDS)
+            .writeTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .cache(null)
+            .addInterceptor(loggingInterceptor)
+
+        val client = httpClient.build()
+
+        paymentHistory = Retrofit.Builder()
+            .baseUrl("https://payments.beta.enveu.com:443/app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(client)
+            .build()
+
+        return paymentHistory
+    }
+
 }

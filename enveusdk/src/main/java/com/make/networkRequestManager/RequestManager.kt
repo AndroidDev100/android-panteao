@@ -52,7 +52,7 @@ class RequestManager {
     }
 
     fun muPurchasesCall(auth:String?,page: String?,size:String?, myPurchasesCallBack: MyPurchasesCallBack) {
-        val endPoint = NetworkSetup().subscriptionClient(auth!!)?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
+        val endPoint = NetworkSetup().paymentHistory(auth!!)?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
         val call = endPoint?.myPurchasesService(page!!,size!!)
         call?.enqueue(object : Callback<MyPurchasesResponseModel> {
             override fun onResponse(call: Call<MyPurchasesResponseModel>, response: Response<MyPurchasesResponseModel>) {

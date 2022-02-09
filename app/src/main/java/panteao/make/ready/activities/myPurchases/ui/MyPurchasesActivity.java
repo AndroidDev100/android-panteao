@@ -197,7 +197,8 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
 
                 dismissLoading(getBinding().progressBar);
                 this.myPurchaseModelResponse = myPurchaseModelResponse;
-                if (Objects.requireNonNull(myPurchaseModelResponse).getResponseCode() == 2000) {
+                Logger.e("OrderHistorydata",new Gson().toJson(myPurchaseModelResponse));
+              /*  if (Objects.requireNonNull(myPurchaseModelResponse).getResponseCode() == 2000) {
                     this.result = (PagedList<Item>) myPurchaseModelResponse.getData().getItems();
                     if (result == null) return;
                     if (result == null) return;
@@ -227,8 +228,8 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                         showDialog(MyPurchasesActivity.this.getResources().getString(R.string.error), myPurchaseModelResponse.getDebugMessage().toString());
                     } else {
                         showDialog(MyPurchasesActivity.this.getResources().getString(R.string.error), MyPurchasesActivity.this.getResources().getString(R.string.something_went_wrong));
-                    }
-                }
+                    }*/
+
 
             });
         } else {
