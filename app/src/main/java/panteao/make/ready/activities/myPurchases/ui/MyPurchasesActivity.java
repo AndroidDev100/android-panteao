@@ -204,7 +204,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                     else if (!isFirstPage) myRecyclerViewAdapter.addAll(result.getResults());
                     else myRecyclerViewAdapter.setList(result.getResults());
                     mIsLastPage = mCurrentPage == result.getTotalPages();
-                    AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.SIGN_IN_SUCCESS, "", "", "", 0, " ", 0, "", 0, 0, "", "", myPurchaseModelResponse.getData().getPageNumber() + "", myPurchaseModelResponse.getData().getPageSize() + "");
+                   // AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.SIGN_IN_SUCCESS, "", "", "", 0, " ", 0, "", 0, 0, "", "", myPurchaseModelResponse.getData().getPageNumber() + "", myPurchaseModelResponse.getData().getPageSize() + "");
 
                 } else {
                     if (myPurchaseModelResponse.getResponseCode() == 4302) {

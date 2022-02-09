@@ -19,7 +19,7 @@ interface EnveuEndpoints {
     fun categoryService(@Header("x-device") device: String, @Header("x-platform") platform: String, @Header("x-api-key") key: String, @Query("screenId") screenId: String): Call<EnveuCategory>
 
     @GET("v2/order/orderHistory")
-    fun myPurchasesService(@Header("x-auth") auth: String, @Header("x-api-key") key: String, @Query("page") page:String , @Query("size") size: String): Call<MyPurchasesResponseModel>
+    fun myPurchasesService(@Query("page") page:String , @Query("size") size: String): Call<MyPurchasesResponseModel>
 
     @Headers("x-platform: android")
     @POST("v2/user/login/manual")
