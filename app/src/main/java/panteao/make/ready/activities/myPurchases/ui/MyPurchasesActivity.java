@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +36,7 @@ import panteao.make.ready.activities.myPurchases.PagedList;
 import panteao.make.ready.activities.myPurchases.viewmodel.MyPurchaseViewModel;
 import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
+import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.adapters.MyPurchasesAdapter;
@@ -175,8 +177,8 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     public void loadMoreItems(Boolean isFirstpage) {
         this.isFirstPage = isFirstpage;
 
-        if (UserPreference.Companion.getInstance().isLogin()) {
-            callMyPurchases(UserPreference.Companion.getInstance().getUserAuthToken(), String.valueOf(mCurrentPage), String.valueOf(initialPageSize), null, isFirstpage);
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+            callMyPurchases(KsPreferenceKeys.getInstance().getAppPrefAccessToken(), String.valueOf(mCurrentPage), String.valueOf(initialPageSize), null, isFirstpage);
         } else {
             dismissLoading(getBinding().progressBar);
         }
@@ -229,8 +231,6 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                 }
 
             });
-
-
         } else {
             mIsLoading = false;
 
@@ -240,6 +240,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     }
 
     private void callBinding() {
+        viewModel = new ViewModelProvider(this).get(MyPurchaseViewModel.class);
         callIntials();
     }
 

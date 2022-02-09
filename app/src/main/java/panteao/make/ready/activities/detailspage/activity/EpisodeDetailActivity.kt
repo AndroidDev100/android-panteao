@@ -24,8 +24,6 @@ import panteao.make.ready.utils.helpers.RailInjectionHelper
 
 class EpisodeDetailActivity : TvBaseBindingActivity<ActivityEpisodeDetailBinding>(),
     OnFocusListener, BottomFragmentListener, NoInternetFragment.OnFragmentInteractionListener {
-
-
     val TAG = this.javaClass.name
     private var id: Int? = null
     private var type: String? = null
@@ -35,8 +33,6 @@ class EpisodeDetailActivity : TvBaseBindingActivity<ActivityEpisodeDetailBinding
     private lateinit var episodeListFragment: EpisodeListFragment
     private lateinit var  railInjectionHelper:RailInjectionHelper
     private var noInternetFragment = NoInternetFragment()
-
-
     override fun inflateBindingLayout(inflater: LayoutInflater): ActivityEpisodeDetailBinding {
         return ActivityEpisodeDetailBinding.inflate(inflater)
     }

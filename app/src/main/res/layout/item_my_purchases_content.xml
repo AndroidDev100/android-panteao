@@ -19,6 +19,7 @@
         android:background="@color/blue_color">
 
         <TextView
+            android:paddingLeft="@dimen/_5sdp"
             android:id="@+id/tvDate"
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
