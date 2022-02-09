@@ -17,8 +17,8 @@ data class Data(
 
 data class Item(
     var contentSKU: String = "",
-    var createdDate: Long = 0,
-    var id: Int = 0,
+    var createdDate: String = "",
+    var id: String = "",
     var offerIdentifier: String = "",
     var offerTitle: String = "",
     var orderAmount: String = "",
@@ -29,7 +29,7 @@ data class Item(
     var paymentProvider: String = "",
     var renewalDate: String = "",
     var rentalExpiryDate: String = "",
-    var subscriptionExpiryDate: Long = 0,
+    var subscriptionExpiryDate: String = "",
     var subscriptionOfferType: String = "",
     var userId: String = "",
     var voDOfferType: String = ""

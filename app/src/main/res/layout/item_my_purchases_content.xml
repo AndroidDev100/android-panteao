@@ -3,27 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="model"
             type="panteao.make.ready.beanModel.responseModels.Item" />
-
-        <variable
-            name="itemClickListener"
-            type="panteao.make.ready.utils.CustomClickListner" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:onClick="@{() -> itemClickListener.cardClicked(model)}"
         android:layout_height="wrap_content"
         android:background="@color/blue_color">
 
         <TextView
-            android:paddingLeft="@dimen/_5sdp"
+            android:paddingStart="@dimen/_5sdp"
             android:id="@+id/tvDate"
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_32sdp"
             android:background="@color/navy_blue"
             android:gravity="center_vertical"
             android:text="Wed, 1/4/2019"
@@ -49,7 +43,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp">
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp">
 
                 <TextView
                     android:id="@+id/tvName"
@@ -70,7 +66,7 @@
                     android:id="@+id/tvCurrency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/tvCost"
                     android:text="@{model.orderCurrency}"
                     android:textColor="@color/white"
@@ -78,11 +74,12 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_marginLeft="@dimen/_5sdp"
                     android:id="@+id/tvCost"
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:text="@{model.orderAmount}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"

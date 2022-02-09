@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -43,23 +44,12 @@ public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.
         return list.size();
     }
 
-    public void addAll(List<Item> results) {
-        list.addAll(results);
-        this.notifyDataSetChanged();
-    }
-
-    public void setList(List<Item> results) {
-        list.clear();
-        list.addAll(results);
-        this.notifyDataSetChanged();
-    }
-
     public class MyPurchasesViewHolder extends RecyclerView.ViewHolder {
         public MyPurchasesViewHolder(@NonNull ItemMyPurchasesContentBinding binding) {
             super(binding.getRoot());
         }
         public void bind(Item item) {
-            binding.setVariable(0, item);
+            binding.setModel(item);
             binding.executePendingBindings();
         }
     }

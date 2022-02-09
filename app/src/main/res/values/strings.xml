@@ -459,6 +459,8 @@
     <string name="premium_popup_message_new">To watch uninterrupted Premium content? Purchase now.</string>
     <string name="premium_download_popup_message">To download Premium content? Purchase now.</string>
     <string name="premium_download_loginpopup_message">To download Premium content? Login now.</string>
+    <string name="user_not_logged_in">User not logged-in!</string>
+    <string name="please_login_to_see_my_purchases">Please login to see your purchases!</string>
 
 
 </resources>

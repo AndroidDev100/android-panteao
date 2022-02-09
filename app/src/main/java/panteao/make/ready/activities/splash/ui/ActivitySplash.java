@@ -159,7 +159,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         printHashKey();
             }
         },100);
-
+        //6273664
     }
 
     @Override

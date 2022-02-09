@@ -1,6 +1,7 @@
 package panteao.make.ready.activities.myPurchases.ui;
 
 import android.annotation.SuppressLint;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,10 +29,14 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
+import panteao.make.ready.activities.live.LiveActivity;
 import panteao.make.ready.activities.myPurchases.PagedList;
 import panteao.make.ready.activities.myPurchases.viewmodel.MyPurchaseViewModel;
 import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
@@ -45,6 +50,7 @@ import panteao.make.ready.beanModel.responseModels.Item;
 import panteao.make.ready.beanModel.responseModels.MyPurchasesResponseModel;
 import panteao.make.ready.callbacks.commonCallbacks.FragmentClickNetwork;
 import panteao.make.ready.callbacks.commonCallbacks.HomeClickNetwork;
+import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.OriginalFragmentClick;
 import panteao.make.ready.callbacks.commonCallbacks.PremiumClick;
 import panteao.make.ready.callbacks.commonCallbacks.SinetronClick;
@@ -74,14 +80,14 @@ import panteao.make.ready.utils.inAppUpdate.AppUpdateCallBack;
 import panteao.make.ready.utils.inAppUpdate.ApplicationUpdateManager;
 
 
-public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchasesBinding> implements AlertDialogFragment.AlertDialogListener {
+public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchasesBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener {
 
     public Fragment active;
     private KsPreferenceKeys preference;
     private String strCurrentTheme = "";
     private BottomNavigationView navigation;
     private int initialPageSize = 20;
-    private boolean mIsLoading;
+    private boolean mIsLoading=false;
     private boolean mIsLastPage;
     private LinearLayoutManager layoutManager;
     private int mCurrentPage = 0;
@@ -113,16 +119,56 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         }
         preference = KsPreferenceKeys.getInstance();
         callBinding();
-        initRecyclerView();
+        initUI();
+        initToolbar();
+        if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
+            initRecyclerView();
+        } else {
+            showDialog(getString(R.string.user_not_logged_in), getString(R.string.please_login_to_see_my_purchases));
+        }
 
+
+    }
+
+    private void initUI() {
+        getBinding().nodatafounmd.setVisibility(View.GONE);
+        getBinding().progressBar.setVisibility(View.GONE);
+        getBinding().noConnectionLayout.setVisibility(View.GONE);
+        getBinding().connection.retryTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMoreItems(true);
+            }
+        });
+        getBinding().retryLoadData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMoreItems(true);
+            }
+        });
+    }
+
+    private void initToolbar() {
+        getBinding().toolbar.llSearchIcon.setVisibility(View.GONE);
+        getBinding().toolbar.backLayout.setVisibility(View.VISIBLE);
+        getBinding().toolbar.homeIcon.setVisibility(View.GONE);
+        getBinding().toolbar.mediaRouteButton.setVisibility(View.GONE);
+        getBinding().toolbar.titleText.setVisibility(View.VISIBLE);
+        getBinding().toolbar.screenText.setText(getString(R.string.my_purchases));
+
+        getBinding().toolbar.backLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     MyPurchasesAdapter myRecyclerViewAdapter;
 
     private void initRecyclerView() {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        myRecyclerViewAdapter = new MyPurchasesAdapter(this, result.getResults());
-        getBinding().setMyAdapter(myRecyclerViewAdapter);
+        getBinding().recyclerMyPurchases.setLayoutManager(layoutManager);
         getBinding().recyclerMyPurchases.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -176,7 +222,6 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
 
     public void loadMoreItems(Boolean isFirstpage) {
         this.isFirstPage = isFirstpage;
-
         if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
             callMyPurchases(KsPreferenceKeys.getInstance().getAppPrefAccessToken(), String.valueOf(mCurrentPage), String.valueOf(initialPageSize), null, isFirstpage);
         } else {
@@ -184,24 +229,67 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         }
     }
 
-    PagedList<Item> result = new PagedList<>();
+    List<Item> result = new ArrayList<>();
     MyPurchasesResponseModel myPurchaseModelResponse;
+
+    public int getTotalPages(int totalItemCount, int perPageItems) {
+        int result = (totalItemCount / perPageItems);
+        if (totalItemCount % perPageItems == 0) {
+            return result = result;
+        } else {
+            return result = (result + 1);
+        }
+    }
 
     public void callMyPurchases(String auth, String page, String size, @Nullable String orderStatus, Boolean isFirstpage) {
         mIsLoading = true;
-        mCurrentPage = mCurrentPage + 1;
+        if (result.size() != 0) {
+            mCurrentPage = mCurrentPage + 1;
+        }
         if (CheckInternetConnection.isOnline(MyPurchasesActivity.this)) {
+            getBinding().nodatafounmd.setVisibility(View.GONE);
+            getBinding().noConnectionLayout.setVisibility(View.GONE);
             showLoading(getBinding().progressBar, true);
             viewModel.hitMyPurchasesAPI(MyPurchasesActivity.this, auth, page, size, orderStatus).observe(MyPurchasesActivity.this, myPurchaseModelResponse -> {
                 mIsLoading = false;
-
                 dismissLoading(getBinding().progressBar);
                 this.myPurchaseModelResponse = myPurchaseModelResponse;
-                Logger.e("OrderHistorydata",new Gson().toJson(myPurchaseModelResponse));
+                Logger.e("OrderHistorydata", new Gson().toJson(myPurchaseModelResponse));
+                if (this.myPurchaseModelResponse != null && this.myPurchaseModelResponse.getResponseCode() == 2000 && this.myPurchaseModelResponse.isSuccessful()) {
+                    if (this.myPurchaseModelResponse.getData() != null) {
+                        if (this.myPurchaseModelResponse.getData().getItems() != null) {
+                            if (this.result.size() == 0 && this.myPurchaseModelResponse.getData().getItems().size() == 0) {
+                                getBinding().nodatafounmd.setVisibility(View.VISIBLE);
+                            } else {
+                                getBinding().nodatafounmd.setVisibility(View.GONE);
+                                if (result.size() != 0) {
+                                    this.result.addAll(this.myPurchaseModelResponse.getData().getItems());
+                                    myRecyclerViewAdapter.notifyDataSetChanged();
+                                } else {
+                                    this.result.clear();
+                                    this.result.addAll(this.myPurchaseModelResponse.getData().getItems());
+                                    myRecyclerViewAdapter = new MyPurchasesAdapter(this, result);
+                                    getBinding().recyclerMyPurchases.setAdapter(myRecyclerViewAdapter);
+                                }
+                                mIsLastPage = mCurrentPage == getTotalPages(result.size(), AppConstants.PAGE_SIZE);
+                            }
+                        } else {
+                            getBinding().nodatafounmd.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        getBinding().nodatafounmd.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (this.myPurchaseModelResponse.getDebugMessage() != null && this.myPurchaseModelResponse.getDebugMessage().trim() != "") {
+                        showDialog(getString(R.string.error), this.myPurchaseModelResponse.getDebugMessage());
+                    } else {
+                        getBinding().nodatafounmd.setVisibility(View.VISIBLE);
+                    }
+                }
               /*  if (Objects.requireNonNull(myPurchaseModelResponse).getResponseCode() == 2000) {
                     this.result = (PagedList<Item>) myPurchaseModelResponse.getData().getItems();
                     if (result == null) return;
-                    if (result == null) return;
+
                     else if (!isFirstPage) myRecyclerViewAdapter.addAll(result.getResults());
                     else myRecyclerViewAdapter.setList(result.getResults());
                     mIsLastPage = mCurrentPage == result.getTotalPages();
@@ -234,9 +322,9 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
             });
         } else {
             mIsLoading = false;
-
+            getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
             dismissLoading(getBinding().progressBar);
-            new ToastHandler(MyPurchasesActivity.this).show(MyPurchasesActivity.this.getResources().getString(R.string.no_internet_connection));
+//            new ToastHandler(MyPurchasesActivity.this).show(MyPurchasesActivity.this.getResources().getString(R.string.no_internet_connection));
         }
     }
 
@@ -259,6 +347,19 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         if (preference == null) {
             preference = KsPreferenceKeys.getInstance();
         }
+        setBroadcast();
+    }
+
+    private NetworkChangeReceiver receiver = null;
+
+    public void setBroadcast() {
+        receiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        MyPurchasesActivity.this.registerReceiver(receiver, filter);
+        setConnectivityListener(this);
     }
 
     @Override
@@ -293,6 +394,18 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         super.onBackPressed();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (receiver != null) {
+                this.unregisterReceiver(receiver);
+                NetworkChangeReceiver.connectivityReceiverListener = null;
+            }
+        } catch (Exception e) {
+
+        }
+    }
 
     @Override
     protected void onStart() {
@@ -307,5 +420,24 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
             onBackPressed();
         }
     }
+
+    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener
+                                                listener) {
+        NetworkChangeReceiver.connectivityReceiverListener = listener;
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        AppCommonMethod.isInternet = isConnected;
+        if (isConnected) {
+            getBinding().noConnectionLayout.setVisibility(View.GONE);
+            if (!mIsLoading) {
+                loadMoreItems(true);
+            }
+        } else {
+            getBinding().noConnectionLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
 }
 

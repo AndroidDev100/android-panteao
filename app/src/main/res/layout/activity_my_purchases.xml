@@ -1,62 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
 
-        <variable
-            name="myAdapter"
-            type="panteao.make.ready.adapters.MyPurchasesAdapter" />
-    </data>
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/blurred_background_image_view">
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentTop="true" />
+
         <panteao.make.ready.utils.CustomProgressBar
             android:id="@+id/progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_gravity="center"
             android:clickable="false"
             android:indeterminate="true"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
+
         <LinearLayout
+            android:id="@+id/nodatafounmd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerInParent="true"
             android:background="?attr/backgroundColor"
-            android:orientation="vertical">
+            android:elevation="@dimen/_1sdp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_my_purchases"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/item_my_purchases_content"
-                    tools:itemCount="10"
-                    android:adapter="@{myAdapter}"
-                    android:nestedScrollingEnabled="false"
-                    android:background="?attr/backgroundColor"
-                    android:overScrollMode="never"
-                    />
+            <ImageView
+                android:id="@+id/no_data"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:background="@drawable/ic_no_data"
+                android:contentDescription="TODO" />
 
-            <LinearLayout
-                android:id="@+id/no_connection_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                >
-                <include
-                    android:id="@+id/connection"
-                    layout="@layout/no_connection" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                android:text="@string/no_result_found"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
 
-
+            <TextView
+                android:id="@+id/retry_load_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/bordrer_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                android:paddingStart="@dimen/_35sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_35sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:text="@string/retry"
+                android:textColor="@color/rounded_button_text_color"
+                android:textSize="16sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/no_connection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerInParent="true"
+            android:elevation="@dimen/_1sdp"
+            android:visibility="gone">
 
-    </FrameLayout>
+            <include
+                android:id="@+id/connection"
+                layout="@layout/no_connection" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_my_purchases"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:background="?attr/backgroundColor"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_my_purchases_content" />
+    </RelativeLayout>
 </layout>
