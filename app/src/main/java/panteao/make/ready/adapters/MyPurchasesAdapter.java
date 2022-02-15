@@ -2,11 +2,11 @@ package panteao.make.ready.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -14,6 +14,8 @@ import java.util.List;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModel.responseModels.Item;
 import panteao.make.ready.databinding.ItemMyPurchasesContentBinding;
+import panteao.make.ready.databinding.RowEpisodeListBinding;
+import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 
 public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.MyPurchasesViewHolder> {
     List<Item> list;
@@ -31,12 +33,33 @@ public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.
         binding= DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.item_my_purchases_content, parent, false);
-        return new MyPurchasesViewHolder(binding);
+        return new MyPurchasesAdapter.MyPurchasesViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyPurchasesViewHolder holder, int position) {
-        holder.bind(list.get(position));
+      //  holder.bind(list.get(position));
+
+        holder.itemBinding.tvName.setText(list.get(position).getOfferTitle());
+        if (list.get(position).getSubscriptionOfferType()!=null && !list.get(position).getSubscriptionOfferType().equalsIgnoreCase("")){
+            holder.itemBinding.offerTypeValue.setText(list.get(position).getSubscriptionOfferType());
+            if (list.get(position).getSubscriptionExpiryDate()!=null && !list.get(position).getSubscriptionExpiryDate().equalsIgnoreCase("")){
+                holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getSubscriptionExpiryDate())).toString());
+            }else {
+                holder.itemBinding.dateLayout.setVisibility(View.GONE);
+            }
+        }else if (list.get(position).getVoDOfferType()!=null && !list.get(position).getVoDOfferType().equalsIgnoreCase("")){
+            if (list.get(position).getRentalExpiryDate()!=null && !list.get(position).getRentalExpiryDate().equalsIgnoreCase("")){
+                holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getRentalExpiryDate())).toString());
+            }else {
+                holder.itemBinding.dateLayout.setVisibility(View.GONE);
+            }
+
+            holder.itemBinding.offerTypeValue.setText(list.get(position).getVoDOfferType());
+        }
+
+        holder.itemBinding.priceValue.setText(list.get(position).getOrderCurrency()+" "+list.get(position).getOrderAmount());
+        holder.itemBinding.paymentModeValue.setText(list.get(position).getPaymentProvider());
     }
 
     @Override
@@ -45,12 +68,11 @@ public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.
     }
 
     public class MyPurchasesViewHolder extends RecyclerView.ViewHolder {
-        public MyPurchasesViewHolder(@NonNull ItemMyPurchasesContentBinding binding) {
+        final ItemMyPurchasesContentBinding itemBinding;
+
+        MyPurchasesViewHolder(ItemMyPurchasesContentBinding binding) {
             super(binding.getRoot());
-        }
-        public void bind(Item item) {
-            binding.setModel(item);
-            binding.executePendingBindings();
+            this.itemBinding = binding;
         }
     }
 }

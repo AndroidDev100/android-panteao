@@ -2303,4 +2303,14 @@ public class AppCommonMethod {
         }
         return position;
     }
+
+    public static String getMyPurchaseTimeTodate(double expiryDate) {
+        String date = "";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE dd/MM/yyyy");
+        date = formatter.format(new Date((long) expiryDate));
+        Log.w("expiryDate", date);
+        return date;
+    }
+
 }

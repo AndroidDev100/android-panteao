@@ -250,7 +250,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
             getBinding().nodatafounmd.setVisibility(View.GONE);
             getBinding().noConnectionLayout.setVisibility(View.GONE);
             showLoading(getBinding().progressBar, true);
-            viewModel.hitMyPurchasesAPI(MyPurchasesActivity.this, auth, page, size, orderStatus).observe(MyPurchasesActivity.this, myPurchaseModelResponse -> {
+            viewModel.hitMyPurchasesAPI(MyPurchasesActivity.this, auth, String.valueOf(mCurrentPage), size, orderStatus).observe(MyPurchasesActivity.this, myPurchaseModelResponse -> {
                 mIsLoading = false;
                 dismissLoading(getBinding().progressBar);
                 this.myPurchaseModelResponse = myPurchaseModelResponse;

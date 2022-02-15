@@ -7,45 +7,58 @@
             name="model"
             type="panteao.make.ready.beanModel.responseModels.Item" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_color">
+        android:background="@color/black"
+        android:padding="@dimen/_8sdp"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:paddingStart="@dimen/_5sdp"
-            android:id="@+id/tvDate"
-            style="@style/TextInputLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_32sdp"
-            android:background="@color/navy_blue"
-            android:gravity="center_vertical"
-            android:text="Wed, 1/4/2019"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            android:background="@drawable/my_purchase_drawable"
+            android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDate">
-
-            <RelativeLayout
-                android:id="@+id/rlCurrency"
+            <LinearLayout
+                android:id="@+id/dateLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    style="@style/TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Wed, 1/4/2019"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/seprator"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="0.5dp">
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/_6sdp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tvName"
@@ -54,66 +67,134 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="@dimen/_30sdp"
-                    android:layout_toLeftOf="@id/tvCurrency"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{model.offerTitle}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:text="jhcjhdjdksh"
+                    android:textColor="@color/more_text_color_dark"
+                    android:textSize="@dimen/NontonSize15"
+                    />
 
-                <TextView
-                    android:id="@+id/tvCurrency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toLeftOf="@id/tvCost"
-                    android:text="@{model.orderCurrency}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvCost"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:text="@{model.orderAmount}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+            </LinearLayout>
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlCurrency"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="Payment Method"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCardNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="@{model.id}"
+                    android:gravity="center_vertical"
+                    android:text="Price"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/price_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="sdcjsdgkchgsduhgsdhgkuhdsgfkhsgchksdchsdshgdcgkhsdkusdhgckjhsdgckshdgshdgsdjk"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Offer Type"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/offerTypeValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="sdcjsdgkchgsduhgsdhgkuhdsgfkhsgchksdchsdshgdcgkhsdkusdhgckjhsdgckshdgshdgsdjk"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Payment Mode"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/payment_mode_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="sdcjsdgkchgsduhgsdhgkuhdsgfkhsgchksdchsdshgdcgkhsdkusdhgckjhsdgckshdgshdgsdjk"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sarabun_v7_thai_latin_regular"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/NontonSize12"
+                    android:textStyle="bold"
+                    />
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 </layout>
