@@ -38,28 +38,32 @@ public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyPurchasesViewHolder holder, int position) {
-      //  holder.bind(list.get(position));
 
-        holder.itemBinding.tvName.setText(list.get(position).getOfferTitle());
-        if (list.get(position).getSubscriptionOfferType()!=null && !list.get(position).getSubscriptionOfferType().equalsIgnoreCase("")){
-            holder.itemBinding.offerTypeValue.setText(list.get(position).getSubscriptionOfferType());
-            if (list.get(position).getSubscriptionExpiryDate()!=null && !list.get(position).getSubscriptionExpiryDate().equalsIgnoreCase("")){
-                holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getSubscriptionExpiryDate())).toString());
-            }else {
-                holder.itemBinding.dateLayout.setVisibility(View.GONE);
-            }
-        }else if (list.get(position).getVoDOfferType()!=null && !list.get(position).getVoDOfferType().equalsIgnoreCase("")){
-            if (list.get(position).getRentalExpiryDate()!=null && !list.get(position).getRentalExpiryDate().equalsIgnoreCase("")){
-                holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getRentalExpiryDate())).toString());
-            }else {
-                holder.itemBinding.dateLayout.setVisibility(View.GONE);
+        try {
+            holder.itemBinding.tvName.setText(list.get(position).getOfferTitle());
+            if (list.get(position).getSubscriptionOfferType()!=null && !list.get(position).getSubscriptionOfferType().equalsIgnoreCase("")){
+                holder.itemBinding.offerTypeValue.setText(list.get(position).getSubscriptionOfferType());
+                if (list.get(position).getSubscriptionExpiryDate()!=null && !list.get(position).getSubscriptionExpiryDate().equalsIgnoreCase("")){
+                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getSubscriptionExpiryDate())).toString());
+                }else {
+                    holder.itemBinding.dateLayout.setVisibility(View.GONE);
+                }
+            }else if (list.get(position).getVoDOfferType()!=null && !list.get(position).getVoDOfferType().equalsIgnoreCase("")){
+                if (list.get(position).getRentalExpiryDate()!=null && !list.get(position).getRentalExpiryDate().equalsIgnoreCase("")){
+                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getRentalExpiryDate())).toString());
+                }else {
+                    holder.itemBinding.dateLayout.setVisibility(View.GONE);
+                }
+
+                holder.itemBinding.offerTypeValue.setText(list.get(position).getVoDOfferType());
             }
 
-            holder.itemBinding.offerTypeValue.setText(list.get(position).getVoDOfferType());
+            holder.itemBinding.priceValue.setText(list.get(position).getOrderCurrency()+" "+list.get(position).getOrderAmount());
+            holder.itemBinding.paymentModeValue.setText(list.get(position).getPaymentProvider());
+        }catch (Exception e){
+
         }
 
-        holder.itemBinding.priceValue.setText(list.get(position).getOrderCurrency()+" "+list.get(position).getOrderAmount());
-        holder.itemBinding.paymentModeValue.setText(list.get(position).getPaymentProvider());
     }
 
     @Override
