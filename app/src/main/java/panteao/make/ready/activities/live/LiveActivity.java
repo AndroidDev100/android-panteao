@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -64,7 +63,6 @@ import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.liveplayer.LivePlayerFragment;
 import panteao.make.ready.networking.apistatus.APIStatus;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -102,16 +100,16 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     private int assestId;
     private int seriesId;
     private int watchList = 0;
-    private int watchListId = 0;
+    private final int watchListId = 0;
     private int likeCounter = 0;
-    private String videoUrl = "";
-    private String vastUrl = "";
+    private final String videoUrl = "";
+    private final String vastUrl = "";
     private String token;
     private ResponseDetailPlayer response;
     private boolean isLogin;
     private boolean loadingComment = true;
     private boolean isHitPlayerApi = false;
-    private int playerApiCount = 0;
+    private final int playerApiCount = 0;
     private long brightCoveVideoId;
     private String tabId;
     private RailInjectionHelper railInjectionHelper;
@@ -120,15 +118,15 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     private String sharingUrl;
     private String detailType;
     private AlertDialogSingleButtonFragment errorDialog;
-    private boolean errorDialogShown = false;
+    private final boolean errorDialogShown = false;
     private BookmarkingViewModel bookmarkingViewModel;
     private MediaStore.Video downloadAbleVideo;
     private UserInteractionFragment userInteractionFragment;
     public static boolean isBackStacklost = false;
-    private boolean isOfflineAvailable = false;
+    private final boolean isOfflineAvailable = false;
 
     @Override
-    public ActivityLiveBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityLiveBinding inflateBindingLayout() {
         return ActivityLiveBinding.inflate(inflater);
     }
 
@@ -192,13 +190,13 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             UIinitialization();
         } else {
@@ -347,7 +345,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     }
 
 
-    private void setArgsForEvent(Bundle args) {
+    private void setArgsForEvent() {
         try {
             if (videoDetails != null) {
                 if (videoDetails.getName() != null) {
@@ -379,7 +377,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
             seriesId = AppCommonMethod.seriesId;
             AppCommonMethod.isPurchase = false;
             isHitPlayerApi = false;
-            refreshDetailPage(assestId);
+            refreshDetailPage();
         }
 
         if (!isLoggedIn) {
@@ -388,7 +386,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 AppCommonMethod.isPurchase = false;
                 seriesId = AppCommonMethod.seriesId;
                 isHitPlayerApi = false;
-                refreshDetailPage(assestId);
+                refreshDetailPage();
             }
         }
 
@@ -449,7 +447,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         }
     }
 
-    void releaseAudioFocusForMyApp(final Context context) {
+    void releaseAudioFocusForMyApp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             audioManager.abandonAudioFocusRequest(focusRequest);
         }
@@ -458,7 +456,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     CommentsFragment commentsFragment;
 
-    public void commentFragment(int id) {
+    public void commentFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         commentsFragment = new CommentsFragment();
         Bundle args = new Bundle();
@@ -490,7 +488,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
         LiveActivity.this.registerReceiver(receiver, filter);
-        setConnectivityListener(this);
+        setConnectivityListener();
     }
 
     @Override
@@ -503,7 +501,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 assestId = Objects.requireNonNull(intent.getExtras().getBundle(AppConstants.BUNDLE_ASSET_BUNDLE)).getInt(AppConstants.BUNDLE_ASSET_ID);
 
                 Logger.d("newintentCalled", assestId + "");
-                refreshDetailPage(assestId);
+                refreshDetailPage();
 
             }
         } else {
@@ -511,7 +509,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         }
     }
 
-    public void refreshDetailPage(int assestId) {
+    public void refreshDetailPage() {
         callBinding();
     }
 
@@ -560,11 +558,11 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
         } else {
             preference.setAppPrefGotoPurchase(true);
-            openLoginPage(getResources().getString(R.string.please_login_play));
+            openLoginPage();
         }
     }
 
-    public void openLoginPage(String message) {
+    public void openLoginPage() {
         preference.setReturnTo(AppConstants.ContentType.VIDEO.toString());
         // preference.setString(AppConstants.APP_PREF_JUMP_TO, AppConstants.ContentType.VIDEO.toString());
         preference.setAppPrefJumpBack(true);
@@ -632,14 +630,14 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
                 } else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
-                    parseAssetDetails(assetResponse);
+                    parseAssetDetails();
                 } else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                     if (assetResponse.getErrorModel() != null && assetResponse.getErrorModel().getErrorCode() != 0) {
-                        showDialog(LiveActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
 
                 } else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-                    showDialog(LiveActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
 
@@ -648,7 +646,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     boolean isAdShowingToUser = true;
 
-    private void parseAssetDetails(ResponseModel assetResponse) {
+    private void parseAssetDetails() {
         RailCommonData enveuCommonResponse = (RailCommonData) assetResponse.getBaseCategory();
 
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
@@ -668,7 +666,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 getBinding().backButton.setVisibility(View.VISIBLE);
                 //hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
                 if (isLogin) {
-                    hitApiEntitlement(enveuCommonResponse.getEnveuVideoItemBeans().get(0).getSku());
+                    hitApiEntitlement();
                 } else {
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
                 }
@@ -706,15 +704,15 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                     getBinding().pBar.setVisibility(View.GONE);
                 }
             }
-            setUserInteractionFragment(assestId);
+            setUserInteractionFragment();
             stopShimmer();
-            setUI(videoDetails);
+            setUI();
         }
     }
 
     ResponseEntitle responseEntitlementModel;
 
-    public void hitApiEntitlement(String sku) {
+    public void hitApiEntitlement() {
 
         viewModel.hitApiEntitlement(token, sku).observe(LiveActivity.this, responseEntitlement -> {
             responseEntitlementModel = responseEntitlement;
@@ -722,12 +720,12 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                 if (responseEntitlement.getData().getEntitled()) {
                     getBinding().tvBuyNow.setVisibility(View.GONE);
                     if (responseEntitlement.getData() != null) {
-                        updateBuyNowText(responseEntitlement, 1);
+                        updateBuyNowText();
                     }
                 } else {
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
                     if (responseEntitlement.getData() != null) {
-                        updateBuyNowText(responseEntitlement, 2);
+                        updateBuyNowText();
                     }
                 }
             } else {
@@ -740,7 +738,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         });
     }
 
-    private void updateBuyNowText(ResponseEntitle responseEntitlement, int type) {
+    private void updateBuyNowText() {
         try {
             if (type == 1) {
                 if (responseEntitlement.getData().getEntitledAs() != null) {
@@ -748,7 +746,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                     String vodOfferType = alpurchaseas.get(0).getVoDOfferType();
                     String subscriptionOfferPeriod = null;
                     if (alpurchaseas.get(0).getOfferType() != null) {
-                        subscriptionOfferPeriod = (String) alpurchaseas.get(0).getOfferType();
+                        subscriptionOfferPeriod = alpurchaseas.get(0).getOfferType();
                     }
 
                     if (vodOfferType != null) {
@@ -788,7 +786,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     }
 
 
-    public void setUserInteractionFragment(int id) {
+    public void setUserInteractionFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
@@ -805,7 +803,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         getBinding().tvBuyNow.setOnClickListener(view -> comingSoon());
     }
 
-    public void setUI(EnveuVideoItemBean responseDetailPlayer) {
+    public void setUI() {
         recommendationRailFragment();
 
        /* if (responseDetailPlayer.getAssetCast().size() > 0) {
@@ -833,12 +831,12 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         } else {
             getBinding().llCrewView.setVisibility(View.GONE);
         }*/
-        setDetails(responseDetailPlayer);
+        setDetails();
 
 
     }
 
-    private void setCustomeFields(EnveuVideoItemBean responseDetailPlayer, String duration) {
+    private void setCustomeFields() {
         try {
             getBinding().tag.setText("");
             if (responseDetailPlayer.getParentalRating() != null && !responseDetailPlayer.getParentalRating().equalsIgnoreCase("")) {
@@ -887,14 +885,14 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     public void logoutUser() {
         isloggedout = false;
         if (isLogin) {
-            if (CheckInternetConnection.isOnline(Objects.requireNonNull(LiveActivity.this))) {
+            if (CheckInternetConnection.isOnline(LiveActivity.this)) {
                 clearCredientials(preference);
-                hitApiLogout(LiveActivity.this, preference.getAppPrefAccessToken());
+                hitApiLogout(preference.getAppPrefAccessToken());
             }
         }
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -902,7 +900,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         alertDialog.show(fm, "fragment_alert");
     }
 
-    public void setDetails(EnveuVideoItemBean responseDetailPlayer) {
+    public void setDetails() {
         if (responseDetailPlayer.getAssetType() != null) {
            /* String tempTag1 = responseDetailPlayer.getAssetType();
             String bullet = "\u2022";
@@ -911,9 +909,9 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
             WordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), 0, WordtoSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 */            // StringBuilder stringBuilder = new StringBuilder(tempTag1 + "  " + WordtoSpan + " " + tempTag2);
 
-            setCustomeFields(responseDetailPlayer, "");
+            setCustomeFields();
         } else {
-            setCustomeFields(responseDetailPlayer, "");
+            setCustomeFields();
             //  new ToastHandler(LiveActivity.this).show(LiveActivity.this.getResources().getString(R.string.can_not_play_error));
         }
         getBinding().setResponseApi(responseDetailPlayer);
@@ -954,10 +952,10 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         getBinding().setExpandabletext(getResources().getString(R.string.more));
         getBinding().descriptionText.setEllipsis("...");
         //  getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
-        getBinding().lessButton.setOnClickListener(this::clickExpandable);
+        getBinding().lessButton.setOnClickListener(view -> clickExpandable());
     }
 
-    public void clickExpandable(View view) {
+    public void clickExpandable() {
         getBinding().descriptionText.toggle();
         getBinding().descriptionText.setEllipsis("...");
         if (getBinding().descriptionText.isExpanded()) {
@@ -1021,7 +1019,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     protected void onPause() {
         super.onPause();
         Logger.d("DetailActivityCalled", "True");
-        releaseAudioFocusForMyApp(LiveActivity.this);
+        releaseAudioFocusForMyApp();
         if (handler != null && runnable != null)
             handler.removeCallbacksAndMessages(runnable);
 
@@ -1071,8 +1069,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
         }
     }
 
-    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener
-                                                listener) {
+    public void setConnectivityListener() {
         NetworkChangeReceiver.connectivityReceiverListener = listener;
     }
 
@@ -1138,7 +1135,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
 
     @Override
-    public void railItemClick(RailCommonData item, int position) {
+    public void railItemClick() {
         if (item.getScreenWidget().getType() != null && item.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
             Toast.makeText(LiveActivity.this, item.getScreenWidget().getLandingPageType(), Toast.LENGTH_LONG).show();
         } else {
@@ -1150,8 +1147,8 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     }
 
     @Override
-    public void moreRailClick(RailCommonData data, int position) {
-        PrintLogging.printLog("", data.getScreenWidget().getContentID() + "  " + data.getScreenWidget().getLandingPageTitle() + " " + 0 + " " + 0);
+    public void moreRailClick() {
+        PrintLogging.printLog(data.getScreenWidget().getContentID() + "  " + data.getScreenWidget().getLandingPageTitle() + " " + 0 + " " + 0);
         if (data.getScreenWidget() != null && data.getScreenWidget().getContentID() != null) {
             String playListId = data.getScreenWidget().getContentID();
             if (data.getScreenWidget().getName() != null) {
@@ -1195,11 +1192,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
     public boolean supportsPiPMode() {
         boolean isPipSupported = false;
 //        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            isPipSupported = true;
-        } else {
-            isPipSupported = false;
-        }
+        isPipSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
         return isPipSupported;
     }
 
@@ -1320,7 +1313,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
 
     }
 
-    private void showWifiSettings(int videoQuality) {
+    private void showWifiSettings() {
 
     }
 

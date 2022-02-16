@@ -12,14 +12,13 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 public class ApplicationUpdateManager {
 
     private static ApplicationUpdateManager applicationUpdateManager;
 
     //    private boolean isUpdateAvailable = false;
-    private AppUpdateManager appUpdateManager;
+    private final AppUpdateManager appUpdateManager;
     private AppUpdateInfo appUpdateInfoObject;
 
     public static final int APP_UPDATE_REQUEST_CODE = 101;
@@ -73,7 +72,7 @@ public class ApplicationUpdateManager {
 //                isUpdateAvailable = true;
 //                appUpdateInfoObject = appUpdateInfo;
 
-                appUpdateCallBack.getAppUpdateCallBack(appUpdateInfo);
+                appUpdateCallBack.getAppUpdateCallBack();
 
             } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     // For a flexible update, use AppUpdateType.FLEXIBLE
@@ -85,7 +84,7 @@ public class ApplicationUpdateManager {
 //                appUpdateInfoObject = appUpdateInfo;
 
 
-                appUpdateCallBack.getAppUpdateCallBack(appUpdateInfo);
+                appUpdateCallBack.getAppUpdateCallBack();
             } else {
                 Logger.w("inapp update", "Update availability " + appUpdateInfo.updateAvailability());
             }

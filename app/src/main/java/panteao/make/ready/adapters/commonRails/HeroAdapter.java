@@ -16,17 +16,15 @@ import panteao.make.ready.utils.helpers.ImageHelper;
 
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 
-import panteao.make.ready.beanModelV3.playListModelV2.PlayListDetailsResponse;
-
 public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.ViewHolder> {
 
     private final Context mContext;
-    private PlayListDetailsResponse item;
+    private final PlayListDetailsResponse item;
     private String deviceId;
     private AdManagerAdRequest adRequest;
     private String adsType;
 
-    public HeroAdapter(Context context, PlayListDetailsResponse item, String adsType) {
+    public HeroAdapter(Context context, PlayListDetailsResponse item) {
         this.mContext = context;
         this.item = item;
 
@@ -44,7 +42,7 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull HeroAdapter.ViewHolder holder, int i) {
         try {
-            String imageUrl= ImageLayer.getInstance().getHeroImageUrl(item);
+            String imageUrl= ImageLayer.getInstance().getHeroImageUrl();
             ImageHelper.getInstance(holder.layoutBinding.sliderImage.getContext())
                     .loadImageTo(holder.layoutBinding.sliderImage, imageUrl);
 

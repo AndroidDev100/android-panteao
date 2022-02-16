@@ -43,12 +43,12 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
     final String contentType;
     private final List<EnveuVideoItemBean> itemsList;
     private final Activity mContext;
-    boolean tabletSize;
+    final boolean tabletSize;
     private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ItemClickListener listener;
-    BaseCategory baseCategory;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ItemClickListener listener;
+    final BaseCategory baseCategory;
     public LandscapeListingAdapter(Activity context, List<EnveuVideoItemBean> itemsList, List<ItemsItem> itemsItems, String contentType, ItemClickListener callBack, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.itemsItems = itemsItems;
@@ -69,7 +69,7 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
         (mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 80) / num;
-        itemHeight = (int) (itemWidth * 9) / 16;
+        itemHeight = (itemWidth * 9) / 16;
         Log.w("common-->","LandscapeListingAdapter");
     }
 
@@ -99,14 +99,14 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
 
     @Override
     public void onBindViewHolder(@NonNull SingleItemRowHolder holder, int i) {
-        PrintLogging.printLog("", "onBindViewHolder" + "onBindViewHolder");
+        PrintLogging.printLog("onBindViewHolder" + "onBindViewHolder");
         if (tabletSize) {
             holder.landscapeItemBinding.itemImage.getLayoutParams().width = itemWidth;
             holder.landscapeItemBinding.itemImage.getLayoutParams().height = itemHeight;
 
         }
         if (itemsList.size() > 0) {
-            PrintLogging.printLog("", "onBindViewHolder" + itemsList.get(i).getPosterURL());
+            PrintLogging.printLog("onBindViewHolder" + itemsList.get(i).getPosterURL());
 
             try {
                 AppCommonMethod.handleTags(itemsList.get(i).getIsVIP(),itemsList.get(i).getIsNewS(),
@@ -148,7 +148,7 @@ public class LandscapeListingAdapter extends RecyclerView.Adapter<LandscapeListi
                         ImageHelper.getInstance(mContext).loadListSQRImage(holder.landscapeItemBinding.itemImage, AppCommonMethod.getListLDSImage(itemsList.get(i).getPosterURL(), mContext));
                     }
                     holder.landscapeItemBinding.itemImage.setOnClickListener(view -> {
-                        listener.onRowItemClicked(itemsList.get(i), i);
+                        listener.onRowItemClicked();
                        /* if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
                             return;
                         }

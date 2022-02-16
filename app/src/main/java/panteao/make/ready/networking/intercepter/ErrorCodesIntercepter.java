@@ -27,8 +27,8 @@ public class ErrorCodesIntercepter {
 
     private static ErrorCodesIntercepter instance;
     static PanteaoApplication appInstance;
-    static int ErrorCode409 = 409;
-    static int ErrorCode400 = 400;
+    static final int ErrorCode409 = 409;
+    static final int ErrorCode400 = 400;
 
 
     private ErrorCodesIntercepter() {
@@ -275,7 +275,7 @@ public class ErrorCodesIntercepter {
     }
 
 
-    public ResponseMembershipAndPlan checkPlans(Response<ResponseMembershipAndPlan> response, ResponseMembershipAndPlan responseEntitlement) {
+    public ResponseMembershipAndPlan checkPlans() {
         return null;
     }
 

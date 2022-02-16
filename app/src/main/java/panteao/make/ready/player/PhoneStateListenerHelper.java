@@ -29,7 +29,7 @@ public class PhoneStateListenerHelper extends PhoneStateListener {
 
 
         //   BaseActivity mActivity = (BaseActivity) context.getActivity();
-        phoneListenerCallBack = (PhoneListenerCallBack) context;
+        phoneListenerCallBack = context;
         if (mInstance == null)
             mInstance = new PhoneStateListenerHelper();
         return mInstance;
@@ -39,7 +39,7 @@ public class PhoneStateListenerHelper extends PhoneStateListener {
         if (state == TelephonyManager.CALL_STATE_RINGING) {
             phoneListenerCallBack.onCallStateRinging();
         } else if (state == TelephonyManager.CALL_STATE_IDLE) {
-            phoneListenerCallBack.onCallStateIdle(state);
+            phoneListenerCallBack.onCallStateIdle();
         } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
             //phoneListenerCallBack.onCallStateIdle(state);
             //A call is dialing, active or on hold

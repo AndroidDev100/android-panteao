@@ -4,12 +4,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,7 +24,6 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +40,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
     private boolean isloggedout = false;
 
     @Override
-    public NewPasswordScreenBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public NewPasswordScreenBinding inflateBindingLayout() {
         return NewPasswordScreenBinding.inflate(inflater);
     }
 
@@ -60,13 +55,13 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(ChangePasswordActivity.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().root.setVisibility(View.VISIBLE);
             getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -152,10 +147,10 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
 
             if (CheckInternetConnection.isOnline(ChangePasswordActivity.this)) {
                 if (
-                        editviewEmpty(getBinding().etNewPassword, getBinding().errorNewPwd, ChangePasswordActivity.this.getResources().getString(R.string.please_enter_new_password)) &&
-                                editViewValidity(getBinding().etNewPassword, getBinding().errorNewPwd, ChangePasswordActivity.this.getResources().getString(R.string.strong_password_required)) &&
-                                editviewEmpty(getBinding().etConfirmNewPassword, getBinding().errorNewPwdConfirm, ChangePasswordActivity.this.getResources().getString(R.string.please_confirm_password)) &&
-                                compareBothPwd(getBinding().etNewPassword.getText().toString().trim(), getBinding().etConfirmNewPassword.getText().toString().trim())
+                        editviewEmpty() &&
+                                editViewValidity() &&
+                                editviewEmpty() &&
+                                compareBothPwd()
                 ) {
 
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -170,7 +165,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
                             getBinding().tvChangePassword.setClickable(true);
                             getBinding().progressBar.setVisibility(View.GONE);
                             if (jsonObject.getResponseCode() == 200 || jsonObject.getResponseCode()==2000) {
-                                showDialog("", getResources().getString(R.string.password_changed_successfully));
+                                showDialog();
                             } else if (jsonObject.getResponseCode() == 401) {
                                 isloggedout = true;
                                 logoutCall();
@@ -192,7 +187,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
     }
 
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -201,7 +196,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
     }
 
 
-    private boolean editviewEmpty(EditText editText, TextView errorView, String msg) {
+    private boolean editviewEmpty() {
         boolean check = false;
         if (StringUtils.isNullOrEmptyOrZero(editText.getText().toString().trim())) {
             errorView.setText(msg);
@@ -213,7 +208,7 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
         return check;
     }
 
-    private boolean editViewValidity(EditText editText, TextView errorView, String string) {
+    private boolean editViewValidity() {
 
         //String passwordRegex="^(?=.*[!&^%$#@()\\_+-])[A-Za-z0-9\\d!&^%$#@()\\_+-]{8,20}$";
         String passwordRegex="^[A-Za-z0-9\\d!&^%$#@()\\_+-]{6,20}$";
@@ -233,12 +228,12 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
 
     }
 
-    private boolean stringContainsNumber(String s) {
+    private boolean stringContainsNumber() {
         return Pattern.compile("[0-9]").matcher(s).find();
     }
 
 
-    private boolean compareBothPwd(String pwd1, String pwd2) {
+    private boolean compareBothPwd() {
         boolean check = false;
         if (pwd1.equals(pwd2)) {
             check = true;
@@ -263,9 +258,9 @@ public class ChangePasswordActivity extends BaseBindingActivity<NewPasswordScree
     }
 
     private void logoutCall() {
-        if (CheckInternetConnection.isOnline(Objects.requireNonNull(ChangePasswordActivity.this))) {
+        if (CheckInternetConnection.isOnline(ChangePasswordActivity.this)) {
             clearCredientials(preference);
-            hitApiLogout(ChangePasswordActivity.this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         } else {
            // new ToastHandler(ChangePasswordActivity.this).show(ChangePasswordActivity.this.getResources().getString(R.string.no_internet_connection));
         }

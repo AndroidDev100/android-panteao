@@ -5,7 +5,6 @@ import android.telephony.TelephonyManager;
 
 
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
-import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
 
 
 public class PhoneStateHelper extends PhoneStateListener {
@@ -32,7 +31,7 @@ public class PhoneStateHelper extends PhoneStateListener {
         if (state == TelephonyManager.CALL_STATE_RINGING) {
             mListener.onCallStateRinging();
         } else if (state == TelephonyManager.CALL_STATE_IDLE) {
-            mListener.onCallStateIdle(state);
+            mListener.onCallStateIdle();
         } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
             //phoneListenerCallBack.onCallStateIdle(state);
             //A call is dialing, active or on hold

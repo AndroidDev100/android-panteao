@@ -42,12 +42,12 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
     private final List<EnveuVideoItemBean> itemsList;
     private final Activity mContext;
     private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ArrayList<CommonContinueRail> continuelist;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
-    BaseCategory baseCategory;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ArrayList<CommonContinueRail> continuelist;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
+    final BaseCategory baseCategory;
     public CommonPosterLandscapeAdapter(Activity context, List<EnveuVideoItemBean> itemsList, List<ItemsItem> itemsItems, String contentType, ArrayList<CommonContinueRail> continuelist, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
@@ -69,7 +69,7 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
         (mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need two fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 80) / num;
-        itemHeight = (int) (itemWidth * 2) / 3;
+        itemHeight = (itemWidth * 2) / 3;
 
 
     }
@@ -113,7 +113,7 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
 
             }
 
-            PrintLogging.printLog("", "CommonPosterLandscapeAdapter");
+            PrintLogging.printLog("CommonPosterLandscapeAdapter");
             EnveuVideoItemBean contentsItem = itemsList.get(i);
             if (contentsItem != null) {
 
@@ -222,7 +222,7 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
 
 
             holder.itemBinding.itemImage.setOnClickListener(view -> {
-                PrintLogging.printLog("", seasonItems.get(i).isPremium() + "seasonItems");
+                PrintLogging.printLog(seasonItems.get(i).isPremium() + "seasonItems");
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                     return;
                 }
@@ -258,7 +258,7 @@ public class CommonPosterLandscapeAdapter extends RecyclerView.Adapter<CommonPos
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        PosterLandscapeItemBinding itemBinding;
+        final PosterLandscapeItemBinding itemBinding;
 
         SingleItemRowHolder(PosterLandscapeItemBinding itemBinding) {
             super(itemBinding.getRoot());

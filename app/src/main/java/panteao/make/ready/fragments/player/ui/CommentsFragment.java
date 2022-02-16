@@ -3,7 +3,6 @@ package panteao.make.ready.fragments.player.ui;
 import android.app.Dialog;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import panteao.make.ready.activities.show.adapter.AllCommentAdapter;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -38,14 +36,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutBinding> implements AllCommentAdapter.AllComentClickListener, AlertDialogFragment.AlertDialogListener {
 
-    private String sampleUrl = "https://pbs.twimg.com/profile_images/630285593268752384/iD1MkFQ0.png";
+    private final String sampleUrl = "https://pbs.twimg.com/profile_images/630285593268752384/iD1MkFQ0.png";
     private int id;
     private String type;
     private ArrayList<ItemsItem> sampleList;
     private Dialog dialog;
 
     @Override
-    protected FragmentCommentLayoutBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    protected FragmentCommentLayoutBinding inflateBindingLayout() {
         return FragmentCommentLayoutBinding.inflate(inflater);
     }
 
@@ -92,7 +90,7 @@ public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutB
 
     public void setSampleList() {
         getBinding().commentList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        AllCommentAdapter commentAdapter = new AllCommentAdapter(getActivity(), sampleList, this::onItemClicked);
+        AllCommentAdapter commentAdapter = new AllCommentAdapter(getActivity(), sampleList, this);
         getBinding().commentList.setAdapter(commentAdapter);
         getBinding().commentList.bringToFront();
 
@@ -158,7 +156,7 @@ public class CommentsFragment extends BaseBindingFragment<FragmentCommentLayoutB
 
 
     @Override
-    public void onItemClicked(ItemsItem itemValue) {
+    public void onItemClicked() {
 
     }
 

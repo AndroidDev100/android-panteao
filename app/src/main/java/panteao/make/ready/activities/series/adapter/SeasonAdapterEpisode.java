@@ -25,13 +25,13 @@ public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpis
 
 
     private final Context context;
-    private List<ItemsItem> model;
-    private SeasonAdapterEpisode.EpisodeItemClick listner;
+    private final List<ItemsItem> model;
+    private final SeasonAdapterEpisode.EpisodeItemClick listner;
     private int id;
-    private int episodeId;
-    private boolean isBuyNow;
-    private KsPreferenceKeys preference;
-    private boolean isLogin;
+    private final int episodeId;
+    private final boolean isBuyNow;
+    private final KsPreferenceKeys preference;
+    private final boolean isLogin;
 
     public SeasonAdapterEpisode(Context context, List<ItemsItem> model, int id, int episodeId, SeasonAdapterEpisode.EpisodeItemClick listner) {
         this.context = context;
@@ -72,12 +72,12 @@ public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpis
 
         if (isLogin) {
 
-            double d1 = (double) model.get(position).getContinueDuration();
+            double d1 = model.get(position).getContinueDuration();
             long x1 = (long) d1; // x = 1234
 
             holder.itemBinding.pbProcessing.setMax((int) x1);
 
-            double dd = (double) model.get(position).getPosition();
+            double dd = model.get(position).getPosition();
             long xx = (long) dd; // x = 1234
             holder.itemBinding.pbProcessing.setProgress((int) xx);
 
@@ -146,7 +146,7 @@ public class SeasonAdapterEpisode extends RecyclerView.Adapter<SeasonAdapterEpis
         holder.itemBinding.mainLay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrintLogging.printLog("", "positionIs" + model.get(position));
+                PrintLogging.printLog("positionIs" + model.get(position));
                 id = model.get(position).getId();
                 notifyDataSetChanged();
             }

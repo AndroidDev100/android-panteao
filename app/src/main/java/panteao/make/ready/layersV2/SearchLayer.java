@@ -30,7 +30,7 @@ public class SearchLayer {
 
 
     public LiveData<List<RailCommonData>> getSearchData(String type, String keyword, int size, int page) {
-        return APIServiceLayer.getInstance().getSearchData(type,keyword,size,page);
+        return APIServiceLayer.getInstance().getSearchData(keyword,size,page);
     }
 
     public LiveData<RailCommonData> getSingleCategorySearch(String type, String keyword, int size, int page) {

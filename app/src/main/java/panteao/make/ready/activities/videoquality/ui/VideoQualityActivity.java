@@ -2,9 +2,9 @@ package panteao.make.ready.activities.videoquality.ui;
 
 import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
+
 import android.view.View;
 
 import panteao.make.ready.R;
@@ -18,19 +18,13 @@ import panteao.make.ready.utils.helpers.NetworkConnectivity;
 
 import java.util.ArrayList;
 
-import panteao.make.ready.activities.videoquality.adapter.VideoQualityAdapter;
-import panteao.make.ready.activities.videoquality.bean.TrackItem;
-import panteao.make.ready.activities.videoquality.callBack.NotificationItemClickListner;
-import panteao.make.ready.activities.videoquality.viewModel.VideoQualityViewModel;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-
 
 public class VideoQualityActivity extends BaseBindingActivity<VideoQualityActivityBinding> implements NotificationItemClickListner {
     private VideoQualityViewModel viewModel;
     private VideoQualityAdapter notificationAdapter;
 
     @Override
-    public VideoQualityActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public VideoQualityActivityBinding inflateBindingLayout() {
         return VideoQualityActivityBinding.inflate(inflater);
 
 
@@ -69,15 +63,15 @@ public class VideoQualityActivity extends BaseBindingActivity<VideoQualityActivi
     private void connectionObserver() {
 
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
     private ArrayList<TrackItem> arrayList;
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
             arrayList = viewModel.getQualityList(getResources());
@@ -93,7 +87,7 @@ public class VideoQualityActivity extends BaseBindingActivity<VideoQualityActivi
     }
 
     private void setAdapter() {
-        notificationAdapter = new VideoQualityAdapter(VideoQualityActivity.this, arrayList, VideoQualityActivity.this);
+        notificationAdapter = new VideoQualityAdapter(arrayList, VideoQualityActivity.this);
         getBinding().recyclerview.setAdapter(notificationAdapter);
     }
 
@@ -110,7 +104,7 @@ public class VideoQualityActivity extends BaseBindingActivity<VideoQualityActivi
     }
 
     @Override
-    public void onClick(String id, String status) {
+    public void onClick() {
         notificationAdapter.notifyDataSetChanged();
     }
 }

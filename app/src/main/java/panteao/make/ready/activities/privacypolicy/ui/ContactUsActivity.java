@@ -1,12 +1,9 @@
 package panteao.make.ready.activities.privacypolicy.ui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import androidx.annotation.NonNull;
 
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
@@ -16,7 +13,7 @@ import panteao.make.ready.databinding.ActivityContactUsBinding;
 public class ContactUsActivity extends BaseBindingActivity<ActivityContactUsBinding> {
 
     @Override
-    public ActivityContactUsBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityContactUsBinding inflateBindingLayout() {
         return ActivityContactUsBinding.inflate(inflater);
 
 

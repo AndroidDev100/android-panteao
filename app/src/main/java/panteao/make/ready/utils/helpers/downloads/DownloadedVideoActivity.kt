@@ -2,18 +2,11 @@ package panteao.make.ready.utils.helpers.downloads
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
-import android.view.LayoutInflater
 import android.view.View
 //import com.make.brightcovelibrary.BrightcovePlayerFragment
-import com.google.gson.Gson
-import panteao.make.ready.R
 import panteao.make.ready.databinding.ActivityDownloadedVideoBinding
 import panteao.make.ready.baseModels.BaseBindingActivity
-import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.cropImage.helpers.Logger
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -63,7 +56,7 @@ class DownloadedVideoActivity : BaseBindingActivity<ActivityDownloadedVideoBindi
 //        transaction.add(R.id.playerFragmentFrame, playerFragment).commit()
     }
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityDownloadedVideoBinding {
+    override fun inflateBindingLayout(): ActivityDownloadedVideoBinding {
         return ActivityDownloadedVideoBinding.inflate(inflater)
 
     }

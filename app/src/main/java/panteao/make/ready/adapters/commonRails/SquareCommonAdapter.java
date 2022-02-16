@@ -37,12 +37,12 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
     private final Activity mContext;
     private final String contentType;
     private long mLastClickTime = 0;
-    private ArrayList<CommonContinueRail> continuelist;
-    private KsPreferenceKeys preference;
-    private boolean isLogin;
+    private final ArrayList<CommonContinueRail> continuelist;
+    private final KsPreferenceKeys preference;
+    private final boolean isLogin;
     private boolean isContinueList;
-    private int itemWidth;
-    private int itemHeight;
+    private final int itemWidth;
+    private final int itemHeight;
 
     public SquareCommonAdapter(Activity context, List<ContentsItem> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist) {
         this.itemsList = itemsList;
@@ -50,10 +50,7 @@ public class SquareCommonAdapter extends RecyclerView.Adapter<SquareCommonAdapte
         this.contentType = contentType;
         this.continuelist = continuelist;
         if (this.continuelist != null) {
-            if (this.continuelist.size() > 0)
-                isContinueList = true;
-            else
-                isContinueList = false;
+            isContinueList = this.continuelist.size() > 0;
         }
         preference = KsPreferenceKeys.getInstance();
         isLogin = preference.getAppPrefLoginStatus();

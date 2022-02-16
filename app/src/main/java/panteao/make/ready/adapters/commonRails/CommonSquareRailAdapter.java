@@ -25,19 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 public class CommonSquareRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private long mLastClickTime = 0;
-    private RailCommonData railCommonData;
+    private final RailCommonData railCommonData;
     private List<EnveuVideoItemBean> videos;
-    private CommonRailtItemClickListner listner;
-    private Context mContext;
-    BaseCategory baseCategory;
+    private final CommonRailtItemClickListner listner;
+    private final Context mContext;
+    final BaseCategory baseCategory;
     public CommonSquareRailAdapter(Context context, RailCommonData railCommonData, CommonRailtItemClickListner listner, BaseCategory baseCat) {
         this.mContext = context;
         this.railCommonData = railCommonData;
@@ -195,7 +191,7 @@ public class CommonSquareRailAdapter extends RecyclerView.Adapter<RecyclerView.V
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        listner.railItemClick(railCommonData, position);
+        listner.railItemClick();
 
     }
 
@@ -205,7 +201,7 @@ public class CommonSquareRailAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        SquareItemBinding itemBinding;
+        final SquareItemBinding itemBinding;
 
         CustomViewHolder(SquareItemBinding itemBinding) {
             super(itemBinding.getRoot());

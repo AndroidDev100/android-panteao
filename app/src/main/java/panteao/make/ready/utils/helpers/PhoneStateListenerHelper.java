@@ -40,11 +40,11 @@ public class PhoneStateListenerHelper extends PhoneStateListener {
 
     @Override
     public void onCallStateChanged(int state, String phoneNumber) {
-        PrintLogging.printLog(" ","claaingState"+state);
+        PrintLogging.printLog("claaingState"+state);
         if (state == TelephonyManager.CALL_STATE_RINGING) {
             phoneListenerCallBack.onCallStateRinging();
         } else if (state == TelephonyManager.CALL_STATE_IDLE) {
-            phoneListenerCallBack.onCallStateIdle(state);
+            phoneListenerCallBack.onCallStateIdle();
         } else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
             //phoneListenerCallBack.onCallStateIdle(state);
             //A call is dialing, active or on hold

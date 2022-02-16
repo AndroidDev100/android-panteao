@@ -2,32 +2,20 @@ package panteao.make.ready.activities.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.SkuDetails;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import java.util.Objects;
 
 import panteao.make.ready.BuildConfig;
 import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
-import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.settings.downloadsettings.DownloadSettings;
 import panteao.make.ready.activities.videoquality.ui.VideoQualityActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.SettingsActivityBinding;
-import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 
@@ -45,7 +33,7 @@ import panteao.make.ready.utils.inAppBilling.RestoreSubscriptionCallback;
 public class ActivitySettings extends BaseBindingActivity<SettingsActivityBinding> implements View.OnClickListener, InAppProcessListener, RestoreSubcriptionsDialod.RestoreSubcriptionsDialodListener {
 
     @Override
-    public SettingsActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public SettingsActivityBinding inflateBindingLayout() {
         return SettingsActivityBinding.inflate(inflater);
     }
 
@@ -54,11 +42,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (KsPreferenceKeys.getInstance().getDownloadOverWifi()==1){
-            getBinding().switchThemeNew.setChecked(true);
-        }else {
-            getBinding().switchThemeNew.setChecked(false);
-        }
+        getBinding().switchThemeNew.setChecked(KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1);
 
         bp = new BillingProcessor(ActivitySettings.this,this);
         bp.initializeBillingProcessor();
@@ -104,7 +88,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
             public void onClick(View view) {
                 Intent intent = new Intent(ActivitySettings.this, VideoQualityActivity.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Streaming Setting","",ActivitySettings.this,0);
+                AppCommonMethod.trackFcmEvent("Streaming Setting","",ActivitySettings.this);
 
             }
         });
@@ -120,12 +104,12 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
                             public void subscriptionStatus(boolean status, String message) {
                                 getBinding().progressBar.setVisibility(View.GONE);
                                 if (status){
-                                    showAlertDialog("", message,1);
+                                    showAlertDialog();
                                 }else {
                                     if (message.contains("We could not restore your subscription at this time. Please try again after some time. If issue persists, please contact support")){
-                                        showAlertDialog(getResources().getString(R.string.error), message,2);
+                                        showAlertDialog();
                                     }else {
-                                        showAlertDialog(getResources().getString(R.string.error), message,3);
+                                        showAlertDialog();
                                     }
 
                                 }
@@ -177,7 +161,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
         }
     }
 
-    private void showAlertDialog(String title, String msg,int type) {
+    private void showAlertDialog() {
         FragmentManager fm = getSupportFragmentManager();
         RestoreSubcriptionsDialod alertDialog = RestoreSubcriptionsDialod.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel),type);
         alertDialog.setAlertDialogCallBack(this);
@@ -220,7 +204,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
 
     }
 
-    private void setQualityText(String qualityName) {
+    private void setQualityText() {
         if (qualityName.isEmpty()) {
             getBinding().qualityText.setText(getString(R.string.auto));
 
@@ -244,7 +228,7 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
     protected void onStart() {
         super.onStart();
         if (getBinding() != null) {
-            setQualityText(KsPreferenceKeys.getInstance().getQualityName());
+            setQualityText();
         }
     }
 
@@ -270,22 +254,22 @@ public class ActivitySettings extends BaseBindingActivity<SettingsActivityBindin
     }
 
     @Override
-    public void onPurchasesUpdated(@NonNull @NotNull BillingResult billingResult, @Nullable @org.jetbrains.annotations.Nullable List<Purchase> purchases) {
+    public void onPurchasesUpdated() {
 
     }
 
     @Override
-    public void onListOfSKUFetched(@Nullable @org.jetbrains.annotations.Nullable List<SkuDetails> purchases) {
+    public void onListOfSKUFetched() {
 
     }
 
     @Override
-    public void onBillingError(@Nullable @org.jetbrains.annotations.Nullable BillingResult error) {
+    public void onBillingError() {
 
     }
 
     @Override
-    public void onFinishDialog(int btnType) {
+    public void onFinishDialog() {
         if (btnType==1){
             if (NetworkConnectivity.isOnline(ActivitySettings.this)) {
                 Intent intent = new Intent(ActivitySettings.this, MemberShipPlanActivity.class);

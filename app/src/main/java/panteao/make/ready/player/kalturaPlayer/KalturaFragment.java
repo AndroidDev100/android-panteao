@@ -4,7 +4,6 @@ import static android.content.Context.TELEPHONY_SERVICE;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -18,8 +17,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -60,7 +57,6 @@ import com.kaltura.tvplayer.OVPMediaOptions;
 import java.util.ArrayList;
 
 import panteao.make.ready.R;
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.PhoneListenerCallBack;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -94,7 +90,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private Context mcontext;
     private View tracksSelectionMenu;
     private ProgressBar progressbar;
-    private boolean isSelected = false;
+    private final boolean isSelected = false;
     private boolean isDialogShowing = false;
     private PlayerCallbacks playerCallbacks;
     private Boolean skipIntroEnable = false;
@@ -110,10 +106,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private boolean showBingeWatchControls = false;
     private boolean isBingeWatchTimeCalculate = false;
     private int pos;
-    private int bottomMargin = 0;
-    private boolean isOfflineVideo = false;
+    private final int bottomMargin = 0;
+    private final boolean isOfflineVideo = false;
     private PlayerControlsFragment playerControlsFragment;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private ImageView play_pause;
     private AlertDialogSingleButtonFragment errorDialog;
     private NetworkChangeReceiver receiver = null;
@@ -131,7 +127,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     private String mParam1;
     private String mParam2;
     private FrameLayout container;
-    CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+    final CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
         public void onTick(long millisUntilFinished) {
             Logger.e("TICKING", "TRUE");
         }
@@ -284,7 +280,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     private void setPlayerListner() {
-        player.addListener(this, PlayerEvent.stateChanged, this::onEvent);
+        player.addListener(this, PlayerEvent.stateChanged, this);
         player.addListener(this, PlayerEvent.playheadUpdated, new PKEvent.Listener<PlayerEvent.PlayheadUpdated>() {
             @Override
             public void onEvent(PlayerEvent.PlayheadUpdated event) {
@@ -305,7 +301,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
                     if (currentPosition >= bingeWatchTimer) {
                         showBingeWatchControls = true;
-                        playerControlsFragment.showBingeWatch(player.getDuration() - player.getCurrentPosition(), isFirstCalled, totalEpisodes, runningEpisodes,fromActivity);
+                        playerControlsFragment.showBingeWatch(player.getDuration() - player.getCurrentPosition(), totalEpisodes, runningEpisodes,fromActivity);
                         countDownTimer.cancel();
                     }
                 }
@@ -430,7 +426,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                             countDownTimer.cancel();
                         }
                         playerControlsFragment.hideBingeWatch();
-                        mListener.bingeWatchCall(entryID);
+                        mListener.bingeWatchCall();
                     }
                 }
 
@@ -439,7 +435,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         player.addListener(this, PlayerEvent.tracksAvailable, new PKEvent.Listener<PlayerEvent.TracksAvailable>() {
             @Override
             public void onEvent(PlayerEvent.TracksAvailable event) {
-                PlayerEvent.TracksAvailable tracksAvailable = (PlayerEvent.TracksAvailable) event;
+                PlayerEvent.TracksAvailable tracksAvailable = event;
                 tracks = tracksAvailable.tracksInfo;
             }
         });
@@ -455,10 +451,10 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     private void findViewById(View view) {
 
-        playerLayout = (FrameLayout) view.findViewById(R.id.playerRoot);
-        playerRootMain = (FrameLayout) view.findViewById(R.id.playerRootMain);
-        constraintMain = (ConstraintLayout) view.findViewById(R.id.constraintMain);
-        progressbar = (ProgressBar) view.findViewById(R.id.pBar);
+        playerLayout = view.findViewById(R.id.playerRoot);
+        playerRootMain = view.findViewById(R.id.playerRootMain);
+        constraintMain = view.findViewById(R.id.constraintMain);
+        progressbar = view.findViewById(R.id.pBar);
         container = view.findViewById(R.id.container);
         playerLayout.setVisibility(View.GONE);
         progressbar.setVisibility(View.VISIBLE);
@@ -640,7 +636,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
         isBingeWatchTimeCalculate = false;
         isFirstCalled = true;
-        mListener.bingeWatchCall(entryID);
+        mListener.bingeWatchCall();
     }
 
     boolean fullScreenFromBtnClick=false;
@@ -657,11 +653,11 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         } else {
 
             FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams) playerLayout.getLayoutParams();
-            captionParams.bottomMargin = (int) 0;
-            captionParams.topMargin = (int) 0;
+            captionParams.bottomMargin = 0;
+            captionParams.topMargin = 0;
             playerLayout.setLayoutParams(captionParams);
             if (id.getId() == R.id.backArrow) {
-                _isOrientation(1, id);
+                _isOrientation();
             } else {
                 int orientation = getActivity().getResources().getConfiguration().orientation;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -689,7 +685,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         }
     }
 
-    private void _isOrientation(int i, ImageView id) {
+    private void _isOrientation() {
         int orientation = getActivity().getResources().getConfiguration().orientation;
 
         {
@@ -822,7 +818,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
     }
 
     @Override
-    public void onCallStateIdle(int state) {
+    public void onCallStateIdle() {
         if (player != null) {
             player.play();
         }
@@ -873,8 +869,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
             getActivity().finish();
         } else {
             FrameLayout.LayoutParams captionParams = (FrameLayout.LayoutParams) container.getLayoutParams();
-            captionParams.bottomMargin = (int) 0;
-            captionParams.topMargin = (int) 0;
+            captionParams.bottomMargin = 0;
+            captionParams.topMargin = 0;
             container.setLayoutParams(captionParams);
             if (value == 2) {
                 getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -903,7 +899,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     public void pausePlayer() {
         if (player!=null){
-            mListener.onCurrentPosition(player.getCurrentPosition());
+            mListener.onCurrentPosition();
             player.stop();
             player.destroy();
         }
@@ -914,7 +910,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
         this.fromOnstart = fromOnStart;
     }
 
-    public void checkPlayerState(Activity episodeActivity, int i) {
+    public void checkPlayerState(int i) {
         try {
             if (player!=null){
                 if (i==1){
@@ -954,15 +950,15 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
 
     public interface OnPlayerInteractionListener {
-        void bingeWatchCall(String entryID);
+        void bingeWatchCall();
 
         void onPlayerStart();
 
-        void onBookmarkCall(int currentPosition);
+        void onBookmarkCall();
 
         void onBookmarkFinish();
 
-        void onCurrentPosition(long currentPosition);
+        void onCurrentPosition();
     }
 
     boolean pausedFromBtn=false;
@@ -1091,8 +1087,8 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
 
     static class ViewHolder1 extends RecyclerView.ViewHolder {
 
-        ImageView tick;
-        private TextView qualityText;
+        final ImageView tick;
+        private final TextView qualityText;
 
         private ViewHolder1(View itemView) {
             super(itemView);
@@ -1253,7 +1249,7 @@ public class KalturaFragment extends Fragment implements PlayerCallbacks, PKEven
                         if (percentagePlayed > 10 && percentagePlayed <= 95) {
                             if (mListener != null) {
                                 mListener = (OnPlayerInteractionListener) getActivity();
-                                mListener.onBookmarkCall((int) player.getCurrentPosition());
+                                mListener.onBookmarkCall();
                             }
                             if (handler != null) {
                                 handler.postDelayed(this, 10000);

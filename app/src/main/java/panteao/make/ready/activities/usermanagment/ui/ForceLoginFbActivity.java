@@ -2,10 +2,8 @@ package panteao.make.ready.activities.usermanagment.ui;
 
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,7 +24,7 @@ import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-import com.facebook.FacebookSdk;
+
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
@@ -46,7 +44,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
     }
 
     @Override
-    public ActivityForceLoginBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityForceLoginBinding inflateBindingLayout() {
         return ActivityForceLoginBinding.inflate(inflater);
     }
 
@@ -103,10 +101,10 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
                     if (Objects.requireNonNull(loginResponseModelResponse).getResponseCode() == 2000) {
                         Gson gson = new Gson();
                         String stringJson = gson.toJson(loginResponseModelResponse.getData());
-                        saveUserDetails(stringJson, loginResponseModelResponse.getData().getId(), false);
+                        saveUserDetails();
                     }else {
                         dismissLoading(getBinding().progressBar);
-                        showDialog(ForceLoginFbActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+                        showDialog();
                     }
                   /*  else if (loginResponseModelResponse.getResponseCode() == 401 || loginResponseModelResponse.getResponseCode() == 404) {
                         dismissLoading(getBinding().progressBar);
@@ -130,7 +128,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
             new ToastHandler(ForceLoginFbActivity.this).show(ForceLoginFbActivity.this.getResources().getString(R.string.no_internet_connection));
     }
 
-    public void saveUserDetails(String response, int userID, boolean isManual) {
+    public void saveUserDetails() {
         UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
@@ -149,7 +147,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
 
 
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -162,7 +160,7 @@ public class ForceLoginFbActivity extends BaseBindingActivity<ActivityForceLogin
     public void onBackPressed() {
         super.onBackPressed();
         LoginManager.getInstance().logOut();
-        ResponseConfig dataConfig = AppCommonMethod.callpreference(ForceLoginFbActivity.this);
+        ResponseConfig dataConfig = AppCommonMethod.callpreference();
         preference.clear();
         preference.setAppPrefLoginType("");
         Gson gson = new Gson();

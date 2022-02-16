@@ -4,7 +4,6 @@ import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingResult;
@@ -108,7 +107,7 @@ public class PurchaseHandler {
 
     }
 
-    int count=0;
+    final int count=0;
     String purchasedSKU="";
     String newSKU="";
     String finalSKU="";
@@ -239,7 +238,7 @@ public class PurchaseHandler {
                         purchaseResponseModel.setStatus(true);
                         purchaseResponseModel.setData(response.body().getData());
                         String orderId = purchaseResponseModel.getData().getOrderId();
-                        callInitiatePaymentApi(orderId,purchase,dataItem,model,callback);
+                        callInitiatePaymentApi(orderId,purchase, model,callback);
                     } else {
 
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().createNewOrder(response);
@@ -266,7 +265,7 @@ public class PurchaseHandler {
 
     }
 
-    private void callInitiatePaymentApi(String orderID, Purchase purchase, DataItem dataItem, PurchaseModel model, RestoreSubscriptionCallback callback) {
+    private void callInitiatePaymentApi(String orderID, Purchase purchase, PurchaseModel model, RestoreSubscriptionCallback callback) {
 
         try {
             JSONObject jsonObject=new JSONObject();
@@ -292,7 +291,7 @@ public class PurchaseHandler {
                         purchaseResponseModel.setStatus(true);
                         purchaseResponseModel.setData(response.body().getData());
                         String paymentId = purchaseResponseModel.getData().getPaymentId().toString();
-                        updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId,purchase.getOrderId(),purchase,model,orderID,callback);
+                        updatePayment(purchase.getPurchaseToken(), paymentId,purchase.getOrderId(), model,orderID,callback);
                     } else {
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().initiateOrder(response);
                         getPlans=false;
@@ -319,16 +318,16 @@ public class PurchaseHandler {
 
     }
 
-    private void updatePayment(String billingError, String paymentStatus, String purchaseToken, String paymentId, String playstoreOrderId, Purchase purchase, PurchaseModel purchaseModel, String orderId, RestoreSubscriptionCallback callback) {
+    private void updatePayment(String purchaseToken, String paymentId, String playstoreOrderId, PurchaseModel purchaseModel, String orderId, RestoreSubscriptionCallback callback) {
         try {
             JSONObject jsonObject=new JSONObject();
             JSONObject jsonObject1=new JSONObject();
 
             try {
                 /* "purchasePrice": "20",    "purchaseCurrency": "INR"*/
-                if (paymentStatus.equalsIgnoreCase("FAILED")){
+                if ("PAYMENT_DONE".equalsIgnoreCase("FAILED")){
                     jsonObject1.put("googleIAPPurchaseToken", "Could not connect to the play store");
-                    jsonObject1.put("exception",billingError);
+                    jsonObject1.put("exception", "");
                 }else {
                     jsonObject1.put("googleIAPPurchaseToken", purchaseToken);
                     jsonObject1.put("googleIAPPurchaseOrderId",playstoreOrderId);
@@ -342,7 +341,7 @@ public class PurchaseHandler {
                     jsonObject1.put("purchaseCurrency", "");
                 }
                 jsonObject1.put("playStoreProductId", Base64.encodeToString(playstoreSKU.getBytes(),Base64.NO_WRAP));
-                jsonObject.put("paymentStatus", paymentStatus);
+                jsonObject.put("paymentStatus", "PAYMENT_DONE");
                 jsonObject.put("notes",jsonObject1);
             }catch (Exception ignored){
 

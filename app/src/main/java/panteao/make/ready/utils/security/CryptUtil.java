@@ -15,10 +15,10 @@ public class CryptUtil {
 
     private static CryptUtil cryptUtil;
     private static SecretKeySpec secretKey;
-    private static String ENCODING_METHOD = "AES/ECB/PKCS5Padding";
+    private static final String ENCODING_METHOD = "AES/ECB/PKCS5Padding";
     private static byte[] key;
-    private static String CHARACTER_SET = "UTF-8";
-    private static String ALGORITHM = "AES";
+    private static final String CHARACTER_SET = "UTF-8";
+    private static final String ALGORITHM = "AES";
 
     public static CryptUtil getInstance() {
         if (cryptUtil == null) {

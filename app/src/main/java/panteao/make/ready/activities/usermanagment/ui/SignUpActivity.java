@@ -6,10 +6,8 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -47,7 +45,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
     private String userName;
 
     @Override
-    public SignupActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public SignupActivityBinding inflateBindingLayout() {
         return SignupActivityBinding.inflate(inflater);
     }
 
@@ -79,13 +77,13 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(SignUpActivity.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().parentLayout.setVisibility(View.VISIBLE);
             getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -126,11 +124,11 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
             mLastClickTime = SystemClock.elapsedRealtime();
 
             if (CheckInternetConnection.isOnline(SignUpActivity.this)) {
-                if (validateNameEmpty() && validateEmptyEmail() && validateEmail() && passwordCheck(getBinding().etPassword.getText().toString())) {
+                if (validateNameEmpty() && validateEmptyEmail() && validateEmail() && passwordCheck()) {
                     getBinding().errorName.setVisibility(View.INVISIBLE);
                     getBinding().errorEmail.setVisibility(View.INVISIBLE);
                     getBinding().errorPassword.setVisibility(View.INVISIBLE);
-                    showLoading(getBinding().progressBar, true);
+                    showLoading(getBinding().progressBar);
                     preference = KsPreferenceKeys.getInstance();
                     preference.setAppPrefAccessToken("");
 
@@ -142,7 +140,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
                                 Gson gson = new Gson();
                                 preference.setAppPrefAccessToken(signupResponseAccessToken.getAccessToken());
                                 String stringJson = gson.toJson(signupResponseAccessToken.getResponseModel().getData());
-                                saveUserDetails(stringJson, signupResponseAccessToken.getResponseModel().getData().getId(), true);
+                                saveUserDetails();
                                 onBackPressed();
                                 userID=signupResponseAccessToken.getResponseModel().getData().getId()+"";
                                 userName=signupResponseAccessToken.getResponseModel().getData().getName()+"";
@@ -155,10 +153,10 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
                                 //finish();
 
                             } else if (signupResponseAccessToken.getResponseModel().getResponseCode() == 4901) {
-                                showDialog(SignUpActivity.this.getResources().getString(R.string.error), signupResponseAccessToken.getDebugMessage().toString());
+                                showDialog();
                             } else if (signupResponseAccessToken.getResponseModel().getResponseCode() == 400) {
 
-                                showDialog(SignUpActivity.this.getResources().getString(R.string.error), signupResponseAccessToken.getDebugMessage().toString());
+                                showDialog();
                             }
                         } catch (NullPointerException e) {
 
@@ -169,7 +167,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
                 }
             } else {
                 dismissLoading(getBinding().progressBar);
-                connectionValidation(false);
+                connectionValidation();
                 //  new ToastHandler(SignUpActivity.this).show(SignUpActivity.this.getResources().getString(R.string.no_internet_connection));
 
             }
@@ -255,7 +253,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
 
     }
 
-    public void saveUserDetails(String response, int userID, boolean isManual) {
+    public void saveUserDetails() {
         UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
@@ -274,7 +272,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
             Log.d("storedEmail 1",KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck());
             if (!KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck().equalsIgnoreCase("") && String.valueOf(fbLoginData.getEmail())!=null && !String.valueOf(fbLoginData.getEmail()).equalsIgnoreCase("")){
                 String storedLogin=KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
-                Log.d("storedEmail 2",storedLogin+"  "+String.valueOf(fbLoginData.getEmail()));
+                Log.d("storedEmail 2",storedLogin+"  "+ fbLoginData.getEmail());
                 if (storedLogin!=null && !storedLogin.equalsIgnoreCase("")){
                     if (storedLogin.equalsIgnoreCase(String.valueOf(fbLoginData.getEmail()))){
 
@@ -293,7 +291,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
         //new ActivityLauncher(SignUpActivity.this).homeScreen(SignUpActivity.this, HomeActivity.class);
 
         try {
-            trackEvent(String.valueOf(fbLoginData.getName()),String.valueOf(fbLoginData.getEmail()));
+            trackEvent();
         }catch (Exception e){
 
         }
@@ -308,11 +306,11 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
         }
     }
 
-    private void trackEvent(String name, String type) {
+    private void trackEvent() {
         final JsonObject requestParam = new JsonObject();
         requestParam.addProperty(EventConstant.Name, name);
         requestParam.addProperty(EventConstant.PlatformType, type);
-        FCMEvents.getInstance().setContext(SignUpActivity.this).trackEvent(1,requestParam);
+        FCMEvents.getInstance().setContext(SignUpActivity.this).trackEvent(1);
     }
 
 
@@ -323,7 +321,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
 
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -369,7 +367,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
     }
 
 
-    public boolean passwordCheck(String password) {
+    public boolean passwordCheck() {
        // String passwordRegex="^(?=.*[!&^%$#@()\\_+-])[A-Za-z0-9\\d!&^%$#@()\\_+-]{8,20}$";
 
         String passwordRegex="^[A-Za-z0-9\\d!&^%$#@()\\_+-]{6,20}$";
@@ -389,7 +387,7 @@ public class SignUpActivity extends BaseBindingActivity<SignupActivityBinding> i
         return check;
     }
 
-    public boolean stringContainsNumber(String s) {
+    public boolean stringContainsNumber() {
         return Pattern.compile("[0-9]").matcher(s).find();
     }
 

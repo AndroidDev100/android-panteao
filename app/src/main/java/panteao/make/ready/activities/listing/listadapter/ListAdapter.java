@@ -69,7 +69,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void notifyEpisodedata(List<panteao.make.ready.beanModel.responseModels.series.season.ItemsItem> i) {
+    public void notifyEpisodedata() {
 
         //list.addAll(i);
         notifyDataSetChanged();
@@ -171,7 +171,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
 
 
-        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position), position));
+        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked());
 
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
             //ImageHelper.getInstance(context).loadListSQRImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListCIRCLEImage(list.get(position).getPosterURL(), context));
@@ -197,23 +197,23 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
 
         viewHolder.itemBinding.clRoot.setOnClickListener(view -> {
-            listener.onRowItemClicked(list.get(position), position);
+            listener.onRowItemClicked();
         });
         viewHolder.itemBinding.clRoot.setOnLongClickListener(v -> {
             if (isWatchHistory)
-                listener.onDeleteWatchHistoryClicked(list.get(position).getId(), position);
+                listener.onDeleteWatchHistoryClicked();
 
             if (isWatchList)
-                listener.onDeleteWatchListClicked(list.get(position).getId(), position);
+                listener.onDeleteWatchListClicked();
             return true;
         });
         viewHolder.itemBinding.flDeleteWatchlist.setOnClickListener(view -> {
 
             if (isWatchHistory)
-                listener.onDeleteWatchHistoryClicked(list.get(position).getId(), position);
+                listener.onDeleteWatchHistoryClicked();
 
             if (isWatchList)
-                listener.onDeleteWatchListClicked(list.get(position).getId(), position);
+                listener.onDeleteWatchListClicked();
         });
 
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
@@ -244,7 +244,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void setPortraiteData(PortraiteItemRowHolder viewHolder, int position) {
         viewHolder.itemBinding.setPlaylistItem(list.get(position));
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
-        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position), position));
+        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked());
         //PrintLogging.printLog("","PRPosterImage-->>IN"+AppCommonMethod.getListPRImage(list.get(position).getThumbnailImage()));
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
             ImageHelper.getInstance(context).loadImageTo(viewHolder.itemBinding.itemImage, AppCommonMethod.getListPRImage(list.get(position).getPosterURL(), context));
@@ -268,7 +268,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void setPortraiteTwoData(PortraiteTwoItemRowHolder viewHolder, int position) {
         viewHolder.itemBinding.setPlaylistItem(list.get(position));
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
-        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position), position));
+        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked());
 
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
             ImageHelper.getInstance(context).loadImageTo(viewHolder.itemBinding.itemImage, AppCommonMethod.getListPRTwoImage(list.get(position).getPosterURL(), context));
@@ -292,10 +292,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void setSquareData(SquareItemRowHolder viewHolder, int position) {
         viewHolder.itemBinding.setPlaylistItem(list.get(position));
         viewHolder.itemBinding.tvTitle.setText(list.get(position).getTitle());
-        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked(list.get(position), position));
+        viewHolder.itemBinding.clRoot.setOnClickListener(view -> listener.onRowItemClicked());
 
         if (list.get(position).getPosterURL() != null && !list.get(position).getPosterURL().equalsIgnoreCase("")) {
-            PrintLogging.printLog("", "imageUrl-->>" + list.get(position).getName() + " --->>" + list.get(position).getPosterURL());
+            PrintLogging.printLog("imageUrl-->>" + list.get(position).getName() + " --->>" + list.get(position).getPosterURL());
             ImageHelper.getInstance(context).loadListSQRImage(viewHolder.itemBinding.itemImage, AppCommonMethod.getListSQRImage(list.get(position).getPosterURL(), context));
         }
         viewHolder.itemBinding.tvGenre.setText(AppCommonMethod.getGenre(list.get(position)));

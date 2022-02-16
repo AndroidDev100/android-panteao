@@ -23,11 +23,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import panteao.make.ready.activities.purchaseNew.BillingConstants;
-import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -41,7 +37,7 @@ import java.util.Map;
 public class BillingProcessor implements PurchasesUpdatedListener {
     private static WeakReference<Activity> mActivity;
     private BillingClient myBillingClient=null;
-    private InAppProcessListener inAppProcessListener;
+    private final InAppProcessListener inAppProcessListener;
 
     public BillingProcessor(Activity activity,InAppProcessListener billingCallBacks) {
         mActivity = new WeakReference<>(activity);
@@ -76,12 +72,12 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
     /** Initiates Google Play Billing Service. */
     private void connectToPlayBillingService() {
-        PrintLogging.printLog(TAG, "connectToPlayBillingService");
+        PrintLogging.printLog("connectToPlayBillingService");
         if (!myBillingClient.isReady()) {
             startServiceConnection(
                     () -> {
                         // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                        PrintLogging.printLog(TAG, "Setup successful. Querying inventory.");
+                        PrintLogging.printLog("Setup successful. Querying inventory.");
                         if (inAppProcessListener!=null)
                         inAppProcessListener.onBillingInitialized();
                        // querySkuDetails();
@@ -119,7 +115,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     @Override
                     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                         // The billing client is ready. You can query purchases here.
-                        PrintLogging.printLog(TAG, "Setup finished");
+                        PrintLogging.printLog("Setup finished");
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                             if (executeOnSuccess != null) {
                                 executeOnSuccess.run();
@@ -148,63 +144,62 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     private void logErrorType(BillingResult billingResult) {
         switch (billingResult.getResponseCode()) {
             case BillingClient.BillingResponseCode.DEVELOPER_ERROR:
-                inAppProcessListener.onBillingError(billingResult);
+                inAppProcessListener.onBillingError();
             case BillingClient.BillingResponseCode.BILLING_UNAVAILABLE:
                 PrintLogging.printLog(
-                        TAG,
                         "Billing unavailable. Make sure your Google Play app is setup correctly");
-                inAppProcessListener.onBillingError(billingResult);
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.SERVICE_DISCONNECTED:
                 //notifyBillingError(R.string.err_service_disconnected);
                // connectToPlayBillingService();
-                inAppProcessListener.onBillingError(billingResult);
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.OK:
-                PrintLogging.printLog(TAG, "Setup successful!");
+                PrintLogging.printLog("Setup successful!");
                 break;
             case BillingClient.BillingResponseCode.USER_CANCELED:
-                PrintLogging.printLog(TAG, "User has cancelled Purchase!");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("User has cancelled Purchase!");
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE:
                 //notifyBillingError(R.string.err_no_internet);
-                inAppProcessListener.onBillingError(billingResult);
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.ITEM_UNAVAILABLE:
-                PrintLogging.printLog(TAG, "Product is not available for purchase");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Product is not available for purchase");
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.ERROR:
-                PrintLogging.printLog(TAG, "fatal error during API action");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("fatal error during API action");
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED:
-                PrintLogging.printLog(TAG, "Failure to purchase since item is already owned");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Failure to purchase since item is already owned");
+                inAppProcessListener.onBillingError();
                 // queryPurchasesLocally();
                 break;
             case BillingClient.BillingResponseCode.ITEM_NOT_OWNED:
-                PrintLogging.printLog(TAG, "Failure to consume since item is not owned");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Failure to consume since item is not owned");
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED:
-                PrintLogging.printLog(TAG, "Billing feature is not supported on your device");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Billing feature is not supported on your device");
+                inAppProcessListener.onBillingError();
                 break;
             case BillingClient.BillingResponseCode.SERVICE_TIMEOUT:
-                PrintLogging.printLog(TAG, "Billing service timeout occurred");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Billing service timeout occurred");
+                inAppProcessListener.onBillingError();
                 break;
             default:
-                PrintLogging.printLog(TAG, "Billing unavailable. Please check your device");
-                inAppProcessListener.onBillingError(billingResult);
+                PrintLogging.printLog("Billing unavailable. Please check your device");
+                inAppProcessListener.onBillingError();
                 break;
         }
     }
 
     private void destroy() {
-        PrintLogging.printLog(TAG, "Destroying the billing manager.");
+        PrintLogging.printLog("Destroying the billing manager.");
         if (myBillingClient.isReady()) {
             myBillingClient.endConnection();
         }
@@ -237,7 +232,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 }catch (Exception e){
 
                 }*/
-                inAppProcessListener.onPurchasesUpdated(billingResult,purchases);
+                inAppProcessListener.onPurchasesUpdated();
             }
           //  processPurchases(purchases);
 
@@ -317,7 +312,6 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     // Process the result.
                     if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
                         PrintLogging.printLog(
-                                TAG,
                                 "Unsuccessful query for type: "
                                         + billingType
                                         + ". Error code: "
@@ -335,9 +329,9 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                     }
                     if (skuResultLMap.size() == 0) {
                         PrintLogging.printLog(
-                                TAG, "sku error: " + "nosku");
+                                "sku error: " + "nosku");
                     } else {
-                        PrintLogging.printLog(TAG, "storing sku list locally");
+                        PrintLogging.printLog("storing sku list locally");
                         //storeSkuDetailsLocally(skuResultLMap);
                     }
                 };
@@ -364,7 +358,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
      */
     private void processPurchases(@NonNull List<Purchase> purchases) {
         if (purchases.size() > 0) {
-            PrintLogging.printLog(TAG, "purchase list size: " + purchases.size());
+            PrintLogging.printLog("purchase list size: " + purchases.size());
         }
         for (Purchase purchase : purchases) {
             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
@@ -372,7 +366,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 // handlePurchase(purchase);
             } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
                 PrintLogging.printLog(
-                        TAG, "Received a pending purchase of SKU: " + purchase.getSku());
+                        "Received a pending purchase of SKU: " + purchase.getSku());
                 // handle pending purchases, e.g. confirm with users about the pending
                 // purchases, prompt them to complete it, etc.
                 // TODO: 8/24/2020 handle this in the next release.
@@ -397,12 +391,10 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 billingResult -> {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         PrintLogging.printLog(
-                                TAG,
                                 "onAcknowledgePurchaseResponse: "
                                         + billingResult.getResponseCode());
                     } else {
                         PrintLogging.printLog(
-                                TAG,
                                 "onAcknowledgePurchaseResponse: "
                                         + billingResult.getDebugMessage());
                     }
@@ -426,7 +418,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
                 executeServiceRequest(
                         () -> {
-                            PrintLogging.printLog(TAG, "Launching in-app purchase flow.");
+                            PrintLogging.printLog("Launching in-app purchase flow.");
                             myBillingClient.launchBillingFlow(activity, purchaseParams);
                         });
             }
@@ -441,11 +433,10 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 myBillingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
         if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
             PrintLogging.printLog(
-                    TAG,
                     "areSubscriptionsSupported() got an error response: "
                             + billingResult.getResponseCode());
             if (inAppProcessListener!=null){
-                inAppProcessListener.onBillingError(billingResult);
+                inAppProcessListener.onBillingError();
             }
             //  notifyBillingError(R.string.err_subscription_not_supported);
         }
@@ -454,7 +445,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
 
     String purchaseType="";
     String productType="";
-    public void purchase(Activity activity, String sku, String developer_payload, String purchaseType) {
+    public void purchase(Activity activity, String sku, String purchaseType) {
         this.purchaseType="";
         this.productType="";
         if (purchaseType.equalsIgnoreCase(PurchaseType.PRODUCT.name())){
@@ -515,7 +506,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                 });
     }
 
-    public SkuDetails getProductSkuDetail(Activity activity, String sku) {
+    public SkuDetails getProductSkuDetail(String sku) {
         final SkuDetails[] skuDetail=new SkuDetails[1];
         List<String> skuList = new ArrayList<>();
         skuList.add(sku);
@@ -541,7 +532,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
     }
 
 
-    public SkuDetails getSubscriptionSkuDetail(Activity activity, String sku) {
+    public SkuDetails getSubscriptionSkuDetail(String sku) {
         final SkuDetails[] skuDetail=new SkuDetails[1];
         List<String> skuList = new ArrayList<>();
         skuList.add(sku);
@@ -618,10 +609,10 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                             for (SkuDetails skuDetails : skuDetailsList) {
                                 Log.w("skuDetails", skuDetails.getPrice() + "-->>" + skuDetails.getPriceCurrencyCode());
                                 listOfllSkus.add(skuDetails);
-                                inAppProcessListener.onListOfSKUFetched(listOfllSkus);
+                                inAppProcessListener.onListOfSKUFetched();
                             }
                         }else {
-                            inAppProcessListener.onListOfSKUFetched(listOfllSkus);
+                            inAppProcessListener.onListOfSKUFetched();
                         }
                     }
                 });
@@ -631,7 +622,7 @@ public class BillingProcessor implements PurchasesUpdatedListener {
         return listOfllSkus;
     }
 
-    public SkuDetails getLocalSubscriptionSkuDetail(Activity context, String identifier) {
+    public SkuDetails getLocalSubscriptionSkuDetail(String identifier) {
         try {
             if (getListOfllSkus()!=null && getListOfllSkus().size()>0){
                 for (int i=0;i<getListOfllSkus().size();i++){
@@ -662,18 +653,14 @@ public class BillingProcessor implements PurchasesUpdatedListener {
                                 listOfllSkus.add(skuDetails);
                             }
                         }
-                        inAppProcessListener.onListOfSKUFetched(listOfllSkus);
+                        inAppProcessListener.onListOfSKUFetched();
                     }
                 });
     }
 
     public boolean isOneTimePurchaseSupported() {
         final BillingResult billingResult= myBillingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS);
-        if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
-            return true;
-        }else {
-            return false;
-        }
+        return billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK;
     }
 
 

@@ -33,15 +33,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
-
 import static panteao.make.ready.utils.constants.AppConstants.APP_CONTINUE_WATCHING;
 
 public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdsLoader.AdsLoadedListener {
     private final Activity activity;
-    private List<CommonRailData> dataList;
+    private final List<CommonRailData> dataList;
     private ArrayList<Slide> slides;
 
 
@@ -121,7 +117,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view.setVisibility(View.GONE);
     }
 
-    private void setDivider(View mView, int position) {
+    private void setDivider(View mView) {
         mView.setVisibility(View.GONE);
        /* AppCommonMethod.adsRail.size();
         int check = position / 5;
@@ -250,7 +246,7 @@ public class CommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class PosterPotraitHolder extends RecyclerView.ViewHolder {
 
-        PosterPotraitRecyclerItemBinding itemBinding;
+        final PosterPotraitRecyclerItemBinding itemBinding;
 
         PosterPotraitHolder(PosterPotraitRecyclerItemBinding itemBinding) {
             super(itemBinding.getRoot());

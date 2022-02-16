@@ -15,13 +15,11 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -58,7 +56,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
@@ -140,7 +137,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
     }
 
     @Override
-    public ProfileScreenBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ProfileScreenBinding inflateBindingLayout() {
         return ProfileScreenBinding.inflate(inflater);
     }
 
@@ -171,13 +168,13 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(ProfileActivity.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             checkInternet();
         } else {
@@ -236,7 +233,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
                                 if (object.has("email")) {
                                     email = object.getString("email");
                                 }
-                                showLoading(getBinding().progressBar, false);
+                                showLoading(getBinding().progressBar);
                                 if (!StringUtils.isNullOrEmptyOrZero(userModel.getProfilePicURL()) && hasProfilePic) {
                                     try {
                                         hitApiConnectWithFB();
@@ -284,7 +281,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 
     }
 
-    protected Uri saveImageToInternalStorage(Bitmap bitmap) {
+    protected Uri saveImageToInternalStorage() {
         // Initialize ContextWrapper
         ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
 
@@ -294,7 +291,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 
 
         // Create a file to save the image
-        file = new File(file, name + "_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+        file = new File(file, name + "_" + System.currentTimeMillis() + ".jpg");
 
         try {
             // Initialize a new OutputStream
@@ -349,7 +346,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
                 } else {
                     isConnetWithFB = false;
                     if (jsonObject.getResponseCode() == 400) {
-                        showDialog(ProfileActivity.this.getResources().getString(R.string.error), jsonObject.getDebugMessage().toString());
+                        showDialog();
                     }
                 }
             } catch (Exception e) {
@@ -438,7 +435,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
                 //hit api to update
                 if (setDataRequestModel()) {
 
-                    showLoading(getBinding().progressBar, true);
+                    showLoading(getBinding().progressBar);
                     if (picUri != null) {
                      //   setFileToUpload();
                     } else hitApiUploadData();
@@ -491,7 +488,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
             preference.setAppPrefHasDOB(true);
         } else {
             preference.setAppPrefHasDOB(false);
-            requestParamRegisterUser.setDateOfBirth(convertToMillisec(getBinding().calendertxt.getText().toString()));
+            requestParamRegisterUser.setDateOfBirth(convertToMillisec());
         }
         String token = preference.getAppPrefAccessToken();
         if (!StringUtils.isNullOrEmptyOrZero(token))
@@ -501,7 +498,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
         return true;
     }
 
-    public long convertToMillisec(String val) {
+    public long convertToMillisec() {
         ArrayList<String> dateConverted = AppCommonMethod.divideDate(val, "/");
         Calendar c = Calendar.getInstance();
         c.set(Integer.valueOf(dateConverted.get(2)), AppCommonMethod.getMonth(dateConverted.get(1)), Integer.valueOf(dateConverted.get(0)));
@@ -557,7 +554,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
                 Logger.e("ProfileActivity", "dob is zero");
 
             } else {
-                getBinding().calendertxt.setText(getDate(dob));
+                getBinding().calendertxt.setText(getDate());
             }
         }
         if (StringUtils.isNullOrEmpty(userModel.getPhoneNumber()))
@@ -572,7 +569,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
             if (userModel.getProfilePicURL().length() > 0) {
                 try {
                     profilePicKey = userModel.getProfilePicURL();
-                    setProfilePic(userModel.getProfilePicURL());
+                    setProfilePic();
                     Logger.e("imageURL", "" + userModel.getProfilePicURL());
                 } catch (Exception e) {
                     Logger.e("", "" + e.toString());
@@ -583,7 +580,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 
     }
 
-    public void setProfilePic(String key) {
+    public void setProfilePic() {
         StringBuilder stringBuilder = new StringBuilder();
         String url1 = preference.getAppPrefCfep();
         if (key.contains("http")) {
@@ -607,7 +604,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 
     }
 
-    private String getDate(long time) {
+    private String getDate() {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
         String monthname = (String) android.text.format.DateFormat.format("MMM", cal);
@@ -717,20 +714,20 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
         viewModel.hitRegisterSignUpAPI(ProfileActivity.this, requestParamRegisterUser).observe(ProfileActivity.this, signUpResponseModel -> {
             dismissLoading(getBinding().progressBar);
             if (signUpResponseModel.isStatus()) {
-                showDialog(ProfileActivity.this.getResources().getString(R.string.profile), getResources().getString(R.string.profile_update_successfully));
+                showDialog();
             } else {
                 if (signUpResponseModel.getResponseCode() == 401) {
                     isloggedout = true;
-                    showDialog(ProfileActivity.this.getResources().getString(R.string.profile), getResources().getString(R.string.you_are_logged_out));
+                    showDialog();
                 } else {
-                    showDialog(ProfileActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
         });
 
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -746,7 +743,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
     @Override
     public void onFinishDialog() {
         if (isloggedout) {
-            hitApiLogout(ProfileActivity.this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         }
     }
 
@@ -806,7 +803,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
                 // Display the downloaded image into ImageView
 
                 // Save bitmap to internal storage
-                Uri imageInternalUri = saveImageToInternalStorage(result);
+                Uri imageInternalUri = saveImageToInternalStorage();
                 isConnetWithFB = true;
                 picUri = imageInternalUri;
 //                TransferObserver transferObserver = transferUtility.upload(
@@ -814,7 +811,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
 //                        new File(picUri.getPath())
 //                );
 //                transferObserverListener(transferObserver);
-                PrintLogging.printLog("", "DownloadTask" + imageInternalUri);
+                PrintLogging.printLog("DownloadTask" + imageInternalUri);
                 // Set the ImageView image from internal storage
             } else {
                 // Notify user that an error occurred while downloading image

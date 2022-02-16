@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -32,7 +31,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     private var seriesID : String? = ""
     private var title : String? = ""
     private var sesonNumber : Int? = 0
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityMyDownloadsBinding {
+    override fun inflateBindingLayout(): ActivityMyDownloadsBinding {
         return ActivityMyDownloadsBinding.inflate(inflater)
     }
 
@@ -41,8 +40,8 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
         title=intent.getStringExtra("title")
         seriesID=intent.getStringExtra("series_id")
         sesonNumber=intent.getIntExtra("season_number",0)
-        setupToolBar();
-        fetchdataBaseValues();
+        setupToolBar()
+        fetchdataBaseValues()
     }
 
     private fun fetchdataBaseValues() {
@@ -116,7 +115,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
        // downloaded_recycler_view.getItemAnimator().setSupportsChangeAnimations(false);
        // downloaded_recycler_view.itemAnimator = null
         downloaded_recycler_view.itemAnimator = DefaultItemAnimator()
-        downloaded_recycler_view.getItemAnimator()?.changeDuration = 0
+        downloaded_recycler_view.itemAnimator?.changeDuration = 0
         downloaded_recycler_view.adapter = downloadsAdapter
         nodatafounmd.visibility = View.GONE
         downloaded_recycler_view.visibility = View.VISIBLE
@@ -125,10 +124,10 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     }
 
     private fun setupToolBar() {
-            if (KsPreferenceKeys.getInstance().getCurrentTheme() == (AppConstants.LIGHT_THEME)) {
-                binding.noData.setBackgroundResource(R.drawable.ic_no_data);
+            if (KsPreferenceKeys.getInstance().currentTheme == (AppConstants.LIGHT_THEME)) {
+                binding.noData.setBackgroundResource(R.drawable.ic_no_data)
             } else {
-                binding.noData.setBackgroundResource(R.drawable.ic_no_data);
+                binding.noData.setBackgroundResource(R.drawable.ic_no_data)
             }
             binding.toolbar.llSearchIcon.visibility = View.GONE
             binding.toolbar.backLayout.visibility = View.VISIBLE
@@ -146,7 +145,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
     override fun setDownloadProgressListener(progress: Float, assetId: String?) {
             Log.e("activityProgress new",progress.toString())
             if(::downloadsAdapter.isInitialized){
-                binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
+                binding.downloadedRecyclerView.post(Runnable { downloadsAdapter.notifyItemChanged(assetId) })
 
             }
     }
@@ -155,7 +154,7 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     }
 
-    override fun initialStatus(state: OfflineManager.AssetDownloadState) {
+    override fun initialStatus() {
 
     }
 
@@ -165,11 +164,11 @@ class MyDownloadsNewActivity : BaseBindingActivity<ActivityMyDownloadsBinding>()
 
     override fun onAssetDownloadComplete(assetId: String) {
         if(::downloadsAdapter.isInitialized){
-            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemWhenResumed(assetId) })
+            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter.notifyItemWhenResumed(assetId) })
         }
     }
 
-    override fun onAssetDownloadFailed(assetId: String, e: Exception?) {
+    override fun onAssetDownloadFailed() {
 
     }
 

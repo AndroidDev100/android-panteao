@@ -13,8 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImageDownloaderTask extends AsyncTask<String, Integer, Bitmap> {
-    Context context;
-    ImageView imageView;
+    final Context context;
+    final ImageView imageView;
     Bitmap bitmap;
     InputStream in = null;
     int responseCode = -1;

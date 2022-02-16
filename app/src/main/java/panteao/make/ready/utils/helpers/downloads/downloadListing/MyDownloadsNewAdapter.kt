@@ -31,8 +31,8 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
     constructor(activity: Activity, downloadsList: ArrayList<DownloadItemEntity>, ktDownloadEvents: KTDownloadEvents) {
         context = activity
         downloadHelper = KTDownloadHelper(activity, this)
-        itemList=downloadsList;
-        listener=ktDownloadEvents;
+        itemList=downloadsList
+        listener=ktDownloadEvents
     }
 
     override fun setDownloadProgressListener(progress: Float, assetId: String?) {
@@ -46,7 +46,7 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
         android.util.Log.w("adapterCallBack 1","paused")
     }
 
-    override fun initialStatus(state: OfflineManager.AssetDownloadState) {
+    override fun initialStatus() {
 
     }
 
@@ -66,7 +66,7 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
         }
     }
 
-    override fun onAssetDownloadFailed(assetId: String, e: Exception?) {
+    override fun onAssetDownloadFailed() {
 
     }
 
@@ -107,8 +107,8 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                                      position: Int,
                                      currentVideoItem: DownloadItemEntity) {
         Log.d("checkingPayload 1","payload2")
-        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
     }
 
     private fun setLandscapeDataNew2(itemBinding: MyDownloadsNewAdapter.LandscapeItemRowHolder,
@@ -122,33 +122,33 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                     // Log.d("stateOfAsset 2",currentVideoItem.name!!)
                     //Log.d("stateOfAsset 2",percentage.toString())
                     if (name == null) {
-                        itemBinding?.itemBinding.flDeleteWatchlist?.visibility = View.GONE
+                        itemBinding.itemBinding.flDeleteWatchlist.visibility = View.GONE
                     }
                     else if (name.equals("paused", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
                     }
                     else if (name.equals("started", ignoreCase = true)){
                         // itemBinding?.flDeleteWatchlist?.visibility = View.VISIBLE
                         // itemBinding?.videoDownloading?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADING
-                        itemBinding?.itemBinding?.videoDownloading?.progress = percentage
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.DOWNLOADING.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADING
+                        itemBinding.itemBinding.videoDownloading.progress = percentage
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.DOWNLOADING.name
                         // itemBinding?.videoDownloaded?.visibility = View.GONE
                         // itemBinding?.pauseDownload?.visibility = View.GONE
                         // itemBinding?.loadingDownload?.visibility = View.GONE
                     }
                     else if (name.equals("completed", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
-                        itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
-                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADED
+                        itemBinding.itemBinding.descriptionTxt.text = downloadSize
+                        itemBinding.itemBinding.tvGenre.visibility = View.VISIBLE
+                        itemBinding.itemBinding.tvGenre.text = DownloadStatus.Completed.name
 
-                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.tvGenre.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
-                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.descriptionTxt.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }else{
 
@@ -170,34 +170,34 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                    // Log.d("stateOfAsset 2",currentVideoItem.name!!)
                     //Log.d("stateOfAsset 2",percentage.toString())
                     if (name == null) {
-                        itemBinding?.itemBinding.flDeleteWatchlist?.visibility = View.GONE
+                        itemBinding.itemBinding.flDeleteWatchlist.visibility = View.GONE
                     }
                     else if (name.equals("paused", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
                     }
                     else if (name.equals("started", ignoreCase = true)){
                         // itemBinding?.flDeleteWatchlist?.visibility = View.VISIBLE
                         // itemBinding?.videoDownloading?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADING
-                        itemBinding?.itemBinding?.videoDownloading?.progress = percentage
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.DOWNLOADING.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADING
+                        itemBinding.itemBinding.videoDownloading.progress = percentage
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.DOWNLOADING.name
                         // itemBinding?.videoDownloaded?.visibility = View.GONE
                         // itemBinding?.pauseDownload?.visibility = View.GONE
                         // itemBinding?.loadingDownload?.visibility = View.GONE
                     }
                     else if (name.equals("completed", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
-                        itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADED
+                        itemBinding.itemBinding.descriptionTxt.text = downloadSize
 
-                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+                        itemBinding.itemBinding.tvGenre.visibility = View.VISIBLE
+                        itemBinding.itemBinding.tvGenre.text = DownloadStatus.Completed.name
 
-                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.tvGenre.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
-                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.descriptionTxt.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }else{
 
@@ -215,29 +215,29 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
         val currentVideoItem = itemList[position]
         try {
             Log.d("imageURL",currentVideoItem.imageURL)
-            viewHolder?.itemBinding?.tvGenre?.visibility = View.GONE
-            updatedStatus(viewHolder?.itemBinding,currentVideoItem,position,context)
-            ImageHelper.getInstance(context).loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)
+            viewHolder.itemBinding.tvGenre.visibility = View.GONE
+            updatedStatus(viewHolder.itemBinding,currentVideoItem,position,context)
+            ImageHelper.getInstance(context).loadListImage(viewHolder.itemBinding.itemImage, currentVideoItem.imageURL)
             /*ImageHelper.getInstance(context)
                 .loadListImage(viewHolder?.itemBinding?.itemImage, currentVideoItem.imageURL)*/
 
             if (currentVideoItem.isSeries){
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
                 Log.d("episodeNumber",currentVideoItem.episodeNumber)
-                viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name
+                viewHolder.itemBinding.tvTitle.text = currentVideoItem.name
             }else{
               //  viewHolder?.itemBinding?.loadingDownload?.visibility = View.GONE
-                viewHolder?.itemBinding?.tvTitle?.text = currentVideoItem.name
+                viewHolder.itemBinding.tvTitle.text = currentVideoItem.name
             }
 
-            viewHolder?.itemBinding?.clRoot?.setOnClickListener { v ->
+            viewHolder.itemBinding.clRoot.setOnClickListener { v ->
                 downloadHelper.getAssetDownloadState(currentVideoItem.entryId,downloadHelper,
                     object : DownloadStateListener {
                         override fun downloadState(name: String?, percentage: Float,downloadSize: String?) {
                             if (name.equals("completed", ignoreCase = true)){
-                                ActivityLauncher(context!!).launchOfflinePlayer(currentVideoItem.entryId)
+                                ActivityLauncher(context).launchOfflinePlayer(currentVideoItem.entryId)
                             }else if(name.equals("failed", ignoreCase = true)){
-                               failedDownloadPopUpMenu(v!!, currentVideoItem, position)
+                                failedDownloadPopUpMenu(v!!, currentVideoItem, position)
                             }
                         }
                     })
@@ -282,10 +282,10 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
                         itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
 
                         itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                         itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }
                     else if (name.equals("failed", ignoreCase = true)){
@@ -454,7 +454,7 @@ class MyDownloadsNewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>,KTDo
         }
     }
 
-    public fun notifyItemWhenResumed(assetId: String?) {
+    fun notifyItemWhenResumed(assetId: String?) {
         Log.w("notifyWhenResume -11","")
         if (itemList!==null && itemList.size>0){
             for ((index,value ) in itemList.withIndex()){

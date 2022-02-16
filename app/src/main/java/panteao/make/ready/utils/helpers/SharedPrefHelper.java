@@ -19,7 +19,7 @@ public class SharedPrefHelper {
     private final SharedPreferences mSharedPreferences;
     private final SharedPreferences.Editor mEditor;
     private static final int MODE_PRIVATE = 0;
-    private CryptUtil cryptUtil;
+    private final CryptUtil cryptUtil;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPrefHelper(Context context) {

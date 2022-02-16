@@ -14,9 +14,6 @@ import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.R;
 
-import panteao.make.ready.callbacks.commonCallbacks.DialogInterface;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-
 public class MaterialDialog {
     final Activity activity;
     DialogInterface dialogInterface;
@@ -27,7 +24,7 @@ public class MaterialDialog {
         this.activity = context;
     }
 
-    public void showDialog(String title, String message, Activity context, DialogInterface listner) {
+    public void showDialog(String title, DialogInterface listner) {
         try {
 
             dialogInterface = listner;

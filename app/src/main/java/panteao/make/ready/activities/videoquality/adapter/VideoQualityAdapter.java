@@ -1,8 +1,6 @@
 package panteao.make.ready.activities.videoquality.adapter;
 
 
-import android.app.Activity;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +31,7 @@ public class VideoQualityAdapter extends RecyclerView.Adapter<VideoQualityAdapte
     //   = KsPreferenceKeys(ApplicationMain.getAppContext()).getQualityPosition();
     private int pos;
 
-    public VideoQualityAdapter(Activity activity, List<TrackItem> itemsList, NotificationItemClickListner listener) {
+    public VideoQualityAdapter(List<TrackItem> itemsList, NotificationItemClickListner listener) {
         this.inboxMessages = itemsList;
         this.itemClickListener = listener;
         pos = KsPreferenceKeys.getInstance().getQualityPosition();
@@ -76,7 +74,7 @@ public class VideoQualityAdapter extends RecyclerView.Adapter<VideoQualityAdapte
             KsPreferenceKeys.getInstance().setQualityPosition(pos);
             KsPreferenceKeys.getInstance().setQualityName(inboxMessages.get(position).getUniqueId());
             Log.d("qualityname",KsPreferenceKeys.getInstance().getQualityName());
-            itemClickListener.onClick("", "");
+            itemClickListener.onClick();
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.SETTINGS_VIDEO_QUALITY,"","","",0," ",0,"",0,0,"",KsPreferenceKeys.getInstance().getQualityName(),"","");
 
 

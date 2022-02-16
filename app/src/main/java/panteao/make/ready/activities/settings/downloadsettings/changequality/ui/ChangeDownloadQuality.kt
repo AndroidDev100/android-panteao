@@ -1,7 +1,6 @@
 package panteao.make.ready.activities.settings.downloadsettings.changequality.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys
 
 class ChangeDownloadQuality : BaseBindingActivity<ActivityChangeDownloadQualityBinding>() {
     private var changeDownloadQualityAdapter: ChangeDownloadQualityAdapter? = null
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityChangeDownloadQualityBinding {
+    override fun inflateBindingLayout(): ActivityChangeDownloadQualityBinding {
         return ActivityChangeDownloadQualityBinding.inflate(inflater)
     }
 
@@ -48,7 +47,7 @@ class ChangeDownloadQuality : BaseBindingActivity<ActivityChangeDownloadQualityB
     private val downloadQualityList: ArrayList<String> = ArrayList()
     private fun setAdapter() {
         downloadQualityList.addAll(resources.getStringArray(R.array.download_quality))
-        Logger.e("ChangeDownloadQuality", Gson().toJson(downloadQualityList));
+        Logger.e("ChangeDownloadQuality", Gson().toJson(downloadQualityList))
         changeDownloadQualityAdapter = ChangeDownloadQualityAdapter(this@ChangeDownloadQuality, downloadQualityList)
         binding.recyclerview.adapter = changeDownloadQualityAdapter
     }

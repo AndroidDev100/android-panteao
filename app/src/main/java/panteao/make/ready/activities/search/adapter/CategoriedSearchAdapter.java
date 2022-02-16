@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.callbacks.commonCallbacks.SearchClickCallbacks;
 import panteao.make.ready.utils.MediaTypeConstants;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -31,7 +28,7 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final List<RailCommonData> list;
     private final SearchClickCallbacks listener;
 
-    private long mLastClickTime = 0;
+    private final long mLastClickTime = 0;
 
     public CategoriedSearchAdapter(Context context, List<RailCommonData> demoList, SearchClickCallbacks listener) {
         this.context = context;
@@ -86,7 +83,7 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int pos) {
         final int position = pos;
         final List<EnveuVideoItemBean> singleSectionItems = list.get(position).getEnveuVideoItemBeans();
-        RowSearchAdapter itemListDataAdapter1 = new RowSearchAdapter(context, singleSectionItems, true, this);
+        RowSearchAdapter itemListDataAdapter1 = new RowSearchAdapter(context, singleSectionItems, this);
         MovieTypeViewHolder movieTypeViewHolder = (MovieTypeViewHolder) viewHolder;
         setRecyclerProperties(movieTypeViewHolder.binding.recyclerView);
         movieTypeViewHolder.binding.recyclerView.setAdapter(itemListDataAdapter1);
@@ -242,7 +239,7 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void callResultActivity(RailCommonData model) {
-        listener.onShowAllItemClicked(model);
+        listener.onShowAllItemClicked();
     }
 
     @Override
@@ -334,7 +331,7 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onRowItemClicked(EnveuVideoItemBean itemValue) {
         Log.d("categoryAdpater", "itemClick");
-        AppCommonMethod.trackFcmEvent("Content Screen", "", context, 0);
+        AppCommonMethod.trackFcmEvent("Content Screen", "", context);
 //        AppCommonMethod.trackFcmCustomEvent(context, AppConstants.CONTENT_SELECT,itemValue.getAssetType(), itemValue.getSeriesId(), itemValue.getName() + "", 0, itemValue.getTitle(),0, itemValue.getId() + "", 0, 0, "", "");
 
 
@@ -345,7 +342,7 @@ public class CategoriedSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
-            PrintLogging.printLog("", "SearchAssetType-->>" + itemValue.getAssetType());
+            PrintLogging.printLog("SearchAssetType-->>" + itemValue.getAssetType());
             AppCommonMethod.launchDetailScreen(context, getVideoId, itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);
         } else {
             AppCommonMethod.launchDetailScreen(context, "", itemValue.getAssetType(), itemValue.getId(), "0", false,itemValue);

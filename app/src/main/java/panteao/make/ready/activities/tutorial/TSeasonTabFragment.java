@@ -1,15 +1,12 @@
 package panteao.make.ready.activities.tutorial;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import panteao.make.ready.activities.series.adapter.SeasonAdapter;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.activities.tutorial.ui.ChapterActivity;
 import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
@@ -77,7 +72,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     }
 
     @Override
-    protected SeasonFragmentLayoutBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    protected SeasonFragmentLayoutBinding inflateBindingLayout() {
         return SeasonFragmentLayoutBinding.inflate(inflater);
     }
 
@@ -102,12 +97,12 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         Log.w("", seasonArray + "");
 
         try {
-            getVideoRails(bundle);
+            getVideoRails();
         } catch (Exception e) {
         }
     }
 
-    public void getVideoRails(Bundle bundle) {
+    public void getVideoRails() {
         if (bundle != null) {
             getBinding().seasonHeader.setVisibility(View.GONE);
             seriesId = bundle.getInt(AppConstants.BUNDLE_ASSET_ID);
@@ -173,9 +168,9 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                     seasonList.add(new SelectedSeasonModel(getResources().getString(R.string.season) + " " + seasonArray.get(i), (int) seasonArray.get(i), false));
             }
             if (context instanceof TutorialActivity) {
-                ((TutorialActivity) context).showSeasonList(seasonList, selectedSeason + 1);
+                ((TutorialActivity) context).showSeasonList();
             } else if (context instanceof ChapterActivity) {
-                ((ChapterActivity) context).showSeasonList(seasonList, selectedSeason + 1);
+                ((ChapterActivity) context).showSeasonList();
             }
         });
 
@@ -189,14 +184,14 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
             ((TutorialActivity) context).stopShimmer();
             ((TutorialActivity) context).dismissLoading(((TutorialActivity) context).getBinding().progressBar);
             if (seasonAdapter != null) {
-                ((TutorialActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
+                ((TutorialActivity) context).numberOfEpisodes();
             }
         } else if (context instanceof ChapterActivity) {
             ((ChapterActivity) context).dismissLoading(((ChapterActivity) context).getBinding().progressBar);
             ((ChapterActivity) context).isSeasonData = true;
             ((ChapterActivity) context).stopShimmercheck();
             if (seasonAdapter != null) {
-                ((ChapterActivity) context).numberOfEpisodes(seasonAdapter.getItemCount());
+                ((ChapterActivity) context).numberOfEpisodes();
             }
         }
     }
@@ -259,14 +254,14 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            ((ChapterActivity) context).episodesList(allEpiosdes);
+                                            ((ChapterActivity) context).episodesList();
                                         }
                                     },1200);
                                 } else if (context instanceof TutorialActivity) {
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            ((TutorialActivity) context).episodesList(allEpiosdes);
+                                            ((TutorialActivity) context).episodesList();
                                         }
                                     }, 1200);
 
@@ -313,7 +308,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                         if (response.getBaseCategory() != null) {
                             getBinding().progressBar.setVisibility(View.GONE);
                             RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
-                            parseSeriesData(enveuCommonResponse);
+                            parseSeriesData();
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                         if (response.getErrorModel().getErrorCode() != 0) {
@@ -340,7 +335,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 
     int totalPages = 0;
 
-    private void parseSeriesData(RailCommonData railCommonData) {
+    private void parseSeriesData() {
         if (railCommonData != null) {
             if (railCommonData.getEnveuVideoItemBeans().size() > 0) {
 
@@ -373,14 +368,14 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            ((ChapterActivity) context).episodesList(seasonEpisodes);
+                            ((ChapterActivity) context).episodesList();
                         }
                     },1200);
                 }else if (context instanceof TutorialActivity) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            ((TutorialActivity) context).episodesList(seasonEpisodes);
+                            ((TutorialActivity) context).episodesList();
                         }
                     }, 1200);
                 }
@@ -395,7 +390,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     }
 
     @Override
-    public void onItemClick(EnveuVideoItemBean enveuVideoItemBean, boolean isPremium) {
+    public void onItemClick() {
         String assetType = enveuVideoItemBean.getAssetType().toUpperCase();
         /*long brighCoveId = 0l;
 
@@ -435,15 +430,15 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
 */
     }
 
-    public void updateFragment(Bundle bundleSeason) {
-        getVideoRails(bundleSeason);
+    public void updateFragment() {
+        getVideoRails();
     }
 
     public SeasonAdapter getSeasonAdapter() {
         return seasonAdapter;
     }
 
-    public void updateCurrentAsset(int id) {
+    public void updateCurrentAsset() {
         currentAssetId = id;
         if (seasonAdapter != null) {
             seasonAdapter.updateCurrentId(currentAssetId);
@@ -455,7 +450,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         totalPages = 0;
     }
 
-    public void setSeasonAdapter(SeasonAdapter seasonAdapter) {
+    public void setSeasonAdapter() {
         this.seasonAdapter = seasonAdapter;
     }
 
@@ -468,7 +463,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     String findAssetId = "";
     int position = 0;
     KTDownloadHelper downloadHelper;
-    public void downloadComplete(String assetId) {
+    public void downloadComplete() {
         try {
             List<EnveuVideoItemBean> videoItemBeans = seasonAdapter.getAdapterList();
             if (videoItemBeans != null && videoItemBeans.size() > 0) {
@@ -478,7 +473,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    seasonAdapter.downloadCompletChanged(position, assetId, seasonAdapter.getAdapterList());
+                                    seasonAdapter.downloadCompletChanged(assetId, seasonAdapter.getAdapterList());
                                 }
                             });
                         }
@@ -490,7 +485,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
-    public void pauseDownload(KTDownloadHelper downloadHelper, String assetId) {
+    public void pauseDownload() {
         if (seasonAdapter != null) {
             if (seasonAdapter.getAdapterList() != null) {
                 if (seasonAdapter.getAdapterList().size() > 0) {
@@ -500,7 +495,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        seasonAdapter.downloadStatusChanged(position, assetId, seasonAdapter.getAdapterList());
+                                        seasonAdapter.downloadStatusChanged(assetId, seasonAdapter.getAdapterList());
                                     }
                                 });
                             }
@@ -511,13 +506,13 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
-    public void setDownloadHelper(KTDownloadHelper downloadHelp) {
+    public void setDownloadHelper() {
         if (downloadHelp!=null){
             this.downloadHelper=downloadHelp;
         }
     }
 
-    public void updateAdapter(int progress, String assetId, KTDownloadHelper downloadHelpr, Activity context) {
+    public void updateAdapter() {
         Log.w("downlaodContext",context+"");
         try {
             if (seasonAdapter != null) {
@@ -550,7 +545,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     }
 
 
-    public void downloadStatusChanged(String assetID) {
+    public void downloadStatusChanged() {
         if (seasonAdapter != null) {
             getBinding().seriesRecyclerView.post(new Runnable() {
                 @Override
@@ -561,7 +556,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
-    public void cancelDownload(String videoId) {
+    public void cancelDownload() {
         if (seasonAdapter != null) {
             seasonAdapter.onDownloadPaused(videoId);
         }
@@ -601,7 +596,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
     }
 
 
-    public void isPlayerStart(boolean b) {
+    public void isPlayerStart() {
         if (b){
             if (seasonAdapter!=null){
                 seasonAdapter.isPlayerStart(b);
@@ -619,7 +614,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
         }
     }
 
-    public void notifySingleItem(String getkEntryId) {
+    public void notifySingleItem() {
         if (seasonAdapter!=null && getkEntryId!=null && !getkEntryId.equalsIgnoreCase("")){
             getBinding().seriesRecyclerView.post(new Runnable() {
                 @Override
@@ -638,7 +633,7 @@ public class TSeasonTabFragment extends BaseBindingFragment<SeasonFragmentLayout
                 @Override
                 public void run() {
                     if (seasonAdapter!=null){
-                        seasonAdapter.downloadStatusChanged(seasonAdapter.getAdapterList());
+                        seasonAdapter.downloadStatusChanged();
                     }
                 }
             });

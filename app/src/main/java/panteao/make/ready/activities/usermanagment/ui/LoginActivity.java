@@ -15,11 +15,9 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -62,14 +60,10 @@ import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.SkuDetails;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -129,7 +123,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
     @Override
-    public LoginBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public LoginBinding inflateBindingLayout() {
         return LoginBinding.inflate(inflater);
     }
 
@@ -179,13 +173,13 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(LoginActivity.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
 
             connectObservors();
@@ -379,7 +373,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
 
         getBinding().tvForgotPassword.setOnClickListener(view -> {
-            showLoading(getBinding().progressBar, false);
+            showLoading(getBinding().progressBar);
             clearEditView();
             getBinding().tvWrongPassword.setVisibility(View.GONE);
             new ActivityLauncher(LoginActivity.this).forgotPasswordActivity(LoginActivity.this, ForgotPasswordActivity.class);
@@ -392,7 +386,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                 return;
             }
             mLastClickTime = SystemClock.elapsedRealtime();
-            showLoading(getBinding().progressBar, false);
+            showLoading(getBinding().progressBar);
             clearEditView();
             finish();
             new ActivityLauncher(LoginActivity.this).signUpActivity(LoginActivity.this, SignUpActivity.class, loginCallingFrom);
@@ -406,7 +400,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
         if (CheckInternetConnection.isOnline(LoginActivity.this)) {
 
-            showLoading(getBinding().progressBar, true);
+            showLoading(getBinding().progressBar);
 
             viewModel.hitFbLogin(LoginActivity.this, email, accessTokenFB, name, id, "", hasFbEmail).observe(LoginActivity.this, new Observer<LoginResponseModel>() {
                 @Override
@@ -415,7 +409,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                         Gson gson = new Gson();
                         modelLogin = loginResponseModelResponse.getData();
                         String stringJson = gson.toJson(loginResponseModelResponse.getData());
-                        saveUserDetails(stringJson, loginResponseModelResponse.getData().getId(), false);
+                        saveUserDetails();
                        Log.d("hbnm", Profile.getCurrentProfile()+"");
                 AppCommonMethod.trackFcmCustomEvent(getApplicationContext(),AppConstants.SIGN_IN_SUCCESS,"","","",0," ",0,"",0,0,"","",loginResponseModelResponse.getData().getId()+"",loginResponseModelResponse.getData().getName()+"");
 
@@ -426,7 +420,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                         new ActivityLauncher(LoginActivity.this).forceLogin(LoginActivity.this, ForceLoginFbActivity.class, accessTokenFB, id, name, "");
                     } else {
                         dismissLoading(getBinding().progressBar);
-                        showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+                        showDialog();
                         Log.d("hbnm","error");
                     }
                 }
@@ -439,17 +433,17 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     public void callLogin() {
         getBinding().tvWrongPassword.setVisibility(View.GONE);
         if (CheckInternetConnection.isOnline(LoginActivity.this)) {
-            if (validateEmptyEmail() && validateEmail() && validateEmptyPassword() && passwordCheck(getBinding().etPassword.getText().toString())) {
+            if (validateEmptyEmail() && validateEmail() && validateEmptyPassword() && passwordCheck()) {
                 getBinding().errorEmail.setVisibility(View.INVISIBLE);
                 getBinding().errorPassword.setVisibility(View.INVISIBLE);
                 getBinding().tvWrongPassword.setVisibility(View.GONE);
-                showLoading(getBinding().progressBar, true);
+                showLoading(getBinding().progressBar);
                 viewModel.hitLoginAPI(LoginActivity.this, getBinding().etUserName.getText().toString(), getBinding().etPassword.getText().toString()).observe(LoginActivity.this, loginResponseModelResponse -> {
                     if (Objects.requireNonNull(loginResponseModelResponse).getResponseCode() == 2000) {
                         Gson gson = new Gson();
                         modelLogin = loginResponseModelResponse.getData();
                         String stringJson = gson.toJson(loginResponseModelResponse.getData());
-                        saveUserDetails(stringJson, loginResponseModelResponse.getData().getId(), true);
+                        saveUserDetails();
                         Log.d("useridmanual",loginResponseModelResponse.getData().getId()+"");
                         Log.d("useridmanual",loginResponseModelResponse.getData().getName()+"");
 
@@ -459,14 +453,14 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                         if (loginResponseModelResponse.getDebugMessage() != null) {
                             Log.w("responsecode-->",loginResponseModelResponse.getResponseCode()+"");
                             dismissLoading(getBinding().progressBar);
-                            if (loginResponseModelResponse.getDebugMessage().toString().equalsIgnoreCase(PanteaoApplication.getInstance().getResources().getString(R.string.username_password_doest_match))){
+                            if (loginResponseModelResponse.getDebugMessage().equalsIgnoreCase(PanteaoApplication.getInstance().getResources().getString(R.string.username_password_doest_match))){
                                 getBinding().tvWrongPassword.setVisibility(View.VISIBLE);
                             }
-                            showDialog(LoginActivity.this.getResources().getString(R.string.error), loginResponseModelResponse.getDebugMessage().toString());
+                            showDialog();
 
                         } else {
                             dismissLoading(getBinding().progressBar);
-                            showDialog(LoginActivity.this.getResources().getString(R.string.error), LoginActivity.this.getResources().getString(R.string.something_went_wrong));
+                            showDialog();
                         }
                     }
                     /*else if (loginResponseModelResponse.getResponseCode() == 401 || loginResponseModelResponse.getResponseCode() == 404) {
@@ -492,7 +486,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         }
     }
 
-    public void saveUserDetails(String response, int userID, boolean isManual) {
+    public void saveUserDetails() {
         UserData fbLoginData = new Gson().fromJson(response, UserData.class);
         Gson gson = new Gson();
         String stringJson = gson.toJson(fbLoginData);
@@ -513,7 +507,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
             Log.d("storedEmail 1",KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck());
             if (!KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck().equalsIgnoreCase("") && String.valueOf(fbLoginData.getEmail())!=null && !String.valueOf(fbLoginData.getEmail()).equalsIgnoreCase("")){
                 String storedLogin=KsPreferenceKeys.getInstance().getLoginEmailForDownloadCheck();
-                Log.d("storedEmail 2",storedLogin+"  "+String.valueOf(fbLoginData.getEmail()));
+                Log.d("storedEmail 2",storedLogin+"  "+ fbLoginData.getEmail());
                 if (storedLogin!=null && !storedLogin.equalsIgnoreCase("")){
                     if (storedLogin.equalsIgnoreCase(String.valueOf(fbLoginData.getEmail()))){
 
@@ -544,7 +538,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         //new ActivityLauncher(LoginActivity.this).homeScreen(LoginActivity.this, HomeActivity.class);
 
         try {
-            trackEvent(String.valueOf(fbLoginData.getName()), isManual);
+            trackEvent();
         } catch (Exception e) {
 
         }
@@ -569,7 +563,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         }
     }
 
-    private void trackEvent(String name, boolean type) {
+    private void trackEvent() {
         final JsonObject requestParam = new JsonObject();
         requestParam.addProperty(EventConstant.Name, name);
         if (type) {
@@ -578,7 +572,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
             requestParam.addProperty(EventConstant.PlatformType, EventEnum.Facebook.name());
         }
 
-        FCMEvents.getInstance().setContext(LoginActivity.this).trackEvent(5, requestParam);
+        FCMEvents.getInstance().setContext(LoginActivity.this).trackEvent(5);
     }
 
     @Override
@@ -631,7 +625,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         return check;
     }
 
-    public boolean passwordCheck(String password) {
+    public boolean passwordCheck() {
         //String passwordRegex = "^(?=.*[!&^%$#@()\\_+-])[A-Za-z0-9\\d!&^%$#@()\\_+-]{8,20}$";
         String passwordRegex="^[A-Za-z0-9\\d!&^%$#@()\\_+-]{6,20}$";
         boolean check = false;
@@ -673,7 +667,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         }
     }
 
-    public boolean stringContainsNumber(String s) {
+    public boolean stringContainsNumber() {
         return Pattern.compile("[0-9]").matcher(s).find();
     }
 
@@ -683,7 +677,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
         LoginManager.getInstance().logOut();
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -746,7 +740,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
     }
 
 
-    protected Uri saveImageToInternalStorage(Bitmap bitmap) {
+    protected Uri saveImageToInternalStorage() {
         // Initialize ContextWrapper
         ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
 
@@ -756,7 +750,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 
 
         // Create a file to save the image
-        file = new File(file, name + "_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+        file = new File(file, name + "_" + System.currentTimeMillis() + ".jpg");
 
         try {
             // Initialize a new OutputStream
@@ -873,7 +867,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                 // Display the downloaded image into ImageView
 
                 // Save bitmap to internal storage
-                Uri imageInternalUri = saveImageToInternalStorage(result);
+                Uri imageInternalUri = saveImageToInternalStorage();
 
 
                 picUri = imageInternalUri;
@@ -882,7 +876,7 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
 //                        new File(picUri.getPath())
 //                );
 //                transferObserverListener(transferObserver);
-                PrintLogging.printLog("", "sdfhgdhjf" + imageInternalUri);
+                PrintLogging.printLog("sdfhgdhjf" + imageInternalUri);
                 // Set the ImageView image from internal storage
             } else {
                 // Notify user that an error occurred while downloading image
@@ -906,17 +900,17 @@ public class LoginActivity extends BaseBindingActivity<LoginBinding> implements 
                     }
 
                     @Override
-                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+                    public void onPurchasesUpdated() {
 
                     }
 
                     @Override
-                    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+                    public void onListOfSKUFetched() {
 
                     }
 
                     @Override
-                    public void onBillingError(@Nullable BillingResult error) {
+                    public void onBillingError() {
 
                     }
                 });

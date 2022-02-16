@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -35,7 +33,6 @@ import panteao.make.ready.adapters.CommonShimmerAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.KeywordList;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModel.popularSearch.ItemsItem;
 import panteao.make.ready.callbacks.commonCallbacks.SearchClickCallbacks;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
@@ -45,7 +42,6 @@ import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.ActivitySearchBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -80,7 +76,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         clickListner();
         connectionObserver();
         getBinding().toolbar.searchView.setOnQueryTextListener(this);
-        AppCommonMethod.trackFcmEvent("Search", "", ActivitySearch.this, 0);
+        AppCommonMethod.trackFcmEvent("Search", "", ActivitySearch.this);
         KsPreferenceKeys.getInstance().setScreenName("Search");
 
 
@@ -93,7 +89,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
         getBinding().noResult1.setVisibility(View.GONE);
         hitApiPopularSearch();
         setRecyclerProperties(getBinding().recentSearchRecycler);
-        setRecentSearchAdapter("");
+        setRecentSearchAdapter();
 
         getBinding().toolbar.backButton.setOnClickListener(view -> onBackPressed());
         getBinding().toolbar.clearText.setOnClickListener(view -> onBackPressed());
@@ -138,7 +134,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     }
 
-    private void setRecentSearchAdapter(String s) {
+    private void setRecentSearchAdapter() {
         Gson gson = new Gson();
         String json = AppPreference.getInstance(this).getRecentSearchList();
 //        String json = KsPreferenceKeys.getInstance().getRecentSearchList();
@@ -274,7 +270,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
             Gson gson = new Gson();
             String json = gson.toJson(list);
             AppPreference.getInstance(this).setRecentSearchList(json);
-            setRecentSearchAdapter("");
+            setRecentSearchAdapter();
         } else {
             Gson gson = new Gson();
             String json = AppPreference.getInstance(this).getRecentSearchList();
@@ -309,7 +305,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean containsName(final List<KeywordList> list, final String name) {
-        return list.stream().map(KeywordList::getKeywords).filter(name::equals).findFirst().isPresent();
+        return list.stream().map(KeywordList::getKeywords).anyMatch(name::equals);
     }
 
 
@@ -327,7 +323,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     private void hitApiPopularSearch() {
         railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
         if (!SDKConfig.getInstance().getPopularSearchId().equalsIgnoreCase("")) {
-            railInjectionHelper.getPlayListDetailsWithPagination(this, SDKConfig.getInstance().getPopularSearchId(), 0, 5, null).observe(this, playlistRailData -> {
+            railInjectionHelper.getPlayListDetailsWithPagination(SDKConfig.getInstance().getPopularSearchId(), 0, 5, null).observe(this, playlistRailData -> {
                 if (Objects.requireNonNull(playlistRailData) != null) {
                     setUiComponents(playlistRailData);
                 }
@@ -356,11 +352,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     }
 
     private void connectionObserver() {
-        if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
-        } else {
-            connectionValidation(false);
-        }
+        connectionValidation(NetworkConnectivity.isOnline(this));
     }
 
     private void connectionValidation(Boolean aBoolean) {
@@ -405,7 +397,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
 
     @Override
-    public ActivitySearchBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivitySearchBinding inflateBindingLayout() {
         return ActivitySearchBinding.inflate(inflater);
     }
 
@@ -421,8 +413,8 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
 
 
     @Override
-    public void onEnveuItemClicked(EnveuVideoItemBean itemValue) {
-        AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
+    public void onEnveuItemClicked() {
+        AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext());
 
 
         try {
@@ -437,7 +429,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     }
 
     @Override
-    public void onShowAllItemClicked(RailCommonData itemValue) {
+    public void onShowAllItemClicked() {
 
         if (itemValue != null && itemValue.getStatus()) {
             new ActivityLauncher(ActivitySearch.this).resultActivityBundle(ActivitySearch.this, ActivityResults.class, itemValue.getAssetType(), itemValue.getSearchKey(), itemValue.getTotalCount());
@@ -446,7 +438,7 @@ public class ActivitySearch extends BaseBindingActivity<ActivitySearchBinding> i
     }
 
     @Override
-    public void onPopularSearchItemClicked(ItemsItem itemValue) {
+    public void onPopularSearchItemClicked() {
         try {
 //            AppCommonMethod.trackFcmEvent(itemValue.getName(), itemValue.getType(), ActivitySearch.this, 0);
         } catch (Exception e) {

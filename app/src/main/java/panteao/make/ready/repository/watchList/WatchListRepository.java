@@ -74,7 +74,7 @@ public class WatchListRepository {
                         responseAllWatchList.setDebugMessage(debugMessage);
                     responsePlayer.postValue(responseAllWatchList);
                 } else {
-                    responseAllWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseAllWatchList.setResponseCode(response.code());
                     responseAllWatchList.setStatus(false);
                     responsePlayer.postValue(responseAllWatchList);
                 }
@@ -112,7 +112,7 @@ public class WatchListRepository {
                     Logger.e("hitApiWatchHistory", "responseAllWatchList" + responseAllWatchList);
 
                 } else {
-                    responseAllWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseAllWatchList.setResponseCode(response.code());
                     responseAllWatchList.setStatus(false);
                     Logger.e("hitApiWatchHistory", "responseAllWatchList" + responseAllWatchList);
                     responsePlayer.postValue(responseAllWatchList);
@@ -148,7 +148,7 @@ public class WatchListRepository {
                     responsePlayer.postValue(responseEmpty);
                 } else {
 
-                    responseEmpty.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseEmpty.setResponseCode(response.code());
                     responseEmpty.setStatus(false);
                     responsePlayer.postValue(responseEmpty);
                 }

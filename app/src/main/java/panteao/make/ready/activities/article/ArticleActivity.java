@@ -4,12 +4,10 @@ import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,7 +17,6 @@ import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.databinding.ArticleActivityBinding;
 import panteao.make.ready.networking.apistatus.APIStatus;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -48,7 +45,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
     private EnveuVideoItemBean videoDetails;
 
     @Override
-    public ArticleActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ArticleActivityBinding inflateBindingLayout() {
         return ArticleActivityBinding.inflate(inflater);
     }
 
@@ -71,7 +68,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
         }
         findIds();
         callShimmer();
-        callDetailApI(assestId);
+        callDetailApI();
     }
 
     private void findIds() {
@@ -104,7 +101,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
 
     }
 
-    public void callDetailApI(int id) {
+    public void callDetailApI() {
         railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
 /*
         railInjectionHelper.getAssetDetails(String.valueOf(assestId)).observe(ArticleActivity.this, enveuCommonResponse -> {
@@ -127,24 +124,24 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
 
                 }
                 else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())){
-                    parseAssetDetails(assetResponse);
+                    parseAssetDetails();
                 }
                 else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())){
                     if (assetResponse.getErrorModel() !=null && assetResponse.getErrorModel().getErrorCode()!=0){
-                        showDialog(ArticleActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
 
                 }
 
                 else if (assetResponse.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())){
-                    showDialog(ArticleActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
 
         });
     }
 
-    private void parseAssetDetails(ResponseModel assetResponse) {
+    private void parseAssetDetails() {
         RailCommonData enveuCommonResponse=(RailCommonData)assetResponse.getBaseCategory();
 
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
@@ -152,14 +149,14 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
 
                 videoDetails = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
                 stopShimmer();
-                setValuesInUI(videoDetails);
+                setValuesInUI();
                 callShareAnim();
 
         }
     }
 
 
-    private void setValuesInUI(EnveuVideoItemBean videoDetails) {
+    private void setValuesInUI() {
         if (videoDetails!=null){
             int resId = R.anim.slide_down;
            // Animation animationUtils=AnimationUtils.loadAnimation(ArticleActivity.this,R.anim.slide_down);
@@ -174,11 +171,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
     }
 
     private boolean jsutificationAllow() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return true;
-        }  else {
-            return false;
-        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     private void callShareAnim() {
@@ -205,7 +198,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
     }
 
 
-    private void setUserInteractionFragment(int assestId) {
+    private void setUserInteractionFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, assestId);
@@ -217,7 +210,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
         transaction.commit();
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -250,7 +243,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
         finish();
     }
 
-    public void openLoginPage(String message) {
+    public void openLoginPage() {
        // preference.setAppPrefJumpTo(AppConstants.ContentType.VIDEO.toString());
         preference.setAppPrefJumpBack(true);
         preference.setAppPrefIsEpisode(false);
@@ -273,7 +266,7 @@ public class ArticleActivity  extends BaseBindingActivity<ArticleActivityBinding
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                AppCommonMethod.openShareDialog(ArticleActivity.this, title, id, assetType, imgUrl, videoDetails.getSeries(), videoDetails.getSeason());
+                AppCommonMethod.openShareDialog(ArticleActivity.this, title, id, assetType, imgUrl, videoDetails.getSeason());
 
             }
 

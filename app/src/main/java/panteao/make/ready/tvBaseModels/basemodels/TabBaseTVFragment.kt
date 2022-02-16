@@ -100,7 +100,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         if (aBoolean) {
             setupEventListeners()
             mActivity = activity as TVHomeActivity
-            dataLoadingListener = mActivity as DataLoadingListener
+            dataLoadingListener = mActivity
             changeUi = mActivity
             customListRowPresenter = object : ListRowPresenter(FocusHighlight.ZOOM_FACTOR_NONE) {
                 override fun isUsingDefaultListSelectEffect() = false
@@ -154,7 +154,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
                     }
                 }
 
-                override fun onFailure(throwable: Throwable?) {
+                override fun onFailure() {
                     mOnFragmentListener?.showNoDataFoundView(
                         false,
                         getString(R.string.no_data_found)
@@ -378,7 +378,7 @@ open class TabBaseTVFragment<T : HomeBaseViewModel> : TVBaseFragment(), OnItemVi
         if (KsPreferenceKeys.getInstance().appPrefLoginStatus) {
             if (NetworkConnectivity.isOnline(activity)) {
                 KsPreferenceKeys.getInstance().clear()
-                hitApiLogout(requireActivity(), KsPreferenceKeys.getInstance().appPrefAccessToken);
+                hitApiLogout(requireActivity(), KsPreferenceKeys.getInstance().appPrefAccessToken)
             }
         }
     }

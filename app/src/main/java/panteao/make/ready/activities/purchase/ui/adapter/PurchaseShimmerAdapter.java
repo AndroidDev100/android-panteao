@@ -16,7 +16,7 @@ public class PurchaseShimmerAdapter extends RecyclerView.Adapter<PurchaseShimmer
 
 
     private final Context context;
-    private boolean isResetCall;
+    private final boolean isResetCall;
 
     public PurchaseShimmerAdapter(Context context, boolean callreset) {
         this.context = context;

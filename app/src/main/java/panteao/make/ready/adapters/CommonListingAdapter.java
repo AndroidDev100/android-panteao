@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 public class CommonListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<SectionDataModel> dataList;
-    private int itemWidth;
-    private int itemHeight;
+    private final int itemWidth;
+    private final int itemHeight;
 
     public CommonListingAdapter(Activity activity) {
         Log.w("common-->","CommonListingAdapter");
@@ -42,7 +42,7 @@ public class CommonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 60) / num;
-        itemHeight = (int) (itemWidth * 16) / 9;
+        itemHeight = (itemWidth * 16) / 9;
     }
 
 

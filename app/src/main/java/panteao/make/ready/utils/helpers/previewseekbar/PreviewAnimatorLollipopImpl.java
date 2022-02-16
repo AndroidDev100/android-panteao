@@ -34,7 +34,7 @@ class PreviewAnimatorLollipopImpl extends PreviewAnimator {
     static final int MORPH_MOVE_DURATION = 0;
     static final int UNMORPH_MOVE_DURATION = 0;
     static final int UNMORPH_UNREVEAL_DURATION = 0;
-    private Animator.AnimatorListener hideListener = new AnimatorListenerAdapter() {
+    private final Animator.AnimatorListener hideListener = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
@@ -43,7 +43,7 @@ class PreviewAnimatorLollipopImpl extends PreviewAnimator {
         }
     };
     private boolean mShowing;
-    private Animator.AnimatorListener showListener = new AnimatorListenerAdapter() {
+    private final Animator.AnimatorListener showListener = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);

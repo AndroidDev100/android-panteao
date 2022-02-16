@@ -27,12 +27,12 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
     private final String contentType;
     private final List<ContentsItem> itemsList;
     private final Activity mContext;
-    private KsPreferenceKeys preference;
-    private boolean isLogin;
-    private ArrayList<CommonContinueRail> continuelist;
-    private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
+    private final KsPreferenceKeys preference;
+    private final boolean isLogin;
+    private final ArrayList<CommonContinueRail> continuelist;
+    private final long mLastClickTime = 0;
+    private final int itemWidth;
+    private final int itemHeight;
 
     public CommonLandscapeAdapter(Activity context, List<ContentsItem> itemsList, List<ItemsItem> itemsItems, String contentType, ArrayList<CommonContinueRail> continuelist) {
         this.itemsList = itemsList;
@@ -55,7 +55,7 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<CommonLandscape
         (mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 80) / num;
-        itemHeight = (int) (itemWidth * 9) / 16;
+        itemHeight = (itemWidth * 9) / 16;
     }
 
     @NonNull

@@ -145,7 +145,7 @@ class InternalPlayListGridFragment :
     }
 
     private fun setupFragment(searchString: String?) {
-        playLists = playListContent.split(",");
+        playLists = playListContent.split(",")
         callShimmer()
     }
     var shimmerAdapter : CommonListingAdapter?=null
@@ -156,7 +156,7 @@ class InternalPlayListGridFragment :
         playLists[0].split("|").forEachIndexed { i, s ->
             if (i == 0) {
             } else if (i == 2) {
-                setRecyclerView(s.replace("\"", "").trim());
+                setRecyclerView(s.replace("\"", "").trim())
             } else if (i == 1) {
 
             }
@@ -250,44 +250,43 @@ class InternalPlayListGridFragment :
                                     )
                                     num = 3
                                     val tabletSize: Boolean =
-                                        getResources()
+                                        resources
                                             .getBoolean(R.bool.isTablet)
                                     if (tabletSize) {
                                         //landscape
-                                        num = if (getResources()
-                                                .getConfiguration().orientation == 2
+                                        num = if (resources
+                                                .configuration.orientation == 2
                                         ) 5 else 4
                                     }
 //                                    itemDecoration(num, baseCategory.contentImageType)
                                     //     getBinding().listRecyclerview.addItemDecoration(new SpacingItemDecoration(12, SpacingItemDecoration.HORIZONTAL));
                                     binding.listRecyclerview.adapter =
                                         commonPosterPotraitAdapter
-                                } else commonPosterPotraitAdapter!!.notifydata(railCommonData.getEnveuVideoItemBeans())
+                                } else commonPosterPotraitAdapter!!.notifydata(railCommonData.enveuVideoItemBeans)
                             } else if (imageType == "PORTRAIT_2_3") {
 
                                 if (commonPotraitTwoAdapter == null) {
                                     RecyclerAnimator(activity).animate(binding.listRecyclerview)
                                     commonPotraitTwoAdapter = CommonPotraitTwoAdapter(
                                         activity,
-                                        railCommonData.getEnveuVideoItemBeans(),
+                                        railCommonData.enveuVideoItemBeans,
                                         "VIDEO",
                                         ArrayList(),
-                                        0,
                                         this,
                                         baseCategory
                                     )
                                     num = 3
                                     val tabletSize: Boolean =
-                                        getResources().getBoolean(R.bool.isTablet)
+                                        resources.getBoolean(R.bool.isTablet)
                                     if (tabletSize) {
                                         //landscape
-                                        num = if (getResources()
-                                                .getConfiguration().orientation == 2
+                                        num = if (resources
+                                                .configuration.orientation == 2
                                         ) 5 else 4
                                     }
 //                                    itemDecoration(num, baseCategory.contentImageType)
                                     binding.listRecyclerview.adapter = commonPotraitTwoAdapter
-                                } else commonPotraitTwoAdapter!!.notifydata(railCommonData.getEnveuVideoItemBeans())
+                                } else commonPotraitTwoAdapter!!.notifydata(railCommonData.enveuVideoItemBeans)
 
 //                                mIsLoading =
 //                                    playlistRailData.getMaxContent() != commonPotraitTwoAdapter!!.itemCount
@@ -297,22 +296,22 @@ class InternalPlayListGridFragment :
                                     RecyclerAnimator(activity).animate(binding.listRecyclerview)
                                     squareCommonAdapter = SquareListingAdapter(
                                         activity,
-                                        railCommonData.getEnveuVideoItemBeans(),
+                                        railCommonData.enveuVideoItemBeans,
                                         "VIDEO",
                                         this
                                     )
                                     num = 3
                                     val tabletSize: Boolean =
-                                       getResources().getBoolean(R.bool.isTablet)
+                                       resources.getBoolean(R.bool.isTablet)
                                     if (tabletSize) {
                                         //landscape
-                                        num = if (getResources()
-                                                .getConfiguration().orientation == 2
+                                        num = if (resources
+                                                .configuration.orientation == 2
                                         ) 5 else 4
                                     }
 //                                    itemDecoration(num, baseCategory.contentImageType)
                                     binding.listRecyclerview.adapter = squareCommonAdapter
-                                } else squareCommonAdapter!!.notifydata(railCommonData.getEnveuVideoItemBeans())
+                                } else squareCommonAdapter!!.notifydata(railCommonData.enveuVideoItemBeans)
                           }
                         }
                         else{
@@ -334,7 +333,7 @@ class InternalPlayListGridFragment :
                     ) 4 else 3
             }
             binding.listRecyclerview.isNestedScrollingEnabled = false
-            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+            shimmerAdapter?.setDataList(ShimmerDataModel().getList(4))
             binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
             var gridLayoutManager = GridLayoutManager(requireActivity(), num)
             binding.listRecyclerview.layoutManager = gridLayoutManager
@@ -350,7 +349,7 @@ class InternalPlayListGridFragment :
                             .configuration.orientation == 2
                     ) 4 else 3
             }
-            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(5))
+            shimmerAdapter?.setDataList(ShimmerDataModel().getList(5))
             binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
             var gridLayoutManager = GridLayoutManager(requireActivity(), num)
             binding.listRecyclerview.layoutManager = gridLayoutManager
@@ -366,7 +365,7 @@ class InternalPlayListGridFragment :
                             .configuration.orientation == 2
                     ) 4 else 3
             }
-            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(5))
+            shimmerAdapter?.setDataList(ShimmerDataModel().getList(5))
             binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
             var gridLayoutManager = GridLayoutManager(requireActivity(), num)
             binding.listRecyclerview.layoutManager = gridLayoutManager
@@ -381,7 +380,7 @@ class InternalPlayListGridFragment :
                             .configuration.orientation == 2
                     ) 4 else 3
             }
-            shimmerAdapter?.setDataList(ShimmerDataModel(requireActivity()).getList(4))
+            shimmerAdapter?.setDataList(ShimmerDataModel().getList(4))
             binding.listRecyclerview.addItemDecoration(GridSpacingItemDecoration(num, 6, true))
             var gridLayoutManager = GridLayoutManager(requireActivity(), num)
             binding.listRecyclerview.layoutManager = gridLayoutManager
@@ -422,7 +421,7 @@ class InternalPlayListGridFragment :
         savedInstanceState: Bundle?
     ): View? {
         inflater.context.setTheme(R.style.InternalPlayListBrowseTheme)
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 
@@ -441,14 +440,14 @@ class InternalPlayListGridFragment :
 
     }
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): InternalPlaylistListingFragmentBinding {
+    override fun inflateBindingLayout(): InternalPlaylistListingFragmentBinding {
         return InternalPlaylistListingFragmentBinding.inflate(inflater)
     }
 
-    override fun onRowItemClicked(itemValue: EnveuVideoItemBean?, position: Int) {
+    override fun onRowItemClicked() {
         if (AppCommonMethod.getCheckKEntryId(itemValue!!.getkEntryId())) {
             val getVideoId = itemValue!!.getkEntryId()
-            PrintLogging.printLog("", "SearchAssetType-->>" + itemValue!!.assetType)
+            PrintLogging.printLog("SearchAssetType-->>" + itemValue!!.assetType)
             AppCommonMethod.launchDetailScreen(
                 context,
                 getVideoId,

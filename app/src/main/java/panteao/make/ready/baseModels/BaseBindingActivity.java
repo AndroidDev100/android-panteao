@@ -9,13 +9,12 @@ import androidx.mediarouter.app.MediaRouteButton;
 
 //import com.google.android.gms.cast.framework.CastButtonFactory;
 import panteao.make.ready.R;
-import panteao.make.ready.databinding.ActivityShowBinding;
 
 public abstract class BaseBindingActivity<B extends ViewDataBinding> extends BaseActivity {
 
     private B mBinding;
 
-    public abstract B inflateBindingLayout(@NonNull LayoutInflater inflater);
+    public abstract B inflateBindingLayout();
 
 
     @Override
@@ -24,7 +23,7 @@ public abstract class BaseBindingActivity<B extends ViewDataBinding> extends Bas
         mBinding = setupBinding(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        MediaRouteButton mediaRouteButton = (MediaRouteButton)mBinding.getRoot().findViewById(R.id.media_route_button);
+        MediaRouteButton mediaRouteButton = mBinding.getRoot().findViewById(R.id.media_route_button);
 //        CastButtonFactory.setUpMediaRouteButton(getApplication(), mediaRouteButton);
 
 //        ChromecastManager.getInstance().init(getApplicationContext(),this,mediaRouteButton, new CastContextAttachedListner() {
@@ -67,7 +66,7 @@ public abstract class BaseBindingActivity<B extends ViewDataBinding> extends Bas
 
 
     private B setupBinding(@NonNull LayoutInflater inflater) {
-        return inflateBindingLayout(inflater);
+        return inflateBindingLayout();
     }
 
 

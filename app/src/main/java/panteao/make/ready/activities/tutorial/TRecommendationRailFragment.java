@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +27,6 @@ import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
 import panteao.make.ready.adapters.commonRails.CommonAdapterNew;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.callbacks.commonCallbacks.MoreClickListner;
 import panteao.make.ready.databinding.DetailFooterFragmentBinding;
@@ -53,7 +50,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
     private Context context;
 
     @Override
-    protected DetailFooterFragmentBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    protected DetailFooterFragmentBinding inflateBindingLayout() {
         return DetailFooterFragmentBinding.inflate(inflater);
     }
 
@@ -69,13 +66,13 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            getVideoRails(getArguments());
+            getVideoRails();
         } catch (Exception e) {
         }
     }
 
 
-    public void getVideoRails(Bundle bund) {
+    public void getVideoRails() {
         Bundle bundle = bund;
         if (bundle != null) {
             tabId = bundle.getString(AppConstants.BUNDLE_TAB_ID);
@@ -88,7 +85,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
         railCommonDataList = new ArrayList<>();
         adapterDetailRail = null;
         getBinding().progressBar.setVisibility(View.VISIBLE);
-        setRecyclerProperties(getBinding().recyclerView);
+        setRecyclerProperties();
 
         railCommonDataList.clear();
         RailInjectionHelper railInjectionHelper = new ViewModelProvider(this).get(RailInjectionHelper.class);
@@ -164,9 +161,9 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
 
     public void removeTab() {
         if (context instanceof TutorialActivity) {
-            ((TutorialActivity) context).removeTab(1);
+            ((TutorialActivity) context).removeTab();
         } else if (context instanceof ChapterActivity) {
-            ((ChapterActivity) context).removeTab(1);
+            ((ChapterActivity) context).removeTab();
         }
 
     }
@@ -187,7 +184,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
 
     }
 
-    public void setRecyclerProperties(RecyclerView recyclerView) {
+    public void setRecyclerProperties() {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
@@ -196,7 +193,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
 
 
     @Override
-    public void railItemClick(RailCommonData railCommonData, int position) {
+    public void railItemClick() {
         Log.d("recommended rail","success");
         try {
 //            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(position).getTitle(),railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(),getActivity(),position);
@@ -204,7 +201,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
 
         }
         if (railCommonData.getScreenWidget().getType() != null && railCommonData.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
-            heroClickRedirection(railCommonData);
+            heroClickRedirection();
         } else {
             if (railCommonData.isSeries() && AppCommonMethod.getCheckKEntryId(railCommonData.getEnveuVideoItemBeans().get(position).getkEntryId())) {
                 String videoId = railCommonData.getEnveuVideoItemBeans().get(position).getBrightcoveVideoId();
@@ -234,9 +231,9 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
         }
     }
 
-    private void heroClickRedirection(RailCommonData railCommonData) {
+    private void heroClickRedirection() {
         try {
-            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(0).getTitle(),railCommonData.getEnveuVideoItemBeans().get(0).getAssetType(),getActivity(),0);
+            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(0).getTitle(),railCommonData.getEnveuVideoItemBeans().get(0).getAssetType(),getActivity());
         }catch (Exception e){
 
         }
@@ -269,13 +266,13 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                 }
             } else if (landingPageType.equals(LandingPageType.PLT.name())) {
                 Logger.e("MORE RAIL CLICK", new Gson().toJson(railCommonData));
-                moreRailClick(railCommonData, 0);
+                moreRailClick();
             }
         }
     }
 
     @Override
-    public void moreRailClick(RailCommonData data, int position) {
+    public void moreRailClick() {
         if (data.getScreenWidget() != null) {
             if (data.getScreenWidget().getContentID() != null)
                 playListId = data.getScreenWidget().getContentID();
@@ -283,16 +280,16 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
                 playListId = data.getScreenWidget().getLandingPagePlayListId();
 
             if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.LST.name())) {
-                startListingActivity(data);
+                startListingActivity();
             } else if (data.getScreenWidget().getContentListinglayout() != null && !data.getScreenWidget().getContentListinglayout().equalsIgnoreCase("") && data.getScreenWidget().getContentListinglayout().equalsIgnoreCase(ListingLayoutType.GRD.name())) {
-                startGridActivity(data);
+                startGridActivity();
             } else {
-                startListingActivity(data);
+                startListingActivity();
             }
         }
     }
 
-    private void startListingActivity(RailCommonData data) {
+    private void startListingActivity() {
         if (data.getScreenWidget() != null && data.getScreenWidget().getContentID() != null) {
             String playListId = data.getScreenWidget().getContentID();
             String screenName = "";
@@ -308,7 +305,7 @@ public class TRecommendationRailFragment extends BaseBindingFragment<DetailFoote
             startActivityForResult(intent, 1001);
         }
     }
-    private void startGridActivity(RailCommonData data) {
+    private void startGridActivity() {
         if (data.getScreenWidget() != null && data.getScreenWidget().getContentID() != null) {
             String playListId = data.getScreenWidget().getContentID();
             String screenName = "";

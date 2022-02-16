@@ -1,11 +1,8 @@
 package panteao.make.ready.activities;
 
-import androidx.annotation.NonNull;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import panteao.make.ready.databinding.ActivityContactBinding;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -17,7 +14,7 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 public class ContactActivity extends BaseBindingActivity<ActivityContactBinding> {
 
     @Override
-    public ActivityContactBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityContactBinding inflateBindingLayout() {
         return ActivityContactBinding.inflate(inflater);
     }
 

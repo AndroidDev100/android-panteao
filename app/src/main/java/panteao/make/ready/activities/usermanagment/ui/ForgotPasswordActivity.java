@@ -3,10 +3,8 @@ package panteao.make.ready.activities.usermanagment.ui;
 
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,7 +19,6 @@ import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToolBarHandler;
-import panteao.make.ready.baseModels.BaseBindingActivity;
 
 public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBinding> implements AlertDialogFragment.AlertDialogListener {
 
@@ -36,7 +33,7 @@ public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBi
     }
 
     @Override
-    public ForgotPasswordBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ForgotPasswordBinding inflateBindingLayout() {
         return ForgotPasswordBinding.inflate(inflater);
     }
 
@@ -49,14 +46,14 @@ public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBi
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(ForgotPasswordActivity.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().root.setVisibility(View.VISIBLE);
             getBinding().noConnectionLayout.setVisibility(View.GONE);
@@ -89,14 +86,14 @@ public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBi
                     viewModel.hitForgotPasswordApi(getBinding().etPasswordRecoveryEmail.getText().toString().trim()).observe(ForgotPasswordActivity.this, jsonObject -> {
                         dismissLoading(getBinding().progressBar);
                         if (jsonObject.getCode() == 200){
-                            showDialog("", getResources().getString(R.string.forgot_password_response));
+                            showDialog();
                         }
 
                         else{
                             if (jsonObject.getDebugMessage()!=null && !jsonObject.getDebugMessage().equalsIgnoreCase("")){
-                                showDialog(ForgotPasswordActivity.this.getResources().getString(R.string.error),jsonObject.getDebugMessage());
+                                showDialog();
                             }else {
-                                showDialog("", getResources().getString(R.string.forgot_password_response));
+                                showDialog();
                             }
 
                         }
@@ -116,12 +113,12 @@ public class ForgotPasswordActivity extends BaseBindingActivity<ForgotPasswordBi
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        showLoading(getBinding().progressBar, true);
+        showLoading(getBinding().progressBar);
 
     }
 
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);

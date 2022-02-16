@@ -27,7 +27,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public LiveData<JsonObject> hitLogout(boolean session, String token) {
-        return homeRepository.hitApiLogout(session, token);
+        return homeRepository.hitApiLogout(token);
     }
 
     public LiveData<ResponseEmpty> hitVerify(String token) {

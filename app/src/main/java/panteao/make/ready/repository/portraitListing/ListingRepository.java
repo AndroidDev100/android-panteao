@@ -11,8 +11,6 @@ import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
 import panteao.make.ready.utils.config.LanguageLayer;
 
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.PlaylistRailData;
-import panteao.make.ready.beanModelV3.playListModelV2.EnveuCommonResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +29,7 @@ public class ListingRepository {
 
 
     String languageCode;
-    public LiveData<PlaylistRailData> getRailData(int playlistId, int pageNo, int length) {
+    public LiveData<PlaylistRailData> getRailData(int pageNo, int length) {
         MutableLiveData<PlaylistRailData> mutableLiveData = new MutableLiveData<>();
         ApiInterface endpoint = RequestConfig.getEnveuClient().create(ApiInterface.class);
         languageCode= LanguageLayer.getCurrentLanguageCode();

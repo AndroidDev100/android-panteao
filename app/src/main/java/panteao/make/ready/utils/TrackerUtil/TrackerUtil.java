@@ -17,9 +17,6 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 import io.branch.referral.Branch;
-import panteao.make.ready.tarcker.EventConstant;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 
 public class TrackerUtil {
     public static GoogleAnalytics sAnalytics;
@@ -49,11 +46,10 @@ public class TrackerUtil {
         }
     }
 
-    public static TrackerUtil getInstance(Context context) {
+    public static void getInstance(Context context) {
         if (trackerUtil == null) {
             trackerUtil = new TrackerUtil(context);
         }
-        return trackerUtil;
     }
 
     public static GoogleAnalytics getAnalyticsInstance() {
@@ -114,7 +110,7 @@ public class TrackerUtil {
                 trackSignUpSuccessEvent(name,trackingPlatforms);
                 break;
             case logout:
-                tracklogoutEvent(name,trackingPlatforms);
+                tracklogoutEvent(trackingPlatforms);
                 break;
             case settings_video_quality:
                 trackVideoQualityEvent(name,trackingPlatforms);
@@ -166,7 +162,7 @@ public class TrackerUtil {
         }
     }
 
-    private void tracklogoutEvent(JsonObject params, List<PlatformType> trackingPlatforms) {
+    private void tracklogoutEvent(List<PlatformType> trackingPlatforms) {
         for (PlatformType tracking : trackingPlatforms) {
             switch (tracking) {
                 case GTM:
@@ -708,7 +704,7 @@ public class TrackerUtil {
                     try {
                         String name = params.get(EventConstant.Name).toString();
                         String contentType = params.get(EventConstant.ContentType).toString();
-                        PrintLogging.printLog("", "ValueForFcm-->>" + name+"  "+contentType);
+                        PrintLogging.printLog("ValueForFcm-->>" + name+"  "+contentType);
                         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
                         Bundle bundle = new Bundle();
                         bundle.putString(EventConstant.Name, name);
@@ -737,7 +733,7 @@ public class TrackerUtil {
                 case FCM:
                     try {
                         String name = params.get(EventConstant.SearchTitle).toString();
-                        PrintLogging.printLog("", "ValueForFcm-->>" + name+"  ");
+                        PrintLogging.printLog("ValueForFcm-->>" + name+"  ");
                         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
                         Bundle bundle = new Bundle();
                         bundle.putString(EventConstant.SearchTitle, name);
@@ -767,7 +763,7 @@ public class TrackerUtil {
                     try {
                         String name = params.get(EventConstant.Name).toString();
                         String contentType = params.get(EventConstant.ContentType).toString();
-                        PrintLogging.printLog("", "ValueForFcm-->>" + name+"  "+contentType);
+                        PrintLogging.printLog("ValueForFcm-->>" + name+"  "+contentType);
                         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
                         Bundle bundle = new Bundle();
                         bundle.putString(EventConstant.Name, name);
@@ -797,7 +793,7 @@ public class TrackerUtil {
                     try{
                         String name=params.get(EventConstant.Name).toString();
                         String platformType=params.get(EventConstant.PlatformType).toString();
-                        PrintLogging.printLog("","ValueForFcm-->>"+name);
+                        PrintLogging.printLog("ValueForFcm-->>"+name);
                         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
                         Bundle bundle = new Bundle();
                         bundle.putString(EventConstant.Name, name);
@@ -828,7 +824,7 @@ public class TrackerUtil {
                     try{
                         String name=params.get(EventConstant.Name).toString();
                         String platformType=params.get(EventConstant.PlatformType).toString();
-                        PrintLogging.printLog("","ValueForFcm-->>"+name+"  "+platformType);
+                        PrintLogging.printLog("ValueForFcm-->>"+name+"  "+platformType);
                         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
                         Bundle bundle = new Bundle();
                         bundle.putString(EventConstant.Name, name);

@@ -3,7 +3,6 @@ package panteao.make.ready.beanModel.enveuCommonRailData;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.ImageSource;
@@ -33,16 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import panteao.make.ready.beanModelV3.continueWatching.DataItem;
-import panteao.make.ready.beanModelV3.playListModelV2.ItemsItem;
-import panteao.make.ready.beanModelV3.playListModelV2.PlayListDetailsResponse;
-import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
-import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
-import panteao.make.ready.layersV2.VideoDetailLayer;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 
 public class RailCommonData implements Parcelable {
 
@@ -144,7 +133,7 @@ public class RailCommonData implements Parcelable {
 
     // for related content listing constructor
     public RailCommonData(PlayListDetailsResponse playListDetailsResponse, MediaTypeConstants mediaTypeConstants) {
-        setEpisodesList(playListDetailsResponse.getItems(), ImageType.LDS.name(),mediaTypeConstants);
+        setEpisodesList(playListDetailsResponse.getItems(), ImageType.LDS.name());
         isSeries = false;
     }
 
@@ -152,7 +141,7 @@ public class RailCommonData implements Parcelable {
         if (!videoItem.getContentType().equalsIgnoreCase(MediaTypeConstants.getInstance().getTrailor())){*/
 
     // for related content listing constructor - Instructor page
-    private void setEpisodesList(List<ItemsItem> videos, String imageType, MediaTypeConstants mediaTypeConstants) {
+    private void setEpisodesList(List<ItemsItem> videos, String imageType) {
         try {
             if (videos != null && videos.size() > 0) {
                 final RailCommonData railCommonData = this;
@@ -257,8 +246,8 @@ public class RailCommonData implements Parcelable {
                 }
 
                 @Override
-                public void onFailure(Throwable throwable) {
-                    commonApiCallBack.onFailure(new Throwable("HERO ASSET NOT FOUND"));
+                public void onFailure() {
+                    commonApiCallBack.onFailure();
                 }
 
                 @Override
@@ -281,7 +270,7 @@ public class RailCommonData implements Parcelable {
             public void onSuccess(Object item) {
                 if (item instanceof EnveuVideoDetails) {
                     EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) item;
-                    AppCommonMethod.createAssetHeroItem(enveuVideoItemBean, enveuVideoDetails, screenWidget);
+                    AppCommonMethod.createAssetHeroItem(enveuVideoItemBean, enveuVideoDetails);
                     enveuVideoItemBeans.add(enveuVideoItemBean);
                     railCommonData.setEnveuVideoItemBeans(enveuVideoItemBeans);
                     commonApiCallBack.onSuccess(railCommonData);
@@ -289,8 +278,8 @@ public class RailCommonData implements Parcelable {
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-                commonApiCallBack.onFailure(new Throwable("HERO ASSET NOT FOUND"));
+            public void onFailure() {
+                commonApiCallBack.onFailure();
 
             }
 
@@ -398,7 +387,7 @@ public class RailCommonData implements Parcelable {
     }
 
 
-    public void setBrightCoveSeries(List<SeriesItem> seriesItems, String name) {
+    public void setBrightCoveSeries(List<SeriesItem> seriesItems) {
         for (SeriesItem seriesItem :
                 seriesItems) {
             Gson gson = new Gson();
@@ -496,7 +485,7 @@ public class RailCommonData implements Parcelable {
             railCommonData.setIsContinueWatching(true);
             commonApiCallBack.onSuccess(RailCommonData.this);
         } else {
-            commonApiCallBack.onFailure(new Throwable("No Data Found"));
+            commonApiCallBack.onFailure();
         }
 
     }
@@ -531,7 +520,7 @@ public class RailCommonData implements Parcelable {
             setRailType(Layouts.HOR.name(), ImageType.LDS.name());
             commonApiCallBack.onSuccess(RailCommonData.this);
         } else {
-            commonApiCallBack.onFailure(new Throwable("No Data Found"));
+            commonApiCallBack.onFailure();
         }
 
         /* if (enveuVideoDetails != null && enveuVideoDetails.size() > 0) {

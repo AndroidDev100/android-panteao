@@ -24,7 +24,7 @@ public class PurchaseViewModel extends AndroidViewModel {
 
 
     public LiveData<PurchaseResponseModel> createNewPurchaseRequest(String token, JsonObject data, PurchaseModel model,String sku) {
-        return PurchaseRepository.getInstance().createNewPurchaseRequest(token, data,model,sku);
+        return PurchaseRepository.getInstance().createNewPurchaseRequest(token, model,sku);
     }
 
     public LiveData<PurchaseResponseModel> callInitiatePaymet(String token, String orderId) {

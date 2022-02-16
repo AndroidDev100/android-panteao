@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -22,8 +21,6 @@ import com.bumptech.glide.Glide;
 //import panteao.make.ready.utils.helpers.downloads.DownloadHelper;
 import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.SDKConfig;
-import panteao.make.ready.activities.flutter.SampleActivity;
-import panteao.make.ready.activities.flutter.WebViewFlutterActivity;
 import panteao.make.ready.activities.homeactivity.viewmodel.HomeViewModel;
 import panteao.make.ready.activities.myPurchases.ui.MyPurchasesActivity;
 import panteao.make.ready.activities.notification.ui.NotificationActivity;
@@ -42,7 +39,6 @@ import panteao.make.ready.activities.membershipplans.ui.MemberShipPlanActivity;
 import panteao.make.ready.beanModel.AppUserModel;
 import panteao.make.ready.beanModel.configBean.ResponseConfig;
 import panteao.make.ready.beanModel.responseModels.RegisterSignUpModels.DataResponseRegister;
-import panteao.make.ready.beanModel.userProfile.UserProfileResponse;
 import panteao.make.ready.callbacks.commonCallbacks.MoreItemClickListener;
 import panteao.make.ready.databinding.FragmentMoreBinding;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
@@ -60,13 +56,10 @@ import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,7 +91,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     private MoreFragmentInteraction mListener;
 
     @Override
-    public FragmentMoreBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public FragmentMoreBinding inflateBindingLayout() {
         return FragmentMoreBinding.inflate(inflater);
     }
 
@@ -218,17 +211,17 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         if (isLogin) {
             String tempResponse = preference.getAppPrefUser();
             if (!StringUtils.isNullOrEmptyOrZero(tempResponse)) {
-                setVerify(getActivity());
+                setVerify();
             } else {
                 String tempResponseApi = preference.getAppPrefProfile();
-                setVerifyApi(tempResponseApi);
+                setVerifyApi();
             }
         } else {
             getBinding().loginBtn.setVisibility(View.VISIBLE);
 
             AppCommonMethod.guestTitle(getBaseActivity(), getBinding().userNameWords, getBinding().usernameTv, preference);
             getBinding().usernameTv.setVisibility(View.VISIBLE);
-            setUIComponets(mListLogOut, false);
+            setUIComponets();
         }
 
         if (getActivity() != null) {
@@ -238,7 +231,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     }
 
-    private void setUIComponets(List<String> mList, boolean isLogin) {
+    private void setUIComponets() {
 
         MoreListAdapter adapter = new MoreListAdapter(getActivity(), mList, MoreFragment.this, isLogin, SDKConfig.getInstance().isDownloadEnable());
         getBinding().recyclerViewMore.hasFixedSize();
@@ -259,7 +252,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             viewModel.hitUserProfile(getContext(), token).observe(getActivity(), userProfileResponse -> {
                 if (userProfileResponse != null) {
                     if (userProfileResponse.getStatus()) {
-                        updateUI(userProfileResponse);
+                        updateUI();
                     } else {
                         if (userProfileResponse.getDebugMessage() != null) {
 
@@ -276,7 +269,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     }
 
-    private void updateUI(UserProfileResponse userProfileResponse) {
+    private void updateUI() {
         try {
             preference.setAppPrefUserName(String.valueOf(userProfileResponse.getData().getName()));
             preference.setAppPrefUserEmail(String.valueOf(userProfileResponse.getData().getEmail()));
@@ -288,7 +281,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     }
 
     @Override
-    public void onClick(@NotNull String caption) {
+    public void onClick() {
         boolean loginStatus = preference.getAppPrefLoginStatus();
         String isFacebook = preference.getAppPrefLoginType();
         if (caption.equals(getString(R.string.profile))) {
@@ -304,7 +297,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
                 } else {*/ {
                 new ActivityLauncher(getActivity()).changePassword(getActivity(), ChangePasswordActivity.class);
-                AppCommonMethod.trackFcmEvent("Change password", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Change password", "", getContext());
             }
 
             /* }*/
@@ -313,7 +306,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         } else if (caption.equals(getString(R.string.my_purchases))) {
             if (loginStatus) {
                 new ActivityLauncher(getActivity()).myPurchases(getActivity(), MyPurchasesActivity.class,AppConstants.FROM_MORE_FRAGMENT);
-                AppCommonMethod.trackFcmEvent(AppConstants.MY_PURCHASES, "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent(AppConstants.MY_PURCHASES, "", getContext());
             } else
                 mListener.onLoginClicked();
         } else if (caption.equals(getString(R.string.notification))) {
@@ -325,12 +318,12 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext());
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Terms and Conditons", "", getContext());
 
             }
             //    Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), SampleActivity.class).putExtra("type", "1").putExtra("url",getString(R.string.term_condition)));
@@ -339,12 +332,12 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext());
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Privacy Policy", "", getContext());
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
@@ -356,12 +349,12 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
                 AppCommonMethod.updateLanguage("th", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("About Us", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("About Us", "", getContext());
 
             } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
                 AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
 
-                AppCommonMethod.trackFcmEvent("About Us", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("About Us", "", getContext());
 
             }
             // Objects.requireNonNull(getActivity()).startActivity(new Intent(getActivity(), WebViewFlutterActivity.class).putExtra("type", "2").putExtra("url",getString(R.string.privacy_policy)));
@@ -373,7 +366,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (loginStatus) {
                 new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, getString(R.string.my_watchlist), false);
 
-                AppCommonMethod.trackFcmEvent("My Watchlist", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("My Watchlist", "", getContext());
 
             } else
                 mListener.onLoginClicked();
@@ -381,7 +374,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         } else if (caption.equals(getString(R.string.my_history))) {
             if (loginStatus) {
                 new ActivityLauncher(getActivity()).watchHistory(getActivity(), WatchListActivity.class, Objects.requireNonNull(getActivity()).getResources().getString(R.string.my_history), true);
-                AppCommonMethod.trackFcmEvent("My Watch History", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("My Watch History", "", getContext());
 
             } else
                 mListener.onLoginClicked();
@@ -398,7 +391,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             mLastClickTime = SystemClock.elapsedRealtime();
             flagLogIn = true;
             flagVerify = false;
-            showAlertDialog(getResources().getString(R.string.sign_out), getResources().getString(R.string.logout_confirmation));
+            showAlertDialog();
 //                AppCommonMethod.trackFcmCustomEvent(getContext(), AppConstants.LOGOUT, "Main - More", "", "", "", 0, " ", 0, "", 0, 0, "", "");
 
 
@@ -406,7 +399,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (NetworkConnectivity.isOnline(getActivity())) {
                 Intent intent = new Intent(getActivity(), MemberShipPlanActivity.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Membership and Plans", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Membership and Plans", "", getContext());
 
             } else {
                 new ToastHandler(getActivity()).show(getResources().getString(R.string.no_connection));
@@ -422,7 +415,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             if (loginStatus) {
                 Intent intent = new Intent(getActivity(), RedeemCouponActivity.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Redeem Coupon", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Redeem Coupon", "", getContext());
 
             } else {
                 mListener.onLoginClicked();
@@ -433,7 +426,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
                 Intent intent = new Intent(getActivity(), ActivitySettings.class);
                 startActivity(intent);
-                AppCommonMethod.trackFcmEvent("Settings", "", getContext(), 0);
+                AppCommonMethod.trackFcmEvent("Settings", "", getContext());
 
             } else
                 mListener.onLoginClicked();
@@ -458,7 +451,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                             if (jsonObject.getResponseCode() == 401) {
                                 isloggedout = true;
                                 flagVerify = false;
-                                showDialog(getActivity().getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
+                                showDialog();
                             }
                         }
                     }
@@ -467,14 +460,14 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             new ToastHandler(getActivity()).show(getActivity().getResources().getString(R.string.no_internet_connection));
     }
 
-    private void showAlertDialog(String title, String msg) {
+    private void showAlertDialog() {
         FragmentManager fm = getFragmentManager();
         AlertDialogFragment alertDialog = AlertDialogFragment.newInstance(title, msg, getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
         alertDialog.setAlertDialogCallBack(this);
         alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -491,7 +484,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                 }
 
                 String token = preference.getAppPrefAccessToken();
-                showLoading(getBinding().progressBar, true, getActivity());
+                showLoading(getBinding().progressBar, getActivity());
                 dismissLoading(getBinding().progressBar, getActivity());
                 String strCurrentTheme = KsPreferenceKeys.getInstance().getCurrentTheme();
                 String strCurrentLanguage = KsPreferenceKeys.getInstance().getAppLanguage();
@@ -593,10 +586,10 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     }
 
-    public void updateAppSync(Context context) {
+    public void updateAppSync() {
         isLogin = preference.getAppPrefLoginStatus();
         if (isLogin) {
-            setVerify(context);
+            setVerify();
         }
 
     }
@@ -630,7 +623,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         }
     }
 
-    public void setVerify(Context context) {
+    public void setVerify() {
         String tempResponse = preference.getAppPrefUser();
         if (!StringUtils.isNullOrEmptyOrZero(tempResponse)) {
             AppUserModel dataModel = new Gson().fromJson(tempResponse, AppUserModel.class);
@@ -641,7 +634,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             getBinding().usernameTv.setText(dataModel.getName());
             if (!StringUtils.isNullOrEmpty(dataModel.getProfilePicURL()))
                 try {
-                    setProfilePic(dataModel.getProfilePicURL());
+                    setProfilePic();
                 } catch (Exception e) {
                     Logger.e("MoreFragment", "" + e.toString());
                 }
@@ -651,15 +644,15 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
                     setUIComponets(mListLogin, true);
                 } else
                     setUIComponets(mListVerify, true);*/
-                setUIComponets(mListLogin, true);
+                setUIComponets();
             } else {
-                setUIComponets(mListLogin, true);
+                setUIComponets();
             }
 
         }
     }
 
-    public void setVerifyApi(String tempResponse) {
+    public void setVerifyApi() {
         DataResponseRegister ddModel;
         ddModel = new Gson().fromJson(tempResponse, DataResponseRegister.class);
 
@@ -668,7 +661,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
             getBinding().usernameTv.setVisibility(View.VISIBLE);
             getBinding().userNameWords.setText(AppCommonMethod.getUserName(preference.getAppPrefUserName()));
             getBinding().usernameTv.setText(preference.getAppPrefUserName());
-            setUIComponets(mListLogin, true);
+            setUIComponets();
            /* if (ddModel.isVerified()) {
                 setUIComponets(mListLogin, true);
             } else
@@ -677,7 +670,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
 
     }
 
-    public void setProfilePic(String key) {
+    public void setProfilePic() {
         String url1 = preference.getAppPrefCfep();
         StringBuilder stringBuilder = new StringBuilder();
         if (key.contains("http")) {
@@ -702,7 +695,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                updateAppSync(context);
+                updateAppSync();
             } catch (Exception e) {
                 Logger.e("MoreFragment", "" + e.toString());
 

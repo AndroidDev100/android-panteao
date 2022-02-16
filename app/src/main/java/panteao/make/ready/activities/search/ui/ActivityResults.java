@@ -2,7 +2,6 @@ package panteao.make.ready.activities.search.ui;
 
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -18,11 +17,9 @@ import panteao.make.ready.activities.search.adapter.CommonSearchAdapter;
 import panteao.make.ready.activities.search.viewmodel.SearchViewModel;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.beanModel.popularSearch.ItemsItem;
 import panteao.make.ready.activities.search.adapter.RowSearchAdapter;
 import panteao.make.ready.adapters.CommonShimmerAdapter;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.beanModel.popularSearch.ResponsePopularSearch;
 import panteao.make.ready.databinding.ActivityResultBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -87,11 +84,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
     }
 
     private void connectionObserver() {
-        if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
-        } else {
-            connectionValidation(false);
-        }
+        connectionValidation(NetworkConnectivity.isOnline(this));
     }
 
     private void connectionValidation(Boolean aBoolean) {
@@ -112,7 +105,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
         counter = 0;
         loading = true;
         singleSectionItems = new ArrayList<>();
-        itemListDataAdapter1 = new RowSearchAdapter(ActivityResults.this, singleSectionItems, false, this);
+        itemListDataAdapter1 = new RowSearchAdapter(ActivityResults.this, singleSectionItems, this);
         setRecyclerProperties(getBinding().resultRecycler);
         callShimmer(getBinding().resultRecycler);
         hitApiSearchKeyword(searchKeyword, searchType);
@@ -268,7 +261,7 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
     }
 
 
-    private void setUiComponents(ResponsePopularSearch jsonObject) {
+    private void setUiComponents() {
         getBinding().resultRecycler.setLayoutManager(mLayoutManager);
         // getBinding().resultRecycler.setAdapter(new CommonSearchAdapter(ActivityResults.this, jsonObject, this));
     }
@@ -280,12 +273,12 @@ public class ActivityResults extends BaseBindingActivity<ActivityResultBinding> 
     }
 
     @Override
-    public ActivityResultBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityResultBinding inflateBindingLayout() {
         return ActivityResultBinding.inflate(inflater);
     }
 
     @Override
-    public void onItemClicked(ItemsItem itemValue) {
+    public void onItemClicked() {
 
         if (itemValue.getType().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {

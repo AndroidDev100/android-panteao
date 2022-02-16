@@ -3,24 +3,14 @@ package panteao.make.ready.activities
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.kaltura.playkit.PKLog
-import com.kaltura.playkit.PlayerEvent
 import com.kaltura.playkit.PlayerState
-import com.kaltura.playkit.providers.ovp.OVPMediaAsset
-import com.kaltura.tvplayer.KalturaOvpPlayer
 import com.kaltura.tvplayer.KalturaPlayer
-import com.kaltura.tvplayer.OVPMediaOptions
-import com.kaltura.tvplayer.PlayerInitOptions
-import kotlinx.android.synthetic.main.activity_kaltura_player.*
 import panteao.make.ready.R
 import panteao.make.ready.SDKConfig
 import panteao.make.ready.player.kalturaPlayer.KalturaFragment
 import panteao.make.ready.utils.constants.AppConstants
-import panteao.make.ready.utils.cropImage.helpers.Logger
 
 class KalturaPlayerActivity : FragmentActivity(), KalturaFragment.OnPlayerInteractionListener {
     private val log = PKLog.get("MainActivity")
@@ -56,7 +46,7 @@ class KalturaPlayerActivity : FragmentActivity(), KalturaFragment.OnPlayerIntera
 
     }
 
-    override fun onBookmarkCall(currentPosition: Int) {
+    override fun onBookmarkCall() {
 
     }
 
@@ -64,11 +54,11 @@ class KalturaPlayerActivity : FragmentActivity(), KalturaFragment.OnPlayerIntera
 
     }
 
-    override fun onCurrentPosition(currentPosition: Long) {
+    override fun onCurrentPosition() {
         TODO("Not yet implemented")
     }
 
-    override fun bingeWatchCall(entryID: String?) {
+    override fun bingeWatchCall() {
     }
 
     @SuppressLint("RestrictedApi")

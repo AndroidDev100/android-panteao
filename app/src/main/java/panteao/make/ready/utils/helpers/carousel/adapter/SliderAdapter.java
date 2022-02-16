@@ -3,24 +3,19 @@ package panteao.make.ready.utils.helpers.carousel.adapter;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.google.gson.Gson;
-
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
 import panteao.make.ready.enums.KalturaImageType;
-import panteao.make.ready.utils.Utils;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
@@ -31,19 +26,18 @@ import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class SliderAdapter extends PagerAdapter {
 
     private final LayoutInflater layoutInflater;
     private final Context context;
-    private RailCommonData items;
+    private final RailCommonData items;
     private long mLastClickTime = 0;
-    private CommonRailtItemClickListner listner;
-    private int viewType;
-    private List<EnveuVideoItemBean> videos;
-    private int pos;
+    private final CommonRailtItemClickListner listner;
+    private final int viewType;
+    private final List<EnveuVideoItemBean> videos;
+    private final int pos;
 
     public SliderAdapter(@NonNull Context context, RailCommonData items, int viewType, CommonRailtItemClickListner listner, int position) {
         this.context = context;
@@ -117,9 +111,9 @@ public class SliderAdapter extends PagerAdapter {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        listner.railItemClick(items, position);
+        listner.railItemClick();
 
-        AppCommonMethod.trackFcmEvent("Content Screen", "", context, 0);
+        AppCommonMethod.trackFcmEvent("Content Screen", "", context);
         AppCommonMethod.trackFcmCustomEvent(context, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), items.getScreenWidget().getContentID(), items.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
 
 
@@ -143,7 +137,7 @@ public class SliderAdapter extends PagerAdapter {
     /**
      * Display the gallery image into the image view provided.
      */
-    private void loadImage(ImageView imageView, String url, int corner) {
+    private void loadImage(String url) {
         if (!TextUtils.isEmpty(url)) {
            /* Glide.with(imageView.getContext()) // Bind it with the context of the actual view used
                     .load(url) // Load the image

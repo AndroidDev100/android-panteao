@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -95,7 +94,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
     }
 
     @Override
-    public SkipBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public SkipBinding inflateBindingLayout() {
         return SkipBinding.inflate(inflater);
     }
 
@@ -205,12 +204,12 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
             if (Objects.requireNonNull(signUpResponseModel).isStatus()) {
                 dataResponseRegister = signUpResponseModel.getData();
                 AppCommonMethod.afterLogin = true;
-                showDialog(SkipActivity.this.getResources().getString(R.string.register), getResources().getString(R.string.profile_registered_successfully));
+                showDialog();
             } else {
-                showLoading(getBinding().progressBar, true);
+                showLoading(getBinding().progressBar);
                 AppCommonMethod.afterLogin = true;
                 isloggedout = true;
-                showDialog(SkipActivity.this.getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
+                showDialog();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -250,7 +249,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
 //        transferUtility = new TransferUtility(s3, getApplicationContext());
 //    }
 
-    public void setProfilePic(String key) {
+    public void setProfilePic() {
         String url1 = preference.getAppPrefCfep();
         if (StringUtils.isNullOrEmpty(url1)) {
             url1 = AppCommonMethod.urlPoints;
@@ -306,7 +305,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
 //        });
 //    }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -364,7 +363,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
 
     }
 
-    public void setLoginUserData(String json, String id) {
+    public void setLoginUserData() {
         preference.setAppPrefProfile(json);
         preference.setAppPrefLoginStatus(true);
         preference.setAppPrefLoginType(AppConstants.UserLoginType.Manual.toString());
@@ -404,12 +403,12 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
 
     @Override
     public void onFinishDialog() {
-        PrintLogging.printLog("", "onFinishDialog");
+        PrintLogging.printLog("onFinishDialog");
         if (isloggedout) {
             String token = preference.getAppPrefAccessToken();
-            hitApiLogout(SkipActivity.this, token);
+            hitApiLogout(token);
         } else if (dataResponseRegister != null) {
-            showLoading(getBinding().progressBar, false);
+            showLoading(getBinding().progressBar);
             counter = 0;
             Gson gson = new Gson();
             String stringJson = gson.toJson(dataResponseRegister);
@@ -417,7 +416,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
             preference.setAppPrefUserId(dataResponseRegister.getId());
             preference.setAppPrefProfile(stringJson);
             preference.setAppPrefLoginStatus(true);
-            setLoginUserData(stringJson, dataResponseRegister.getId());
+            setLoginUserData();
 
             if (isForceSkip) {
                 isForceSkip = false;
@@ -440,7 +439,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
         }
     }
 
-    public void hitApiLogout(Context context, String token) {
+    public void hitApiLogout(String token) {
         preference = KsPreferenceKeys.getInstance();
         String isFacebook = preference.getAppPrefLoginType();
         if (isFacebook.equalsIgnoreCase(AppConstants.UserLoginType.FbLogin.toString())) {

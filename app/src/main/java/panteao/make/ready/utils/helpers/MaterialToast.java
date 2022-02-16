@@ -30,7 +30,7 @@ public class MaterialToast {
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public void show(String message, Drawable drawable, int color, int gravity) {
+    public void show(String message, Drawable drawable) {
         LayoutInflater layoutInflater = (LayoutInflater) activity.getApplicationContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         View viewHolder = View.inflate(activity, R.layout.material_toast, null);

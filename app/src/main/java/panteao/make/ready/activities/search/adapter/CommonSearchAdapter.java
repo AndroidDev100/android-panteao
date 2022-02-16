@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import panteao.make.ready.beanModel.popularSearch.ItemsItem;
+
 import panteao.make.ready.R;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -61,7 +61,7 @@ public class CommonSearchAdapter extends RecyclerView.Adapter<CommonSearchAdapte
                 ImageHelper.getInstance(context).loadListImage(viewHolder.searchItemBinding.itemImage, AppCommonMethod.getListLDSImage(itemList.get(position).getPosterURL(),context));
             }
             //ImageHelper.getInstance(context).loadListImage(viewHolder.searchItemBinding.itemImage, itemList.get(position).getPosterURL());
-            viewHolder.searchItemBinding.clRoot.setOnClickListener(view -> listener.onEnveuItemClicked(itemList.get(position)));
+            viewHolder.searchItemBinding.clRoot.setOnClickListener(view -> listener.onEnveuItemClicked());
 
             /*viewHolder.searchItemBinding.clRoot.setOnClickListener(view -> listener.onItemClicked(jsonObject.getData().getContinueWatchingBookmarks().get(position)));
             viewHolder.searchItemBinding.tvTitle.setText(jsonObject.getData().getContinueWatchingBookmarks().get(position).getName());
@@ -125,7 +125,7 @@ public class CommonSearchAdapter extends RecyclerView.Adapter<CommonSearchAdapte
     }
 
     public interface CommonSearchListener {
-        void onItemClicked(ItemsItem itemValue);
+        void onItemClicked();
 
 
 

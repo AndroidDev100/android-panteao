@@ -21,7 +21,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -278,7 +277,7 @@ public class SearchRepository {
     }
 
 
-    public LiveData<ResponseSearch> getSearchSeriesData(String type, String keyword, int size, int page) {
+    public LiveData<ResponseSearch> getSearchSeriesData(String keyword, int size, int page) {
 
         MutableLiveData<ResponseSearch> responsePopular = new MutableLiveData<>();
         popularSearchResponse = new ResponsePopularSearch();

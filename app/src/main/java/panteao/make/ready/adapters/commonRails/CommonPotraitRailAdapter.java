@@ -37,12 +37,12 @@ import io.reactivex.annotations.NonNull;
 public class CommonPotraitRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private long mLastClickTime = 0;
-    private RailCommonData railCommonData;
+    private final RailCommonData railCommonData;
     private List<EnveuVideoItemBean> videos;
-    private CommonRailtItemClickListner listner;
-    private Context mContext;
-    private int pos;
-    BaseCategory baseCategory;
+    private final CommonRailtItemClickListner listner;
+    private final Context mContext;
+    private final int pos;
+    final BaseCategory baseCategory;
 
     public CommonPotraitRailAdapter(Context context, RailCommonData railCommonData, int position, CommonRailtItemClickListner listner, BaseCategory baseCat) {
         this.mContext = context;
@@ -234,8 +234,8 @@ public class CommonPotraitRailAdapter extends RecyclerView.Adapter<RecyclerView.
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        listner.railItemClick(railCommonData, position);
-        AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+        listner.railItemClick();
+        AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
 
         if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase(AppConstants.MAIN_HOME)) {
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");

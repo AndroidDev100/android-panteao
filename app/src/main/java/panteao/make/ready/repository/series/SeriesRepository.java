@@ -72,7 +72,7 @@ public class SeriesRepository {
             @Override
             public void onResponse(@NonNull Call<SeriesResponse> call, @NonNull Response<SeriesResponse> response) {
 
-                PrintLogging.printLog("", response.body() + "getSeriesDetail");
+                PrintLogging.printLog(response.body() + "getSeriesDetail");
                 mutableLiveData.postValue(response.body());
             }
 
@@ -183,7 +183,7 @@ public class SeriesRepository {
         call.enqueue(new Callback<SeasonResponse>() {
             @Override
             public void onResponse(@NonNull Call<SeasonResponse> call, @NonNull Response<SeasonResponse> response) {
-                PrintLogging.printLog("", "getVOD");
+                PrintLogging.printLog("getVOD");
 
                 mutableLiveData.postValue(response.body());
             }
@@ -238,7 +238,7 @@ public class SeriesRepository {
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -272,7 +272,7 @@ public class SeriesRepository {
                     responseEmpty.setStatus(true);
                     responsePlayer.postValue(responseEmpty);
                 } else {
-                    responseEmpty.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseEmpty.setResponseCode(response.code());
                     responseEmpty.setStatus(false);
                     responsePlayer.postValue(responseEmpty);
                 }
@@ -307,7 +307,7 @@ public class SeriesRepository {
                     responsePlayer.postValue(responseWatchList);
                 } else {
                     responseWatchList.setStatus(false);
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responsePlayer.postValue(responseWatchList);
                 }
 
@@ -340,7 +340,7 @@ public class SeriesRepository {
                     responseWatchList.setStatus(true);
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -374,7 +374,7 @@ public class SeriesRepository {
                     responseWatchList.setStatus(true);
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -408,7 +408,7 @@ public class SeriesRepository {
                     responseEntitlement.setData(response.body().getData());
                     responseOutput.postValue(responseEntitlement);
                 } else {
-                    responseEntitlement.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseEntitlement.setResponseCode(response.code());
                     responseEntitlement.setStatus(false);
                     responseOutput.postValue(responseEntitlement);
                 }
@@ -440,7 +440,7 @@ public class SeriesRepository {
                     responseAddComment.setData(response.body().getData());
                     responseMutable.postValue(responseAddComment);
                 } else {
-                    responseAddComment.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseAddComment.setResponseCode(response.code());
                     responseAddComment.setStatus(false);
                     responseMutable.postValue(responseAddComment);
                 }
@@ -505,7 +505,7 @@ public class SeriesRepository {
                     responseWatchList.setData(response.body().getData());
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -543,11 +543,11 @@ public class SeriesRepository {
                         responseApi.postValue(response.body());
                     } else if (response.code() == 401) {
                         JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty(AppConstants.API_RESPONSE_CODE, Objects.requireNonNull(response.code()));
+                        jsonObject.addProperty(AppConstants.API_RESPONSE_CODE, response.code());
                         responseApi.postValue(jsonObject);
                     } else if (response.code() == 500) {
                         JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty(AppConstants.API_RESPONSE_CODE, Objects.requireNonNull(response.code()));
+                        jsonObject.addProperty(AppConstants.API_RESPONSE_CODE, response.code());
                         responseApi.postValue(jsonObject);
                     }
                 }

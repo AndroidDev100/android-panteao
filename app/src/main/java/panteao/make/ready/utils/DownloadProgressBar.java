@@ -24,7 +24,7 @@ public class DownloadProgressBar extends View {
     private int backgroundColor = Color.GRAY;
 
     // Object used to draw
-    private int startAngle = -90;
+    private final int startAngle = -90;
     private RectF rectF;
     private Paint backgroundPaint;
     private Paint foregroundPaint;

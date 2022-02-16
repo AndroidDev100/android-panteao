@@ -17,9 +17,6 @@ class ImageDownloadHelper(context: Context, seriesId: String?, param: CommonApiC
     private var context = context
     private var seriesId = seriesId
     private var commonApiCallBack = param
-    override fun onPreExecute() {
-        super.onPreExecute()
-    }
 
     override fun doInBackground(vararg params: String?): Bitmap? {
         val imageURL = params[0]
@@ -55,7 +52,7 @@ class ImageDownloadHelper(context: Context, seriesId: String?, param: CommonApiC
             } catch (e: IOException) {
                 e.printStackTrace()
                 Logger.e("ERROR", e.message)
-                commonApiCallBack.onFailure(e)
+                commonApiCallBack.onFailure()
             }
 
         }

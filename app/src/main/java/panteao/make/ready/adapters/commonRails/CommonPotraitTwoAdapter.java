@@ -41,15 +41,15 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
     private final ItemClickListener listener;
     int viewType;
     private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ArrayList<CommonContinueRail> continuelist;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ArrayList<CommonContinueRail> continuelist;
     private boolean isContinueList;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
-    BaseCategory baseCategory;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
+    final BaseCategory baseCategory;
 
-    public CommonPotraitTwoAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist, int view, ItemClickListener listener, BaseCategory baseCat) {
+    public CommonPotraitTwoAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist, ItemClickListener listener, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.listener = listener;
@@ -57,10 +57,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
         this.continuelist = continuelist;
         this.baseCategory = baseCat;
         if (this.continuelist != null) {
-            if (this.continuelist.size() > 0)
-                isContinueList = true;
-            else
-                isContinueList = false;
+            isContinueList = this.continuelist.size() > 0;
         }
 
         int num = 3;
@@ -79,7 +76,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
 
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels) / num;
-        itemHeight = (int) (itemWidth * 16) / 9;
+        itemHeight = (itemWidth * 16) / 9;
     }
 
     public void notifydata(List<EnveuVideoItemBean> i) {
@@ -91,7 +88,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
     @Override
     public SingleItemRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         PotraitTwoItemBinding binding = PotraitTwoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SingleItemRowHolder(binding);
+        return new SingleItemRowHolder();
     }
 
     @Override
@@ -148,7 +145,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
                     holder.potraitItemBinding.itemImage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.onRowItemClicked(itemsList.get(i), i);
+                            listener.onRowItemClicked();
                         }
                     });
                     /*ImageHelper.getInstance(mContext)
@@ -258,7 +255,7 @@ public class CommonPotraitTwoAdapter extends RecyclerView.Adapter<CommonPotraitT
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         final PotraitTwoItemBinding potraitItemBinding;
 
-        SingleItemRowHolder(PotraitTwoItemBinding potraitItemBind) {
+        SingleItemRowHolder() {
             super(potraitItemBind.getRoot());
             potraitItemBinding = potraitItemBind;
         }

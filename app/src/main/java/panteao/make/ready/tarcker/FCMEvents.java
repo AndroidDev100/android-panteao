@@ -2,13 +2,6 @@ package panteao.make.ready.tarcker;
 
 import android.content.Context;
 
-import panteao.make.ready.utils.TrackerUtil.PlatformType;
-import panteao.make.ready.utils.TrackerUtil.TrackerEvent;
-import panteao.make.ready.utils.TrackerUtil.TrackerUtil;
-import com.google.gson.JsonObject;
-
-import java.util.Arrays;
-
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_ADD_TO_WATCHLIST;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_COMPLETED;
 import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_CONTENT_EXIT;
@@ -39,7 +32,7 @@ public class FCMEvents {
         return (instance);
     }
 
-    public void trackEvent(int eventType, JsonObject requestParam) {
+    public void trackEvent(int eventType) {
         switch (eventType) {
             case 1:
 //    TrackerUtil.getInstance(context).track(TrackerEvent.REGISTER, requestParam,

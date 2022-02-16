@@ -26,9 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.SkuDetails;
 import com.make.baseCollection.baseCategoryServices.BaseCategoryServices;
 import com.make.userManagement.callBacks.LogoutCallBack;
 import com.facebook.login.LoginManager;
@@ -49,7 +46,6 @@ import panteao.make.ready.utils.inAppBilling.BillingProcessor;
 import panteao.make.ready.utils.inAppBilling.InAppProcessListener;
 import panteao.make.ready.utils.inAppUpdate.ApplicationUpdateManager;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -87,7 +83,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
 
     }
 
-    public void hitApiLogout(Context context, String token) {
+    public void hitApiLogout(String token) {
 
         String isFacebook = KsPreferenceKeys.getInstance().getAppPrefLoginType();
 
@@ -245,7 +241,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
 
 
     public void showHideProgress(ProgressBar progressBar) {
-        showLoading(progressBar, false);
+        showLoading(progressBar);
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -256,8 +252,8 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
 
     }
 
-    protected void showLoading(ProgressBar progressBar, boolean val) {
-        if (val) {
+    protected void showLoading(ProgressBar progressBar) {
+        if (false) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.bringToFront();
         }
@@ -479,7 +475,7 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
     @Override
     public void onDialogFinished() {
         String token = KsPreferenceKeys.getInstance().getAppPrefAccessToken();
-        hitApiLogout(getApplicationContext(), token);
+        hitApiLogout(token);
     }
 
     @Override
@@ -542,17 +538,17 @@ public class BaseActivity extends AppCompatActivity implements BaseActivityAlert
                     }
 
                     @Override
-                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+                    public void onPurchasesUpdated() {
 
                     }
 
                     @Override
-                    public void onListOfSKUFetched(@Nullable List<SkuDetails> purchases) {
+                    public void onListOfSKUFetched() {
 
                     }
 
                     @Override
-                    public void onBillingError(@Nullable BillingResult error) {
+                    public void onBillingError() {
 
                     }
                 });

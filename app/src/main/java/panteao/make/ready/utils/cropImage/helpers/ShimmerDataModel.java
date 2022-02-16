@@ -1,19 +1,15 @@
 package panteao.make.ready.utils.cropImage.helpers;
 
-import android.app.Activity;
-
 import panteao.make.ready.beanModel.beanModel.SectionDataModel;
 import panteao.make.ready.beanModel.beanModel.SingleItemModel;
 import panteao.make.ready.utils.helpers.carousel.model.Slide;
 
 import java.util.ArrayList;
 
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
-
 public class ShimmerDataModel {
     ArrayList<SectionDataModel> allSampleData;
 
-    public ShimmerDataModel(Activity activity) {
+    public ShimmerDataModel() {
 
     }
 

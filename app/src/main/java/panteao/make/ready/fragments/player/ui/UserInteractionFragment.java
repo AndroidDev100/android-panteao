@@ -8,10 +8,8 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -34,12 +32,10 @@ import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.baseModels.BaseBindingFragment;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
 import panteao.make.ready.enums.DownloadStatus;
-import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.player.trailor.PlayerActivity;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ActivityTrackers;
-import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
 import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -58,10 +54,7 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
-import io.reactivex.annotations.NonNull;
 
 public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlistLikeShareViewBinding> implements AlertDialogFragment.AlertDialogListener, View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -77,8 +70,8 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     private long mLastClickTime = 0;
     private boolean isloggedout = false;
     private String videoId = "6081937244001";
-    private boolean resetWatchlist =false;
-    private boolean addToWatchlist=false;
+    private final boolean resetWatchlist =false;
+    private final boolean addToWatchlist=false;
     private OnDownloadClickInteraction onDownloadClickInteraction;
     private TrailorCallBack trailorCallBack;
     /**
@@ -93,7 +86,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
     @Override
-    protected DetailWatchlistLikeShareViewBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    protected DetailWatchlistLikeShareViewBinding inflateBindingLayout() {
         return DetailWatchlistLikeShareViewBinding.inflate(inflater);
     }
 
@@ -167,7 +160,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         if (bundle != null) {
             this.likeCounter = 0;
             this.assestId = bundle.getInt(AppConstants.BUNDLE_ASSET_ID);
-            seriesDetailBean = (EnveuVideoItemBean) bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
+            seriesDetailBean = bundle.getParcelable(AppConstants.BUNDLE_SERIES_DETAIL);
             videoId = seriesDetailBean.getBrightcoveVideoId();
             seriesId = bundle.getString(AppConstants.BUNDLE_SERIES_ID);
             entryid = bundle.getString(AppConstants.BUNDLE_KENTRY_ID);
@@ -295,7 +288,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-        AppCommonMethod.copyShareURL(getActivity(), title, id, assetType, imgUrl, seriesDetailBean.getSeriesId()  == null ? "" : seriesDetailBean.getSeriesId(), seriesDetailBean.getSeason());
+        AppCommonMethod.copyShareURL(getActivity(), title, id, assetType, imgUrl, seriesDetailBean.getSeason());
 
         new Handler().postDelayed(() -> {
             if (context instanceof SeriesDetailActivity) {
@@ -310,23 +303,23 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             ActivityTrackers.getInstance().setLauncherActivity("SeriesDetailActivity");
             ((SeriesDetailActivity) context).openLogin();
         } else if (context instanceof EpisodeActivity) {
-            ((EpisodeActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((EpisodeActivity) context).openLoginPage();
             ActivityTrackers.getInstance().setLauncherActivity("EpisodeActivity");
         } else if (context instanceof InstructorActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-            ((InstructorActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((InstructorActivity) context).openLoginPage();
         }
         else if (context instanceof ShowActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-            ((ShowActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((ShowActivity) context).openLoginPage();
         }
         else if (context instanceof ChapterActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-            ((ChapterActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((ChapterActivity) context).openLoginPage();
         }
         else if (context instanceof TutorialActivity) {
             ActivityTrackers.getInstance().setLauncherActivity("DetailActivity");
-            ((TutorialActivity) context).openLoginPage(getResources().getString(R.string.please_login_play));
+            ((TutorialActivity) context).openLoginPage();
         }
     }
 
@@ -334,7 +327,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         getBinding().watchList.setOnClickListener(v -> {
             if (getBinding().wProgressBar.getVisibility() != View.VISIBLE) {
                 if (preference.getAppPrefLoginStatus()) {
-                    setWatchListForAsset(1);
+                    setWatchListForAsset();
 
                 } else {
                     ActivityTrackers.getInstance().setAction(ActivityTrackers.WATCHLIST);
@@ -344,11 +337,11 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         });
     }
 
-    public void setWatchListForAsset(int from) {
+    public void setWatchListForAsset() {
         getBinding().wProgressBar.setVisibility(View.VISIBLE);
         getBinding().addIcon.setVisibility(View.GONE);
         if (watchListCounter == 0)
-            hitApiAddWatchList(from);
+            hitApiAddWatchList();
         else {
             hitApiRemoveList();
         }
@@ -368,7 +361,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                     logoutCall();
                    // showDialog(getActivity().getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
                 } else if (responseEmpty.getResponseCode() == 500) {
-                    showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
         });
@@ -377,16 +370,16 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public void likeClick() {
         getBinding().llLike.setOnClickListener(view -> {
-            setLikeForAsset(1);
+            setLikeForAsset();
         });
 
     }
 
-    public void setToken(String token) {
+    public void setToken() {
         this.token = token;
     }
 
-    public void setLikeForAsset(int from) {
+    public void setLikeForAsset() {
         if (getBinding().lProgressBar.getVisibility() != View.VISIBLE) {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                 return;
@@ -397,7 +390,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 getBinding().lProgressBar.setVisibility(View.VISIBLE);
                 getBinding().likeIcon.setVisibility(View.GONE);
                 if (likeCounter == 0)
-                    hitApiAddLike(from);
+                    hitApiAddLike();
                 else
                     hitApiRemoveLike();
             } else {
@@ -408,7 +401,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     }
 
 
-    public void hitApiAddLike(int from) {
+    public void hitApiAddLike() {
         bookmarkingViewModel.hitApiAddLike(token, assestId).observe(getActivity(), responseEmpty -> {
             getBinding().lProgressBar.setVisibility(View.GONE);
             getBinding().likeIcon.setVisibility(View.VISIBLE);
@@ -424,11 +417,11 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                     String debugMessage = responseEmpty.getDebugMessage();
                     //from value will bedepends on how user click of watchlist icon-->>if loggedout=2 else=2
                     if (from == 1) {
-                        showDialog(getActivity().getResources().getString(R.string.error), debugMessage);
+                        showDialog();
                     }
 
                 } else if (responseEmpty.getResponseCode() == 500) {
-                    showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
 
@@ -445,9 +438,9 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             } else {
                 if (responseEmpty.getResponseCode() == 4302) {
                     isloggedout = true;
-                    showDialog(getActivity().getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
+                    showDialog();
                 } else if (responseEmpty.getResponseCode() == 500) {
-                    showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
 
@@ -477,7 +470,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                         logoutCall();
                        // showDialog(getActivity().getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
                     } else if (responseEmpty.getResponseCode() == 500) {
-                        showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
                 }
 
@@ -498,7 +491,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                         logoutCall();
                        // showDialog(getActivity().getResources().getString(R.string.logged_out), responseEmpty.getDebugMessage() + "");
                     } else if (responseEmpty.getResponseCode() == 500) {
-                        showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
                 }
             });
@@ -507,7 +500,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     }
 
-    public void hitApiAddWatchList(int from) {
+    public void hitApiAddWatchList() {
         if (context instanceof SeriesDetailActivity) {
             ((SeriesDetailActivity) context).seriesLoader();
         }
@@ -528,10 +521,10 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                     String debugMessage = responseEmpty.getDebugMessage();
                     //from value will bedepends on how user click of watchlist icon-->>if loggedout=2 else=2
                     if (from == 1) {
-                        showDialog(getActivity().getResources().getString(R.string.error), debugMessage);
+                        showDialog();
                     }
                 } else if (responseEmpty.getResponseCode() == 500) {
-                    showDialog(getActivity().getResources().getString(R.string.error), getActivity().getResources().getString(R.string.something_went_wrong));
+                    showDialog();
                 }
             }
 
@@ -602,7 +595,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-        AppCommonMethod.openShareDialog(getActivity(), title, id, assetType, imgUrl, seriesDetailBean.getSeriesId()  == null ? "" : seriesDetailBean.getSeriesId(), seriesDetailBean.getSeason());
+        AppCommonMethod.openShareDialog(getActivity(), title, id, assetType, imgUrl, seriesDetailBean.getSeason());
         AppCommonMethod.trackFcmCustomEvent(getActivity(),AppConstants.SHARE_CONTENT, seriesDetailBean.getAssetType(), "", "", 0,seriesDetailBean.getTitle(), 0,seriesDetailBean.getId()+"", 0, 0, "", "","","");
 
         new Handler().postDelayed(() -> {
@@ -763,7 +756,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -781,7 +774,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     private void logoutCall() {
         if (CheckInternetConnection.isOnline(requireActivity())) {
             clearCredientials(preference);
-            hitApiLogout(getBaseActivity(), preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         } else {
             new ToastHandler(getActivity()).show(getActivity().getResources().getString(R.string.no_internet_connection));
         }
@@ -828,7 +821,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
             }
             break;
             case R.id.trailor: {
-                trailorCallBack.onClick(true);
+                trailorCallBack.onClick();
                 Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 intent.putExtra(AppConstants.ENTRY_ID, seriesDetailBean.getTrailerReferenceId());
                 startActivity(intent);
@@ -836,7 +829,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
     }
 
-    public void setDownloadStatus(DownloadStatus downloadStatus) {
+    public void setDownloadStatus() {
         if (getActivity()!=null && !getActivity().isFinishing()){
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
                 getActivity().runOnUiThread(new Runnable() {
@@ -894,14 +887,14 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
         }
     }
 
-    public void setDownloadable(boolean isDownloadable) {
+    public void setDownloadable() {
         if (getBinding() != null){
             getBinding().setIsDownloadable(isDownloadable);
         }
 
     }
 
-    public void setDownloadProgress(float progress) {
+    public void setDownloadProgress() {
         try {
             if (getBinding() != null){
                 Log.w("userInteraction","in2");
@@ -935,7 +928,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
     public boolean itemFound=false;
     ArrayList list;
-    public void checkDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+    public void checkDownloadStatus() {
         Log.w("itemFoundValue-->",itemFound+"");
         if (adapterList!=null && adapterList.size()>0){
             if (!itemFound) {
@@ -955,9 +948,9 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
                 itemFound=true;
                 Log.w("adapterListSize",adapterList.size() +" "+list.size());
                 if (list.size()==adapterList.size()){
-                    setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                    setDownloadStatus();
                 }else {
-                    setDownloadStatus(DownloadStatus.START);
+                    setDownloadStatus();
                 }
             }
         }
@@ -966,7 +959,7 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
     public boolean itemCheck=false;
     ArrayList itemList;
     ArrayList completeItemList;
-    public void checkSeriesDownloadStatus(List<EnveuVideoItemBean> adapterList, KTDownloadHelper downloadHelper) {
+    public void checkSeriesDownloadStatus() {
         Log.w("itemChecked 1",adapterList.size()+"");
         if (adapterList!=null && adapterList.size()>0){
             Log.w("itemChecked 2",itemCheck+"");
@@ -1002,11 +995,11 @@ public class UserInteractionFragment extends BaseBindingFragment<DetailWatchlist
 
                 Log.w("itemChecked 4",itemList.size()+" "+adapterList.size()+"  "+completeItemList.size());
                 if (completeItemList.size()==adapterList.size()){
-                    setDownloadStatus(DownloadStatus.DOWNLOADED);
+                    setDownloadStatus();
                 }else if (itemList.size()==adapterList.size()){
-                    setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
+                    setDownloadStatus();
                 }else {
-                    setDownloadStatus(DownloadStatus.START);
+                    setDownloadStatus();
                 }
                 /*if (!itemCheck){
                     setDownloadStatus(DownloadStatus.START);

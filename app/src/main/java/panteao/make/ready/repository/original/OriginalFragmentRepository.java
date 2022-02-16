@@ -34,12 +34,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistResponses;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistsItem;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.PlaylistRailData;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +58,7 @@ public class OriginalFragmentRepository {
     }
 
 
-    public LiveData<List<CommonRailData>> getPlaylist(int id, List<CommonRailData> adsRail) {
+    public LiveData<List<CommonRailData>> getPlaylist(int id) {
         count = 0;
         MutableLiveData<List<CommonRailData>> playlistResponsesMutableLiveData = new MutableLiveData<>();
         ApiInterface endpoint = RequestConfig.getClientHeader().create(ApiInterface.class);
@@ -91,7 +85,7 @@ public class OriginalFragmentRepository {
             public void onFailure(@NonNull Call<PlaylistResponses> call, @NonNull Throwable t) {
                 playlistResponsesMutableLiveData.postValue(new ArrayList<>());
 
-                PrintLogging.printLog("", t.toString());
+                PrintLogging.printLog(t.toString());
             }
         });
         return playlistResponsesMutableLiveData;
@@ -103,7 +97,7 @@ public class OriginalFragmentRepository {
             try {
                 id = playlist.get(count).getId();
             } catch (Exception ex) {
-                PrintLogging.printLog("", ex.getMessage() + "Error message");
+                PrintLogging.printLog(ex.getMessage() + "Error message");
             }
             getPlaylistData(id, playlistResponsesMutableLiveData);
         }/* else {

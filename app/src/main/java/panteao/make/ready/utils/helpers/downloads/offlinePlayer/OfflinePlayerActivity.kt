@@ -3,10 +3,8 @@ package panteao.make.ready.utils.helpers.downloads.offlinePlayer
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import panteao.make.ready.R
 import panteao.make.ready.baseModels.BaseBindingActivity
@@ -16,7 +14,7 @@ import panteao.make.ready.databinding.OfflinePlayerActivityBinding
 class OfflinePlayerActivity : BaseBindingActivity<OfflinePlayerActivityBinding>() {
     private var fragment:OfflinePlayerFragment?=null
     private var entryId:String?=""
-    override fun inflateBindingLayout(inflater: LayoutInflater): OfflinePlayerActivityBinding {
+    override fun inflateBindingLayout(): OfflinePlayerActivityBinding {
         return OfflinePlayerActivityBinding.inflate(inflater)
     }
 
@@ -55,10 +53,10 @@ class OfflinePlayerActivity : BaseBindingActivity<OfflinePlayerActivityBinding>(
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (android.provider.Settings.System.getInt(getApplicationContext().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        if (android.provider.Settings.System.getInt(applicationContext.contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }else{
-            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
     }
 

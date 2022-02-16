@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import panteao.make.ready.beanModel.beanModel.SectionDataModel;
-import panteao.make.ready.beanModel.params.ParamBean;
 import panteao.make.ready.callbacks.commonCallbacks.NoInternetConnectionCallBack;
 import panteao.make.ready.databinding.FragmentMoreBinding;
 import panteao.make.ready.utils.helpers.NoInternetConnection;
@@ -27,22 +26,22 @@ public class MoreFragmentRepository {
         return projectRepository;
     }
 
-    public void setAdapter(ParamBean mParam, Activity context, FragmentMoreBinding binding) {
+    public void setAdapter(Activity context, FragmentMoreBinding binding) {
         connectionCheck(context, binding);
     }
 
 
     private void connectionCheck(final Activity context, final FragmentMoreBinding binding) {
-        new NoInternetConnection(context).hanleAction(binding.connection, new NoInternetConnectionCallBack() {
+        new NoInternetConnection(context).hanleAction(new NoInternetConnectionCallBack() {
             @Override
-            public void isOnline(boolean connected) {
+            public void isOnline() {
                 binding.noConnectionLayout.setVisibility(View.GONE);
                 //loadData(context,binding);
 
             }
 
             @Override
-            public void isOffline(boolean disconnected) {
+            public void isOffline() {
                 binding.noConnectionLayout.setVisibility(View.VISIBLE);
                 binding.connection.retryTxt.setOnClickListener(view -> connectionCheck(context, binding));
             }
@@ -51,7 +50,7 @@ public class MoreFragmentRepository {
     }
 
 
-    private void loadData(Activity context, FragmentMoreBinding binding) {
+    private void loadData() {
         allSampleData = new ArrayList<>();
         // binding.myRecyclerView.setNestedScrollingEnabled(false);
         //   binding.myRecyclerView.setHasFixedSize(true);

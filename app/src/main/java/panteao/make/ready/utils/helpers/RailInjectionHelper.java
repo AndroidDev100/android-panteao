@@ -2,7 +2,6 @@ package panteao.make.ready.utils.helpers;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -47,8 +46,8 @@ import java.util.List;
 
 
 public class RailInjectionHelper extends AndroidViewModel {
-    private MutableLiveData<RailCommonData> mutableRailCommonData = new MutableLiveData<>();
-    private ObservableRxList<RailCommonData> observableList = new ObservableRxList<>();
+    private final MutableLiveData<RailCommonData> mutableRailCommonData = new MutableLiveData<>();
+    private final ObservableRxList<RailCommonData> observableList = new ObservableRxList<>();
     private int i = 0;
     private List<BaseCategory> baseCategories;
     private KsPreferenceKeys preference;
@@ -64,7 +63,7 @@ public class RailInjectionHelper extends AndroidViewModel {
             if (baseCategories.size() > 0) {
                 getScreenListing(activity, commonApiCallBack);
             } else {
-                commonApiCallBack.onFailure(new Throwable("No Data"));
+                commonApiCallBack.onFailure();
             }
         });
         return observableList;
@@ -125,7 +124,7 @@ public class RailInjectionHelper extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure() {
                 i++;
                 getScreenListing(activity, commonApiCallBack);
             }
@@ -192,7 +191,7 @@ public class RailInjectionHelper extends AndroidViewModel {
                                     }
 
                                     @Override
-                                    public void onFailure(Throwable throwable) {
+                                    public void onFailure() {
                                         i++;
                                         getScreenListing(activity, commonApiCallBack);
                                     }
@@ -206,8 +205,8 @@ public class RailInjectionHelper extends AndroidViewModel {
                         }
 
                         @Override
-                        public void onFailure(Throwable throwable) {
-                            commonApiCallBack.onFailure(new Throwable("ASSET NOT FOUND"));
+                        public void onFailure() {
+                            commonApiCallBack.onFailure();
                             i++;
                             getScreenListing(activity, commonApiCallBack);
                         }
@@ -259,7 +258,7 @@ public class RailInjectionHelper extends AndroidViewModel {
                                     }
 
                                     @Override
-                                    public void onFailure(Throwable throwable) {
+                                    public void onFailure() {
                                         i++;
                                         getScreenListing(activity, commonApiCallBack);
                                     }
@@ -273,8 +272,8 @@ public class RailInjectionHelper extends AndroidViewModel {
                         }
 
                         @Override
-                        public void onFailure(Throwable throwable) {
-                            commonApiCallBack.onFailure(new Throwable("ASSET NOT FOUND"));
+                        public void onFailure() {
+                            commonApiCallBack.onFailure();
                             i++;
                             getScreenListing(activity, commonApiCallBack);
                         }
@@ -319,8 +318,7 @@ public class RailInjectionHelper extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<RailCommonData> getPlayListDetailsWithPagination(Context
-                                                                                    context, String playlistID,
+    public MutableLiveData<RailCommonData> getPlayListDetailsWithPagination(String playlistID,
                                                                             int pageNumber, int pageSize, BaseCategory screenWidget) {
         return APIServiceLayer.getInstance().getSearchPopularPlayList(playlistID, pageNumber, pageSize, screenWidget);
     }
@@ -381,7 +379,7 @@ public class RailInjectionHelper extends AndroidViewModel {
                         }
 
                         @Override
-                        public void onFailure(Throwable throwable) {
+                        public void onFailure() {
                             railCommonDataMutableLiveData.postValue(null);
                         }
 
@@ -395,7 +393,7 @@ public class RailInjectionHelper extends AndroidViewModel {
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure() {
                 railCommonDataMutableLiveData.postValue(null);
             }
 
@@ -412,7 +410,7 @@ public class RailInjectionHelper extends AndroidViewModel {
     }
 
 
-    public LiveData<ResponseModel> getCatData(Activity activity, String screenId) {
+    public LiveData<ResponseModel> getCatData(String screenId) {
         MutableLiveData<ResponseModel> liveData=new MutableLiveData<>();
         HomeFragmentRepository homeFragmentRepository=new HomeFragmentRepository();
 
@@ -448,13 +446,13 @@ public class RailInjectionHelper extends AndroidViewModel {
         if (baseCategories.size() > 0) {
             getScreenListing(activity, commonApiCallBack);
         } else {
-            commonApiCallBack.onFailure(new Throwable("No Data"));
+            commonApiCallBack.onFailure();
         }
     }
 
-    public MutableLiveData<ResponseModel> getPlayListDetailsWithPaginationV2(Context context, String playlistID,
-                                                                            int pageNumber, int pageSize,
-                                                                              BaseCategory screenWidget) {
+    public MutableLiveData<ResponseModel> getPlayListDetailsWithPaginationV2(String playlistID,
+                                                                             int pageNumber, int pageSize,
+                                                                             BaseCategory screenWidget) {
         MutableLiveData liveData=new MutableLiveData();
         ListPaginationDataLayer.getInstance().getPlayListByWithPagination(playlistID, pageNumber, pageSize, screenWidget, new ApiResponseModel<RailCommonData>() {
             @Override

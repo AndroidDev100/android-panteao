@@ -28,9 +28,9 @@ public class ForceUpdateHandler {
     final MaterialDialog materialDialog;
     VersionValidator versionValidator;
     VersionUpdateCallBack versionUpdateCallBack;
-    ConfigBean configBean;
-    public static String FORCE="force";
-    public static String RECOMMENDED="recommended";
+    final ConfigBean configBean;
+    public static final String FORCE="force";
+    public static final String RECOMMENDED="recommended";
 
 
     public ForceUpdateHandler(Activity context, ConfigBean configBean) {
@@ -65,11 +65,7 @@ public class ForceUpdateHandler {
                        configVersion = configVersion.replace(".", "");
                        if (!configVersion.equalsIgnoreCase("")) {
                            int configAppCurrentVersion = Integer.parseInt(configVersion);
-                              if (appCurrentVersion<configAppCurrentVersion){
-                                  versionValidator.version(true, appCurrentVersion, configAppCurrentVersion,FORCE);
-                              }else {
-                                  versionValidator.version(false, appCurrentVersion, configAppCurrentVersion,FORCE);
-                              }
+                           versionValidator.version(appCurrentVersion < configAppCurrentVersion, appCurrentVersion, configAppCurrentVersion,FORCE);
                        }else {
                            versionValidator.version(false, appCurrentVersion, 0,FORCE);
                        }
@@ -91,11 +87,7 @@ public class ForceUpdateHandler {
                        configVersion = configVersion.replace(".", "");
                        if (!configVersion.equalsIgnoreCase("")) {
                            int configAppCurrentVersion = Integer.parseInt(configVersion);
-                           if (appCurrentVersion < configAppCurrentVersion) {
-                               versionValidator.version(true, appCurrentVersion, configAppCurrentVersion, RECOMMENDED);
-                           } else {
-                               versionValidator.version(false, appCurrentVersion, configAppCurrentVersion, RECOMMENDED);
-                           }
+                           versionValidator.version(appCurrentVersion < configAppCurrentVersion, appCurrentVersion, configAppCurrentVersion, RECOMMENDED);
                        } else {
                            versionValidator.version(false, appCurrentVersion, 0, RECOMMENDED);
                        }
@@ -112,7 +104,7 @@ public class ForceUpdateHandler {
         }
     }
 
-    private void checkPlaystoreVersion(final int currentVersion, final VersionValidator callBack) {
+    private void checkPlaystoreVersion(final VersionValidator callBack) {
         versionValidator = callBack;
         ApiInterface endpoint = RequestConfig.getClient().create(ApiInterface.class);
 
@@ -161,7 +153,7 @@ public class ForceUpdateHandler {
         } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")){
             AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
         }
-        materialDialog.showDialog(type, "", activity, new DialogInterface() {
+        materialDialog.showDialog(type, new DialogInterface() {
             @Override
             public void positiveAction() {
                 versionUpdateCallBack.selection(false);

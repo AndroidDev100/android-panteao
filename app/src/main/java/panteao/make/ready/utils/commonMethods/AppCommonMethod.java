@@ -144,7 +144,7 @@ import static panteao.make.ready.utils.constants.AppConstants.TRACK_EVENT_SIGN_U
 
 @SuppressWarnings({"IntegerDivisionInFloatingPointContext", "StatementWithEmptyBody"})
 public class AppCommonMethod {
-    public static int ScreenWidth = 0;
+    public static final int ScreenWidth = 0;
     public static int ScreenHeight = 0;
     public static final List<CommonRailData> adsRail = new ArrayList<>();
     public static final int multiRequestLimit = 5;
@@ -356,12 +356,12 @@ public class AppCommonMethod {
         });
     }*/
 
-    public static void copyShareURL(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
+    public static void copyShareURL(Activity activity, String title, int assetId, String assetType, String imgUrl, String seasonNumber) {
         try {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
             //  Log.e("FinalUrl-->>in", imageURL);
             Log.e("ImageUrl-->>in", imgUrl);
-            String uri = createURI(title, assetId, assetType, imgUrl, activity);
+            String uri = createURI(title, assetId, assetType, imgUrl);
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -475,7 +475,7 @@ public class AppCommonMethod {
         activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
     }
 
-    public static String getSharingURL(Activity activity, String title, int assetId, String assetType, String imgUrl, Context context, int seriesId) {
+    public static String getSharingURL(Activity activity, String title, int assetId, String assetType, String imgUrl, Context context) {
         mActivity = new WeakReference<>(activity);
         Logger.e("IMAGE URL----", imgUrl);
         BranchUniversalObject buo = new BranchUniversalObject()
@@ -747,26 +747,26 @@ public class AppCommonMethod {
 
 
     public static String setDownloadImage(String oldUrl, String imageSize) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
-        StringBuilder stringBuilder = new StringBuilder("");
+        PrintLogging.printLog("PRPosterImage-->>" + oldUrl + " " + imageSize);
+        StringBuilder stringBuilder = new StringBuilder();
         String urlImage = oldUrl.trim();
         String one = SDKConfig.getInstance().getWebPUrl()+"fit-in/";
         String two = imageSize + "/" + SDKConfig.WEBP_QUALITY;
         stringBuilder.append(one).append(two).append(urlImage);
-        PrintLogging.printLog("", "ImageUrld-->>" + one + "  " + two + " " + urlImage);
-        PrintLogging.printLog("", "-->>StringBilder" + stringBuilder.toString());
+        PrintLogging.printLog("ImageUrld-->>" + one + "  " + two + " " + urlImage);
+        PrintLogging.printLog("-->>StringBilder" + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
     public static String setImage(String oldUrl, String imageSize) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + oldUrl + " " + imageSize);
-        StringBuilder stringBuilder = new StringBuilder("");
+        PrintLogging.printLog("PRPosterImage-->>" + oldUrl + " " + imageSize);
+        StringBuilder stringBuilder = new StringBuilder();
         String urlImage = oldUrl.trim();
         String one = SDKConfig.getInstance().getWebPUrl();
         String two = imageSize + "/" + SDKConfig.WEBP_QUALITY;
         stringBuilder.append(one).append(two).append(urlImage);
-        PrintLogging.printLog("", "ImageUrld-->>" + one + "  " + two + " " + urlImage);
-        PrintLogging.printLog("", "-->>StringBilder" + stringBuilder.toString());
+        PrintLogging.printLog("ImageUrld-->>" + one + "  " + two + " " + urlImage);
+        PrintLogging.printLog("-->>StringBilder" + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -838,7 +838,7 @@ public class AppCommonMethod {
 
     }
 
-    public static ResponseConfig callpreference(Context mContext) {
+    public static ResponseConfig callpreference() {
         Gson gson = new Gson();
         String json = KsPreferenceKeys.getInstance().getAppPrefConfigResponse();
         return gson.fromJson(json, ResponseConfig.class);
@@ -913,42 +913,42 @@ public class AppCommonMethod {
     }
 
     public static String getListPRImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.portrait_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.portrait_image_height);
         return setImage(posterURL, w + "x" + h);
     }
 
     public static String getListPRTwoImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.portrait_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.portrait_image_height);
         return setImage(posterURL, w + "x" + h);
     }
 
     public static String getListCIRCLEImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.circle_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.circle_image_height);
         return setImage(posterURL, w + "x" + h);
     }
 
     public static String getListLDownloadImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.landscape_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.landscape_image_height);
         return setDownloadImage(posterURL, w + "x" + h);
     }
 
     public static String getListLDSImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.landscape_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.landscape_image_height);
         return setImage(posterURL, w + "x" + h);
     }
 
     public static String getListSQRImage(String posterURL, Context context) {
-        PrintLogging.printLog("", "PRPosterImage-->>" + posterURL);
+        PrintLogging.printLog("PRPosterImage-->>" + posterURL);
         int w = (int) context.getResources().getDimension(R.dimen.square_image_width);
         int h = (int) context.getResources().getDimension(R.dimen.square_image_height);
         return setImage(posterURL, w + "x" + h);
@@ -1047,19 +1047,19 @@ public class AppCommonMethod {
                 new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
             } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
                 new ActivityLauncher((BaseActivity) context).seriesDetailScreen((BaseActivity) context, SeriesDetailActivity.class, id);
-            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.toUpperCase().equalsIgnoreCase("LIVE")) {
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.equalsIgnoreCase("LIVE")) {
                 if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
                     // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
                 } else {
                     // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
                 }
-            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.equalsIgnoreCase("INSTRUCTOR")) {
                 if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                     // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
                 } else {
                     new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
                 }
-            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
+            } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.equalsIgnoreCase("CHAPTER")) {
                 if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                     // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
                 } else {
@@ -1090,7 +1090,7 @@ public class AppCommonMethod {
 
     }
 
-    public static void trackFcmEvent(String title, String assetType, Context activity, int position) {
+    public static void trackFcmEvent(String title, String assetType, Context activity) {
         try {
             final JsonObject requestParam = new JsonObject();
             requestParam.addProperty(EventConstant.ActionScreen, title);
@@ -1112,7 +1112,7 @@ public class AppCommonMethod {
                 requestParam.addProperty(EventConstant.ContentType, "");
             }
 
-            FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_FIREBASE_SCREEN, requestParam);
+            FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_FIREBASE_SCREEN);
         } catch (Exception e) {
 
         }
@@ -1122,16 +1122,16 @@ public class AppCommonMethod {
     public static void trackFcmCustomEvent(Context activity, String eventType, String content_type, String category_id, String category_name, int row_index, String content_title, int display_index, String content_id, long content_played, long content_duration, String search_term, String video_quality, String userId, String username) {
         try {
             final JsonObject requestParam = new JsonObject();
-            if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.GALLERY_SELECT)) {
+            if (eventType.equalsIgnoreCase(AppConstants.GALLERY_SELECT)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
                 requestParam.addProperty(EventConstant.CategoryId, category_id);
                 requestParam.addProperty(EventConstant.CategoryName, category_name);
                 requestParam.addProperty(EventConstant.RowIndex, row_index);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_GALLERY_SELECT, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_GALLERY_SELECT);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_SELECT)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.CONTENT_SELECT)) {
                 requestParam.addProperty(EventConstant.DisplayIndex, display_index);
                 requestParam.addProperty(EventConstant.ContentId, content_id);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
@@ -1140,87 +1140,87 @@ public class AppCommonMethod {
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
                 requestParam.addProperty(EventConstant.CategoryId, category_id);
                 requestParam.addProperty(EventConstant.CategoryName, category_name);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_SELECT, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_SELECT);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_PLAY)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.CONTENT_PLAY)) {
                 requestParam.addProperty(EventConstant.ContentPlayed, content_played);
                 requestParam.addProperty(EventConstant.ContentDuration, content_duration);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_PLAY, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_PLAY);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_COMPLETED)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.CONTENT_COMPLETED)) {
                 requestParam.addProperty(EventConstant.ContentPlayed, content_played);
                 requestParam.addProperty(EventConstant.ContentDuration, content_duration);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_COMPLETED, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_COMPLETED);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.CONTENT_EXIT)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.CONTENT_EXIT)) {
                 requestParam.addProperty(EventConstant.ContentPlayed, content_played);
                 requestParam.addProperty(EventConstant.ContentDuration, content_duration);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_EXIT, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_CONTENT_EXIT);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SHARE_CONTENT)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.SHARE_CONTENT)) {
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SHARE_CONTENT, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SHARE_CONTENT);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.ADD_TO_WATCHLIST)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.ADD_TO_WATCHLIST)) {
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_ADD_TO_WATCHLIST, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_ADD_TO_WATCHLIST);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.REMOVE_WATCHLIST)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.REMOVE_WATCHLIST)) {
                 requestParam.addProperty(EventConstant.ContentId, content_id);
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.ContentTitle, content_title);
                 requestParam.addProperty(EventConstant.Content_Type, content_type);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_REMOVE_WATCHLIST, requestParam);
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SEARCH)) {
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_REMOVE_WATCHLIST);
+            } else if (eventType.equalsIgnoreCase(AppConstants.SEARCH)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.SearchTerm, search_term);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SEARCH, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SEARCH);
 
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_IN_SUCCESS)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.SIGN_IN_SUCCESS)) {
                 requestParam.addProperty(EventConstant.UserID, userId);
                 requestParam.addProperty(EventConstant.Username, username);
 
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_IN_SUCCESS, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_IN_SUCCESS);
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SIGN_UP_SUCCESS)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.SIGN_UP_SUCCESS)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.UserID, userId);
                 requestParam.addProperty(EventConstant.Username, username);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_UP_SUCCESS, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SIGN_UP_SUCCESS);
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.LOGOUT)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.LOGOUT)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_LOGOUT, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_LOGOUT);
 
-            } else if (eventType.toUpperCase().equalsIgnoreCase(AppConstants.SETTINGS_VIDEO_QUALITY)) {
+            } else if (eventType.equalsIgnoreCase(AppConstants.SETTINGS_VIDEO_QUALITY)) {
 //                requestParam.addProperty(EventConstant.ActionScreen,action_screen);
                 requestParam.addProperty(EventConstant.VideoQuality, video_quality);
-                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SETTINGS_VIDEO_QUALITY, requestParam);
+                FCMEvents.getInstance().setContext(activity).trackEvent(TRACK_EVENT_SETTINGS_VIDEO_QUALITY);
 
 
             } else {
@@ -1258,7 +1258,7 @@ public class AppCommonMethod {
                 if (!name.equals("")) {
                     name = name.trim().replaceAll("\\s+", " ");
                     if (name.contains(" ")) {
-                        String words[] = name.split(" ");
+                        String[] words = name.split(" ");
                         if (words.length != 0) {
                             String firstWord = String.valueOf(words[0].charAt(0)).toUpperCase();
                             if (words.length == 1) {
@@ -1281,7 +1281,7 @@ public class AppCommonMethod {
 
         } catch (Exception e) {
 
-            PrintLogging.printLog("Exception", "" + e);
+            PrintLogging.printLog("" + e);
         }
 
         return value;
@@ -1292,7 +1292,7 @@ public class AppCommonMethod {
             final JsonObject requestParam = new JsonObject();
             requestParam.addProperty(EventConstant.SearchTitle, searchKeyword);
 
-            FCMEvents.getInstance().setContext(activity).trackEvent(4, requestParam);
+            FCMEvents.getInstance().setContext(activity).trackEvent(4);
         } catch (Exception e) {
 
         }
@@ -1350,19 +1350,19 @@ public class AppCommonMethod {
 
     public static void showPopupMenu(Context context, View view, int menuItems, PopupMenu.OnMenuItemClickListener onMenuItemClickListener) {
         PopupMenu popup = new PopupMenu(context, view);
-        popup.setOnMenuItemClickListener(item -> onMenuItemClickListener.onMenuItemClick(item));
+        popup.setOnMenuItemClickListener(onMenuItemClickListener);
         popup.inflate(menuItems);
         popup.show();
     }
 
     public static void createManualHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails) {
-        enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
+        enveuVideoItemBean.setBrightcoveVideoId(enveuVideoDetails.getBrightcoveContentId());
         enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
-    public static void createAssetHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails, BaseCategory screenWidget) {
-        enveuVideoItemBean.setBrightcoveVideoId((String) enveuVideoDetails.getBrightcoveContentId());
+    public static void createAssetHeroItem(EnveuVideoItemBean enveuVideoItemBean, EnveuVideoDetails enveuVideoDetails) {
+        enveuVideoItemBean.setBrightcoveVideoId(enveuVideoDetails.getBrightcoveContentId());
         enveuVideoItemBean.setDescription(enveuVideoDetails.getDescription());
 //        if (screenWidget.getWidgetImageType().equalsIgnoreCase(WidgetImageType.THUMBNAIL.toString())) {
 //            Logger.e("Screen WidgetType ", screenWidget.getWidgetImageType());
@@ -1382,7 +1382,7 @@ public class AppCommonMethod {
         enveuVideoItemBean.setAssetType(enveuVideoDetails.getContentType());
     }
 
-    public static void heroAssetRedirections(RailCommonData railCommonData, Context activity, String videoId, int parseInt, String s, boolean b) {
+    public static void heroAssetRedirections(RailCommonData railCommonData, Context activity, String videoId) {
         try {
             if (railCommonData.getEnveuVideoItemBeans().get(0).getAssetType().equalsIgnoreCase(MediaTypeConstants.getInstance().getEpisode())) {
                 AppCommonMethod.launchDetailScreen(activity, videoId, MediaTypeConstants.getInstance().getEpisode(), Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()), "0", false, null);
@@ -1419,7 +1419,7 @@ public class AppCommonMethod {
     public static void getAssetDetail(RailCommonData railCommonData, Response<EnveuVideoDetailsBean> response) {
         try {
             EnveuVideoDetailsBean enveuVideoDetailsBean = new EnveuVideoDetailsBean();
-            EnveuVideoDetails enveuVideoDetails = (EnveuVideoDetails) response.body().getData();
+            EnveuVideoDetails enveuVideoDetails = response.body().getData();
             enveuVideoDetailsBean.setData(enveuVideoDetails);
             EnveuVideoItemBean enveuVideoItemBean = new EnveuVideoItemBean(enveuVideoDetailsBean, ImageType.LDS.name());
             railCommonData.setEnveuVideoItemBeans(new ArrayList<>());
@@ -1434,12 +1434,12 @@ public class AppCommonMethod {
             if (preference.getAppPrefLoginStatus()) {
                 if (userInteractionFragment != null) {
                     if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.LIKE)) {
-                        userInteractionFragment.setToken(preference.getAppPrefAccessToken());
-                        userInteractionFragment.setLikeForAsset(2);
+                        userInteractionFragment.setToken();
+                        userInteractionFragment.setLikeForAsset();
                         ActivityTrackers.getInstance().setAction("");
                     } else if (ActivityTrackers.getInstance().action.equalsIgnoreCase(ActivityTrackers.WATCHLIST)) {
-                        userInteractionFragment.setToken(preference.getAppPrefAccessToken());
-                        userInteractionFragment.setWatchListForAsset(2);
+                        userInteractionFragment.setToken();
+                        userInteractionFragment.setWatchListForAsset();
                         ActivityTrackers.getInstance().setAction("");
                     }
                 }
@@ -1566,7 +1566,7 @@ public class AppCommonMethod {
 
     public static void setConfigConstant(ConfigBean configResponse, boolean isTablet) {
         Logger.w("configResponse", configResponse.getData().getAppConfig().getBaseUrl() + "  " + configResponse.getData().getAppConfig().getOvpBaseUrl());
-        SDKConfig.getInstance().setConfigObject(configResponse, isTablet);
+        SDKConfig.getInstance().setConfigObject(configResponse);
 
     }
 
@@ -1584,20 +1584,12 @@ public class AppCommonMethod {
     }
 
     public static boolean getCheckBCID(String brightcoveVideoId) {
-        if (brightcoveVideoId != null && !brightcoveVideoId.equalsIgnoreCase("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return brightcoveVideoId != null && !brightcoveVideoId.equalsIgnoreCase("");
 
     }
 
     public static boolean getCheckKEntryId(String brightcoveVideoId) {
-        if (brightcoveVideoId != null && !brightcoveVideoId.equalsIgnoreCase("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return brightcoveVideoId != null && !brightcoveVideoId.equalsIgnoreCase("");
 
     }
 
@@ -1781,14 +1773,14 @@ public class AppCommonMethod {
 
     static Uri dynamicLinkUri;
 
-    public static void openShareDialog(Activity activity, String title, int assetId, String assetType, String imgUrl, String seriesId, String seasonNumber) {
+    public static void openShareDialog(Activity activity, String title, int assetId, String assetType, String imgUrl, String seasonNumber) {
 
 
         try {
             //String imageURL = imgUrl + AppConstants.WIDTH + (int) activity.getResources().getDimension(R.dimen.width1) + AppConstants.HEIGHT + (int) activity.getResources().getDimension(R.dimen.height1) + AppConstants.QUALITY_IMAGE;
             //  Log.e("FinalUrl-->>in", imageURL);
             // Log.e("ImageUrl-->>in", imgUrl);
-            String uri = createURI(title, assetId, assetType, imgUrl, activity);
+            String uri = createURI(title, assetId, assetType, imgUrl);
 
 
             Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -1852,7 +1844,7 @@ public class AppCommonMethod {
         }
     }
 
-    private static String createURI(String title, int assetId, String assetType, String imgUrl1, Activity activity) {
+    private static String createURI(String title, int assetId, String assetType, String imgUrl1) {
         String uri = "";
         try {
             String assetId1 = assetId + "";
@@ -1919,19 +1911,19 @@ public class AppCommonMethod {
             new ActivityLauncher((BaseActivity) context).episodeScreenBrightcove((BaseActivity) context, EpisodeActivity.class, videoId, id, duration, isPremium);
         } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getSeries())) {
             new ActivityLauncher((BaseActivity) context).seriesDetailScreen((BaseActivity) context, SeriesDetailActivity.class, id);
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.toUpperCase().equalsIgnoreCase("LIVE")) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getLive()) || screenType.equalsIgnoreCase("LIVE")) {
             if (SDKConfig.getInstance().getLiveDetailId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
                 // new ActivityLauncher((BaseActivity) context).liveScreenBrightCove((BaseActivity) context, LiveActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.toUpperCase().equalsIgnoreCase("INSTRUCTOR")) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getInstructor()) || screenType.equalsIgnoreCase("INSTRUCTOR")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
                 new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, InstructorActivity.class, videoId, id, duration, isPremium, SDKConfig.getInstance().getMovieDetailId());
             }
-        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.toUpperCase().equalsIgnoreCase("CHAPTER")) {
+        } else if (screenType.toUpperCase().equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter()) || screenType.equalsIgnoreCase("CHAPTER")) {
             if (SDKConfig.getInstance().getInstructorDetaildId().equalsIgnoreCase("")) {
                 // new ActivityLauncher((BaseActivity) context).detailScreenBrightCove((BaseActivity) context, DetailActivity.class, videoId, id, duration, isPremium, AppConstants.MOVIE_ENVEU);
             } else {
@@ -2192,11 +2184,11 @@ public class AppCommonMethod {
         if (type == 1) {
             SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
             formattedDate = df.format(today);
-            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+            PrintLogging.printLog("printDatedate" + formattedDate + "-->>");
         } else {
             SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy");
             formattedDate = df.format(tomorrow);
-            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>");
+            PrintLogging.printLog("printDatedate" + formattedDate + "-->>");
 
         }
         calendar.clear();
@@ -2232,7 +2224,7 @@ public class AppCommonMethod {
             long output = date.getTime() / 1000L;
             String str = Long.toString(output);
             timestamp = Long.parseLong(str);
-            PrintLogging.printLog("", "printDatedate" + formattedDate + "-->>" + timestamp);
+            PrintLogging.printLog("printDatedate" + formattedDate + "-->>" + timestamp);
             System.out.println(formattedDate);
         }
         return String.valueOf(timestamp);

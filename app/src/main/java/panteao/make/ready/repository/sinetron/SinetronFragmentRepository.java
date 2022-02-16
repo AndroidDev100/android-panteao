@@ -33,13 +33,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistResponses;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistsItem;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.PlaylistRailData;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,7 +84,7 @@ public class SinetronFragmentRepository {
 
             @Override
             public void onFailure(@NonNull Call<PlaylistResponses> call, @NonNull Throwable t) {
-                PrintLogging.printLog("", t.toString());
+                PrintLogging.printLog(t.toString());
             }
         });
         return playlistResponsesMutableLiveData;
@@ -105,7 +98,7 @@ public class SinetronFragmentRepository {
             try {
                 id = playlist.get(count).getId();
             } catch (Exception ex) {
-                PrintLogging.printLog("", ex.getMessage() + "Error message");
+                PrintLogging.printLog(ex.getMessage() + "Error message");
             }
 
             getPlaylistData(id, 0, 10, playlistResponsesMutableLiveData);

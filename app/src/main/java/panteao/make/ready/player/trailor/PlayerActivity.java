@@ -1,18 +1,11 @@
 package panteao.make.ready.player.trailor;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import panteao.make.ready.R;
@@ -29,7 +22,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
    // private RailCommonData railData;
   //  private String assetURL, programName = "";
     //private WindowFocusCallback windowFocusListner;
-    private Boolean isLivePlayer = false;
+    private final Boolean isLivePlayer = false;
     private String entryId = "";
     long bookmarkPosition = 0l;
     private KalturaFragment playerfragment;
@@ -37,7 +30,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     boolean fromTrailor=false;
 
     @Override
-    public ActivityPlayerBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityPlayerBinding inflateBindingLayout() {
         return ActivityPlayerBinding.inflate(inflater);
     }
 
@@ -50,13 +43,13 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             setPlayerFragment();
         }
@@ -140,7 +133,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     }
 
     @Override
-    public void bingeWatchCall(String entryID) {
+    public void bingeWatchCall() {
 
     }
 
@@ -150,7 +143,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     }
 
     @Override
-    public void onBookmarkCall(int currentPosition) {
+    public void onBookmarkCall() {
 
     }
 
@@ -160,7 +153,7 @@ public class PlayerActivity extends BaseBindingActivity<ActivityPlayerBinding> i
     }
 
     @Override
-    public void onCurrentPosition(long currentPosition) {
+    public void onCurrentPosition() {
 
     }
 }

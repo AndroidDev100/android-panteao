@@ -1,10 +1,8 @@
 package panteao.make.ready.activities.profile.ui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,8 +22,6 @@ import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToastHandler;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
-import java.util.Objects;
-
 
 public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBinding> implements AlertDialogFragment.AlertDialogListener {
     private RegistrationLoginViewModel viewModel;
@@ -33,7 +29,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
     private boolean isloggedout = false;
 
     @Override
-    public ProfileActivityNewBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ProfileActivityNewBinding inflateBindingLayout() {
         return ProfileActivityNewBinding.inflate(inflater);
     }
 
@@ -49,9 +45,9 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
         setToolbar();
         setOfflineData();
         if (NetworkConnectivity.isOnline(ProfileActivityNew.this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
     private void setToolbar(){
@@ -75,7 +71,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
         viewModel = new ViewModelProvider(ProfileActivityNew.this).get(RegistrationLoginViewModel.class);
     }
 
-    private void connectionValidation(boolean connected) {
+    private void connectionValidation() {
         if (connected) {
             String token = preference.getAppPrefAccessToken();
             viewModel.hitUserProfile(ProfileActivityNew.this, token).observe(ProfileActivityNew.this, new Observer<UserProfileResponse>() {
@@ -83,7 +79,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
                 public void onChanged(UserProfileResponse userProfileResponse) {
                     if (userProfileResponse != null) {
                         if (userProfileResponse.getStatus()) {
-                            updateUI(userProfileResponse);
+                            updateUI();
                         } else {
                             if (userProfileResponse.getResponseCode() == 4302) {
                                 isloggedout = true;
@@ -102,9 +98,9 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
                                // showDialog(getResources().getString(R.string.logged_out), getResources().getString(R.string.you_are_logged_out));
                             }
                             if (userProfileResponse.getDebugMessage() != null) {
-                                showDialog(ProfileActivityNew.this.getResources().getString(R.string.error), userProfileResponse.getDebugMessage().toString());
+                                showDialog();
                             } else {
-                                showDialog(ProfileActivityNew.this.getResources().getString(R.string.error), ProfileActivityNew.this.getResources().getString(R.string.something_went_wrong));
+                                showDialog();
                             }
                         }
                     }
@@ -119,7 +115,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
             public void onClick(View view) {
                 if (NetworkConnectivity.isOnline(ProfileActivityNew.this)) {
                     if (validateNameEmpty()) {
-                        showLoading(getBinding().progressBar, true);
+                        showLoading(getBinding().progressBar);
                         String token = preference.getAppPrefAccessToken();
                         viewModel.hitUpdateProfile(ProfileActivityNew.this, token, getBinding().etName.getText().toString()).observe(ProfileActivityNew.this, new Observer<UserProfileResponse>() {
                             @Override
@@ -127,8 +123,8 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
                                 dismissLoading(getBinding().progressBar);
                                 if (userProfileResponse != null) {
                                     if (userProfileResponse.getStatus()) {
-                                        showDialog("", ProfileActivityNew.this.getResources().getString(R.string.profile_update_successfully));
-                                        updateUI(userProfileResponse);
+                                        showDialog();
+                                        updateUI();
                                     } else {
                                         if (userProfileResponse.getResponseCode() == 4302) {
                                             isloggedout = true;
@@ -147,9 +143,9 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
 
                                         } else {
                                             if (userProfileResponse.getDebugMessage() != null) {
-                                                showDialog(ProfileActivityNew.this.getResources().getString(R.string.error), userProfileResponse.getDebugMessage().toString());
+                                                showDialog();
                                             } else {
-                                                showDialog(ProfileActivityNew.this.getResources().getString(R.string.error), ProfileActivityNew.this.getResources().getString(R.string.something_went_wrong));
+                                                showDialog();
                                             }
                                         }
                                     }
@@ -179,7 +175,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
     }
 
 
-    private void updateUI(UserProfileResponse userProfileResponse) {
+    private void updateUI() {
         try {
             getBinding().userNameWords.setText(AppCommonMethod.getUserName(userProfileResponse.getData().getName()));
             getBinding().etName.setText(userProfileResponse.getData().getName());
@@ -191,7 +187,7 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
         }
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -200,9 +196,9 @@ public class ProfileActivityNew extends BaseBindingActivity<ProfileActivityNewBi
     }
 
     private void logoutCall() {
-        if (CheckInternetConnection.isOnline(Objects.requireNonNull(this))) {
+        if (CheckInternetConnection.isOnline(this)) {
             clearCredientials(preference);
-            hitApiLogout(this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         } else {
            // new ToastHandler(this).show(getResources().getString(R.string.no_internet_connection));
         }

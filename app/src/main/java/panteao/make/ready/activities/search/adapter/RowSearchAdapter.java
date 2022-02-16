@@ -21,8 +21,6 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.R;
 import panteao.make.ready.activities.search.ui.ActivitySearch;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.databinding.CommonSearchAdapterBinding;
-import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 import java.util.HashMap;
@@ -35,10 +33,10 @@ public class RowSearchAdapter extends RecyclerView.Adapter<RowSearchAdapter.Sing
     private final KsPreferenceKeys preference;
     private final List<EnveuVideoItemBean> list;
     private final RowSearchListener listener;
-    private int limitView = 5;
+    private final int limitView = 5;
     private ActivitySearch itemListener;
 
-    public RowSearchAdapter(Context context, List<EnveuVideoItemBean> list, boolean isLimit, RowSearchListener listener) {
+    public RowSearchAdapter(Context context, List<EnveuVideoItemBean> list, RowSearchListener listener) {
         this.context = context;
         this.list = list;
         this.listener = listener;

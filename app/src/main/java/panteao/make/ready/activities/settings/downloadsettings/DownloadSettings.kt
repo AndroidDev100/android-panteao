@@ -2,7 +2,6 @@ package panteao.make.ready.activities.settings.downloadsettings
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import panteao.make.ready.R
 import panteao.make.ready.activities.settings.downloadsettings.changequality.ui.ChangeDownloadQuality
@@ -23,7 +22,7 @@ class DownloadSettings : BaseBindingActivity<ActivityDownloadSettingsBinding>(),
 
         binding.selectedQualityText.text = resources.getStringArray(R.array.download_quality)[SharedPrefHelper(this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3)]
         binding.textDownloadQuality.setOnClickListener(this)
-        binding.switchTheme.isChecked = KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1
+        binding.switchTheme.isChecked = KsPreferenceKeys.getInstance().downloadOverWifi == 1
 
         binding.switchTheme.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -43,7 +42,7 @@ class DownloadSettings : BaseBindingActivity<ActivityDownloadSettingsBinding>(),
         binding.toolbar.backLayout.setOnClickListener { onBackPressed() }
     }
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityDownloadSettingsBinding {
+    override fun inflateBindingLayout(): ActivityDownloadSettingsBinding {
         return ActivityDownloadSettingsBinding.inflate(inflater)
     }
 

@@ -155,14 +155,14 @@ public class PreviewSeekBar extends AppCompatSeekBar implements PreviewView,
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         for (OnPreviewChangeListener listener : listeners) {
-            listener.onStartPreview(this, seekBar.getProgress());
+            listener.onStartPreview();
         }
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         for (OnPreviewChangeListener listener : listeners) {
-            listener.onStopPreview(this, seekBar.getProgress());
+            listener.onStopPreview();
         }
     }
 

@@ -3,13 +3,8 @@ package panteao.make.ready.activities.myPurchases.ui;
 import android.annotation.SuppressLint;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,65 +14,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import panteao.make.ready.PanteaoApplication;
 import panteao.make.ready.R;
-import panteao.make.ready.activities.live.LiveActivity;
-import panteao.make.ready.activities.myPurchases.PagedList;
 import panteao.make.ready.activities.myPurchases.viewmodel.MyPurchaseViewModel;
-import panteao.make.ready.activities.profile.ui.ProfileActivityNew;
-import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
-import panteao.make.ready.activities.purchase.ui.viewmodel.PurchaseViewModel;
-import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
-import panteao.make.ready.activities.usermanagment.viewmodel.RegistrationLoginViewModel;
 import panteao.make.ready.adapters.MyPurchasesAdapter;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.responseModels.Item;
 import panteao.make.ready.beanModel.responseModels.MyPurchasesResponseModel;
-import panteao.make.ready.callbacks.commonCallbacks.FragmentClickNetwork;
-import panteao.make.ready.callbacks.commonCallbacks.HomeClickNetwork;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
-import panteao.make.ready.callbacks.commonCallbacks.OriginalFragmentClick;
-import panteao.make.ready.callbacks.commonCallbacks.PremiumClick;
-import panteao.make.ready.callbacks.commonCallbacks.SinetronClick;
-import panteao.make.ready.databinding.ActivityMainBinding;
 import panteao.make.ready.databinding.ActivityMyPurchasesBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
-import panteao.make.ready.fragments.home.ui.HomeFragment;
-import panteao.make.ready.fragments.more.ui.MoreFragment;
-import panteao.make.ready.fragments.movies.ui.MovieFragment;
-import panteao.make.ready.fragments.shows.ui.ShowsFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
-import panteao.make.ready.utils.helpers.ActivityTrackers;
-import panteao.make.ready.utils.helpers.AnalyticsController;
 import panteao.make.ready.utils.helpers.CheckInternetConnection;
 import panteao.make.ready.utils.helpers.StringUtils;
-import panteao.make.ready.utils.helpers.ToastHandler;
-import panteao.make.ready.utils.helpers.ToolBarHandler;
-import panteao.make.ready.utils.helpers.database.preferences.UserPreference;
-import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsFragment;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
-import panteao.make.ready.utils.inAppUpdate.AppUpdateCallBack;
-import panteao.make.ready.utils.inAppUpdate.ApplicationUpdateManager;
 
 
 public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchasesBinding> implements AlertDialogFragment.AlertDialogListener, NetworkChangeReceiver.ConnectivityReceiverListener {
@@ -86,7 +45,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     private KsPreferenceKeys preference;
     private String strCurrentTheme = "";
     private BottomNavigationView navigation;
-    private int initialPageSize = 20;
+    private final int initialPageSize = 20;
     private boolean mIsLoading=false;
     private boolean mIsLastPage;
     private LinearLayoutManager layoutManager;
@@ -101,7 +60,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     }
 
     @Override
-    public ActivityMyPurchasesBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityMyPurchasesBinding inflateBindingLayout() {
         return ActivityMyPurchasesBinding.inflate(inflater);
     }
 
@@ -124,7 +83,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
             initRecyclerView();
         } else {
-            showDialog(getString(R.string.user_not_logged_in), getString(R.string.please_login_to_see_my_purchases));
+            showDialog();
         }
 
 
@@ -137,13 +96,13 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         getBinding().connection.retryTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadMoreItems(true);
+                loadMoreItems();
             }
         });
         getBinding().retryLoadData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadMoreItems(true);
+                loadMoreItems();
             }
         });
     }
@@ -191,21 +150,21 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                 boolean shouldLoadMore = isValidFirstItem && isAtLastItem && totalIsMoreThanVisible && isNotLoadingAndNotLastPage;
 
                 if (shouldLoadMore) {
-                    loadMoreItems(false);
+                    loadMoreItems();
                 }
 
             }
         });
 
         // load the first page
-        loadMoreItems(true);
+        loadMoreItems();
 
     }
 
     private MyPurchaseViewModel viewModel;
     Boolean isloggedout = false;
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -214,16 +173,16 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     }
 
     private void logoutCall() {
-        if (CheckInternetConnection.isOnline(Objects.requireNonNull(this))) {
+        if (CheckInternetConnection.isOnline(this)) {
             clearCredientials(preference);
-            hitApiLogout(this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         }
     }
 
-    public void loadMoreItems(Boolean isFirstpage) {
+    public void loadMoreItems() {
         this.isFirstPage = isFirstpage;
         if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()) {
-            callMyPurchases(KsPreferenceKeys.getInstance().getAppPrefAccessToken(), String.valueOf(mCurrentPage), String.valueOf(initialPageSize), null, isFirstpage);
+            callMyPurchases();
         } else {
             dismissLoading(getBinding().progressBar);
         }
@@ -232,7 +191,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
     List<Item> result = new ArrayList<>();
     MyPurchasesResponseModel myPurchaseModelResponse;
 
-    public int getTotalPages(int totalItemCount, int perPageItems) {
+    public int getTotalPages() {
         int result = (totalItemCount / perPageItems);
         if (totalItemCount % perPageItems == 0) {
             return result = result;
@@ -241,7 +200,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         }
     }
 
-    public void callMyPurchases(String auth, String page, String size, @Nullable String orderStatus, Boolean isFirstpage) {
+    public void callMyPurchases() {
         mIsLoading = true;
         if (result.size() != 0) {
             mCurrentPage = mCurrentPage + 1;
@@ -249,7 +208,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         if (CheckInternetConnection.isOnline(MyPurchasesActivity.this)) {
             getBinding().nodatafounmd.setVisibility(View.GONE);
             getBinding().noConnectionLayout.setVisibility(View.GONE);
-            showLoading(getBinding().progressBar, true);
+            showLoading(getBinding().progressBar);
             viewModel.hitMyPurchasesAPI(MyPurchasesActivity.this, auth, String.valueOf(mCurrentPage), size, orderStatus).observe(MyPurchasesActivity.this, myPurchaseModelResponse -> {
                 mIsLoading = false;
                 dismissLoading(getBinding().progressBar);
@@ -271,7 +230,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                                     myRecyclerViewAdapter = new MyPurchasesAdapter(this, result);
                                     getBinding().recyclerMyPurchases.setAdapter(myRecyclerViewAdapter);
                                 }
-                                mIsLastPage = mCurrentPage == getTotalPages(result.size(), AppConstants.PAGE_SIZE);
+                                mIsLastPage = mCurrentPage == getTotalPages();
                             }
                         } else {
                             getBinding().nodatafounmd.setVisibility(View.VISIBLE);
@@ -281,7 +240,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
                     }
                 } else {
                     if (this.myPurchaseModelResponse.getDebugMessage() != null && this.myPurchaseModelResponse.getDebugMessage().trim() != "") {
-                        showDialog(getString(R.string.error), this.myPurchaseModelResponse.getDebugMessage());
+                        showDialog();
                     } else {
                         getBinding().nodatafounmd.setVisibility(View.VISIBLE);
                     }
@@ -359,7 +318,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
         MyPurchasesActivity.this.registerReceiver(receiver, filter);
-        setConnectivityListener(this);
+        setConnectivityListener();
     }
 
     @Override
@@ -421,8 +380,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         }
     }
 
-    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener
-                                                listener) {
+    public void setConnectivityListener() {
         NetworkChangeReceiver.connectivityReceiverListener = listener;
     }
 
@@ -432,7 +390,7 @@ public class MyPurchasesActivity extends BaseBindingActivity<ActivityMyPurchases
         if (isConnected) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
             if (!mIsLoading) {
-                loadMoreItems(true);
+                loadMoreItems();
             }
         } else {
             getBinding().noConnectionLayout.setVisibility(View.VISIBLE);

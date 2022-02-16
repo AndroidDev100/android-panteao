@@ -8,11 +8,6 @@ import android.content.Intent;
 import panteao.make.ready.callbacks.commonCallbacks.NoInternetConnectionCallBack;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
-import panteao.make.ready.databinding.NoConnectionBinding;
-
-import panteao.make.ready.callbacks.commonCallbacks.NoInternetConnectionCallBack;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.NetworkConnectivity;
 
 
 public class NoInternetConnection {
@@ -22,9 +17,9 @@ public class NoInternetConnection {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (NetworkConnectivity.isOnline(activity)) {
-                noInternetConnectionCallBack.isOnline(true);
+                noInternetConnectionCallBack.isOnline();
             } else {
-                noInternetConnectionCallBack.isOffline(true);
+                noInternetConnectionCallBack.isOffline();
             }
 
         }
@@ -35,11 +30,11 @@ public class NoInternetConnection {
         this.activity = context;
     }
 
-    public void hanleAction(NoConnectionBinding connection, NoInternetConnectionCallBack callBack) {
+    public void hanleAction(NoInternetConnectionCallBack callBack) {
         this.noInternetConnectionCallBack = callBack;
 
         if (NetworkConnectivity.isOnline(activity)) {
-            noInternetConnectionCallBack.isOnline(true);
+            noInternetConnectionCallBack.isOnline();
             try {
                 if (ReceivefromService != null) {
                     activity.unregisterReceiver(ReceivefromService);
@@ -49,7 +44,7 @@ public class NoInternetConnection {
             }
 
         } else {
-            noInternetConnectionCallBack.isOffline(true);
+            noInternetConnectionCallBack.isOffline();
            /* IntentFilter filter= new IntentFilter();
             filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);

@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Objects;
 
 import panteao.make.ready.R;
-import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 
 public class RestoreSubcriptionsDialod extends DialogFragment {
 
@@ -48,17 +47,17 @@ public class RestoreSubcriptionsDialod extends DialogFragment {
 
         if (typeOfDialog==1){
             alertDialogBuilder.setPositiveButton("Continue", (dialog, which) -> {
-                alertDialogListener.onFinishDialog(1);
+                alertDialogListener.onFinishDialog();
                 dialog.dismiss();
             });
         }else if (typeOfDialog==2){
             alertDialogBuilder.setPositiveButton("Ok", (dialog, which) -> {
-                alertDialogListener.onFinishDialog(2);
+                alertDialogListener.onFinishDialog();
                 dialog.dismiss();
             });
         }else {
             alertDialogBuilder.setPositiveButton("Ok", (dialog, which) -> {
-                alertDialogListener.onFinishDialog(3);
+                alertDialogListener.onFinishDialog();
                 dialog.dismiss();
             });
         }
@@ -71,7 +70,7 @@ public class RestoreSubcriptionsDialod extends DialogFragment {
 
     // 1. Defines the listener interface with a method passing back data result.
     public interface RestoreSubcriptionsDialodListener {
-        void onFinishDialog(int btnType);
+        void onFinishDialog();
     }
 }
 

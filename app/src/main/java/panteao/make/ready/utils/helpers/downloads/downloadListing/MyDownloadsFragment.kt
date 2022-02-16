@@ -26,44 +26,27 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
 
     private lateinit var downloadHelper: KTDownloadHelper
     private lateinit var downloadsAdapter:MyDownloadsFragmentAdapter
-    override fun inflateBindingLayout(inflater: LayoutInflater): FragmentMyDownloadsBinding {
+    override fun inflateBindingLayout(): FragmentMyDownloadsBinding {
         return FragmentMyDownloadsBinding.inflate(inflater)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onResume() {
         super.onResume()
         //setupToolBar();
         try {
-            fetchdataBaseValues();
+            fetchdataBaseValues()
         }catch (exception : java.lang.Exception){
 
         }
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     private fun fetchdataBaseValues() {
-        val loginStatus: Boolean = KsPreferenceKeys.getInstance().getAppPrefLoginStatus()
+        val loginStatus: Boolean = KsPreferenceKeys.getInstance().appPrefLoginStatus
         if (loginStatus){
             downloadHelper= KTDownloadHelper(activity,this)
             progress_bar.visibility = View.VISIBLE
-            downloadHelper.getAllAssetFromDB().observe(requireActivity(), Observer {
+            downloadHelper.allAssetFromDB.observe(requireActivity(), Observer {
                 if(it!==null && it.size>0){
                     noDownloadedData(2)
                     createUniqueList(it)
@@ -101,7 +84,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
         downloadsAdapter = MyDownloadsFragmentAdapter(requireActivity(), it, this)
         downloaded_recycler_view.layoutManager = LinearLayoutManager(requireActivity())
         downloaded_recycler_view.setHasFixedSize(true)
-        (binding.downloadedRecyclerView.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
+        (binding.downloadedRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         downloaded_recycler_view.adapter = downloadsAdapter
         nodatafounmd.visibility = View.GONE
         downloaded_recycler_view.visibility = View.VISIBLE
@@ -110,10 +93,10 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
     }
 
     private fun setupToolBar() {
-        if (KsPreferenceKeys.getInstance().getCurrentTheme() == (AppConstants.LIGHT_THEME)) {
-            binding.noData.setBackgroundResource(R.drawable.ic_no_data);
+        if (KsPreferenceKeys.getInstance().currentTheme == (AppConstants.LIGHT_THEME)) {
+            binding.noData.setBackgroundResource(R.drawable.ic_no_data)
         } else {
-            binding.noData.setBackgroundResource(R.drawable.ic_no_data);
+            binding.noData.setBackgroundResource(R.drawable.ic_no_data)
         }
         binding.toolbar.llSearchIcon.visibility = View.GONE
         binding.toolbar.backLayout.visibility = View.VISIBLE
@@ -126,7 +109,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
     override fun setDownloadProgressListener(progress: Float, assetId: String?) {
         Log.w("activityProgress 1",progress.toString())
         if(::downloadsAdapter.isInitialized){
-            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
+            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter.notifyItemChanged(assetId) })
 
         }
     }
@@ -135,7 +118,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
 
     }
 
-    override fun initialStatus(state: OfflineManager.AssetDownloadState) {
+    override fun initialStatus() {
 
     }
 
@@ -145,12 +128,12 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
 
     override fun onAssetDownloadComplete(assetId: String) {
         if(::downloadsAdapter.isInitialized){
-            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter?.notifyItemChanged(assetId) })
+            binding.downloadedRecyclerView.post(Runnable { downloadsAdapter.notifyItemChanged(assetId) })
 
         }
     }
 
-    override fun onAssetDownloadFailed(assetId: String, e: Exception?) {
+    override fun onAssetDownloadFailed() {
 
     }
 
@@ -159,7 +142,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
         if (type==1){
             binding.progressBar.visibility = View.VISIBLE
             Handler(Looper.getMainLooper()).postDelayed({
-                downloadHelper.getAllAssetFromDB().observe(this, Observer {
+                downloadHelper.allAssetFromDB.observe(this, Observer {
                     binding.progressBar.visibility = View.GONE
                     if(it!==null && it.size>0){
                         noDownloadedData(2)
@@ -179,7 +162,7 @@ class MyDownloadsFragment : BaseBindingFragment<FragmentMyDownloadsBinding>(), K
     fun clickEvent() {
         try {
             Log.d("secondclick","in")
-            fetchdataBaseValues();
+            fetchdataBaseValues()
         }catch (exception : java.lang.Exception){
             Log.d("secondclick",exception.toString())
         }

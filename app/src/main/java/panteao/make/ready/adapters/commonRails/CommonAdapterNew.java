@@ -67,10 +67,10 @@ import static panteao.make.ready.utils.constants.AppConstants.HORIZONTAL_SQR_SQU
 
 public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
-    private List<RailCommonData> mList;
-    private CommonRailtItemClickListner listner;
-    private MoreClickListner moreClickListner;
+    private final Context mContext;
+    private final List<RailCommonData> mList;
+    private final CommonRailtItemClickListner listner;
+    private final MoreClickListner moreClickListner;
 
     public CommonAdapterNew(Context context, List<RailCommonData> mList, CommonRailtItemClickListner listner, MoreClickListner moreClickListner) {
         Logger.e("PLAYLIST_ID", "ON_BIND_1");
@@ -197,8 +197,8 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void carouselLandscape(CarouselViewHolder viewHolder, int position) {
         setTitle(viewHolder.itemBinding.titleHeading, mList.get(position), position);
         KsPreferenceKeys.getInstance().setAutoDuration(mList.get(position).getScreenWidget().getAutoRotateDuration() == null ? 0 : mList.get(position).getScreenWidget().getAutoRotateDuration());
-        KsPreferenceKeys.getInstance().setAutoRotation(mList.get(position).getScreenWidget().getAutoRotate() == null ? true : mList.get(position).getScreenWidget().getAutoRotate());
-        viewHolder.itemBinding.slider.addSlides(mList.get(position), listner, position, mList.get(position).getRailType(), mList.get(position).getScreenWidget().getContentIndicator(), mList.get(position).getScreenWidget().getAutoRotate() == null ? true : mList.get(position).getScreenWidget().getAutoRotate(), mList.get(position).getScreenWidget().getAutoRotateDuration() == null ? 0 : mList.get(position).getScreenWidget().getAutoRotateDuration());
+        KsPreferenceKeys.getInstance().setAutoRotation(mList.get(position).getScreenWidget().getAutoRotate() == null || mList.get(position).getScreenWidget().getAutoRotate());
+        viewHolder.itemBinding.slider.addSlides(mList.get(position), listner, position, mList.get(position).getRailType(), mList.get(position).getScreenWidget().getContentIndicator(), mList.get(position).getScreenWidget().getAutoRotate() == null || mList.get(position).getScreenWidget().getAutoRotate(), mList.get(position).getScreenWidget().getAutoRotateDuration() == null ? 0 : mList.get(position).getScreenWidget().getAutoRotateDuration());
     }
 
 
@@ -319,9 +319,9 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
             headingRailsBinding.headingTitle.bringToFront();
             headingRailsBinding.moreText.setVisibility(View.VISIBLE);
             headingRailsBinding.moreText.setOnClickListener(v -> {
-                moreClickListner.moreRailClick(item, position);
+                moreClickListner.moreRailClick();
 
-                AppCommonMethod.trackFcmEvent("Video Gallery", "", mContext, 0);
+                AppCommonMethod.trackFcmEvent("Video Gallery", "", mContext);
                 AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.GALLERY_SELECT, item.getEnveuVideoItemBeans().get(0).getAssetType(), item.getScreenWidget().getContentID(), item.getScreenWidget().getName() + "", position, "", 0, "", 0, 0, "", "", "", "");
             });
         } else {
@@ -330,7 +330,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class HeroAdsHolder extends RecyclerView.ViewHolder {
-        HeroAdsLayoutBinding heroAdsHolder;
+        final HeroAdsLayoutBinding heroAdsHolder;
 
         HeroAdsHolder(@NonNull HeroAdsLayoutBinding itemHolder) {
             super(itemHolder.getRoot());
@@ -339,7 +339,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class DfpBannerHolder extends RecyclerView.ViewHolder {
-        DfpBannerLayoutBinding dfpBannerLayoutBinding;
+        final DfpBannerLayoutBinding dfpBannerLayoutBinding;
 
         DfpBannerHolder(@NonNull DfpBannerLayoutBinding itemView) {
             super(itemView.getRoot());
@@ -348,7 +348,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class CarouselViewHolder extends RecyclerView.ViewHolder {
-        HeaderRecyclerItemBinding itemBinding;
+        final HeaderRecyclerItemBinding itemBinding;
 
         CarouselViewHolder(HeaderRecyclerItemBinding flightItemLayoutBinding, int viewType) {
             super(flightItemLayoutBinding.getRoot());
@@ -395,7 +395,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case CAROUSEL_SQR_SQUARE: {
                     int height = width;
                     if (isTablet)
-                        height = (int) (height / 2);
+                        height = height / 2;
                     layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
                     layoutParams.height = (int) (height + itemBinding.constraintLayout.getContext().getResources().getDimension(R.dimen.carousal_square_indicator_padding));
                     break;
@@ -434,7 +434,7 @@ public class CommonAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class PosterPotraitHolder extends RecyclerView.ViewHolder {
 
-        PosterPotraitRecyclerItemBinding itemBinding;
+        final PosterPotraitRecyclerItemBinding itemBinding;
 
         PosterPotraitHolder(PosterPotraitRecyclerItemBinding itemBinding) {
             super(itemBinding.getRoot());

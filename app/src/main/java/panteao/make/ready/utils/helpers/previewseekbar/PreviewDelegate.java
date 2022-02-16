@@ -37,10 +37,10 @@ public class PreviewDelegate implements PreviewView.OnPreviewChangeListener {
     private View previewFrameView;
     private ViewGroup previewParent;
     private PreviewAnimator animator;
-    private PreviewView previewView;
+    private final PreviewView previewView;
     private PreviewLoader previewLoader;
 
-    private int scrubberColor;
+    private final int scrubberColor;
     private boolean showing;
     private boolean startTouch;
     private boolean setup;
@@ -120,12 +120,12 @@ public class PreviewDelegate implements PreviewView.OnPreviewChangeListener {
     }
 
     @Override
-    public void onStartPreview(PreviewView previewView, int progress) {
+    public void onStartPreview() {
         startTouch = true;
     }
 
     @Override
-    public void onStopPreview(PreviewView previewView, int progress) {
+    public void onStopPreview() {
         if (showing) {
             animator.hide();
         }

@@ -6,7 +6,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -15,7 +14,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
@@ -24,12 +22,11 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.databinding.ActivityTermsConditionBinding;
 import panteao.make.ready.utils.constants.AppConstants;
 import panteao.make.ready.utils.helpers.ToastHandler;
-import panteao.make.ready.baseModels.BaseBindingActivity;
 
 public class WebViewActivity extends BaseBindingActivity<ActivityTermsConditionBinding> {
 
     @Override
-    public ActivityTermsConditionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityTermsConditionBinding inflateBindingLayout() {
         return ActivityTermsConditionBinding.inflate(inflater);
 
     }
@@ -38,10 +35,10 @@ public class WebViewActivity extends BaseBindingActivity<ActivityTermsConditionB
         super.onCreate(savedInstanceState);
         String webViewHeading = getIntent().getStringExtra(AppConstants.WEB_VIEW_HEADING);
         String webViewUrl = getIntent().getStringExtra(AppConstants.WEB_VIEW_URL);
-        getwebView(webViewHeading, webViewUrl);
+        getwebView();
     }
 
-    private void getwebView(String webViewHeading, String webViewUrl) {
+    private void getwebView() {
         getBinding().toolbar.homeIcon.setVisibility(View.GONE);
         getBinding().toolbar.searchIcon.setVisibility(View.GONE);
         getBinding().toolbar.screenText.setText(webViewHeading);

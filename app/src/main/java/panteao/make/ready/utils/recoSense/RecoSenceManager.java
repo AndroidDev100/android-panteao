@@ -32,7 +32,7 @@ public class RecoSenceManager {
     }
 
 
-    public void sendClickEvent(String screenType, int id) {
+    public void sendClickEvent(int id) {
         try {
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("action_type",RecoSenceActionTypes.VIEW);

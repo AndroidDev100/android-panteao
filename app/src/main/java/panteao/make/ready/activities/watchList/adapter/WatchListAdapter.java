@@ -115,7 +115,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Sing
             viewHolder.itemBinding.flDeleteWatchlist.setVisibility(View.VISIBLE);
             viewHolder.itemBinding.flDeleteWatchlist.setOnClickListener(view -> {
                 if (list.size() > 0)
-                    deleteWatchList.onDeleteClick(list.get(position));
+                    deleteWatchList.onDeleteClick();
             });
 
 
@@ -168,7 +168,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Sing
 
         try {
             if (!list.get(position).getStatus().equalsIgnoreCase(AppConstants.UNPUBLISHED))
-                listener.onWatchListItemClicked(list.get(position));
+                listener.onWatchListItemClicked();
         } catch (NullPointerException e) {
             Logger.e("WatchlistAdapter", "NullPointerException");
         }
@@ -206,11 +206,11 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Sing
     }
 
     public interface WatchListAdaperListener {
-        void onWatchListItemClicked(ItemsItem itemValue);
+        void onWatchListItemClicked();
     }
 
     public interface DeleteWatchList {
-        void onDeleteClick(ItemsItem itemValue);
+        void onDeleteClick();
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {

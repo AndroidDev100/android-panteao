@@ -33,8 +33,8 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
     private final OnPurchaseItemClick fragmentClickNetwork;
     private int rowIndex = -1;
     private List<String> subscribedPlan;
-    private boolean isClickable;
-    private String localeCurrency;
+    private final boolean isClickable;
+    private final String localeCurrency;
 
     public MembershipAdapter(Context context, List<PurchaseModel> list, OnPurchaseItemClick purchaseActivity, boolean isClickable, String localeCurrency) {
         this.context = context;
@@ -71,7 +71,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
 
                     holder.title.setText("" + list.get(position).getTitle());
                     if (list.get(position).getDescription() != null) {
-                        holder.description.setText(list.get(position).getDescription().toString());
+                        holder.description.setText(list.get(position).getDescription());
                     } else {
                         holder.description.setText("");
                     }
@@ -100,7 +100,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
 
                 if (list.get(position).getExpiryDate() > 0) {
                     holder.planExpLay.setVisibility(View.GONE);
-                    holder.planExpiryDateTxt.setText(AppCommonMethod.getDateFromTimeStamp(list.get(position).getExpiryDate()).toString());
+                    holder.planExpiryDateTxt.setText(AppCommonMethod.getDateFromTimeStamp(list.get(position).getExpiryDate()));
                 } else {
                     holder.planExpLay.setVisibility(View.GONE);
                 }
@@ -168,7 +168,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
                     }
                 }
                 if (isCurrencySupported){
-                    fragmentClickNetwork.onPurchaseCardClick(true, 0, list.get(position).getPurchaseOptions(),list.get(position));
+                    fragmentClickNetwork.onPurchaseCardClick();
                     resetSelectable(position);
                     notifyDataSetChanged();
                 }else {
@@ -228,11 +228,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
     private void resetSelectable(int pos) {
         rowIndex = pos;
         for (int i = 0; i < list.size(); i++) {
-            if (i == pos) {
-                list.get(i).setSelected(true);
-            } else {
-                list.get(i).setSelected(false);
-            }
+            list.get(i).setSelected(i == pos);
         }
 
     }
@@ -243,7 +239,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
     }
 
     public interface OnPurchaseItemClick {
-        void onPurchaseCardClick(boolean click, int position, String planName,PurchaseModel purchaseModel);
+        void onPurchaseCardClick();
     }
 
     public class PurchaseViewHolder extends RecyclerView.ViewHolder {
@@ -253,11 +249,11 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Pu
         public final RelativeLayout cardView;
         public ShimmerFrameLayout shimmerFrameLayout;
         public RelativeLayout relativeLayout;
-        public LinearLayout planExpLay;
-        public TextView planExpiryTxt;
-        public TextView planExpiryDateTxt;
-        public LinearLayout planPurchasedLay;
-        public TextView planPurchasedTxt;
+        public final LinearLayout planExpLay;
+        public final TextView planExpiryTxt;
+        public final TextView planExpiryDateTxt;
+        public final LinearLayout planPurchasedLay;
+        public final TextView planPurchasedTxt;
 
 
         public PurchaseViewHolder(View view) {

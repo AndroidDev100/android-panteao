@@ -22,7 +22,6 @@ import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.config.ImageLayer;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadEvents;
 import panteao.make.ready.utils.helpers.downloads.KTDownloadHelper;
 import panteao.make.ready.utils.helpers.downloads.OnDownloadClickInteraction;
@@ -30,12 +29,10 @@ import panteao.make.ready.R;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.databinding.RowEpisodeListBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.downloads.downloadUtil.DownloadUtils;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
 import java.util.HashMap;
@@ -43,15 +40,15 @@ import java.util.List;
 
 public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder> implements KTDownloadEvents {
     private final Activity context;
-    private List<EnveuVideoItemBean> videoItemBeans;
-    private EpisodeItemClick listner;
-    private int id;
-    private KsPreferenceKeys preference;
-    private boolean isLogin;
+    private final List<EnveuVideoItemBean> videoItemBeans;
+    private final EpisodeItemClick listner;
+    private final int id;
+    private final KsPreferenceKeys preference;
+    private final boolean isLogin;
     private int currentAssetId;
 //    private DownloadHelper downloadHelper;
-    private HashMap indexMap = new HashMap<String, Integer>();
-    private OnDownloadClickInteraction onDownloadClickInteraction;
+    private final HashMap indexMap = new HashMap<String, Integer>();
+    private final OnDownloadClickInteraction onDownloadClickInteraction;
     private String minutes = "";
     KTDownloadHelper downloadHelper;
 
@@ -124,11 +121,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         if (videoItemBeans.get(position) != null) {
             holder.itemBinding.setPlaylistItem(videoItemBeans.get(position));
             try {
-                if (context instanceof InstructorActivity){
-                    holder.itemBinding.setIsDownloadable(false);
-                }else {
-                    holder.itemBinding.setIsDownloadable(true);
-                }
+                holder.itemBinding.setIsDownloadable(!(context instanceof InstructorActivity));
             }catch (Exception e){
 
             }
@@ -205,7 +198,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 if (videoItemBeans.get(position).getId() == currentAssetId) {
                     return;
                 }
-                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
+                listner.onItemClick();
             }
         });
 
@@ -215,7 +208,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
                 if (videoItemBeans.get(position).getId() == currentAssetId) {
                     return;
                 }
-                listner.onItemClick(videoItemBeans.get(position), videoItemBeans.get(position).isPremium());
+                listner.onItemClick();
             }
         });
 
@@ -236,7 +229,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         holder.itemBinding.videoDownloaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteDownloadedVideo(v, videoItemBeans.get(position), position);
+                deleteDownloadedVideo(v, videoItemBeans.get(position));
             }
         });
         holder.itemBinding.videoDownloading.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +242,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         holder.itemBinding.videoDownloadedFailed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteDownloadedVideo(v, videoItemBeans.get(position), position);
+                deleteDownloadedVideo(v, videoItemBeans.get(position));
             }
         });
         holder.itemBinding.pauseDownload.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +262,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
-    private void deleteDownloadedVideo(View view, EnveuVideoItemBean enveuVideoItemBean, int position) {
+    private void deleteDownloadedVideo(View view, EnveuVideoItemBean enveuVideoItemBean) {
         AppCommonMethod.showPopupMenu(context, view, R.menu.delete_menu, new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -309,7 +302,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     List<EnveuVideoItemBean> videoItemBeansList;
-    public void notifyDataSetChanged(int position, String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
+    public void notifyDataSetChanged(List<EnveuVideoItemBean> videoItemBeans) {
         videoItemBeansList=videoItemBeans;
         for (int i=0;i<videoItemBeans.size();i++){
             notifyItemChanged(i,PAY3);
@@ -317,7 +310,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
     }
 
-    public void downloadCompletChanged(int position, String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
+    public void downloadCompletChanged(String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
         videoItemBeansList=videoItemBeans;
         for (int i=0;i<videoItemBeans.size();i++){
             if (findAssetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())){
@@ -327,7 +320,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
 
     }
 
-    public void downloadStatusChanged(int position, String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
+    public void downloadStatusChanged(String findAssetId, List<EnveuVideoItemBean> videoItemBeans) {
         videoItemBeansList=videoItemBeans;
         for (int i=0;i<videoItemBeans.size();i++){
             if (findAssetId.equalsIgnoreCase(videoItemBeans.get(i).getkEntryId())){
@@ -338,9 +331,9 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
 
-    String PAY3="payload3";
-    String PAY4="payload4";
-    String PAY5="payload5";
+    final String PAY3="payload3";
+    final String PAY4="payload4";
+    final String PAY5="payload5";
     @Override
     public void onBindViewHolder(@NonNull SeasonViewHolder holder, int position, @NonNull List<Object> payloads) {
         Log.e("statusDown","onBind");
@@ -373,7 +366,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
         }
     }
 
-    public void downloadStatusChanged(List<EnveuVideoItemBean> adapterList) {
+    public void downloadStatusChanged() {
         try {
             for (int i = 0; i < videoItemBeans.size(); i++) {
                 if (videoItemBeans.get(i).getkEntryId()!=null && !videoItemBeans.get(i).getkEntryId().equalsIgnoreCase("")) {
@@ -467,7 +460,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     @Override
-    public void initialStatus(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+    public void initialStatus() {
 
     }
 
@@ -505,13 +498,13 @@ public class SeasonAdapter extends RecyclerView.Adapter<SeasonAdapter.SeasonView
     }
 
     @Override
-    public void onAssetDownloadFailed(@NonNull @NotNull String assetId, Exception e) {
+    public void onAssetDownloadFailed() {
        // itemChanged(assetId);
     }
 
     public interface EpisodeItemClick {
 
-        void onItemClick(EnveuVideoItemBean assetId, boolean isPremium);
+        void onItemClick();
 
     }
 

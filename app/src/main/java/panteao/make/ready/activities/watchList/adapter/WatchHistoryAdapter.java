@@ -36,7 +36,7 @@ public class WatchHistoryAdapter extends RecyclerView.Adapter<WatchHistoryAdapte
 
     public WatchHistoryAdapter(Context context, List<ItemsItem> list, WatchHistoryAdaperListener listener) {
         this.context = context;
-        this.list = list;
+        WatchHistoryAdapter.list = list;
         this.listener = listener;
 
         preference = KsPreferenceKeys.getInstance();
@@ -49,7 +49,7 @@ public class WatchHistoryAdapter extends RecyclerView.Adapter<WatchHistoryAdapte
     }
 
     public void notifyAdapter(List<ItemsItem> list) {
-        this.list.addAll(list);
+        WatchHistoryAdapter.list.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -119,7 +119,7 @@ public class WatchHistoryAdapter extends RecyclerView.Adapter<WatchHistoryAdapte
     private void onItemClicked(int position) {
         try {
             if (list.get(position).getStatus() != null && !list.get(position).getStatus().equalsIgnoreCase(AppConstants.UNPUBLISHED))
-                listener.onWatchHistoryItemClicked(list.get(position));
+                listener.onWatchHistoryItemClicked();
         } catch (Exception e) {
             Logger.e("WatchListAdapter", "WatchListAdapter" + list.get(position));
 
@@ -159,7 +159,7 @@ public class WatchHistoryAdapter extends RecyclerView.Adapter<WatchHistoryAdapte
     }
 
     public interface WatchHistoryAdaperListener {
-        void onWatchHistoryItemClicked(ItemsItem itemValue);
+        void onWatchHistoryItemClicked();
     }
 
 

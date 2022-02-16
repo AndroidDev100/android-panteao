@@ -13,7 +13,7 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding> extends Bas
     private B mBinding;
 
 
-    protected abstract B inflateBindingLayout(@NonNull LayoutInflater inflater);
+    protected abstract B inflateBindingLayout();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public abstract class BaseBindingFragment<B extends ViewDataBinding> extends Bas
 
 
     private B setupBinding(@NonNull LayoutInflater inflater) {
-        return inflateBindingLayout(inflater);
+        return inflateBindingLayout();
     }
 
 

@@ -11,7 +11,6 @@ import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
 import panteao.make.ready.beanModel.popularSearch.ResponsePopularSearch;
 import panteao.make.ready.layersV2.SearchLayer;
 import panteao.make.ready.repository.search.SearchRepository;
-import panteao.make.ready.layersV2.SearchLayer;
 
 public class SearchViewModel extends AndroidViewModel {
     private final SearchRepository searchRepository;
@@ -49,7 +48,7 @@ public class SearchViewModel extends AndroidViewModel {
     }
 
     public LiveData<ResponseSearch> getSearchSeries(String keyword, int size, int page) {
-        return searchRepository.getSearchSeriesData("SERIES", keyword, size, page);
+        return searchRepository.getSearchSeriesData(keyword, size, page);
     }
 
     public LiveData<ResponsePopularSearch> getAllSeries(String keyword, int size, int page) {

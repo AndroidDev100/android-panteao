@@ -39,15 +39,15 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
     private final String contentType;
     private final Activity mContext;
     private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ArrayList<CommonContinueRail> continuelist;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
-    private ItemClickListener listener;
-    BaseCategory baseCategory;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ArrayList<CommonContinueRail> continuelist;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
+    private final ItemClickListener listener;
+    final BaseCategory baseCategory;
     public CommonPosterPotraitAdapter(Activity context, List<EnveuVideoItemBean> itemsList, List<ItemsItem> itemsItems, String contentType, ArrayList<CommonContinueRail> continuelist, ItemClickListener callBack, BaseCategory baseCat) {
-        this.itemsList = itemsList;
+        CommonPosterPotraitAdapter.itemsList = itemsList;
         this.mContext = context;
         this.seasonItems = itemsItems;
         this.contentType = contentType;
@@ -68,11 +68,11 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
         (mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels) / num;
-        itemHeight = (int) (itemWidth * 3) / 2;
+        itemHeight = (itemWidth * 3) / 2;
     }
 
     public void notifydata(List<EnveuVideoItemBean> i) {
-        this.itemsList.addAll(i);
+        itemsList.addAll(i);
         notifyDataSetChanged();
     }
 
@@ -128,7 +128,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
                             .loadImageTo(holder.itemBinding.itemImage, itemsList.get(i).getPosterURL());
 */
                     holder.itemBinding.itemImage.setOnClickListener(view -> {
-                        listener.onRowItemClicked(itemsList.get(i), i);
+                        listener.onRowItemClicked();
                     });
 
                 } else if (contentType.equalsIgnoreCase(AppConstants.SERIES)) {
@@ -255,7 +255,7 @@ public class CommonPosterPotraitAdapter extends RecyclerView.Adapter<CommonPoste
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        PosterPotraitItemBinding itemBinding;
+        final PosterPotraitItemBinding itemBinding;
 
         SingleItemRowHolder(PosterPotraitItemBinding itemBinding) {
             super(itemBinding.getRoot());

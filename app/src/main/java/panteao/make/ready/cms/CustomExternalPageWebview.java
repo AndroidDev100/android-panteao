@@ -6,7 +6,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -15,13 +14,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
 import panteao.make.ready.R;
-import panteao.make.ready.SDKConfig;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.databinding.ActivityHelpBinding;
 import panteao.make.ready.utils.helpers.ToastHandler;
@@ -30,7 +27,7 @@ import panteao.make.ready.utils.helpers.ToolBarHandler;
 public class CustomExternalPageWebview extends BaseBindingActivity<ActivityHelpBinding> {
     String url,title;
     @Override
-    public ActivityHelpBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityHelpBinding inflateBindingLayout() {
         return ActivityHelpBinding.inflate(inflater);
     }
 

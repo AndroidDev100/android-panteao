@@ -167,12 +167,12 @@ public class AllCommentAdapter extends RecyclerView.Adapter<AllCommentAdapter.Si
 
     @Override
     public void onFinishDialog() {
-        listener.onItemClicked(itemsItem);
+        listener.onItemClicked();
 
     }
 
     public interface AllComentClickListener {
-        void onItemClicked(ItemsItem itemValue);
+        void onItemClicked();
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {

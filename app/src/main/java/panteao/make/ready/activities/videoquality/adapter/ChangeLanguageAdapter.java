@@ -1,7 +1,6 @@
 package panteao.make.ready.activities.videoquality.adapter;
 
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,8 @@ public class ChangeLanguageAdapter extends RecyclerView.Adapter<ChangeLanguageAd
    // private int pos = new KsPreferenceKeys(ApplicationMain.getAppContext()).getQualityPosition();
 
     int pos=0;
-    private KsPreferenceKeys preference;
-    public ChangeLanguageAdapter(Activity activity, List<LanguageItem> itemsList, ItemClick listener) {
+    private final KsPreferenceKeys preference;
+    public ChangeLanguageAdapter(List<LanguageItem> itemsList, ItemClick listener) {
         preference = KsPreferenceKeys.getInstance();
         pos=preference.getAppPrefLanguagePos();
         this.inboxMessages = itemsList;
@@ -65,7 +64,7 @@ public class ChangeLanguageAdapter extends RecyclerView.Adapter<ChangeLanguageAd
             pos = position;
           //  new KsPreferenceKeys(ApplicationMain.getAppContext()).setQualityPosition(pos);
           //  new KsPreferenceKeys(ApplicationMain.getAppContext()).setQualityName(inboxMessages.get(position).getLanguageName());
-            itemClickListener.itemClicked(inboxMessages.get(position).getLanguageName(),pos);
+            itemClickListener.itemClicked();
 
         });
     }

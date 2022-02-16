@@ -1,7 +1,6 @@
 
 package panteao.make.ready.activities.splash.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.DisplayCutout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -38,7 +36,6 @@ import com.make.baseClient.BaseGateway;
 import com.make.baseClient.BasePlatform;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.gson.Gson;
 import panteao.make.ready.PanteaoApplication;
@@ -99,7 +96,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     private String currentLanguage;
     private ConfigBean configBean;
     private int configCall = 1;
-    private int count = 0;
+    private final int count = 0;
     int clapanimation = 1;
     private String notid = "";
     private String notAssetType = "";
@@ -110,7 +107,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     JSONObject deepLinkObject=null;
 
     @Override
-    public ActivitySplashBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivitySplashBinding inflateBindingLayout() {
         return ActivitySplashBinding.inflate(inflater);
     }
 
@@ -139,7 +136,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         session = KsPreferenceKeys.getInstance();
         // session.setDownloadOverWifi(1);
         AppCommonMethod.getPushToken(ActivitySplash.this);
-        updateAndroidSecurityProvider(ActivitySplash.this);
+        updateAndroidSecurityProvider();
 
         new AnalyticsController(ActivitySplash.this).callAnalytics("splash_screen", "Action", "Launch");
         // MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
@@ -180,9 +177,9 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 Log.w("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
-            PrintLogging.printLog("Exception", "" + e);
+            PrintLogging.printLog("" + e);
         } catch (NoSuchAlgorithmException e) {
-            PrintLogging.printLog("Exception", "" + e);
+            PrintLogging.printLog("" + e);
         }
     }
 
@@ -212,7 +209,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
 
-    private void callConfig(JSONObject jsonObject, String updateType) {
+    private void callConfig() {
         ConfigManager.getInstance().getConfig(new ApiResponseModel() {
             @Override
             public void onStart() {
@@ -245,7 +242,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                 KsPreferenceKeys.getInstance().setOVPBASEURL(SDKConfig.getInstance().getOVP_BASE_URL());
 
                 if (configBean != null) {
-                    startClapAnimation(jsonObject, updateType);
+                    startClapAnimation();
 
                 } else {
                     configFailPopup();
@@ -265,17 +262,17 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
     }
 
-    private void startClapAnimation(JSONObject jsonObject, String updateType) {
+    private void startClapAnimation() {
  {
         if (jsonObject != null) {
 
             if (updateType != null && updateType.equalsIgnoreCase(ForceUpdateHandler.RECOMMENDED)) {
-                brachRedirections(jsonObject);
+                brachRedirections();
 
             } else {
-                boolean updateValue = getForceUpdateValue(jsonObject, 1);
+                boolean updateValue = getForceUpdateValue();
                 if (!updateValue) {
-                    brachRedirections(jsonObject);
+                    brachRedirections();
 
                 }
             }
@@ -293,7 +290,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                     }
                 }, 1000);
             } else {
-                boolean updateValue = getForceUpdateValue(null, 3);
+                boolean updateValue = getForceUpdateValue();
 
                 if (!updateValue) {
                     Log.w("branchRedirectors", "-->>config" + "");
@@ -331,7 +328,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                     if (notid != null && !notid.equalsIgnoreCase("")) {
                         notAssetType = bundle.getString("contentType");
                         if (notAssetType != null && !notAssetType.equalsIgnoreCase("")) {
-                            parseNotification(notid,notAssetType);
+                            parseNotification();
                         }else {
                             onNewIntent(getIntent());
                         }
@@ -390,12 +387,12 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                     try {
                         Logger.e("Animation End","Config Call");
                         JSONObject jsonObject = new JSONObject(notiVAlues);
-                        redirections(jsonObject);
+                        redirections();
                     } catch (Exception e) {
                         if (notificationObject!=null){
-                            redirections(notificationObject);
+                            redirections();
                         }else {
-                            redirections(null);
+                            redirections();
                         }
                     }
                 }else{
@@ -431,7 +428,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         }
     }
 
-    private void updateAndroidSecurityProvider(Activity callingActivity) {
+    private void updateAndroidSecurityProvider() {
         try {
             ProviderInstaller.installIfNeeded(this);
         } catch (GooglePlayServicesRepairableException e) {
@@ -506,7 +503,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     };*/
 
     private void redirectToHome() {
-        boolean updateValue = getForceUpdateValue(null, 2);
+        boolean updateValue = getForceUpdateValue();
         if (!updateValue) {
             Log.w("branchRedirectors", "homeRedirection");
             homeRedirection();
@@ -518,7 +515,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         if (configCall == 1) {
             Log.w("branchRedirectors", configCall + "");
             configCall = 2;
-            callConfig(null, null);
+            callConfig();
         }
 
     }
@@ -539,7 +536,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                     public void run() {
                         getBinding().progressBar.setVisibility(View.VISIBLE);
                         configRetry = true;
-                        callConfig(null, null);
+                        callConfig();
                     }
                 }, 200);
             }
@@ -590,15 +587,15 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
 
-    private void  redirections(JSONObject jsonObject) {
+    private void  redirections() {
         try {
-            callConfig(jsonObject, null);
+            callConfig();
         } catch (Exception e) {
 
         }
     }
 
-    private void brachRedirections(JSONObject jsonObject) {
+    private void brachRedirections() {
         try {
             Log.e("branchRedirectors", new Gson().toJson(jsonObject));
             if (jsonObject != null && jsonObject.has("contentType") && jsonObject.has("id")) {
@@ -612,7 +609,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        launchSeriesPage(contentType, assestId);
+                        launchSeriesPage();
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(ActivitySplash.this).seriesDetailScreen(ActivitySplash.this, SeriesDetailActivity.class, assestId);
                         //finish();
@@ -684,16 +681,16 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         }
     }
 
-    private void launchSeriesPage(String contentType, int assestId) {
+    private void launchSeriesPage() {
 
     }
 
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
             try {
 
             }catch (Exception ignored){
@@ -702,7 +699,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.GONE);
             loadAnimations();
@@ -750,7 +747,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
         try {
             notid = intent.getStringExtra("assetId");
             notAssetType=intent.getStringExtra("assetType");
-            parseNotification(notid,notAssetType);
+            parseNotification();
 
         } catch (Exception e) {
 
@@ -759,7 +756,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
     }
 
     JSONObject notificationObject=null;
-    private void parseNotification(String notid,String assetType) {
+    private void parseNotification() {
         if (notid != null && !assetType.equalsIgnoreCase("")) {
             notificationAssetId = Integer.parseInt(notid);
             if (notificationAssetId > 0 && assetType!=null && !assetType.equalsIgnoreCase("")) {
@@ -804,7 +801,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                                     KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
                                     KsPreferenceKeys.getInstance().setAppPrefJumpBackId(Integer.parseInt(id));
                                     deepLinkObject = AppCommonMethod.createDynamicLinkObject(id, mediaType);
-                                    redirections(deepLinkObject);
+                                    redirections();
                                     Log.w("redirectionss", "redirections");
 
                                 } else {
@@ -882,7 +879,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
 
     boolean forceUpdate = false;
 
-    private boolean getForceUpdateValue(JSONObject jsonObject, int type) {
+    private boolean getForceUpdateValue() {
         Log.i("branchRedirectors er", "forceupdate");
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
             AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
@@ -901,7 +898,7 @@ public class ActivitySplash extends BaseBindingActivity<ActivitySplashBinding> i
                                 getBinding().progressBar.setVisibility(View.VISIBLE);
                                 forceUpdateHandler.hideDialog();
 //                                clapanimation=1;
-                                callConfig(null, updateType);
+                                callConfig();
                             }/*else {
 
                             }

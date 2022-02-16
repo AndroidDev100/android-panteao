@@ -1,7 +1,6 @@
 package panteao.make.ready.baseModels;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,7 +30,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void showHideProgress(ProgressBar progressBar, Activity context) {
-        showLoading(progressBar, false, context);
+        showLoading(progressBar, context);
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -42,8 +41,8 @@ public class BaseFragment extends Fragment {
 
     }
 
-    protected void showLoading(ProgressBar progressBar, boolean val, Activity context) {
-        if (val) {
+    protected void showLoading(ProgressBar progressBar, Activity context) {
+        if (false) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.bringToFront();
         }
@@ -74,7 +73,7 @@ public class BaseFragment extends Fragment {
 
         }
     }
-    public void hitApiLogout(Context context, String token) {
+    public void hitApiLogout(String token) {
 
         String isFacebook = KsPreferenceKeys.getInstance().getAppPrefLoginType();
 

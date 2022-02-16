@@ -1,7 +1,7 @@
 package panteao.make.ready.callbacks.commonCallbacks;
 
 public interface NoInternetConnectionCallBack {
-    void isOnline(boolean connected);
+    void isOnline();
 
-    void isOffline(boolean disconnected);
+    void isOffline();
 }

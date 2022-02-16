@@ -33,14 +33,14 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
     private final String contentType;
     private final List<EnveuVideoItemBean> itemsList;
     private final Activity mContext;
-    private ItemClickListener listener;
+    private final ItemClickListener listener;
     private long mLastClickTime = 0;
-    private ArrayList<CommonContinueRail> continuelist;
+    private final ArrayList<CommonContinueRail> continuelist;
     private boolean isContinueList;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
-    private int itemWidth;
-    private int itemHeight;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
+    private final int itemWidth;
+    private final int itemHeight;
 
     public CommonCircleAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist, ItemClickListener callback) {
         this.itemsList = itemsList;
@@ -49,10 +49,7 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
         this.continuelist = continuelist;
         listener = callback;
         if (this.continuelist != null) {
-            if (this.continuelist.size() > 0)
-                isContinueList = true;
-            else
-                isContinueList = false;
+            isContinueList = this.continuelist.size() > 0;
         }
         // isContinueList = null != continuelist ? false : true;
         preference = KsPreferenceKeys.getInstance();
@@ -112,7 +109,7 @@ public class CommonCircleAdapter extends RecyclerView.Adapter<CommonCircleAdapte
                     holder.circularItemBinding.itemImage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.onRowItemClicked(itemsList.get(i), i);
+                            listener.onRowItemClicked();
                         }
                     });
 /*

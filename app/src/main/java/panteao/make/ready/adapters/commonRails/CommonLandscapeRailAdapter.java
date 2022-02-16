@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.enums.RailCardSize;
 
@@ -25,7 +24,6 @@ import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ImageHelper;
 import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 
@@ -38,12 +36,12 @@ import io.reactivex.annotations.NonNull;
 public class CommonLandscapeRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private long mLastClickTime = 0;
-    private RailCommonData railCommonData;
+    private final RailCommonData railCommonData;
     private List<EnveuVideoItemBean> videos;
-    private CommonRailtItemClickListner listner;
-    private Context mContext;
-    private int pos;
-    BaseCategory baseCategory;
+    private final CommonRailtItemClickListner listner;
+    private final Context mContext;
+    private final int pos;
+    final BaseCategory baseCategory;
 
     public CommonLandscapeRailAdapter(Context context, RailCommonData railCommonData, int position, CommonRailtItemClickListner listner, BaseCategory baseCat) {
         this.mContext = context;
@@ -266,26 +264,26 @@ public class CommonLandscapeRailAdapter extends RecyclerView.Adapter<RecyclerVie
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        listner.railItemClick(railCommonData, position);
+        listner.railItemClick();
 
         if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase(AppConstants.MAIN_HOME)) {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
 
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
         } else if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase(AppConstants.MAIN_TOPHITS)) {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
         } else if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase("Content Screen")) {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
 
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
         } else if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase(AppConstants.MAIN_COMINGSOON)) {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
 
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
 
         } else if (KsPreferenceKeys.getInstance().getScreenName().equalsIgnoreCase(AppConstants.MAIN_LIVETV)) {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext, 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", mContext);
 
             AppCommonMethod.trackFcmCustomEvent(mContext, AppConstants.CONTENT_SELECT, videos.get(position).getAssetType(), railCommonData.getScreenWidget().getContentID(), railCommonData.getScreenWidget().getName() + "", pos, videos.get(position).getTitle(), position, videos.get(position).getId() + "", 0, 0, "", "", "", "");
 

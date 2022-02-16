@@ -35,7 +35,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
     private String tvod = "";
     private String perpatual = "";
     private boolean isClickable;
-    private ArrayList<String> purchasedList;
+    private final ArrayList<String> purchasedList;
     boolean fromClick=false;
 
     public PurchaseAdapter(Context context, List<PurchaseModel> list, OnPurchaseItemClick purchaseActivity) {
@@ -143,7 +143,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
             }else {
                     resetAll(holder);
                 }
-                fragmentClickNetwork.onPurchaseCardClick(true, list.get(position));
+                fragmentClickNetwork.onPurchaseCardClick();
                 notifyDataSetChanged();
             }else {
                 Toast.makeText(context, context.getResources().getString(R.string.not_avail_for_Region), Toast.LENGTH_SHORT).show();
@@ -256,7 +256,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.Purcha
     }
 
     public interface OnPurchaseItemClick {
-        void onPurchaseCardClick(boolean click, PurchaseModel planName);
+        void onPurchaseCardClick();
     }
 
     public class PurchaseViewHolder extends RecyclerView.ViewHolder {

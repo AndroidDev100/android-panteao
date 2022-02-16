@@ -7,8 +7,8 @@ public class ActivityTrackers {
     public String launcherActivity;
     public String action="";
 
-    public static String WATCHLIST="watchlist";
-    public static String LIKE="like";
+    public static final String WATCHLIST="watchlist";
+    public static final String LIKE="like";
     public static String PURCHASE="purchase";
 
     private ActivityTrackers() {

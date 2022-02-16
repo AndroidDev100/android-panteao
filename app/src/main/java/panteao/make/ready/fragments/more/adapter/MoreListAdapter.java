@@ -29,7 +29,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
     private final Activity mContext;
     private final boolean islogin;
     private long mLastClickTime;
-    boolean isDownloadEnable;
+    final boolean isDownloadEnable;
 
     public MoreListAdapter(Activity context, List<String> itemsList, MoreItemClickListener call, boolean islogin, boolean isDownloadEnable) {
         this.itemsList = itemsList;
@@ -50,7 +50,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         holder.moreItemBinding.moreListTitle.setText("" + itemsList.get(i));
-        setIcons(holder.moreItemBinding.moreListIcon, i, holder.moreItemBinding, itemsList.get(i));
+        setIcons(holder.moreItemBinding.moreListIcon, i);
     }
 
 
@@ -59,7 +59,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
         return itemsList.size();
     }
 
-    public void setIcons(ImageView v, int i, MoreItemBinding binding, String menuName) {
+    public void setIcons(ImageView v, int i) {
 
         if (!isDownloadEnable) {
             if (islogin) {
@@ -523,37 +523,37 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.ViewHo
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.change_password))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.change_password));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.profile))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.profile));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.setting_title))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.setting_title));
+                    itemClickListener.onClick();
 
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_purchases))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.my_purchases));
+                    itemClickListener.onClick();
 
                 }else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.term_condition))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.term_condition));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.notification))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.notification));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.privacy_policy))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.privacy_policy));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.about_us))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.about_us));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.verify_user))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.verify_user));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_watchlist))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.my_watchlist));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_history))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.my_history));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.my_downloads))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.my_downloads));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.sign_out))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.sign_out));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.membership_plan))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.membership_plan));
+                    itemClickListener.onClick();
                 } else if (itemsList.get(getLayoutPosition()).equalsIgnoreCase(mContext.getResources().getString(R.string.redeem_coupon))) {
-                    itemClickListener.onClick(mContext.getResources().getString(R.string.redeem_coupon));
+                    itemClickListener.onClick();
                 }
 
             });

@@ -119,7 +119,7 @@ public class PurchaseHandling {
 
     }
 
-    int count=0;
+    final int count=0;
     private void checkEntitlementState(ResponseMembershipAndPlan purchaseResponseModel, List<Purchase> purchases) {
         try {
             if (purchaseResponseModel!=null && purchaseResponseModel.getData().size()>0 && purchaseResponseModel.isStatus()){
@@ -225,7 +225,7 @@ public class PurchaseHandling {
                         purchaseResponseModel.setStatus(true);
                         purchaseResponseModel.setData(response.body().getData());
                         String orderId = purchaseResponseModel.getData().getOrderId();
-                        callInitiatePaymentApi(orderId,purchase,dataItem,model);
+                        callInitiatePaymentApi(orderId,purchase, model);
                     } else {
 
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().createNewOrder(response);
@@ -249,7 +249,7 @@ public class PurchaseHandling {
 
     }
 
-    private void callInitiatePaymentApi(String orderID, Purchase purchase, DataItem dataItem, PurchaseModel model) {
+    private void callInitiatePaymentApi(String orderID, Purchase purchase, PurchaseModel model) {
 
         try {
             JSONObject jsonObject=new JSONObject();
@@ -275,7 +275,7 @@ public class PurchaseHandling {
                         purchaseResponseModel.setStatus(true);
                         purchaseResponseModel.setData(response.body().getData());
                         String paymentId = purchaseResponseModel.getData().getPaymentId().toString();
-                        updatePayment("","PAYMENT_DONE",purchase.getPurchaseToken(), paymentId,purchase.getOrderId(),purchase,model,orderID);
+                        updatePayment(purchase.getPurchaseToken(), paymentId, purchase,model,orderID);
                     } else {
                         PurchaseResponseModel purchaseResponseModel2 = ErrorCodesIntercepter.getInstance().initiateOrder(response);
                         getPlans=false;
@@ -299,16 +299,16 @@ public class PurchaseHandling {
 
     }
 
-    private void updatePayment(String billingError, String paymentStatus, String purchaseToken, String paymentId, String playstoreOrderId, Purchase purchase, PurchaseModel purchaseModel, String orderId) {
+    private void updatePayment(String purchaseToken, String paymentId, Purchase purchase, PurchaseModel purchaseModel, String orderId) {
         try {
             JSONObject jsonObject=new JSONObject();
             JSONObject jsonObject1=new JSONObject();
 
             try {
                 /* "purchasePrice": "20",    "purchaseCurrency": "INR"*/
-                if (paymentStatus.equalsIgnoreCase("FAILED")){
+                if ("PAYMENT_DONE".equalsIgnoreCase("FAILED")){
                     jsonObject1.put("googleIAPPurchaseToken", "Could not connect to the play store");
-                    jsonObject1.put("exception",billingError);
+                    jsonObject1.put("exception", "");
                 }else {
                     jsonObject1.put("googleIAPPurchaseToken", purchaseToken);
                     jsonObject1.put("playStoreProductId", Base64.encodeToString(purchase.getSku().getBytes(),Base64.NO_WRAP));
@@ -321,10 +321,10 @@ public class PurchaseHandling {
                     jsonObject1.put("purchasePrice", "");
                     jsonObject1.put("purchaseCurrency", "");
                 }
-                jsonObject.put("paymentStatus", paymentStatus);
+                jsonObject.put("paymentStatus", "PAYMENT_DONE");
                 jsonObject.put("notes",jsonObject1);
             }catch (Exception ignored){
-                Log.w("purchasedSKU",paymentStatus);
+                Log.w("purchasedSKU", "PAYMENT_DONE");
             }
 
             JsonParser jsonParser = new JsonParser();

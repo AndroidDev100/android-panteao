@@ -1,11 +1,9 @@
 package panteao.make.ready.activities.watchList.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,11 +29,9 @@ import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.listing.listadapter.ListAdapter;
 import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
 import panteao.make.ready.adapters.CommonShimmerAdapter;
-import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ResponseAssetHistory;
 import panteao.make.ready.beanModel.ContinueRailModel.CommonContinueRail;
 import panteao.make.ready.beanModel.emptyResponse.ResponseEmpty;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.beanModel.watchHistory.ItemsItem;
 import panteao.make.ready.databinding.WatchListActivityBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -76,7 +72,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     private int totalCount;
     private boolean isRailData = false;
     private int counterLimit = 1;
-    private boolean isCounterLimit = true;
+    private final boolean isCounterLimit = true;
     private BookmarkingViewModel bookmarkingViewModel;
     private RailInjectionHelper railInjectionHelper;
     private ListAdapter commonLandscapeAdapter;
@@ -122,11 +118,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     private void connectionObserver() {
-        if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
-        } else {
-            connectionValidation(false);
-        }
+        connectionValidation(NetworkConnectivity.isOnline(this));
     }
 
     private void connectionValidation(Boolean aBoolean) {
@@ -161,10 +153,10 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         getBinding().nodatafounmd.setVisibility(View.GONE);
         getBinding().toolbar.screenText.setText(viewType);
         if (viewType.equalsIgnoreCase(getResources().getString(R.string.my_history))) {
-            callShimmer(WatchListActivity.this, getBinding().watchListRecycler);
+            callShimmer();
             getWatchHistoryList();
         } else {
-            callShimmer(WatchListActivity.this, getBinding().watchListRecycler);
+            callShimmer();
             getWatchListData();
         }
 
@@ -216,7 +208,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
                                     public void onChanged(RailCommonData railCommonData) {
                                         if (railCommonData != null) {
                                             getBinding().watchListRecycler.setVisibility(View.VISIBLE);
-                                            setRail(railCommonData);
+                                            setRail();
                                         } else {
                                             getBinding().watchListRecycler.setVisibility(View.GONE);
                                             getBinding().nodatafounmd.setVisibility(View.VISIBLE);
@@ -256,9 +248,9 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     private void logoutCall() {
-        if (CheckInternetConnection.isOnline(Objects.requireNonNull(this))) {
+        if (CheckInternetConnection.isOnline(this)) {
             clearCredientials(preference);
-            hitApiLogout(this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         } else {
             new ToastHandler(this).show(getResources().getString(R.string.no_internet_connection));
         }
@@ -278,12 +270,12 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     @Override
-    public WatchListActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public WatchListActivityBinding inflateBindingLayout() {
         return WatchListActivityBinding.inflate(inflater);
     }
 
     @Override
-    public void onWatchHistoryItemClicked(ItemsItem itemValue) {
+    public void onWatchHistoryItemClicked() {
            Log.d("watchHistory","itemclick");
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
             return;
@@ -306,7 +298,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     @Override
-    public void onWatchListItemClicked(panteao.make.ready.beanModel.allWatchList.ItemsItem itemValue) {
+    public void onWatchListItemClicked() {
         Log.d("watchHistory","itemclick");
 
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
@@ -328,7 +320,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     @Override
-    public void onDeleteClick(panteao.make.ready.beanModel.allWatchList.ItemsItem itemValue) {
+    public void onDeleteClick() {
         try {
             deleteItem = true;
             isloggedout = false;
@@ -340,7 +332,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         }
     }
 
-    private void hitApiRemoveList(int watchlistId) {
+    private void hitApiRemoveList() {
         JsonObject requestParam = new JsonObject();
         requestParam.addProperty(AppConstants.API_PARAM_WATCHLIST_ID, watchlistId);
         getBinding().progressBar.setVisibility(View.VISIBLE);
@@ -380,13 +372,13 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     @Override
     public void onFinishDialog() {
         if (deleteItem) {
-            hitApiRemoveList(itemValue.getId());
+            hitApiRemoveList();
         } else if (isloggedout) {
             forceLogout();
         }
     }
 
-    private void callShimmer(Context context, RecyclerView recyclerView) {
+    private void callShimmer() {
         adapterPurchase = new CommonShimmerAdapter(context);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -397,7 +389,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     public void forceLogout() {
         if (isloggedout) {
             isloggedout = false;
-            hitApiLogout(WatchListActivity.this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         }
 
     }
@@ -429,7 +421,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
                                     public void onChanged(RailCommonData railCommonData) {
                                         if (railCommonData != null) {
                                             getBinding().watchListRecycler.setVisibility(View.VISIBLE);
-                                            setRail(railCommonData);
+                                            setRail();
                                         } else {
                                             getBinding().watchListRecycler.setVisibility(View.GONE);
                                             getBinding().nodatafounmd.setVisibility(View.VISIBLE);
@@ -466,9 +458,9 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         }
     }
 
-    private void setRail(RailCommonData playlistRailData) {
+    private void setRail() {
         if (isScrolling) {
-            setUiComponents(playlistRailData);
+            setUiComponents();
             getBinding().progressBar.setVisibility(View.GONE);
         } else {
             getBinding().progressBar.setVisibility(View.GONE);
@@ -493,13 +485,13 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
         }
     }
 
-    private void setUiComponents(RailCommonData playlistRailData) {
+    private void setUiComponents() {
         commonLandscapeAdapter.notifyAdapter(playlistRailData.getEnveuVideoItemBeans());
         mIsLoading = playlistRailData.getMaxContent() != commonLandscapeAdapter.getItemCount();
     }
 
 
-    public void getHistoryAssetData(ResponseAssetHistory responseAssetHistory) {
+    public void getHistoryAssetData() {
         try {
             ArrayList<CommonContinueRail> tempAdapter = new ArrayList<>();
             viewModel.getContinueList(token, responseAssetHistory, true).observe(this, responseContinueList -> {
@@ -581,11 +573,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
 
     public void setLoaderValue() {
         isRailData = true;
-        if (counterLimit != counter) {
-            loading = true;
-        } else {
-            loading = false;
-        }
+        loading = counterLimit != counter;
         counter = counter + 1;
     }
 
@@ -599,8 +587,8 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
 
 
     @Override
-    public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
-        AppCommonMethod.trackFcmEvent("Content Screen","", getApplicationContext(),0);
+    public void onRowItemClicked() {
+        AppCommonMethod.trackFcmEvent("Content Screen","", getApplicationContext());
 
         if (AppCommonMethod.getCheckBCID(itemValue.getkEntryId())) {
             String getVideoId = itemValue.getkEntryId();
@@ -615,7 +603,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     @Override
-    public void onDeleteWatchHistoryClicked(int assetId, int position) {
+    public void onDeleteWatchHistoryClicked() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alertDialog = AlertDialogFragment.newInstance("", getResources().getString(R.string.delete_from_watchhistory_message), getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
         alertDialog.setAlertDialogCallBack(new AlertDialogFragment.AlertDialogListener() {
@@ -643,7 +631,7 @@ public class WatchListActivity extends BaseBindingActivity<WatchListActivityBind
     }
 
     @Override
-    public void onDeleteWatchListClicked(int assetId, int position) {
+    public void onDeleteWatchListClicked() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alertDialog = AlertDialogFragment.newInstance("", getResources().getString(R.string.delete_from_watchlist), getResources().getString(R.string.ok), getResources().getString(R.string.cancel));
         alertDialog.setAlertDialogCallBack(new AlertDialogFragment.AlertDialogListener() {

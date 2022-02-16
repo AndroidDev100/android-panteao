@@ -32,8 +32,8 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     constructor(activity: Activity, downloadsList: ArrayList<DownloadItemEntity>, ktDownloadEvents: KTDownloadEvents) {
         context = activity
         downloadHelper = KTDownloadHelper(activity, this)
-        itemList=downloadsList;
-        listener=ktDownloadEvents;
+        itemList=downloadsList
+        listener=ktDownloadEvents
     }
 
     override fun setDownloadProgressListener(progress: Float, assetId: String?) {
@@ -47,7 +47,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    override fun initialStatus(state: OfflineManager.AssetDownloadState) {
+    override fun initialStatus() {
 
     }
 
@@ -61,7 +61,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    override fun onAssetDownloadFailed(assetId: String, e: Exception?) {
+    override fun onAssetDownloadFailed() {
 
     }
 
@@ -102,8 +102,8 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                                      position: Int,
                                      currentVideoItem: DownloadItemEntity) {
         Log.d("checkingPayload 1","payload2")
-        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
     }
 
 
@@ -118,32 +118,32 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     // Log.d("stateOfAsset 2",currentVideoItem.name!!)
                     //Log.d("stateOfAsset 2",percentage.toString())
                     if (name == null) {
-                        itemBinding?.itemBinding.flDeleteWatchlist?.visibility = View.GONE
+                        itemBinding.itemBinding.flDeleteWatchlist.visibility = View.GONE
                     }
                     else if (name.equals("paused", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
                     }
                     else if (name.equals("started", ignoreCase = true)){
                         // itemBinding?.flDeleteWatchlist?.visibility = View.VISIBLE
                         // itemBinding?.videoDownloading?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADING
-                        itemBinding?.itemBinding?.videoDownloading?.progress = percentage
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADING
+                        itemBinding.itemBinding.videoDownloading.progress = percentage
                         // itemBinding?.videoDownloaded?.visibility = View.GONE
                         // itemBinding?.pauseDownload?.visibility = View.GONE
                         // itemBinding?.loadingDownload?.visibility = View.GONE
                     }
                     else if (name.equals("completed", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
-                        itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
-                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADED
+                        itemBinding.itemBinding.descriptionTxt.text = downloadSize
+                        itemBinding.itemBinding.tvGenre.visibility = View.VISIBLE
+                        itemBinding.itemBinding.tvGenre.text = DownloadStatus.Completed.name
 
-                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.tvGenre.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
-                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.descriptionTxt.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }else{
 
@@ -167,32 +167,32 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     Log.d("stateOfAsset 2",currentVideoItem.name!!)
                     Log.d("stateOfAsset 2",percentage.toString())
                     if (name == null) {
-                        itemBinding?.itemBinding.flDeleteWatchlist?.visibility = View.GONE
+                        itemBinding.itemBinding.flDeleteWatchlist.visibility = View.GONE
                     }
                     else if (name.equals("paused", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.PAUSE
-                        itemBinding?.itemBinding?.descriptionTxt?.text = DownloadStatus.PAUSED.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.PAUSE
+                        itemBinding.itemBinding.descriptionTxt.text = DownloadStatus.PAUSED.name
                     }
                     else if (name.equals("started", ignoreCase = true)){
                         // itemBinding?.flDeleteWatchlist?.visibility = View.VISIBLE
                         // itemBinding?.videoDownloading?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADING
-                        itemBinding?.itemBinding?.videoDownloading?.progress = percentage
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADING
+                        itemBinding.itemBinding.videoDownloading.progress = percentage
                         // itemBinding?.videoDownloaded?.visibility = View.GONE
                         // itemBinding?.pauseDownload?.visibility = View.GONE
                         // itemBinding?.loadingDownload?.visibility = View.GONE
                     }
                     else if (name.equals("completed", ignoreCase = true)){
-                        itemBinding?.itemBinding?.downloadStatus = DownloadStatus.DOWNLOADED
-                        itemBinding?.itemBinding?.descriptionTxt?.text = downloadSize
-                        itemBinding?.itemBinding?.tvGenre?.visibility = View.VISIBLE
-                        itemBinding?.itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
+                        itemBinding.itemBinding.downloadStatus = DownloadStatus.DOWNLOADED
+                        itemBinding.itemBinding.descriptionTxt.text = downloadSize
+                        itemBinding.itemBinding.tvGenre.visibility = View.VISIBLE
+                        itemBinding.itemBinding.tvGenre.text = DownloadStatus.Completed.name
 
-                        itemBinding?.itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.tvGenre.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
-                        itemBinding?.itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                        itemBinding.itemBinding.descriptionTxt.setTextColor(
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }else{
 
@@ -291,7 +291,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private fun accuranceOfEpisodes(occuranceList: java.util.ArrayList<String>?,seriesId:String) : Int{
         val occurrences = Collections.frequency(occuranceList, seriesId)
-        return occurrences;
+        return occurrences
     }
 
 
@@ -350,10 +350,10 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                         itemBinding?.tvGenre?.text = DownloadStatus.Completed.name
 
                         itemBinding?.tvGenre?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                         itemBinding?.descriptionTxt?.setTextColor(
-                            context.getResources().getColor(R.color.more_text_color_dark)
+                            context.resources.getColor(R.color.more_text_color_dark)
                         )
                     }else{
 
@@ -470,7 +470,7 @@ class MyDownloadsFragmentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     Log.w("sameid",index.toString())
                     itemList[index] = value
                     notifyItemChanged(index,PAY)
-                    break;
+                    break
                 }
             }
         }

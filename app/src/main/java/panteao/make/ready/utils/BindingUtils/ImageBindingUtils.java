@@ -7,13 +7,11 @@ import androidx.databinding.BindingAdapter;
 
 import com.make.enums.ImageType;
 
-import panteao.make.ready.utils.Utils;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.ImageHelper;
 
 public class ImageBindingUtils {
     @BindingAdapter(value = {"imageUrl", "placeholder", "errorImage", "type"}, requireAll = false)
-    public static void addSrc(ImageView imageView, String url, Drawable placeholder, Drawable errorImage, String type) {
+    public static void addSrc(ImageView imageView, String url, Drawable placeholder, String type) {
         if (url != null) {
             if (placeholder == null) {
                 loadImage(imageView, url);

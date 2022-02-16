@@ -18,17 +18,8 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.ActivitySeriesDetailBinding;
-import panteao.make.ready.databinding.DetailScreenBinding;
-import panteao.make.ready.databinding.EpisodeScreenBinding;
-import panteao.make.ready.databinding.FragmentMoreBinding;
-import panteao.make.ready.databinding.LiveDetailBinding;
-import panteao.make.ready.databinding.LoginBinding;
 import panteao.make.ready.databinding.ProfileScreenBinding;
 import panteao.make.ready.databinding.ToolbarBinding;
-
-import panteao.make.ready.activities.search.ui.ActivitySearch;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 
 @SuppressWarnings("EmptyMethod")
 public class ToolBarHandler {
@@ -74,7 +65,7 @@ public class ToolBarHandler {
         });
     }
 
-    public void setAction(LoginBinding binding) {
+    public void setAction() {
 
        /* binding.signUpTxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +76,7 @@ public class ToolBarHandler {
 */
     }
 
-    public void setAction(FragmentMoreBinding binding) {
+    public void setAction() {
 /*
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +193,7 @@ public class ToolBarHandler {
 
     }
 
-    public void setMoreListner(LinearLayout more_text, int id, String title, int flag, int type) {
+    public void setMoreListner(LinearLayout more_text) {
 
         more_text.setOnClickListener(view -> {
 
@@ -232,7 +223,7 @@ public class ToolBarHandler {
         });
     }
 
-    public void setSeriesAction(ActivitySeriesDetailBinding binding) {
+    public void setSeriesAction() {
     }
 
     public void profileAction(ProfileScreenBinding binding) {

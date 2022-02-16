@@ -94,7 +94,6 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
         val mAdapter = ArrayObjectAdapter(PopularSearchCardPresenter("16x9"))
                 activity ?. let { fragmentActivity ->
             railInjectionHelper.getPlayListDetailsWithPagination(
-                fragmentActivity,
                 SDKConfig.getInstance().popularSearchId,
                 0,
                 5,
@@ -104,7 +103,7 @@ class PopularSearchFragment : VerticalGridSupportFragment(), OnItemViewClickedLi
                     if (it.enveuVideoItemBeans != null || it.enveuVideoItemBeans!!.size <= 0) {
                         mOnPopularSearchInteractionListener?.noPopularSearchesFound()
                     } else {
-                        mAdapter.addAll(0, it.getEnveuVideoItemBeans())
+                        mAdapter.addAll(0, it.enveuVideoItemBeans)
                     }
                 } else {
                     activity?.applicationContext?.let {

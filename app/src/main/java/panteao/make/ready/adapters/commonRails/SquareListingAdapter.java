@@ -24,19 +24,13 @@ import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 
 import java.util.List;
 
-import panteao.make.ready.activities.listing.callback.ItemClickListener;
-import panteao.make.ready.activities.series.ui.SeriesDetailActivity;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
-
 
 public class SquareListingAdapter extends RecyclerView.Adapter<SquareListingAdapter.SingleItemRowHolder> {
 
     private final String contentType;
     private final List<EnveuVideoItemBean> itemsList;
     private final Activity mContext;
-    ItemClickListener listener;
+    final ItemClickListener listener;
     private long mLastClickTime = 0;
 
     public SquareListingAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ItemClickListener callBack) {
@@ -92,7 +86,7 @@ public class SquareListingAdapter extends RecyclerView.Adapter<SquareListingAdap
                 holder.squareItemBinding.tvTitle.setText(itemsList.get(i).getTitle());
                 if (contentType.equalsIgnoreCase(AppConstants.VOD)) {
                     holder.squareItemBinding.itemImage.setOnClickListener(view -> {
-                        listener.onRowItemClicked(itemsList.get(i), i);
+                        listener.onRowItemClicked();
                     });
 
                     if (itemsList.get(i).getPosterURL() != null && !itemsList.get(i).getPosterURL().equalsIgnoreCase("")) {

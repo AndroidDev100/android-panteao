@@ -15,42 +15,23 @@ import android.view.View;
 
 
 import panteao.make.ready.R;
-import panteao.make.ready.baseModels.BaseBindingFragment;
-import panteao.make.ready.player.kalturaPlayer.KalturaFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.kaltura.android.exoplayer2.ui.DefaultTimeBar;
 import com.kaltura.android.exoplayer2.ui.TimeBar;
-import com.kaltura.android.exoplayer2.util.Util;
-import com.kaltura.playkit.PKLog;
-import com.kaltura.playkit.Player;
-import com.kaltura.playkit.PlayerState;
-import com.kaltura.playkit.Utils;
-import com.kaltura.playkit.ads.AdController;
-import com.kaltura.playkit.utils.Consts;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -63,7 +44,7 @@ import java.util.Locale;
 public class PlayerControlsFragment extends Fragment {
     private Runnable viewHideShowRunnable;
     private Handler viewHideShowTimeHandler;
-    private boolean timer = true;
+    private final boolean timer = true;
     private boolean mFlag = false;
     public ImageView qualitySettings;
     private Formatter formatter;
@@ -81,12 +62,12 @@ public class PlayerControlsFragment extends Fragment {
     public ImageView backArrow;
     private DefaultTimeBar seekBar;
     private long playbackDuration, playbackCurrentPosition;
-    private boolean isOffline = false;
+    private final boolean isOffline = false;
     private LinearLayout seekbarLayout;
     public ViewGroup childControls;
     public Button skipBtn;
     public LinearLayout bingeBtn;
-    private boolean dragging = false;
+    private final boolean dragging = false;
     public ConstraintLayout bingeLay;
     private CountDownTimer mTimer;
     private TextView skipduration,binge_text;
@@ -103,7 +84,7 @@ public class PlayerControlsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private boolean isPipEnabled = false;
+    private final boolean isPipEnabled = false;
     private boolean seeking = false;
 
     public PlayerControlsFragment() {
@@ -416,7 +397,7 @@ public class PlayerControlsFragment extends Fragment {
                 });
     }
 
-    public void showBingeWatch(long position, boolean isFirstCalled, int totalEpisodes, int runningEpisodes, String fromActivity) {
+    public void showBingeWatch(long position, int totalEpisodes, int runningEpisodes, String fromActivity) {
         if (totalEpisodes == runningEpisodes) {
 
         } else {
@@ -584,24 +565,24 @@ public class PlayerControlsFragment extends Fragment {
     }
 
     private void findId(View view) {
-        btnPause = (ImageView) view.findViewById(R.id.pause);
-        btnForward = (ImageView) view.findViewById(R.id.forward);
-        btnRewind = (ImageView) view.findViewById(R.id.rew);
-        bingeLay = (ConstraintLayout) view.findViewById(R.id.bingeLay);
-        skipduration = (TextView) view.findViewById(R.id.skip_duration);
-        binge_text = (TextView) view.findViewById(R.id.bingeTxt);
-        replay = (FrameLayout) view.findViewById(R.id.replay);
+        btnPause = view.findViewById(R.id.pause);
+        btnForward = view.findViewById(R.id.forward);
+        btnRewind = view.findViewById(R.id.rew);
+        bingeLay = view.findViewById(R.id.bingeLay);
+        skipduration = view.findViewById(R.id.skip_duration);
+        binge_text = view.findViewById(R.id.bingeTxt);
+        replay = view.findViewById(R.id.replay);
         seekBar = view.findViewById(R.id.exo_progress);
         currentPosition = view.findViewById(R.id.exo_position);
         totalDuration = view.findViewById(R.id.exo_duration);
         seekbarLayout = view.findViewById(R.id.seekbar_ll);
         childControls = view.findViewById(R.id.control_layout);
-        seekBarControl = (View) view.findViewById(R.id.seekbarLayout);
-        backArrow = (ImageView) view.findViewById(R.id.backArrow);
-        fullscreen = (ImageView) view.findViewById(R.id.fullscreen);
+        seekBarControl = view.findViewById(R.id.seekbarLayout);
+        backArrow = view.findViewById(R.id.backArrow);
+        fullscreen = view.findViewById(R.id.fullscreen);
         bingeBtn = view.findViewById(R.id.bingeBtn);
         skipBtn = view.findViewById(R.id.skipBtn);
-        qualitySettings = (ImageView) view.findViewById(R.id.iv_quality);
+        qualitySettings = view.findViewById(R.id.iv_quality);
         bingeLay.setVisibility(View.GONE);
         replay.setVisibility(View.GONE);
         bingeBtn.setVisibility(View.GONE);

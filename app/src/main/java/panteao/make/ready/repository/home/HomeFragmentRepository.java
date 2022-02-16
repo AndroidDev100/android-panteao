@@ -1,7 +1,6 @@
 package panteao.make.ready.repository.home;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -9,9 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.make.baseCollection.baseCategoryModel.BaseCategory;
 import com.make.baseCollection.baseCategoryServices.BaseCategoryServices;
-import com.make.bookmarking.bean.continuewatching.ContinueWatchingBookmark;
 import com.make.callBacks.EnveuCallBacks;
-import com.make.watchHistory.beans.ItemsItem;
 import com.make.watchHistory.beans.ResponseWatchHistoryAssetList;
 import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
 import panteao.make.ready.userAssetList.ResponseUserAssetList;
@@ -55,13 +52,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistResponses;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.playlistResponse.PlaylistsItem;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.PlaylistRailData;
-import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,7 +103,7 @@ public class HomeFragmentRepository {
     }
 
 
-    public LiveData<List<CommonRailData>> getPlaylist(int id, List<CommonRailData> adsRail) {
+    public LiveData<List<CommonRailData>> getPlaylist(int id) {
         count = 0;
         MutableLiveData<List<CommonRailData>> playlistResponsesMutableLiveData = new MutableLiveData<>();
         Call<PlaylistResponses> call = endpoint.getPlaylists(id);
@@ -124,7 +114,7 @@ public class HomeFragmentRepository {
                     playlist = response.body().getData().getPlaylists();
                     commonRailData = new ArrayList<>();
                     if (playlist.size() > 0)
-                        getRailData(playlist, playlistResponsesMutableLiveData);
+                        getRailData(playlist);
                     else
                         playlistResponsesMutableLiveData.postValue(new ArrayList<>());
                 } else {
@@ -136,7 +126,7 @@ public class HomeFragmentRepository {
 
             @Override
             public void onFailure(@NonNull Call<PlaylistResponses> call, @NonNull Throwable t) {
-                PrintLogging.printLog("", t.toString());
+                PrintLogging.printLog(t.toString());
                 playlistResponsesMutableLiveData.postValue(new ArrayList<>());
 
             }
@@ -145,7 +135,7 @@ public class HomeFragmentRepository {
     }
 
     private void getRailData
-            (List<PlaylistsItem> playlist, MutableLiveData<List<CommonRailData>> playlistResponsesMutableLiveData) {
+            (List<PlaylistsItem> playlist) {
         if (count != playlist.size()) {
             multiRequestHome(playlist.size(), playlist);
         }
@@ -187,7 +177,7 @@ public class HomeFragmentRepository {
         return ads;
     }
 
-    public LiveData<List<PlaylistRailData>> multiRequestHome(int size, List<
+    public void multiRequestHome(int size, List<
             PlaylistsItem> playlist) {
 
         MutableLiveData<List<PlaylistRailData>> responseHome;
@@ -238,7 +228,6 @@ public class HomeFragmentRepository {
 
                     }
                 });
-        return responseHome;
     }
 
 
@@ -390,7 +379,7 @@ public class HomeFragmentRepository {
     }
 
     String languageCode;
-    public void getContinueWatchingVideos(List<ContinueWatchingBookmark> continueWatchingBookmarkList, String manualImageAssetId, CommonApiCallBack commonApiCallBack) {
+    public void getContinueWatchingVideos(String manualImageAssetId, CommonApiCallBack commonApiCallBack) {
         languageCode= LanguageLayer.getCurrentLanguageCode();
         endpoint.getVideoDetails(manualImageAssetId,languageCode).enqueue(new Callback<EnveuVideoDetailsBean>() {
             @Override
@@ -419,13 +408,13 @@ public class HomeFragmentRepository {
 
             @Override
             public void onFailure(Call<EnveuVideoDetailsBean> call, Throwable t) {
-                commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                commonApiCallBack.onFailure();
 
             }
         });
     }
 
-    public void getWatchHistoryVideos(List<ItemsItem> continueWatchingBookmarkList, String manualImageAssetId, CommonApiCallBack commonApiCallBack) {
+    public void getWatchHistoryVideos(String manualImageAssetId, CommonApiCallBack commonApiCallBack) {
         languageCode= LanguageLayer.getCurrentLanguageCode();
         endpoint.getVideoDetails(manualImageAssetId,languageCode).enqueue(new Callback<EnveuVideoDetailsBean>() {
             @Override
@@ -445,14 +434,14 @@ public class HomeFragmentRepository {
                     }
                     commonApiCallBack.onSuccess(enveuVideoDetailsArrayList);*/
                 } else {
-                    commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                    commonApiCallBack.onFailure();
 
                 }
             }
 
             @Override
             public void onFailure(Call<EnveuVideoDetailsBean> call, Throwable t) {
-                commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                commonApiCallBack.onFailure();
 
             }
         });
@@ -499,7 +488,7 @@ public class HomeFragmentRepository {
                     ResponseGetIsWatchlist empty = new ResponseGetIsWatchlist();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -552,7 +541,7 @@ public class HomeFragmentRepository {
                     ResponseEmpty empty = new ResponseEmpty();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -682,7 +671,7 @@ public class HomeFragmentRepository {
                     ResponseIsLike empty = new ResponseIsLike();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -734,7 +723,7 @@ public class HomeFragmentRepository {
                     ResponseEmpty empty = new ResponseEmpty();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -786,7 +775,7 @@ public class HomeFragmentRepository {
                     ResponseEmpty empty = new ResponseEmpty();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -837,7 +826,7 @@ public class HomeFragmentRepository {
                     ResponseEmpty empty = new ResponseEmpty();
                     empty.setStatus(false);
                     empty.setResponseCode(AppConstants.RESPONSE_CODE_ERROR);
-                    empty.setDebugMessage(t.getMessage().toString());
+                    empty.setDebugMessage(t.getMessage());
                     responseData.postValue(empty);
                 } catch (Exception e) {
 
@@ -850,7 +839,7 @@ public class HomeFragmentRepository {
     }
 
 
-    public void getWatchListVideos(List<ItemsItem> continueWatchingBookmarkList, String videoIds, CommonApiCallBack commonApiCallBack) {
+    public void getWatchListVideos(String videoIds, CommonApiCallBack commonApiCallBack) {
         languageCode= LanguageLayer.getCurrentLanguageCode();
         endpoint.getVideoDetails(videoIds,languageCode).enqueue(new Callback<EnveuVideoDetailsBean>() {
             @Override
@@ -869,14 +858,14 @@ public class HomeFragmentRepository {
                     }
                     commonApiCallBack.onSuccess(enveuVideoDetailsArrayList);*/
                 } else {
-                    commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                    commonApiCallBack.onFailure();
 
                 }
             }
 
             @Override
             public void onFailure(Call<EnveuVideoDetailsBean> call, Throwable t) {
-                commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                commonApiCallBack.onFailure();
 
             }
         });

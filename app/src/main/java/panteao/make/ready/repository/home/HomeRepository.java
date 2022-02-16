@@ -34,7 +34,7 @@ public class HomeRepository {
     }
 
 
-    public LiveData<JsonObject> hitApiLogout(boolean session, String token) {
+    public LiveData<JsonObject> hitApiLogout(String token) {
         final MutableLiveData<JsonObject> responseApi;
         {
             responseApi = new MutableLiveData<>();

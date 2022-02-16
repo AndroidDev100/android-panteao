@@ -19,8 +19,6 @@ import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +38,7 @@ public class PurchaseRepository {
         return purchaseRepository;
     }
 
-    public LiveData<PurchaseResponseModel> createNewPurchaseRequest(String token, JsonObject data, PurchaseModel model,String sku) {
+    public LiveData<PurchaseResponseModel> createNewPurchaseRequest(String token, PurchaseModel model, String sku) {
 
         MutableLiveData<PurchaseResponseModel> liveDataPurchaseResponse = new MutableLiveData<>();
 
@@ -254,7 +252,7 @@ public class PurchaseRepository {
                         model.setResponseCode(500);
 
                     } else {
-                        model.setResponseCode(Objects.requireNonNull(response.body().getResponseCode()));
+                        model.setResponseCode(response.body().getResponseCode());
                     }
 
                     liveDataPurchaseResponse.postValue(model);

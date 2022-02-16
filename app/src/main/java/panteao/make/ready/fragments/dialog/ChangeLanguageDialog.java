@@ -57,13 +57,13 @@ public class ChangeLanguageDialog extends DialogFragment {
         alertDialogBuilder.setPositiveButton("" + positiveButtonText, (dialog, which) -> {
             // on success
 //                AlertDialogListener alertDialogListener = (AlertDialogListener) getActivity();
-            alertDialogListener.onFinishDialog(true);
+            alertDialogListener.onFinishDialog();
             dialog.dismiss();
         });
 
             alertDialogBuilder.setNegativeButton("" + getActivity().getResources().getString(R.string.cancel), (dialog, which) -> {
                 // on success
-                alertDialogListener.onFinishDialog(false);
+                alertDialogListener.onFinishDialog();
                 dialog.dismiss();
             });
 
@@ -73,6 +73,6 @@ public class ChangeLanguageDialog extends DialogFragment {
 
     // 1. Defines the listener interface with a method passing back data result.
     public interface AlertDialogListener {
-        void onFinishDialog(boolean click);
+        void onFinishDialog();
     }
 }

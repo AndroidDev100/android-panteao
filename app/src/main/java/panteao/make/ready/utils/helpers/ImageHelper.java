@@ -12,9 +12,6 @@ import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.R;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
-import panteao.make.ready.utils.commonMethods.AppCommonMethod;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 
 
 public class ImageHelper {
@@ -31,14 +28,14 @@ public class ImageHelper {
     }
 
     public void loadImageTo(ImageView imageView, String imageUrl) {
-        PrintLogging.printLog("ImageURLL",imageView.getContext()+" : "+imageUrl);
+        PrintLogging.printLog(imageView.getContext()+" : "+imageUrl);
         requestOptions.placeholder(R.drawable.placeholder_potrait);
         Glide.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
                 load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
     }
 
     public void loadListImage(ImageView imageView, String imageUrl) {
-        PrintLogging.printLog("ImageURLL","ImageURLL-->>"+imageUrl);
+        PrintLogging.printLog("ImageURLL-->>"+imageUrl);
         requestOptions.placeholder(R.drawable.placeholder_landscape);
         Glide.with(mGlideObj.getContext()).setDefaultRequestOptions(requestOptions).
                 load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(imageView);
@@ -82,7 +79,7 @@ public class ImageHelper {
                 load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.1f).into(imageView);
     }
 
-    public void loadImageTo(ImageView imageView, String imageUrl, SimpleTarget<Drawable> simpleTarget) {
+    public void loadImageTo(String imageUrl, SimpleTarget<Drawable> simpleTarget) {
         Glide.with(mGlideObj.getContext()).
                 load(imageUrl).transition(DrawableTransitionOptions.withCrossFade(250)).thumbnail(0.6f).into(simpleTarget);
 

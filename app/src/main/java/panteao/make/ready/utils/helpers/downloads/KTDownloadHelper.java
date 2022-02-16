@@ -24,12 +24,9 @@ import com.kaltura.tvplayer.KalturaPlayer;
 import com.kaltura.tvplayer.OfflineManager;
 import com.kaltura.tvplayer.offline.OfflineManagerSettings;
 
-import java.io.IOException;
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import panteao.make.ready.R;
@@ -53,11 +50,11 @@ import panteao.make.ready.utils.helpers.ksPreferenceKeys.KsPreferenceKeys;
 import panteao.make.ready.utils.inAppBilling.CancelCallBack;
 
 public class KTDownloadHelper {
-    Activity zContext;
+    final Activity zContext;
     private OfflineManager manager;
     KTDownloadEvents ktDownloadEvents;
     ManagerStart managerStartListener;
-    DownloadDataBase db;
+    final DownloadDataBase db;
 
     public KTDownloadHelper(Activity zContext) {
         this.zContext=zContext;
@@ -113,7 +110,7 @@ public class KTDownloadHelper {
             @Override
             public void onAssetDownloadFailed(@NonNull String assetId, @NonNull Exception error) {
                 if (ktDownloadEvents!=null){
-                    ktDownloadEvents.onAssetDownloadFailed(assetId,error);
+                    ktDownloadEvents.onAssetDownloadFailed();
                 }
                 Log.w("downloadStatus",assetId+" "+"onAssetDownloadFailed "+error.toString());
                // toastLong("Download of" + error + "failed:" + error);
@@ -300,7 +297,7 @@ public class KTDownloadHelper {
         }else   if (assetType.equalsIgnoreCase(MediaTypeConstants.getInstance().getChapter())){
             if (seriesID!=null && !seriesID.equalsIgnoreCase("")){
                // int episodesCount=numberOfEpisodes(seriesID);
-                checkTutorialChapters(title,kentryid,assetType,seriesID,seriesName,imageURL,episodeNumber,seasonNumber,seriesImageURL,expiryTimeStamp);
+                checkTutorialChapters(title,kentryid,assetType,seriesID,seriesName,imageURL, seriesImageURL,expiryTimeStamp);
             }else {
                 DownloadItemEntity downloadItemEntity=new DownloadItemEntity(title,assetType,true,"",expiryTimeStamp,kentryid,
                         -1,"","",seriesName,imageURL, AppCommonMethod.getCurrentTimeStamp(),seriesImageURL,count);
@@ -314,7 +311,7 @@ public class KTDownloadHelper {
         }
     }
 
-    private void checkTutorialChapters(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL,String episodeNumber,int seasonNumber,String seriesImageURL,String expiryTimeStamp) {
+    private void checkTutorialChapters(String title, String kentryid, String assetType, String seriesID, String seriesName, String imageURL, String seriesImageURL, String expiryTimeStamp) {
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -367,8 +364,8 @@ public class KTDownloadHelper {
 
 
     }
-    int count=0;
-    public int numberOfEpisodes(String seriesID) {
+    final int count=0;
+    public int numberOfEpisodes() {
         DBExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -412,7 +409,7 @@ public class KTDownloadHelper {
         binding.recyclerView.setNestedScrollingEnabled(false);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(zContext, RecyclerView.VERTICAL, false));
-        DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(binding.recyclerView.getContext(),binding.recyclerView.VERTICAL);
+        DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(binding.recyclerView.getContext(), RecyclerView.VERTICAL);
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
         if (typeofTVOD.equalsIgnoreCase("")){
             String[] downloadQualityList = zContext.getResources().getStringArray(R.array.download_quality);
@@ -662,7 +659,7 @@ public class KTDownloadHelper {
             OfflineManager.AssetInfo assetInfo=manager.getAssetInfo(kentry);
             if (assetInfo!=null){
                 if (assetInfo.getState()!=null){
-                    ktDownloadEvents.initialStatus(assetInfo.getState());
+                    ktDownloadEvents.initialStatus();
                 }
             }
         }

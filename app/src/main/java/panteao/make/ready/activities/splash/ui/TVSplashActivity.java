@@ -1,7 +1,6 @@
 
 package panteao.make.ready.activities.splash.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -78,9 +77,9 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
     private String currentLanguage;
     private ConfigBean configBean;
     private int configCall = 1;
-    private int count = 0;
-    private String notid = "";
-    private String notAssetType = "";
+    private final int count = 0;
+    private final String notid = "";
+    private final String notAssetType = "";
     private int notificationAssetId = 0;
     JSONObject deepLinkObject = null;
 
@@ -136,13 +135,13 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                 Log.w("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
-            PrintLogging.printLog("Exception", "" + e);
+            PrintLogging.printLog("" + e);
         } catch (NoSuchAlgorithmException e) {
-            PrintLogging.printLog("Exception", "" + e);
+            PrintLogging.printLog("" + e);
         }
     }
 
-    private void callConfig(JSONObject jsonObject, String updateType) {
+    private void callConfig() {
         ConfigManager.getInstance().getConfig(new ApiResponseModel() {
             @Override
             public void onStart() {
@@ -248,7 +247,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
         }
     }
 
-    private void updateAndroidSecurityProvider(Activity callingActivity) {
+    private void updateAndroidSecurityProvider() {
         try {
             ProviderInstaller.installIfNeeded(this);
         } catch (GooglePlayServicesRepairableException e) {
@@ -272,7 +271,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
     }
 
     private void redirectToHome() {
-        boolean updateValue = getForceUpdateValue(null, 2);
+        boolean updateValue = getForceUpdateValue();
         if (!updateValue) {
             Log.w("branchRedirectors", "homeRedirection");
             homeRedirection();
@@ -284,7 +283,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
         if (configCall == 1) {
             Log.w("branchRedirectors", configCall + "");
             configCall = 2;
-            callConfig(null, null);
+            callConfig();
         }
 
     }
@@ -305,7 +304,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                     public void run() {
                         getBinding().progressBar.setVisibility(View.VISIBLE);
                         configRetry = true;
-                        callConfig(null, null);
+                        callConfig();
                     }
                 }, 200);
             }
@@ -319,15 +318,15 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
     }
 
 
-    private void redirections(JSONObject jsonObject) {
+    private void redirections() {
         try {
-            callConfig(jsonObject, null);
+            callConfig();
         } catch (Exception e) {
 
         }
     }
 
-    private void brachRedirections(JSONObject jsonObject) {
+    private void brachRedirections() {
         try {
             if (jsonObject != null && jsonObject.has("contentType") && jsonObject.has("id")) {
                 int assestId = 0;
@@ -340,7 +339,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        launchSeriesPage(contentType, assestId);
+                        launchSeriesPage();
                         new ActivityLauncher(this).homeScreen(this, HomeActivity.class);
                         new ActivityLauncher(TVSplashActivity.this).seriesDetailScreen(TVSplashActivity.this, SeriesDetailActivity.class, assestId);
                         finish();
@@ -404,20 +403,20 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
         }
     }
 
-    private void launchSeriesPage(String contentType, int assestId) {
+    private void launchSeriesPage() {
 
     }
 
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
 //            getBinding().noConnectionLayout.noConnectionLayout.setVisibility(View.GONE);
             callConfig();
@@ -430,7 +429,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
 
     JSONObject notificationObject = null;
 
-    private void parseNotification(String notid, String assetType) {
+    private void parseNotification() {
         if (notid != null && !assetType.equalsIgnoreCase("")) {
             notificationAssetId = Integer.parseInt(notid);
             if (notificationAssetId > 0 && assetType != null && !assetType.equalsIgnoreCase("")) {
@@ -466,7 +465,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                                 KsPreferenceKeys.getInstance().setAppPrefBranchIo(true);
                                 KsPreferenceKeys.getInstance().setAppPrefJumpBackId(Integer.parseInt(id));
                                 deepLinkObject = AppCommonMethod.createDynamicLinkObject(id, mediaType);
-                                redirections(deepLinkObject);
+                                redirections();
                                 Log.w("redirectionss", "redirections");
 
                             } else {
@@ -505,7 +504,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
 
     boolean forceUpdate = false;
 
-    private boolean getForceUpdateValue(JSONObject jsonObject, int type) {
+    private boolean getForceUpdateValue() {
         Log.i("branchRedirectors er", "forceupdate");
         if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
             AppCommonMethod.updateLanguage("en", PanteaoApplication.getInstance());
@@ -524,7 +523,7 @@ public class TVSplashActivity extends TvBaseBindingActivity<ActivityTvSplashBind
                                 getBinding().progressBar.setVisibility(View.VISIBLE);
                                 forceUpdateHandler.hideDialog();
 //                                clapanimation=1;
-                                callConfig(null, updateType);
+                                callConfig();
                             }
                         }
                     });

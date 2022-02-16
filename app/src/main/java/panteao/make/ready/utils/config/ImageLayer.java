@@ -1,14 +1,9 @@
 package panteao.make.ready.utils.config;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
-import panteao.make.ready.beanModelV3.playListModelV2.PlayListDetailsResponse;
 import panteao.make.ready.beanModelV3.playListModelV2.Thumbnail;
 import panteao.make.ready.beanModelV3.playListModelV2.VideosItem;
 import panteao.make.ready.beanModelV3.searchV2.ItemsItem;
@@ -80,7 +75,7 @@ public class ImageLayer {
     }
 
 
-    public String getHeroImageUrl(PlayListDetailsResponse item) {
+    public String getHeroImageUrl() {
         String finalUrl = "";
 //        try {
 //

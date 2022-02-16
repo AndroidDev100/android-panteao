@@ -22,11 +22,11 @@ import android.widget.FrameLayout;
 
 abstract class PreviewAnimator {
 
-    View morphView;
-    View previewFrameView;
-    FrameLayout previewFrameLayout;
-    PreviewView previewView;
-    ViewGroup parent;
+    final View morphView;
+    final View previewFrameView;
+    final FrameLayout previewFrameLayout;
+    final PreviewView previewView;
+    final ViewGroup parent;
 
     public PreviewAnimator(ViewGroup parent, PreviewView previewView, View morphView,
                            FrameLayout previewFrameLayout, View previewFrameView) {

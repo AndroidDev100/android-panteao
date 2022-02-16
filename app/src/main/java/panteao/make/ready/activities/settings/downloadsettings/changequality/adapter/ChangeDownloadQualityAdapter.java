@@ -23,9 +23,9 @@ public class ChangeDownloadQualityAdapter extends RecyclerView.Adapter<ChangeDow
 
     private final List<String> downloadQualities;
     // private int pos = new KsPreferenceKeys(ApplicationMain.getAppContext()).getQualityPosition();
-    private Activity activity;
+    private final Activity activity;
     int pos = 0;
-    private KsPreferenceKeys preference;
+    private final KsPreferenceKeys preference;
 
     public ChangeDownloadQualityAdapter(Activity activity, List<String> downloadQualities) {
         preference = KsPreferenceKeys.getInstance();

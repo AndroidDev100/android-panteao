@@ -3,7 +3,6 @@ package panteao.make.ready.beanModel;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -58,10 +57,11 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
     String playListId;
     private T viewModel;
-    private boolean mIsLoading = true, isScrolling = false;
+    private final boolean mIsLoading = true;
+    private final boolean isScrolling = false;
     private int counter = 0;
     private int swipeToRefresh = 0;
-    private int count = 0;
+    private final int count = 0;
     private int counterValueApiFail = 0;
     private CommonAdapter adapter;
     private int mScrollY;
@@ -72,14 +72,14 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     private boolean isLogin;
     private List<RailCommonData> railCommonDataList = new ArrayList<>();
     private CommonAdapterNew adapterNew;
-    private long mLastClickTime = 0;
+    private final long mLastClickTime = 0;
 
     protected void setViewModel(Class<? extends HomeBaseViewModel> viewModelClass) {
        viewModel = (T) new ViewModelProvider(this).get(viewModelClass);
     }
 
     @Override
-    public FragmentHomeBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public FragmentHomeBinding inflateBindingLayout() {
         return FragmentHomeBinding.inflate(inflater);
     }
 
@@ -148,13 +148,13 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 && NetworkConnectivity.isOnline(getActivity())) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
             adapterNew = null;
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().swipeContainer.setRefreshing(true);
             UIinitialization();
@@ -221,7 +221,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                     getBinding().swipeContainer.setRefreshing(false);
                     if (adapterNew == null) {
                         new RecyclerAnimator(getActivity()).animate(getBinding().myRecyclerView);
-                        adapterNew = new CommonAdapterNew(getContext(), railCommonDataList, TabsBaseFragment.this::railItemClick, TabsBaseFragment.this::moreRailClick);
+                        adapterNew = new CommonAdapterNew(getContext(), railCommonDataList, TabsBaseFragment.this, TabsBaseFragment.this);
                         getBinding().myRecyclerView.setAdapter(adapterNew);
                     } else {
                         synchronized (railCommonDataList) {
@@ -234,7 +234,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
+            public void onFailure() {
                 if (throwable.getMessage().equalsIgnoreCase("No Data")) {
                     getBinding().swipeContainer.setRefreshing(false);
                     getBinding().myRecyclerView.setVisibility(View.GONE);
@@ -307,13 +307,13 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
     }
 
 
-    private void parseSuccessData(Object item) {
+    private void parseSuccessData() {
         if (item instanceof RailCommonData) {
             RailCommonData railCommonData = (RailCommonData) item;
             railCommonDataList.add(railCommonData);
             getBinding().swipeContainer.setRefreshing(false);
             if (adapterNew == null) {
-                adapterNew = new CommonAdapterNew(getContext(), railCommonDataList, TabsBaseFragment.this::railItemClick, TabsBaseFragment.this::moreRailClick);
+                adapterNew = new CommonAdapterNew(getContext(), railCommonDataList, TabsBaseFragment.this, TabsBaseFragment.this);
                 getBinding().myRecyclerView.setAdapter(adapterNew);
             } else {
                 synchronized (railCommonDataList) {
@@ -327,7 +327,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
 
     private void callShimmer() {
-        ShimmerAdapter shimmerAdapter = new ShimmerAdapter(getActivity(), new ShimmerDataModel(getActivity()).getList(0), new ShimmerDataModel(getActivity()).getSlides());
+        ShimmerAdapter shimmerAdapter = new ShimmerAdapter(getActivity(), new ShimmerDataModel().getList(0));
         getBinding().myRecyclerView.setAdapter(shimmerAdapter);
     }
 
@@ -386,14 +386,14 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
 
 
     @Override
-    public void railItemClick(RailCommonData railCommonData, int position) {
+    public void railItemClick() {
         try {
 //            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(position).getTitle(), railCommonData.getEnveuVideoItemBeans().get(position).getAssetType(), getActivity(), position);
         } catch (Exception e) {
 
         }
         if (railCommonData.getScreenWidget().getType() != null && railCommonData.getScreenWidget().getLayout().equalsIgnoreCase(Layouts.HRO.name())) {
-            heroClickRedirection(railCommonData);
+            heroClickRedirection();
         } else {
 
             if (railCommonData.getEnveuVideoItemBeans().get(position).getAssetType() == MediaTypeConstants.getInstance().getSeries()) {
@@ -410,9 +410,9 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
         }
     }
 
-    private void heroClickRedirection(RailCommonData railCommonData) {
+    private void heroClickRedirection() {
         try {
-            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(0).getTitle(), railCommonData.getEnveuVideoItemBeans().get(0).getAssetType(), getActivity(), 0);
+            AppCommonMethod.trackFcmEvent(railCommonData.getEnveuVideoItemBeans().get(0).getTitle(), railCommonData.getEnveuVideoItemBeans().get(0).getAssetType(), getActivity());
         } catch (Exception e) {
 
         }
@@ -423,7 +423,7 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 if (AppCommonMethod.getCheckKEntryId(railCommonData.getEnveuVideoItemBeans().get(0).getkEntryId())) {
                     videoId = railCommonData.getEnveuVideoItemBeans().get(0).getkEntryId();
                 }
-                AppCommonMethod.heroAssetRedirections(railCommonData,getActivity(),videoId,Integer.parseInt(railCommonData.getScreenWidget().getLandingPageAssetId()),"0",false);
+                AppCommonMethod.heroAssetRedirections(railCommonData,getActivity(),videoId);
 
             } else if (landingPageType.equals(LandingPageType.HTM.name())) {
                 Intent webViewIntent = new Intent(getActivity(), WebViewActivity.class);
@@ -440,13 +440,13 @@ public class TabsBaseFragment<T extends HomeBaseViewModel> extends BaseBindingFr
                 }
             } else if (landingPageType.equals(LandingPageType.PLT.name())) {
                 Logger.e("MORE RAIL CLICK", new Gson().toJson(railCommonData));
-                moreRailClick(railCommonData, 0);
+                moreRailClick();
             }
         }
     }
 
     @Override
-    public void moreRailClick(RailCommonData data, int position) {
+    public void moreRailClick() {
        try {
            if (data.getScreenWidget() != null) {
                if (data.getScreenWidget().getContentID() != null)

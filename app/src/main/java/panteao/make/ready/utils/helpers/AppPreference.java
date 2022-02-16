@@ -15,7 +15,7 @@ public class AppPreference{
     private final SharedPreferences.Editor mEditor;
     private static final String RECENT_SEARCH_LIST = "recent_search_list";
     private final SharedPreferences mPreferences;
-    private CryptUtil cryptUtil;
+    private final CryptUtil cryptUtil;
 
     private AppPreference(Context context) {
          mPreferences = context.getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);

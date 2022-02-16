@@ -1,7 +1,6 @@
 package panteao.make.ready.activities.listing.listui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -20,8 +19,6 @@ import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.R;
 import panteao.make.ready.adapters.CommonShimmerAdapter;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.beanModel.responseModels.series.season.SeasonResponse;
 import panteao.make.ready.databinding.ListingActivityBinding;
 import panteao.make.ready.utils.MediaTypeConstants;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -33,11 +30,6 @@ import panteao.make.ready.utils.helpers.RailInjectionHelper;
 import panteao.make.ready.utils.helpers.RecyclerAnimator;
 
 import java.util.Objects;
-
-import panteao.make.ready.adapters.CommonShimmerAdapter;
-import panteao.make.ready.baseModels.BaseBindingActivity;
-import panteao.make.ready.beanModel.responseModels.series.season.SeasonResponse;
-import panteao.make.ready.utils.MediaTypeConstants;
 
 public class ListActivity extends BaseBindingActivity<ListingActivityBinding> implements ItemClickListener {
     String playListId;
@@ -51,10 +43,10 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
     private int mScrollY;
     private int shimmerType;
     private RailCommonData listData;
-    private long mLastClickTime = 0;
+    private final long mLastClickTime = 0;
 
     @Override
-    public ListingActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ListingActivityBinding inflateBindingLayout() {
         return ListingActivityBinding.inflate(inflater);
     }
 
@@ -67,7 +59,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
         flag = getIntent().getIntExtra("flag", 0);
         shimmerType = getIntent().getIntExtra("shimmerType", 0);
         baseCategory = getIntent().getExtras().getParcelable("baseCategory");
-        PrintLogging.printLog("", "ValueForImageTYpe " + baseCategory.getWidgetImageType());
+        PrintLogging.printLog("ValueForImageTYpe " + baseCategory.getWidgetImageType());
         modelCall();
         UiIntilization();
         connectionObserver();
@@ -76,14 +68,14 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(ListActivity.this)) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             if (counter == 0)
                 callShimmer();
@@ -174,7 +166,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
                 }
             });*/
 
-            railInjectionHelper.getPlayListDetailsWithPaginationV2(this, playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
+            railInjectionHelper.getPlayListDetailsWithPaginationV2(playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
                 if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
                 } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
@@ -189,7 +181,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                             }
                             listData = railCommonData;
-                            setRail(railCommonData);
+                            setRail();
                             Logger.e("RAIL DATA", String.valueOf(listData.isSeries()));
                         }
                     }
@@ -220,9 +212,9 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
 
     }
 
-    private void setSeasonData(SeasonResponse seasonResponse) {
+    private void setSeasonData() {
         if (!isScrolling) {
-            PrintLogging.printLog("", isScrolling + "isScrolling");
+            PrintLogging.printLog(isScrolling + "isScrolling");
             // commonLandscapeAdapter = new ListAdapter(this, new ArrayList<>(), seasonResponse.getData().getContinueWatchingBookmarks(), AppConstants.VOD);
             int num = 2;
             boolean tabletSize = ListActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -233,21 +225,21 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
                 else
                     num = 3;
             }
-            itemDecoration(num);
+            itemDecoration();
 
 
             getBinding().listRecyclerview.setAdapter(commonLandscapeAdapter);
             getBinding().progressBar.setVisibility(View.GONE);
         } else {
-            commonLandscapeAdapter.notifyEpisodedata(seasonResponse.getData().getItems());
+            commonLandscapeAdapter.notifyEpisodedata();
             mIsLoading = seasonResponse.getData().getPageInfo().getTotal() != commonLandscapeAdapter.getItemCount();
             getBinding().listRecyclerview.scrollToPosition(mScrollY);
         }
     }
 
-    private void setRail(RailCommonData playlistRailData) {
+    private void setRail() {
         if (isScrolling) {
-            setUiComponents(playlistRailData);
+            setUiComponents();
             getBinding().progressBar.setVisibility(View.GONE);
         } else {
             getBinding().progressBar.setVisibility(View.GONE);
@@ -256,7 +248,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
             if (commonLandscapeAdapter == null) {
                 new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
                 commonLandscapeAdapter = new ListAdapter(this, playlistRailData.getEnveuVideoItemBeans(), this, AppCommonMethod.getListViewType(baseCategory.getContentImageType()));
-                itemDecoration(0);
+                itemDecoration();
 
                 getBinding().listRecyclerview.setAdapter(commonLandscapeAdapter);
             } else
@@ -268,7 +260,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private void setUiComponents(RailCommonData playlistRailData) {
+    private void setUiComponents() {
         if (playlistRailData.getEnveuVideoItemBeans().size() > 0) {
             commonLandscapeAdapter.notifyAdapter(playlistRailData.getEnveuVideoItemBeans());
             mIsLoading = playlistRailData.getMaxContent() != commonLandscapeAdapter.getItemCount();
@@ -277,7 +269,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private void itemDecoration(int i) {
+    private void itemDecoration() {
        /* int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
 
         //  getBinding().listRecyclerview.addItemDecoration(new GridSpacingItemDecoration(i, spacing, true));
@@ -308,7 +300,7 @@ public class ListActivity extends BaseBindingActivity<ListingActivityBinding> im
 
 
     @Override
-    public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
+    public void onRowItemClicked() {
 
         try {
 //            AppCommonMethod.trackFcmEvent(itemValue.getTitle(), itemValue.getAssetType(), ListActivity.this, position);

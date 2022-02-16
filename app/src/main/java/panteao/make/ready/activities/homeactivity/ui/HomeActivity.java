@@ -3,7 +3,6 @@ package panteao.make.ready.activities.homeactivity.ui;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -28,7 +27,6 @@ import panteao.make.ready.callbacks.commonCallbacks.SinetronClick;
 import panteao.make.ready.databinding.ActivityMainBinding;
 import panteao.make.ready.fragments.home.ui.HomeFragment;
 import panteao.make.ready.fragments.more.ui.MoreFragment;
-import panteao.make.ready.fragments.news.ui.NewsFragment;
 import panteao.make.ready.fragments.shows.ui.ShowsFragment;
 import panteao.make.ready.fragments.movies.ui.MovieFragment;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
@@ -40,7 +38,6 @@ import panteao.make.ready.utils.helpers.AnalyticsController;
 import panteao.make.ready.utils.helpers.StringUtils;
 import panteao.make.ready.utils.helpers.ToolBarHandler;
 import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsFragment;
-import panteao.make.ready.utils.helpers.downloads.downloadListing.MyDownloadsNewActivity;
 import panteao.make.ready.utils.helpers.intentlaunchers.ActivityLauncher;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -184,7 +181,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
     }
 
     @Override
-    public ActivityMainBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityMainBinding inflateBindingLayout() {
         return ActivityMainBinding.inflate(inflater);
     }
 
@@ -251,7 +248,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         active = homeFragment;
         ((HomeFragment)homeFragment).updateList();
         ((HomeFragment)homeFragment).updateAdList();
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_HOME,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_HOME,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_HOME);
         Log.d("getScreen",KsPreferenceKeys.getInstance().getScreenName());
 
@@ -261,7 +258,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         getBinding().toolbar.llSearchIcon.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction().hide(active).show(originalFragment).commit();
         active = originalFragment;
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_TOPHITS,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_TOPHITS,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_TOPHITS);
         Log.d("getScreen",KsPreferenceKeys.getInstance().getScreenName());
 
@@ -273,7 +270,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         getBinding().toolbar.llSearchIcon.setVisibility(View.INVISIBLE);
         fragmentManager.beginTransaction().hide(active).show(moreFragment).commit();
         active = moreFragment;
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_MORE,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_MORE,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_MORE);
         Log.d("getScreen",KsPreferenceKeys.getInstance().getScreenName());
 
@@ -284,7 +281,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         fragmentManager.beginTransaction().hide(active).show(premiumFragment).commit();
         active = premiumFragment;
 
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_COMINGSOON,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_COMINGSOON,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_COMINGSOON);
         Log.d("getScreen",KsPreferenceKeys.getInstance().getScreenName());
 
@@ -296,7 +293,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         fragmentManager.beginTransaction().hide(active).show(sinetronFragment).commit();
         active = sinetronFragment;
 
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_LIVETV,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_LIVETV,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_LIVETV);
 
         Log.d("getScreen",KsPreferenceKeys.getInstance().getScreenName());
@@ -310,7 +307,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.content_frame, homeFragment, "1").hide(homeFragment).commitAllowingStateLoss();
         fragmentManager.beginTransaction().hide(active).show(homeFragment).commitAllowingStateLoss();
-        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_HOME,"",HomeActivity.this,0);
+        AppCommonMethod.trackFcmEvent(AppConstants.MAIN_HOME,"",HomeActivity.this);
         KsPreferenceKeys.getInstance().setScreenName(AppConstants.MAIN_HOME);
         UIinitialization();
     }
@@ -420,7 +417,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityMainBinding> imple
 
     private AppUpdateInfo appUpdateInfo;
     @Override
-    public void getAppUpdateCallBack(AppUpdateInfo appUpdateInfo) {
+    public void getAppUpdateCallBack() {
 
         this.appUpdateInfo = appUpdateInfo;
         if (appUpdateInfo != null) {

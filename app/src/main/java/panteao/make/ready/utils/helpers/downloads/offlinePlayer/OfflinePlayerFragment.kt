@@ -13,7 +13,6 @@ import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -44,17 +43,17 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
     private var viewHideShowRunnable: Runnable? = null
     private var viewHideShowTimeHandler: Handler? = null
     private var timer = true
-    override fun inflateBindingLayout(inflater: LayoutInflater): OfflinePlayerFragmentBinding {
+    override fun inflateBindingLayout(): OfflinePlayerFragmentBinding {
         return OfflinePlayerFragmentBinding.inflate(inflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        wakeScreenOn();
+        wakeScreenOn()
     }
 
     private fun wakeScreenOn() {
-        powerManager = requireActivity()!!.getSystemService(POWER_SERVICE) as PowerManager
+        powerManager = requireActivity().getSystemService(POWER_SERVICE) as PowerManager
         wakeLock = powerManager?.newWakeLock(
             PowerManager.FULL_WAKE_LOCK,
             "OfflinePlayerFragment::WakelockTag"
@@ -67,7 +66,7 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
     }
 
     fun initPlayer() {
-        uiHandling();
+        uiHandling()
         var options=PlayerInitOptions(SDKConfig.PARTNER_ID).setAutoPlay(true).setAllowCrossProtocolEnabled(true)
         Log.w("optionss",options.toString())
         player=KalturaBasicPlayer.create(requireActivity(),options)
@@ -105,36 +104,36 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
             togglePlayPause()
         })
 
-        player!!.addListener(this,PlayerEvent.playheadUpdated){
+        player.addListener(this,PlayerEvent.playheadUpdated){
                 event:PKEvent?->
             if (player!==null){
-                binding.seekBar.setDuration(player!!.duration)
-                binding.seekBar.setPosition(player!!.currentPosition)
-                binding.currentTime.setText(stringForTime(player!!.currentPosition))
-                binding.totalDuration.setText(stringForTime(player!!.duration))
+                binding.seekBar.setDuration(player.duration)
+                binding.seekBar.setPosition(player.currentPosition)
+                binding.currentTime.text = stringForTime(player.currentPosition)
+                binding.totalDuration.text = stringForTime(player.duration)
             }
         }
 
-        player!!.addListener(this,PlayerEvent.canPlay){
+        player.addListener(this,PlayerEvent.canPlay){
                 event:PKEvent?->
             if (player!==null){
                 Log.w("optionss","canPlay")
-                binding.seekBar.setDuration(player!!.duration)
-                binding.seekBar.setPosition(player!!.currentPosition)
-                binding.currentTime.setText(stringForTime(player!!.currentPosition))
-                binding.totalDuration.setText(stringForTime(player!!.duration))
+                binding.seekBar.setDuration(player.duration)
+                binding.seekBar.setPosition(player.currentPosition)
+                binding.currentTime.text = stringForTime(player.currentPosition)
+                binding.totalDuration.text = stringForTime(player.duration)
                 player.play()
             }
         }
 
-        player!!.addListener(this,PlayerEvent.loadedMetadata){
+        player.addListener(this,PlayerEvent.loadedMetadata){
                 event:PKEvent?->
             if (player!==null){
                 Log.w("optionss","loadedMetadata")
-                binding.seekBar.setDuration(player!!.duration)
-                binding.seekBar.setPosition(player!!.currentPosition)
-                binding.currentTime.setText(stringForTime(player!!.currentPosition))
-                binding.totalDuration.setText(stringForTime(player!!.duration))
+                binding.seekBar.setDuration(player.duration)
+                binding.seekBar.setPosition(player.currentPosition)
+                binding.currentTime.text = stringForTime(player.currentPosition)
+                binding.totalDuration.text = stringForTime(player.duration)
             }
         }
 
@@ -154,9 +153,9 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
 
         binding.rl.setOnClickListener(View.OnClickListener {
             if (timer) {
-                viewHideShowTimeHandler?.removeCallbacks(viewHideShowRunnable!!);
+                viewHideShowTimeHandler?.removeCallbacks(viewHideShowRunnable!!)
             }
-            ShowAndHideView();
+            ShowAndHideView()
         })
 
         binding.quality.visibility = View.INVISIBLE
@@ -187,7 +186,7 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
     }
 
     private fun hideSoftKeyButton() {
-        val decorView = requireActivity()!!.window.decorView
+        val decorView = requireActivity().window.decorView
         decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_IMMERSIVE // Set the content to appear under the system bars so that the
                     // content doesn't resize when the system bars hide and show.
@@ -226,12 +225,12 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
 
             override fun onScrubMove(timeBar: TimeBar, position: Long) {
                 binding.seekBar.setPosition(position)
-                binding.currentTime.setText(stringForTime(position))
+                binding.currentTime.text = stringForTime(position)
             }
 
             override fun onScrubStop(timeBar: TimeBar, position: Long, canceled: Boolean) {
                     binding.seekBar.setPosition(position)
-                    player!!.seekTo(position)
+                    player.seekTo(position)
             }
         })
 
@@ -299,7 +298,7 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
         super.onResume()
         try {
             val receiverFilter = IntentFilter(Intent.ACTION_HEADSET_PLUG)
-            requireActivity()!!.registerReceiver(headsetRecicer, receiverFilter)
+            requireActivity().registerReceiver(headsetRecicer, receiverFilter)
         } catch (ignored: Exception) {
         }
     }
@@ -307,7 +306,7 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
     override fun onStop() {
         super.onStop()
         if (powerManager!==null && wakeLock!==null){
-            if (wakeLock!!.isHeld()){
+            if (wakeLock!!.isHeld){
                 wakeLock!!.release()
             }
         }
@@ -328,7 +327,7 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
         }
     }
 
-    override fun onCallStateIdle(state: Int) {
+    override fun onCallStateIdle() {
 
     }
 
@@ -338,8 +337,8 @@ class OfflinePlayerFragment : BaseBindingFragment<OfflinePlayerFragmentBinding>(
             if (wakeLock != null) {
                 wakeLock!!.acquire()
             }
-            val mgr = requireActivity()!!.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-            mgr?.listen(
+            val mgr = requireActivity().getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+            mgr.listen(
                 PhoneStateListenerHelper.getInstance(requireActivity()),
                 PhoneStateListener.LISTEN_CALL_STATE
             )

@@ -2,11 +2,9 @@ package panteao.make.ready.activities.videoquality.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +33,7 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
     private ChangeLanguageAdapter notificationAdapter;
 
     @Override
-    public VideoQualityActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public VideoQualityActivityBinding inflateBindingLayout() {
         return VideoQualityActivityBinding.inflate(inflater);
     }
 
@@ -77,15 +75,15 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
     private void connectionObserver() {
 
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
     private ArrayList<LanguageItem> arrayList;
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
             ArrayList<LanguageItem> trackItems = new ArrayList<>();
@@ -117,7 +115,7 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
     }
 
     private void setAdapter() {
-        notificationAdapter = new ChangeLanguageAdapter(ChangeLanguageActivity.this, arrayList, ChangeLanguageActivity.this);
+        notificationAdapter = new ChangeLanguageAdapter(arrayList, ChangeLanguageActivity.this);
         getBinding().recyclerview.setAdapter(notificationAdapter);
     }
 
@@ -133,7 +131,7 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
         getBinding().connection.retryTxt.setOnClickListener(view -> connectionObserver());
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         ChangeLanguageDialog alertDialog = ChangeLanguageDialog.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -145,7 +143,7 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
     int langPos;
 
     @Override
-    public void itemClicked(String name, int position) {
+    public void itemClicked() {
         if (position==0){
             lanName="Thai";
         }else if (position==1){
@@ -157,11 +155,11 @@ public class ChangeLanguageActivity extends BaseBindingActivity<VideoQualityActi
         } else if (preference.getAppLanguage().equalsIgnoreCase(getString(R.string.language_english_title))) {
             AppCommonMethod.updateLanguage("en", ChangeLanguageActivity.this);
         }
-        showDialog("", ChangeLanguageActivity.this.getResources().getString(R.string.change_language_message));
+        showDialog();
     }
 
     @Override
-    public void onFinishDialog(boolean click) {
+    public void onFinishDialog() {
         if (click) {
             preference.setAppLanguage(lanName);
             preference.setAppPrefLanguagePos(langPos);

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SDKConfig {
     private static SDKConfig sdkConfigInstance;
-    boolean isTablet = PanteaoApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
+    final boolean isTablet = PanteaoApplication.getInstance().getResources().getBoolean(R.bool.isTablet);
     ConfigBean configBean;
     private SDKConfig() {
 
@@ -24,19 +24,19 @@ public class SDKConfig {
 
     /*qa keys*/
 //    public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
-    public static String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
-    public static String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
-    public static String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";
-    public static int CONFIG_VERSION = 1;
+    public static final String CONFIG_BASE_URL = "https://experience-manager-fe-api.beta.enveu.com/app/api/v1/config/";
+    public static final String API_KEY_MOB = "ayfodjbdjeuxsnzvjbskhyuzbspcmcfqnpohspylv";
+    public static final String API_KEY_TAB = "jissiylkatgrotfepleryojtlkimilvhqtathxjl";
+    public static final int CONFIG_VERSION = 1;
     public static String ApplicationStatus = "disconnected";
     public static String TERMCONDITION = "https://www.makeready.tv/terms-of-use";
     public static String PRIVACYPOLICY = "https://www.makeready.tv/panteao-privacy-policy";
-    public static String WEBP_QUALITY="filters:format(webp):quality(60)/";
+    public static final String WEBP_QUALITY="filters:format(webp):quality(60)/";
     public static int DOWNLOAD_EXPIRY_DAYS=30;
     public static boolean DOWNLOAD_ENABLE=true;
-    public static int PARTNER_ID= 802792;
-    public static String KALTURA_SERVER_URL =  "https://cdnapisec.kaltura.com";
-    public void setConfigObject(ConfigBean configResponse,boolean isTablet) {
+    public static final int PARTNER_ID= 802792;
+    public static final String KALTURA_SERVER_URL =  "https://cdnapisec.kaltura.com";
+    public void setConfigObject(ConfigBean configResponse) {
         this.configBean=configResponse;
         MediaTypeConstants.getInstance().setConfigObject(configBean);
     }
@@ -152,7 +152,7 @@ public class SDKConfig {
     }
 
     public boolean getBingeWatchingEnabled() {
-        return configBean == null ? false : configBean.getData().getAppConfig().getBingeWatchingEnabled();
+        return configBean != null && configBean.getData().getAppConfig().getBingeWatchingEnabled();
     }
 
     public int getTimer() {
@@ -164,6 +164,6 @@ public class SDKConfig {
     }
 
     public boolean isDownloadEnable() {
-        return configBean == null ? false : configBean.getData().getAppConfig().isDownloadEnable();
+        return configBean != null && configBean.getData().getAppConfig().isDownloadEnable();
     }
 }

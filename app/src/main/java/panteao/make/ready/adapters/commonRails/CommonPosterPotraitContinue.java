@@ -25,12 +25,12 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
 
     private final String contentType;
     private final Activity mContext;
-    private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ArrayList<CommonContinueRail> continuelist;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
+    private final long mLastClickTime = 0;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ArrayList<CommonContinueRail> continuelist;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
 
     public CommonPosterPotraitContinue(Activity context, String contentType, ArrayList<CommonContinueRail> continuelist) {
         this.mContext = context;
@@ -48,7 +48,7 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
         (mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels - 60) / num;
-        itemHeight = (int) (itemWidth * 3) / 2;
+        itemHeight = (itemWidth * 3) / 2;
     }
 
 
@@ -116,7 +116,7 @@ public class CommonPosterPotraitContinue extends RecyclerView.Adapter<CommonPost
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        PosterPotraitItemBinding itemBinding;
+        final PosterPotraitItemBinding itemBinding;
 
         SingleItemRowHolder(PosterPotraitItemBinding itemBinding) {
             super(itemBinding.getRoot());

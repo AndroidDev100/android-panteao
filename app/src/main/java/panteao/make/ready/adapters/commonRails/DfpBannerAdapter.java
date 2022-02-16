@@ -29,18 +29,18 @@ import com.google.android.gms.ads.admanager.AdManagerAdView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
 public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.ViewHolder> {
 
     private final Context mContext;
-    private RailCommonData item;
-    private String deviceId;
+    private final RailCommonData item;
+    private final String deviceId;
     private AdManagerAdRequest adRequest;
-    private String adsType;
-    int height,width;
+    private final String adsType;
+    final int height;
+    final int width;
 
     public DfpBannerAdapter(Context context, RailCommonData item, String adsType,int heigh,int wdth) {
         this.mContext = context;
@@ -92,7 +92,7 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
             adView.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
-                    PrintLogging.printLog("", "AdsLoaded-->" + "success");
+                    PrintLogging.printLog("AdsLoaded-->" + "success");
                     holder.rowDfpBannerBinding.bannerRoot.setVisibility(View.VISIBLE);
                     // Code to be executed when an ad finishes loading.
                 }
@@ -101,7 +101,7 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
                 public void onAdFailedToLoad(LoadAdError errorCode) {
                     // Code to be executed when an ad request fails.
                     holder.rowDfpBannerBinding.bannerRoot.setVisibility(View.GONE);
-                    PrintLogging.printLog("DfpBannerAdapter", "onAdFailedToLoad" + errorCode);
+                    PrintLogging.printLog("onAdFailedToLoad" + errorCode);
 
                 }
 
@@ -130,13 +130,13 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
 
 
         } catch (Exception e) {
-            PrintLogging.printLog("", "AdsLoaded-->" + "exception-->"+e.getMessage());
+            PrintLogging.printLog("AdsLoaded-->" + "exception-->"+e.getMessage());
 
         }
     }
 
 
-    public AdSize fetchBannerSize(String bannerType, AdManagerAdView adView) {
+    public void fetchBannerSize(String bannerType, AdManagerAdView adView) {
         AdSize adSize;
         if (bannerType.equalsIgnoreCase(AppConstants.KEY_MREC)) {
             adSize = AdSize.MEDIUM_RECTANGLE;
@@ -156,7 +156,6 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
             adView.setAdUnitId(item.getScreenWidget().getAdID());
             adView.setAdSizes(adSize);
         } else adSize = AdSize.MEDIUM_RECTANGLE;
-        return adSize;
 
     }
 
@@ -170,7 +169,7 @@ public class DfpBannerAdapter extends RecyclerView.Adapter<DfpBannerAdapter.View
             MessageDigest digest = MessageDigest
                     .getInstance("MD5");
             digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             // Create Hex String
             StringBuffer hexString = new StringBuffer();

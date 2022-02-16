@@ -2,7 +2,6 @@ package panteao.make.ready.activities.internalpages
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import panteao.make.ready.R
@@ -41,8 +40,8 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         } else {
             binding.description.visibility = View.VISIBLE
             binding.lessButton.visibility = View.VISIBLE
-            binding.description.setEllipsis("...")
-            binding.description.setEllipsize(TextUtils.TruncateAt.END)
+            binding.description.ellipsis = "..."
+            binding.description.ellipsize = TextUtils.TruncateAt.END
         }
         if (binding!==null){
             binding.backButton.setOnClickListener(View.OnClickListener {
@@ -63,14 +62,14 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
 
     private fun expendable() {
         binding.description.toggle()
-        binding.description.setEllipsis("...")
-        if (binding.description.isExpanded()) {
-            binding.description.setEllipsize(null)
+        binding.description.ellipsis = "..."
+        if (binding.description.isExpanded) {
+            binding.description.ellipsize = null
         } else {
-            binding.description.setEllipsize(TextUtils.TruncateAt.END)
+            binding.description.ellipsize = TextUtils.TruncateAt.END
         }
 
-        if (binding.description.isExpanded()) {
+        if (binding.description.isExpanded) {
             binding.textExpandable.text = (resources.getString(R.string.less))
         } else {
             binding.textExpandable.text = (resources.getString(R.string.more))
@@ -93,7 +92,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                         if (strings.size > 1) {
                             binding.title.visibility = View.GONE
                             val internalPlaylistListingFragment =
-                                InternalPlaylistListingFragment();
+                                InternalPlaylistListingFragment()
 
                             val bundle = Bundle()
                             bundle.putString(
@@ -130,7 +129,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                                 .errorCode != 0
                         ) {
                             showDialog(
-                                this.getResources().getString(R.string.error),
+                                this.resources.getString(R.string.error),
                                 resources.getString(R.string.something_went_wrong)
                             )
                         }
@@ -138,7 +137,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
                             .equals(APIStatus.FAILURE.name, ignoreCase = true)
                     ) {
                         showDialog(
-                            this.getResources().getString(R.string.error),
+                            this.resources.getString(R.string.error),
                             resources.getString(R.string.something_went_wrong)
                         )
                     }
@@ -159,7 +158,7 @@ class CustomInternalPage : BaseBindingActivity<ActivityCustomInternalPageBinding
         alertDialog.show(fm, "fragment_alert")
     }
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): ActivityCustomInternalPageBinding {
+    override fun inflateBindingLayout(): ActivityCustomInternalPageBinding {
         return ActivityCustomInternalPageBinding.inflate(inflater)
     }
 

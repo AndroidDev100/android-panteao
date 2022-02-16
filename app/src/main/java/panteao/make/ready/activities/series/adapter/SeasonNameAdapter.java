@@ -19,8 +19,8 @@ import java.util.List;
 
 public class SeasonNameAdapter extends RecyclerView.Adapter<SeasonNameAdapter.SeasonViewHolder> {
     private final Context context;
-    private List<SeasonsItem> response;
-    private SeasonItemClick listner;
+    private final List<SeasonsItem> response;
+    private final SeasonItemClick listner;
     private int selectedId;
 
 

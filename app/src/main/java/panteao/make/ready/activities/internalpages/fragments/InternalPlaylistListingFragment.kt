@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.Presenter
@@ -110,7 +109,7 @@ class InternalPlaylistListingFragment :
     }
 
     private fun setupFragment() {
-        playLists = playListContent.split(",") as ArrayList<String>;
+        playLists = playListContent.split(",") as ArrayList<String>
         setRecyclerProperties(binding.listRecyclerview)
     }
 
@@ -126,7 +125,7 @@ class InternalPlaylistListingFragment :
     private fun callShimmer() {
 
         val shimmerAdapter = ShimmerAdapter(
-            activity, ShimmerDataModel(activity).getList(0), ShimmerDataModel(activity).slides
+            activity, ShimmerDataModel().getList(0)
         )//        binding.listRecyclerview.hasFixedSize()
         binding.listRecyclerview.isNestedScrollingEnabled = false
         var num = 2
@@ -269,20 +268,20 @@ class InternalPlaylistListingFragment :
         savedInstanceState: Bundle?
     ): View? {
         inflater.context.setTheme(R.style.InternalPlayListBrowseTheme)
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
 
-    override fun inflateBindingLayout(inflater: LayoutInflater): InternalPlaylistListFragmentBinding {
+    override fun inflateBindingLayout(): InternalPlaylistListFragmentBinding {
         return InternalPlaylistListFragmentBinding.inflate(inflater)
     }
 
 
-    override fun railItemClick(item: RailCommonData?, position: Int) {
+    override fun railItemClick() {
         val itemValue = item?.enveuVideoItemBeans?.get(position)!!
         if (AppCommonMethod.getCheckKEntryId(itemValue.getkEntryId())) {
             val getVideoId = itemValue.getkEntryId()
-            PrintLogging.printLog("", "SearchAssetType-->>" + itemValue!!.assetType)
+            PrintLogging.printLog("SearchAssetType-->>" + itemValue.assetType)
             AppCommonMethod.launchDetailScreen(
                 context,
                 getVideoId,
@@ -306,7 +305,7 @@ class InternalPlaylistListingFragment :
     }
 
     var playListId: String? = null
-    override fun moreRailClick(data: RailCommonData?, position: Int) {
+    override fun moreRailClick() {
         try {
             if (data!!.screenWidget != null) {
                 if (data!!.screenWidget.contentID != null) playListId =

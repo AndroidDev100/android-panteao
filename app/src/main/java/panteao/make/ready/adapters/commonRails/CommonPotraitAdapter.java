@@ -40,15 +40,15 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
     private final ItemClickListener listener;
     int viewType;
     private long mLastClickTime = 0;
-    private int itemWidth;
-    private int itemHeight;
-    private ArrayList<CommonContinueRail> continuelist;
+    private final int itemWidth;
+    private final int itemHeight;
+    private final ArrayList<CommonContinueRail> continuelist;
     private boolean isContinueList;
-    private boolean isLogin;
-    private KsPreferenceKeys preference;
-    BaseCategory baseCategory;
+    private final boolean isLogin;
+    private final KsPreferenceKeys preference;
+    final BaseCategory baseCategory;
 
-    public CommonPotraitAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist, int view, ItemClickListener listener, BaseCategory baseCat) {
+    public CommonPotraitAdapter(Activity context, List<EnveuVideoItemBean> itemsList, String contentType, ArrayList<CommonContinueRail> continuelist, ItemClickListener listener, BaseCategory baseCat) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.listener = listener;
@@ -56,10 +56,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
         this.continuelist = continuelist;
         this.baseCategory=baseCat;
         if (this.continuelist != null) {
-            if (this.continuelist.size() > 0)
-                isContinueList = true;
-            else
-                isContinueList = false;
+            isContinueList = this.continuelist.size() > 0;
         }
 
         int num = 3;
@@ -78,7 +75,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
 
         //if you need three fix imageview in width
         itemWidth = (displaymetrics.widthPixels) / num;
-        itemHeight = (int) (itemWidth * 16) / 9;
+        itemHeight = (itemWidth * 16) / 9;
     }
 
     public void notifydata(List<EnveuVideoItemBean> i) {
@@ -90,7 +87,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
     @Override
     public SingleItemRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         PotraitItemBinding binding = PotraitItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SingleItemRowHolder(binding);
+        return new SingleItemRowHolder();
     }
 
     @Override
@@ -148,7 +145,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
                     holder.potraitItemBinding.itemImage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            listener.onRowItemClicked(contentsItem, position);
+                            listener.onRowItemClicked();
                         }
                     });
                     /*ImageHelper.getInstance(mContext)
@@ -251,7 +248,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
                             }*/
                             AppCommonMethod.launchDetailScreen(mContext, "", continuelist.get(position).getUserAssetDetail().getAssetType(), continuelist.get(position).getUserAssetDetail().getId(), String.valueOf(continuelist.get(position).getUserAssetStatus().getPosition()), continuelist.get(position).getUserAssetDetail().isPremium(),null);
 
-                            AppCommonMethod.trackFcmEvent("Content Screen","", mContext,0);
+                            AppCommonMethod.trackFcmEvent("Content Screen","", mContext);
 
                         }
                     }
@@ -277,7 +274,7 @@ public class CommonPotraitAdapter extends RecyclerView.Adapter<CommonPotraitAdap
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         final PotraitItemBinding potraitItemBinding;
 
-        SingleItemRowHolder(PotraitItemBinding potraitItemBind) {
+        SingleItemRowHolder() {
             super(potraitItemBind.getRoot());
             potraitItemBinding = potraitItemBind;
         }

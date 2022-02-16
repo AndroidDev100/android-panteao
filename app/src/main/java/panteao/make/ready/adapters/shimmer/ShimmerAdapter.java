@@ -19,23 +19,10 @@ import panteao.make.ready.adapters.commonRails.SquareCommonAdapter;
 import panteao.make.ready.beanModel.beanModel.SectionDataModel;
 import panteao.make.ready.R;
 import panteao.make.ready.adapters.HeaderAdapter;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
 import panteao.make.ready.utils.helpers.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
-
-import panteao.make.ready.activities.listing.callback.ItemClickListener;
-import panteao.make.ready.adapters.HeaderAdapter;
-import panteao.make.ready.adapters.commonRails.CommonCircleAdapter;
-import panteao.make.ready.adapters.commonRails.CommonPotraitAdapter;
-import panteao.make.ready.adapters.commonRails.SquareCommonAdapter;
-import panteao.make.ready.beanModel.beanModel.SectionDataModel;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.helpers.carousel.model.Slide;
-import panteao.make.ready.utils.helpers.shimmer.ShimmerRecyclerView;
 
 public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     final Activity activity;
@@ -45,7 +32,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     View view;
 
 
-    public ShimmerAdapter(Activity activity, ArrayList<SectionDataModel> demoList, ArrayList<Slide> slides) {
+    public ShimmerAdapter(Activity activity, ArrayList<SectionDataModel> demoList) {
         this.activity = activity;
         this.dataList = demoList;
         viewPool = new RecyclerView.RecycledViewPool();
@@ -69,20 +56,20 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int ITEM1 = 1;
         if (viewType == HEADER_ITEM) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shimmer_crousel, parent, false);
-            return new HeaderHolder(activity, view);
+            return new HeaderHolder(view);
         } else if (viewType == ITEM1) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.circle_recycler_item, parent, false);
-            return new TrendingHolder(activity, view);
+            return new TrendingHolder(view);
 
         } else if (viewType == ITEM2) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.landscape_recycler_item, parent, false);
-            return new SqureHolder(activity, view);
+            return new SqureHolder(view);
         } else if (viewType == ITEM3) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.landscape_recycler_item, parent, false);
-            return new LandscapeHolder(activity, view);
+            return new LandscapeHolder(view);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.potrait_recycler_item, parent, false);
-            return new PortrateHolder(activity, view);
+            return new PortrateHolder(view);
         }
 
 
@@ -94,7 +81,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof CommonAdapter.HeaderHolder) {
             try {
                 ArrayList singleSectionItems = dataList.get(position).getAllItemsInSection();
-                HeaderAdapter itemListDataAdapter1 = new HeaderAdapter(activity, singleSectionItems);
+                HeaderAdapter itemListDataAdapter1 = new HeaderAdapter();
                 ((ShimmerAdapter.HeaderHolder) holder).recycler_view_list1.setNestedScrollingEnabled(false);
                 ((ShimmerAdapter.HeaderHolder) holder).recycler_view_list1.setHasFixedSize(true);
 
@@ -115,7 +102,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ArrayList singleSectionItems = dataList.get(position).getAllItemsInSection();
                 CommonCircleAdapter itemListDataAdapter1 = new CommonCircleAdapter(activity, singleSectionItems, "", new ArrayList<>(), new ItemClickListener() {
                     @Override
-                    public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
+                    public void onRowItemClicked() {
 
                     }
                 });
@@ -175,9 +162,9 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (holder instanceof CommonAdapter.PortrateHolder) {
             try {
                 ArrayList singleSectionItems = dataList.get(position).getAllItemsInSection();
-                CommonPotraitAdapter itemListDataAdapter1 = new CommonPotraitAdapter(activity, singleSectionItems, "", new ArrayList<>(), 0, new ItemClickListener() {
+                CommonPotraitAdapter itemListDataAdapter1 = new CommonPotraitAdapter(activity, singleSectionItems, "", new ArrayList<>(), new ItemClickListener() {
                     @Override
-                    public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
+                    public void onRowItemClicked() {
 
                     }
                 },null);
@@ -219,7 +206,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         final ShimmerRecyclerView recycler_view_list1;
 
-        public HeaderHolder(Activity activity, View itemView) {
+        public HeaderHolder(View itemView) {
             super(itemView);
             recycler_view_list1 = itemView.findViewById(R.id.recycler_view_list1);
 
@@ -229,7 +216,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class TrendingHolder extends RecyclerView.ViewHolder {
         final ShimmerRecyclerView recycler_view_list1;
 
-        public TrendingHolder(Activity activity, View itemView) {
+        public TrendingHolder(View itemView) {
             super(itemView);
             recycler_view_list1 = view.findViewById(R.id.recycler_view_list1);
         }
@@ -238,7 +225,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class SqureHolder extends RecyclerView.ViewHolder {
         final ShimmerRecyclerView recycler_view_list1;
 
-        public SqureHolder(Activity activity, View itemView) {
+        public SqureHolder(View itemView) {
             super(itemView);
             recycler_view_list1 = view.findViewById(R.id.recycler_view_list2);
         }
@@ -247,7 +234,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class LandscapeHolder extends RecyclerView.ViewHolder {
         final ShimmerRecyclerView recycler_view_list1;
 
-        public LandscapeHolder(Activity activity, View itemView) {
+        public LandscapeHolder(View itemView) {
             super(itemView);
             recycler_view_list1 = view.findViewById(R.id.recycler_view_list3);
         }
@@ -256,7 +243,7 @@ public class ShimmerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class PortrateHolder extends RecyclerView.ViewHolder {
         final ShimmerRecyclerView recycler_view_list1;
 
-        public PortrateHolder(Activity activity, View itemView) {
+        public PortrateHolder(View itemView) {
             super(itemView);
             recycler_view_list1 = view.findViewById(R.id.recycler_view_list4);
         }

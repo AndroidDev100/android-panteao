@@ -27,7 +27,7 @@ class PreviewAnimatorImpl extends PreviewAnimator {
 
     public static final int ALPHA_DURATION = 200;
 
-    private AnimatorListenerAdapter hideListener = new AnimatorListenerAdapter() {
+    private final AnimatorListenerAdapter hideListener = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);

@@ -18,7 +18,7 @@ public class MediaTypeConstants {
 
     String Article = "ARTICLE";
     ConfigBean configBean;
-    public static String VIDEO="VIDEO";
+    public static final String VIDEO="VIDEO";
 
     public String getMovie() {
         return configBean == null ? "" : configBean.getData().getAppConfig().getMediaTypes().getMovie();

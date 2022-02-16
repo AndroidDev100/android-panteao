@@ -4,7 +4,6 @@ package panteao.make.ready.activities.listing.ui;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,6 @@ import com.make.enums.ImageType;
 import panteao.make.ready.Bookmarking.BookmarkingViewModel;
 import panteao.make.ready.activities.listing.callback.ItemClickListener;
 import panteao.make.ready.activities.listing.viewmodel.ListingViewModel;
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModelV3.continueWatching.DataItem;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
@@ -39,9 +37,7 @@ import panteao.make.ready.adapters.commonRails.CommonPotraitTwoAdapter;
 import panteao.make.ready.adapters.commonRails.LandscapeListingAdapter;
 import panteao.make.ready.adapters.commonRails.SquareListingAdapter;
 import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
 import panteao.make.ready.beanModel.responseModels.landingTabResponses.railData.ContentsItem;
-import panteao.make.ready.beanModel.responseModels.series.season.SeasonResponse;
 import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
 import panteao.make.ready.databinding.ListingActivityBinding;
 import panteao.make.ready.layersV2.ContinueWatchingLayer;
@@ -85,11 +81,11 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     private int mScrollY;
     private int shimmerType;
     private RailCommonData listData;
-    private long mLastClickTime = 0;
+    private final long mLastClickTime = 0;
     private int pos;
 
     @Override
-    public ListingActivityBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ListingActivityBinding inflateBindingLayout() {
         return ListingActivityBinding.inflate(inflater);
     }
 
@@ -113,13 +109,13 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(GridActivity.this)) {
             getBinding().noConnectionLayout.setVisibility(View.GONE);
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             if (counter == 0)
                 callShimmer();
@@ -146,7 +142,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 else
                     num = 4;
             }
-            shimmerAdapter.setDataList(new ShimmerDataModel(GridActivity.this).getList(5));
+            shimmerAdapter.setDataList(new ShimmerDataModel().getList(5));
         } else if (baseCategory.getContentImageType().equalsIgnoreCase(ImageType.LDS.name())
                 || baseCategory.getContentImageType().equalsIgnoreCase(ImageType.LDS2.name())) {
             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -157,7 +153,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 else
                     num = 3;
             }
-            shimmerAdapter.setDataList(new ShimmerDataModel(GridActivity.this).getList(4));
+            shimmerAdapter.setDataList(new ShimmerDataModel().getList(4));
         }
 
         getBinding().listRecyclerview.addItemDecoration(new GridSpacingItemDecoration(num, 6, true));
@@ -169,7 +165,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
     }
 
-    private void setRecyclerProperties(int enveuLayoutType, int num) {
+    private void setRecyclerProperties() {
         if (enveuLayoutType == 0) {
             gridLayoutManager = new GridLayoutManager(this, num);
             getBinding().listRecyclerview.setItemAnimator(new DefaultItemAnimator());
@@ -279,7 +275,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                             continueWatchingBookmarkLists = getContinueWatchingBean.getData().getContinueWatchingBookmarks();
                         }
 
-                        List<ContinueWatchingBookmark> continueWatchingBookmarkList = removeDuplicates(continueWatchingBookmarkLists);
+                        List<ContinueWatchingBookmark> continueWatchingBookmarkList = removeDuplicates();
                         for (ContinueWatchingBookmark continueWatchingBookmark : continueWatchingBookmarkList
                         ) {
                             videoIds = videoIds.concat(String.valueOf(continueWatchingBookmark.getAssetId())).concat(",");
@@ -296,12 +292,12 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                     railCommonData.setContinueWatchingData(baseCategory, enveuVideoDetails, new CommonApiCallBack() {
                                         @Override
                                         public void onSuccess(Object item) {
-                                            setRail(railCommonData);
+                                            setRail();
                                         }
 
                                         @Override
-                                        public void onFailure(Throwable throwable) {
-                                            showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                                        public void onFailure() {
+                                            showDialog();
                                         }
 
                                         @Override
@@ -313,7 +309,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                             }
 
                             @Override
-                            public void onFailure(Throwable throwable) {
+                            public void onFailure() {
                             }
 
                             @Override
@@ -339,7 +335,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                         setRail(playlistRailData);
                     }
                 });*/
-                railInjectionHelper.getPlayListDetailsWithPaginationV2(this, playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
+                railInjectionHelper.getPlayListDetailsWithPaginationV2(playListId, counter, AppConstants.PAGE_SIZE, baseCategory).observe(this, playlistRailData -> {
                     Log.e("testData", "getPlayListByWithPagination: "+playListId+"\n"+counter+"\n"+ AppConstants.PAGE_SIZE+"\n"+baseCategory );
                     if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.START.name())) {
 
@@ -356,16 +352,16 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                                 }
                                 listData = railCommonData;
-                                setRail(railCommonData);
+                                setRail();
                                 Logger.e("RAIL DATA", String.valueOf(listData.isSeries()));
                             }
                         }
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
-                        showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog();
 
 
                     } else if (playlistRailData.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-                        showDialog(GridActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
 
                 });
@@ -377,7 +373,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private List<ContinueWatchingBookmark> removeDuplicates(List<ContinueWatchingBookmark> continueWatchingBookmarkList) {
+    private List<ContinueWatchingBookmark> removeDuplicates() {
         List<ContinueWatchingBookmark> noRepeat = new ArrayList<ContinueWatchingBookmark>();
         try {
             for (ContinueWatchingBookmark event : continueWatchingBookmarkList) {
@@ -399,9 +395,9 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         return noRepeat;
     }
 
-    private void setSeasonData(SeasonResponse seasonResponse) {
+    private void setSeasonData() {
         if (!isScrolling) {
-            PrintLogging.printLog("", isScrolling + "isScrolling");
+            PrintLogging.printLog(isScrolling + "isScrolling");
             commonLandscapeAdapter = new LandscapeListingAdapter(this, new ArrayList<>(), seasonResponse.getData().getItems(), AppConstants.VOD, this, baseCategory);
             int num = 2;
             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -412,7 +408,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                 else
                     num = 3;
             }
-            itemDecoration(num, "");
+            itemDecoration();
 
 
             getBinding().listRecyclerview.setAdapter(commonLandscapeAdapter);
@@ -424,10 +420,10 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private void setRail(RailCommonData playlistRailData) {
+    private void setRail() {
         getBinding().transparentLayout.setVisibility(View.GONE);
         if (isScrolling) {
-            setUiComponents(playlistRailData);
+            setUiComponents();
             getBinding().progressBar.setVisibility(View.GONE);
         } else {
             getBinding().progressBar.setVisibility(View.GONE);
@@ -447,7 +443,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                             else
                                 num = 3;
                         }
-                        itemDecoration(num, baseCategory.getContentImageType());
+                        itemDecoration();
 
                         //  getBinding().listRecyclerview.addItemDecoration(new SpacingItemDecoration(2, SpacingItemDecoration.HORIZONTAL));
                         getBinding().listRecyclerview.setAdapter(commonPosterLandscapeAdapter);
@@ -467,7 +463,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 4;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
                             getBinding().listRecyclerview.setAdapter(commonCircleAdapter);
                         } else
                             commonCircleAdapter.notifydata(playlistRailData.getEnveuVideoItemBeans());
@@ -487,7 +483,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 4;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
                             getBinding().listRecyclerview.setAdapter(squareCommonAdapter);
                         } else
                             squareCommonAdapter.notifydata(playlistRailData.getEnveuVideoItemBeans());
@@ -530,7 +526,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 3;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
 
                             getBinding().listRecyclerview.setAdapter(commonLandscapeAdapter);
                         } else
@@ -541,7 +537,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonPotraitAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPotraitAdapter = new CommonPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this, baseCategory);
+                            commonPotraitAdapter = new CommonPotraitAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), this, baseCategory);
 
                             num = 3;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -564,7 +560,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
                         if (commonPotraitTwoAdapter == null) {
                             new RecyclerAnimator(this).animate(getBinding().listRecyclerview);
-                            commonPotraitTwoAdapter = new CommonPotraitTwoAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), 0, this, baseCategory);
+                            commonPotraitTwoAdapter = new CommonPotraitTwoAdapter(this, playlistRailData.getEnveuVideoItemBeans(), "VIDEO", new ArrayList<>(), this, baseCategory);
 
                             num = 3;
                             boolean tabletSize = GridActivity.this.getResources().getBoolean(R.bool.isTablet);
@@ -575,7 +571,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 4;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
 
 
                             getBinding().listRecyclerview.setAdapter(commonPotraitTwoAdapter);
@@ -598,7 +594,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 3;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
 
                             //  getBinding().listRecyclerview.addItemDecoration(new SpacingItemDecoration(2, SpacingItemDecoration.HORIZONTAL));
                             getBinding().listRecyclerview.setAdapter(commonPosterLandscapeAdapter);
@@ -619,7 +615,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
                                 else
                                     num = 4;
                             }
-                            itemDecoration(num, baseCategory.getContentImageType());
+                            itemDecoration();
                             //     getBinding().listRecyclerview.addItemDecoration(new SpacingItemDecoration(12, SpacingItemDecoration.HORIZONTAL));
                             getBinding().listRecyclerview.setAdapter(commonPosterPotraitAdapter);
                         } else
@@ -634,7 +630,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private void setUiComponents(RailCommonData playlistRailData) {
+    private void setUiComponents() {
         if (playlistRailData.getEnveuVideoItemBeans().size() > 0) {
             if (baseCategory.getContentImageType().equalsIgnoreCase(ImageType.CIR.name())) {
                 commonCircleAdapter.notifydata(playlistRailData.getEnveuVideoItemBeans());
@@ -680,7 +676,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
         }
     }
 
-    private void itemDecoration(int i, String contentImageType) {
+    private void itemDecoration() {
         /*if (baseCategory.getContentImageType().equalsIgnoreCase(ImageType.LDS.name())){
             spacing= (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         }else {
@@ -720,10 +716,10 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
     }
 
     @Override
-    public void onRowItemClicked(EnveuVideoItemBean itemValue, int position) {
+    public void onRowItemClicked() {
         Log.d("clickedItem", "list");
         try {
-            AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext(), 0);
+            AppCommonMethod.trackFcmEvent("Content Screen", "", getApplicationContext());
             AppCommonMethod.trackFcmCustomEvent(getApplicationContext(), AppConstants.CONTENT_SELECT, listData.getEnveuVideoItemBeans().get(position).getAssetType(), listData.getScreenWidget().getContentID(), title, pos, listData.getEnveuVideoItemBeans().get(position).getTitle(), position, listData.getEnveuVideoItemBeans().get(position).getId() + "", 0, 0, "", "", "", "");
         } catch (Exception ignored) {
 
@@ -761,7 +757,7 @@ public class GridActivity extends BaseBindingActivity<ListingActivityBinding> im
 
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);

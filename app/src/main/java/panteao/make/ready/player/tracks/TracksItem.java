@@ -3,8 +3,8 @@ package panteao.make.ready.player.tracks;
 public class TracksItem {
 
 
-        private String trackName;
-        private String uniqueId;
+        private final String trackName;
+        private final String uniqueId;
         private boolean isSelected;
 
         public TracksItem(String trackName, String uniqueId) {

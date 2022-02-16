@@ -14,14 +14,12 @@ import panteao.make.ready.databinding.FragmentMoreBinding;
 
 import java.util.List;
 
-import panteao.make.ready.baseModels.HomeBaseViewModel;
-
 
 public class MoreFragmentViewModel extends HomeBaseViewModel {
 
     public MoreFragmentViewModel(@NonNull Application application, ParamBean mParam, Activity context, FragmentMoreBinding binding) {
         super(application);
-        MoreFragmentRepository.getInstance().setAdapter(mParam, context, binding);
+        MoreFragmentRepository.getInstance().setAdapter(context, binding);
     }
 
     @Override

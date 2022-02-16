@@ -51,9 +51,9 @@ public interface PreviewView {
     void removeOnPreviewChangeListener(OnPreviewChangeListener listener);
 
     interface OnPreviewChangeListener {
-        void onStartPreview(PreviewView previewView, int progress);
+        void onStartPreview();
 
-        void onStopPreview(PreviewView previewView, int progress);
+        void onStopPreview();
 
         void onPreview(PreviewView previewView, int progress, boolean fromUser);
     }

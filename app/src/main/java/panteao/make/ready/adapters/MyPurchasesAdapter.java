@@ -18,8 +18,8 @@ import panteao.make.ready.databinding.RowEpisodeListBinding;
 import panteao.make.ready.utils.commonMethods.AppCommonMethod;
 
 public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.MyPurchasesViewHolder> {
-    List<Item> list;
-    Context context;
+    final List<Item> list;
+    final Context context;
     private ItemMyPurchasesContentBinding binding;
 
     public MyPurchasesAdapter(Context context, List<Item> list){
@@ -44,13 +44,13 @@ public class MyPurchasesAdapter extends RecyclerView.Adapter<MyPurchasesAdapter.
             if (list.get(position).getSubscriptionOfferType()!=null && !list.get(position).getSubscriptionOfferType().equalsIgnoreCase("")){
                 holder.itemBinding.offerTypeValue.setText(list.get(position).getSubscriptionOfferType());
                 if (list.get(position).getSubscriptionExpiryDate()!=null && !list.get(position).getSubscriptionExpiryDate().equalsIgnoreCase("")){
-                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getSubscriptionExpiryDate())).toString());
+                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getSubscriptionExpiryDate())));
                 }else {
                     holder.itemBinding.dateLayout.setVisibility(View.GONE);
                 }
             }else if (list.get(position).getVoDOfferType()!=null && !list.get(position).getVoDOfferType().equalsIgnoreCase("")){
                 if (list.get(position).getRentalExpiryDate()!=null && !list.get(position).getRentalExpiryDate().equalsIgnoreCase("")){
-                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getRentalExpiryDate())).toString());
+                    holder.itemBinding.tvDate.setText(AppCommonMethod.getMyPurchaseTimeTodate(Double.parseDouble(list.get(position).getRentalExpiryDate())));
                 }else {
                     holder.itemBinding.dateLayout.setVisibility(View.GONE);
                 }

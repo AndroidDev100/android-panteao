@@ -6,11 +6,9 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -32,7 +30,7 @@ public class HelpActivity extends BaseBindingActivity<ActivityHelpBinding> {
 
 
     @Override
-    public ActivityHelpBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivityHelpBinding inflateBindingLayout() {
         return ActivityHelpBinding.inflate(inflater);
     }
 

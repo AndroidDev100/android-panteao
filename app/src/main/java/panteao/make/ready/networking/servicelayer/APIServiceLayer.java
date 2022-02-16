@@ -23,9 +23,7 @@ import panteao.make.ready.callbacks.apicallback.ApiResponseModel;
 import panteao.make.ready.callbacks.commonCallbacks.CommonApiCallBack;
 import panteao.make.ready.networking.apiendpoints.ApiInterface;
 import panteao.make.ready.networking.apiendpoints.RequestConfig;
-import panteao.make.ready.networking.apistatus.APIStatus;
 import panteao.make.ready.networking.errormodel.ApiErrorModel;
-import panteao.make.ready.networking.responsehandler.ResponseModel;
 import panteao.make.ready.utils.cropImage.helpers.Logger;
 import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
@@ -44,18 +42,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import panteao.make.ready.beanModelV3.continueWatching.ContinueWatchingModel;
-import panteao.make.ready.beanModelV3.continueWatching.DataItem;
-import panteao.make.ready.beanModelV3.playListModelV2.EnveuCommonResponse;
-import panteao.make.ready.beanModelV3.searchV2.ResponseSearch;
-import panteao.make.ready.beanModelV3.uiConnectorModelV2.EnveuVideoItemBean;
-import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetails;
-import panteao.make.ready.beanModelV3.videoDetailsV2.EnveuVideoDetailsBean;
-import panteao.make.ready.networking.apiendpoints.ApiInterface;
-import panteao.make.ready.networking.apiendpoints.RequestConfig;
-import panteao.make.ready.utils.MediaTypeConstants;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -145,19 +131,19 @@ public class APIServiceLayer {
                     if (response.isSuccessful()) {
                         commonApiCallBack.onSuccess(response.body().getData());
                     } else {
-                        commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                        commonApiCallBack.onFailure();
 
                     }
                 }
 
                 @Override
                 public void onFailure(Call<EnveuVideoDetailsBean> call, Throwable t) {
-                    commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                    commonApiCallBack.onFailure();
 
                 }
             });
         }else {
-            commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+            commonApiCallBack.onFailure();
         }
 
     }
@@ -430,20 +416,20 @@ public class APIServiceLayer {
                         }
                         commonApiCallBack.onSuccess(enveuVideoDetailsArrayList);
                     } else {
-                        commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                        commonApiCallBack.onFailure();
 
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ContinueWatchingModel> call, Throwable t) {
-                    commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                    commonApiCallBack.onFailure();
 
                 }
             });
 
         }else {
-            commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+            commonApiCallBack.onFailure();
         }
     }
 
@@ -469,27 +455,27 @@ public class APIServiceLayer {
                         }
                         commonApiCallBack.onSuccess(enveuVideoDetailsArrayList);
                     } else {
-                        commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                        commonApiCallBack.onFailure();
 
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ContinueWatchingModel> call, Throwable t) {
-                    commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+                    commonApiCallBack.onFailure();
 
                 }
             });
 
         }else {
-            commonApiCallBack.onFailure(new Throwable("Details Not Found"));
+            commonApiCallBack.onFailure();
         }
 
     }
 
     private List<RailCommonData> mModel;
 
-    public LiveData<List<RailCommonData>> getSearchData(String type, String keyword, int size, int page) {
+    public LiveData<List<RailCommonData>> getSearchData(String keyword, int size, int page) {
         languageCode = LanguageLayer.getCurrentLanguageCode();
         ApiInterface endpoint = RequestConfig.getClientSearch().create(ApiInterface.class);
 
@@ -618,7 +604,7 @@ public class APIServiceLayer {
             responsePopular = new MutableLiveData<>();
             ApiInterface backendApi = RequestConfig.getClientSearch().create(ApiInterface.class);
 
-            PrintLogging.printLog("", "SearchValues-->>" + keyword + " " + type + " " + size + " " + page);
+            PrintLogging.printLog("SearchValues-->>" + keyword + " " + type + " " + size + " " + page);
             Call<ResponseSearch> call = backendApi.getSearchResults(keyword, type, size, page, languageCode);
             call.enqueue(new Callback<ResponseSearch>() {
                 @Override

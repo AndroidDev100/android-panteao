@@ -1,6 +1,5 @@
 package panteao.make.ready.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +7,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import panteao.make.ready.beanModel.beanModel.SingleItemModel;
 import panteao.make.ready.R;
-
-import java.util.ArrayList;
 
 public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public HeaderAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
+    public HeaderAdapter() {
     }
 
     @NonNull

@@ -24,23 +24,19 @@ import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.utils.config.ImageLayer;
 import panteao.make.ready.utils.constants.AppConstants;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 
 import java.util.HashMap;
 
-import panteao.make.ready.beanModel.enveuCommonRailData.RailCommonData;
-import panteao.make.ready.callbacks.commonCallbacks.CommonRailtItemClickListner;
-
 public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
-    private RailCommonData item;
+    private final RailCommonData item;
     private String deviceId;
     private AdManagerAdRequest adRequest;
-    private int viewType;
+    private final int viewType;
     private RailCommonData railCommonData;
-    private CommonRailtItemClickListner listner;
+    private final CommonRailtItemClickListner listner;
     private long mLastClickTime = 0;
 
     public CommonHeroRailAdapter(Context context, RailCommonData item, CommonRailtItemClickListner listner) {
@@ -147,7 +143,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        listner.railItemClick(item, position);
+        listner.railItemClick();
 
     }
 
@@ -163,7 +159,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class PotraitHeroHolder extends RecyclerView.ViewHolder {
-        LayoutHeroPotraitItemBinding itemBinding;
+        final LayoutHeroPotraitItemBinding itemBinding;
 
         PotraitHeroHolder(LayoutHeroPotraitItemBinding itemBinding) {
             super(itemBinding.getRoot());
@@ -172,7 +168,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class LandscapeHeroHolder extends RecyclerView.ViewHolder {
-        LayoutHeroLandscapeItemBinding itemBinding;
+        final LayoutHeroLandscapeItemBinding itemBinding;
 
         LandscapeHeroHolder(LayoutHeroLandscapeItemBinding itemBinding) {
             super(itemBinding.getRoot());
@@ -181,7 +177,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class CircularHeroHolder extends RecyclerView.ViewHolder {
-        LayoutHeroCircularItemBinding itemBinding;
+        final LayoutHeroCircularItemBinding itemBinding;
 
         CircularHeroHolder(LayoutHeroCircularItemBinding itemBinding) {
             super(itemBinding.getRoot());
@@ -190,7 +186,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class SquareHeroHolder extends RecyclerView.ViewHolder {
-        LayoutHeroSquareItemBinding itemBinding;
+        final LayoutHeroSquareItemBinding itemBinding;
 
         SquareHeroHolder(LayoutHeroSquareItemBinding itemBinding) {
             super(itemBinding.getRoot());
@@ -199,7 +195,7 @@ public class CommonHeroRailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class PosterHeroHolder extends RecyclerView.ViewHolder {
-        LayoutHeroPosterItemBinding itemBinding;
+        final LayoutHeroPosterItemBinding itemBinding;
 
         PosterHeroHolder(LayoutHeroPosterItemBinding itemBinding) {
             super(itemBinding.getRoot());

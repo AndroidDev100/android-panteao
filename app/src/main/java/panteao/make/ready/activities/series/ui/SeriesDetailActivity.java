@@ -1,6 +1,5 @@
 package panteao.make.ready.activities.series.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -36,14 +33,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import panteao.make.ready.activities.downloads.NetworkHelper;
 import panteao.make.ready.activities.downloads.WifiPreferenceListener;
-import panteao.make.ready.activities.instructor.ui.InstructorActivity;
 import panteao.make.ready.activities.purchase.TVODENUMS;
 import panteao.make.ready.activities.purchase.ui.PurchaseActivity;
 import panteao.make.ready.activities.purchase.ui.VodOfferType;
-import panteao.make.ready.activities.series.adapter.SeasonAdapter;
 import panteao.make.ready.activities.series.viewmodel.SeriesViewModel;
-import panteao.make.ready.activities.show.ui.EpisodeActivity;
-import panteao.make.ready.activities.tutorial.ui.TutorialActivity;
 import panteao.make.ready.activities.usermanagment.ui.LoginActivity;
 import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.beanModel.AssetHistoryContinueWatching.ItemsItem;
@@ -51,7 +44,6 @@ import panteao.make.ready.beanModel.entitle.EntitledAs;
 import panteao.make.ready.beanModel.entitle.ResponseEntitle;
 import panteao.make.ready.callbacks.commonCallbacks.NetworkChangeReceiver;
 import panteao.make.ready.callbacks.commonCallbacks.TrailorCallBack;
-import panteao.make.ready.enums.DownloadStatus;
 import panteao.make.ready.enums.KalturaImageType;
 import panteao.make.ready.fragments.dialog.PremiumDownloadPopup;
 import panteao.make.ready.networking.apistatus.APIStatus;
@@ -100,7 +92,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 import static com.google.android.material.tabs.TabLayout.INDICATOR_GRAVITY_BOTTOM;
@@ -132,10 +123,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     public boolean isSeasonData = false;
     public boolean isRailData = false;
     private UserInteractionFragment userInteractionFragment;
-    private boolean mFlag = false;
+    private final boolean mFlag = false;
 
     @Override
-    public ActivitySeriesDetailBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
+    public ActivitySeriesDetailBinding inflateBindingLayout() {
         return ActivitySeriesDetailBinding.inflate(inflater);
     }
 
@@ -157,7 +148,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         isHitPlayerApi = false;
         setupUI(getBinding().llParent);
         seriesId = getIntent().getIntExtra("seriesId", 0);
-        new ToolBarHandler(this).setSeriesAction(getBinding());
+        new ToolBarHandler(this).setSeriesAction();
 
         onSeriesCreate();
     }
@@ -196,7 +187,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         setupUI(getBinding().llParent);
 
         seriesId = intent.getIntExtra("seriesId", 0);
-        new ToolBarHandler(this).setSeriesAction(getBinding());
+        new ToolBarHandler(this).setSeriesAction();
         newIntentCall = true;
         onSeriesCreate();
     }
@@ -260,17 +251,17 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
 
-    public void numberOfEpisodes(int size) {
+    public void numberOfEpisodes() {
         if (size == 1) {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episode));
+            setCustomeFields();
             // getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episode));
         } else {
-            setCustomeFields(seriesDetailBean, size, getResources().getString(R.string.episodes));
+            setCustomeFields();
             //getBinding().vodCount.setText(size + " " + getResources().getString(R.string.episodes));
         }
     }
 
-    private void setCustomeFields(EnveuVideoItemBean responseDetailPlayer, int size, String episode) {
+    private void setCustomeFields() {
         try {
             getBinding().vodCount.setText("");
             if (responseDetailPlayer.getParentalRating() != null && !responseDetailPlayer.getParentalRating().equalsIgnoreCase("")) {
@@ -336,13 +327,13 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     private void connectionObserver() {
         if (NetworkConnectivity.isOnline(this)) {
-            connectionValidation(true);
+            connectionValidation();
         } else {
-            connectionValidation(false);
+            connectionValidation();
         }
     }
 
-    private void connectionValidation(Boolean aBoolean) {
+    private void connectionValidation() {
         if (aBoolean) {
             if (!isHitPlayerApi) {
                 getSeriesDetail();
@@ -384,7 +375,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             }
            // seriesId = AppCommonMethod.seriesId;
             isHitPlayerApi = false;
-            refreshDetailPage(seriesId);
+            refreshDetailPage();
         }
 
         if (preference!=null){
@@ -397,7 +388,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     AppCommonMethod.isPurchase = false;
                     refreshEntitlement=true;
                     isHitPlayerApi = false;
-                    refreshDetailPage(seriesId);
+                    refreshDetailPage();
                 }
             }
         }
@@ -413,10 +404,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         filter.addAction("android.net.wifi.STATE_CHANGE");
         SeriesDetailActivity.this.registerReceiver(receiver, filter);
-        setConnectivityListener(this);
+        setConnectivityListener();
     }
 
-    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener listener) {
+    public void setConnectivityListener() {
         NetworkChangeReceiver.connectivityReceiverListener = listener;
     }
 
@@ -427,7 +418,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         }
     }
 
-    private void refreshDetailPage(int seriesId) {
+    private void refreshDetailPage() {
         this.seriesId=seriesId;
         Log.w("seriesID--->>",seriesId+"");
         onSeriesCreate();
@@ -447,7 +438,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.SUCCESS.name())) {
                         if (response.getBaseCategory() != null) {
                             RailCommonData enveuCommonResponse = (RailCommonData) response.getBaseCategory();
-                            parseSeriesData(enveuCommonResponse);
+                            parseSeriesData();
                         }
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.ERROR.name())) {
                         if (response.getErrorModel().getErrorCode() != 0) {
@@ -457,12 +448,12 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                                 }
                                 // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
                             } else {
-                                showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                                showDialog();
                             }
                         }
 
                     } else if (response.getStatus().equalsIgnoreCase(APIStatus.FAILURE.name())) {
-                        showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                        showDialog();
                     }
 
                 }
@@ -474,24 +465,24 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     }
 
-    private void parseSeriesData(RailCommonData enveuCommonResponse) {
+    private void parseSeriesData() {
         if (enveuCommonResponse != null && enveuCommonResponse.getEnveuVideoItemBeans().size() > 0) {
             Logger.e("enveuCommonResponse", "" + enveuCommonResponse.getEnveuVideoItemBeans().get(0).toString());
             seriesDetailBean = enveuCommonResponse.getEnveuVideoItemBeans().get(0);
             seriesId = seriesDetailBean.getId();
-            setUserInteractionFragment(seriesId);
+            setUserInteractionFragment();
             setTabs();
-            setUiComponents(seriesDetailBean);
+            setUiComponents();
             if (seriesDetailBean.isPremium()) {
                 getBinding().tvPurchased.setVisibility(View.GONE);
                 getBinding().mPremiumStatus.setVisibility(View.VISIBLE);
-                hitApiEntitlement(seriesDetailBean.getSku());
+                hitApiEntitlement();
             }else {
                 if (userInteractionFragment!=null){
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            userInteractionFragment.setDownloadable(true);
+                            userInteractionFragment.setDownloadable();
                         }
                     },1000);
 
@@ -509,7 +500,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
                 // showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.logged_out));
             } else {
-                showDialog(SeriesDetailActivity.this.getResources().getString(R.string.error), getResources().getString(R.string.something_went_wrong));
+                showDialog();
             }
         }
 
@@ -545,7 +536,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     boolean isPremium = false;
     ResponseEntitle responseEntitlementModel;
-    private void hitApiEntitlement(String sku) {
+    private void hitApiEntitlement() {
         viewModel.hitApiEntitlement(token, sku).observe(SeriesDetailActivity.this, responseEntitlement -> {
             responseEntitlementModel = responseEntitlement;
             if (responseEntitlement.getStatus()) {
@@ -553,12 +544,12 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     isPremium = false;
                     getBinding().tvBuyNow.setVisibility(View.GONE);
                     if (responseEntitlement.getData() != null) {
-                        updateBuyNowText(responseEntitlement, 1);
+                        updateBuyNowText();
                     }
                 } else {
                     getBinding().tvBuyNow.setVisibility(View.VISIBLE);
                     if (responseEntitlement.getData() != null) {
-                        updateBuyNowText(responseEntitlement, 2);
+                        updateBuyNowText();
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -576,7 +567,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            userInteractionFragment.setDownloadable(true);
+                            userInteractionFragment.setDownloadable();
                         }
                     },1000);
 
@@ -595,7 +586,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            userInteractionFragment.setDownloadable(true);
+                            userInteractionFragment.setDownloadable();
                         }
                     },1000);
 
@@ -609,15 +600,15 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     public void logoutUser() {
         isloggedout = false;
         if (isLogin) {
-            if (CheckInternetConnection.isOnline(Objects.requireNonNull(SeriesDetailActivity.this))) {
+            if (CheckInternetConnection.isOnline(SeriesDetailActivity.this)) {
                 clearCredientials(preference);
-                hitApiLogout(SeriesDetailActivity.this, preference.getAppPrefAccessToken());
+                hitApiLogout(preference.getAppPrefAccessToken());
             }
         }
     }
 
     String typeofTVOD="";
-    private void updateBuyNowText(ResponseEntitle responseEntitlement, int type) {
+    private void updateBuyNowText() {
         try {
             typeofTVOD="";
             String subscriptionOfferPeriod = null;
@@ -627,7 +618,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     for (int i = 0 ; i<alpurchaseas.size();i++){
                         String vodOfferType = alpurchaseas.get(i).getVoDOfferType();
                         if (alpurchaseas.get(i).getOfferType() != null) {
-                            subscriptionOfferPeriod = (String) alpurchaseas.get(i).getOfferType();
+                            subscriptionOfferPeriod = alpurchaseas.get(i).getOfferType();
                         }
                         if (vodOfferType!=null){
                             if (vodOfferType.contains(VodOfferType.PERPETUAL.name())) {
@@ -675,7 +666,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         preference.setEntitlementState(true);
                     }
                     if(userInteractionFragment!=null) {
-                        userInteractionFragment.setDownloadable(true);
+                        userInteractionFragment.setDownloadable();
                        // initDownload(Entryid);
                     }
 
@@ -690,7 +681,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
 
-    public void setUserInteractionFragment(int id) {
+    public void setUserInteractionFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
         args.putInt(AppConstants.BUNDLE_ASSET_ID, id);
@@ -720,7 +711,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             bundleSeason.putInt(AppConstants.BUNDLE_SEASON_COUNT, seriesDetailBean.getSeasonCount());
             seasonTabFragment.setArguments(bundleSeason);
             if (downloadHelper!=null){
-                seasonTabFragment.setDownloadHelper(downloadHelper);
+                seasonTabFragment.setDownloadHelper();
             }
 
 
@@ -746,7 +737,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             bundleSeason.putInt(AppConstants.BUNDLE_SEASON_COUNT, seriesDetailBean.getSeasonCount());
             seasonTabFragment.setArguments(bundleSeason);
                 if (downloadHelper!=null){
-                    seasonTabFragment.setDownloadHelper(downloadHelper);
+                    seasonTabFragment.setDownloadHelper();
                 }
 
             episodeTabAdapter.addFragment(seasonTabFragment, getString(R.string.tab_heading_episodes));
@@ -772,13 +763,13 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             }else {
                 Bundle args = new Bundle();
                 args.putString(AppConstants.BUNDLE_TAB_ID, tabId);
-                railFragment.getVideoRails(args);
+                railFragment.getVideoRails();
 
                 Bundle bundleSeason = new Bundle();
                 bundleSeason.putInt(AppConstants.BUNDLE_ASSET_ID, seriesId);
                 bundleSeason.putParcelableArrayList(AppConstants.BUNDLE_SEASON_ARRAY, seriesDetailBean.getSeasons());
                 bundleSeason.putInt(AppConstants.BUNDLE_SEASON_COUNT, seriesDetailBean.getSeasonCount());
-                seasonTabFragment.getVideoRails(bundleSeason);
+                seasonTabFragment.getVideoRails();
             }
 
         }
@@ -786,7 +777,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                showLoading(getBinding().progressBar, true);
+                showLoading(getBinding().progressBar);
                 new Handler().postDelayed(() -> dismissLoading(getBinding().progressBar), 1500);
             }
 
@@ -847,10 +838,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
 
     public void seriesLoader() {
-        showLoading(getBinding().progressBar, true);
+        showLoading(getBinding().progressBar);
     }
 
-    public void removeTab(int position) {
+    public void removeTab() {
         if (getBinding().tabLayout.getTabCount() >= 1 && position <= getBinding().tabLayout.getTabCount()) {
             episodeTabAdapter.removeTabPage(position);
             ViewGroup.LayoutParams params = getBinding().tabLayout.getLayoutParams();
@@ -861,9 +852,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
 
-    private void setUiComponents(EnveuVideoItemBean seriesResponse) {
+    private void setUiComponents() {
         if (seriesResponse != null) {
-            setCustomeFields(seriesDetailBean, 0, getResources().getString(R.string.episode));
+            setCustomeFields();
             if (seriesResponse.getAssetCast().size() > 0) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < seriesResponse.getAssetCast().size(); i++) {
@@ -928,7 +919,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
             getBinding().interactionSection.llLike.setOnClickListener(view -> {
                 if (preference.getAppPrefLoginStatus()) {
-                    showLoading(getBinding().progressBar, true);
+                    showLoading(getBinding().progressBar);
 
                     if (likeCounter == 0)
                         hitApiAddLike();
@@ -952,7 +943,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             });
 
             getBinding().interactionSection.shareWith.setOnClickListener(view -> {
-                showLoading(getBinding().progressBar, false);
+                showLoading(getBinding().progressBar);
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 900) {
                     return;
                 }
@@ -972,10 +963,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         }
         getBinding().setExpandabletext(getResources().getString(R.string.more));
         getBinding().expandableLayout.setOnExpansionUpdateListener(expansionFraction -> getBinding().lessButton.setRotation(0 * expansionFraction));
-        getBinding().lessButton.setOnClickListener(this::clickExpandable);
+        getBinding().lessButton.setOnClickListener(view -> clickExpandable());
     }
 
-    public void clickExpandable(View view) {
+    public void clickExpandable() {
         getBinding().descriptionText.toggle();
         getBinding().descriptionText.setEllipsis("...");
         if (getBinding().descriptionText.isExpanded()) {
@@ -1115,7 +1106,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         int id = seriesDetailBean.getId();
         String title = seriesDetailBean.getTitle();
         Logger.e("openShareDialogue", new Gson().toJson(seriesDetailBean));
-        AppCommonMethod.openShareDialog(SeriesDetailActivity.this, title, id, MediaTypeConstants.getInstance().getSeries(), imgUrl, String.valueOf(seriesId), seriesDetailBean.getSeason());
+        AppCommonMethod.openShareDialog(SeriesDetailActivity.this, title, id, MediaTypeConstants.getInstance().getSeries(), imgUrl, seriesDetailBean.getSeason());
         new Handler().postDelayed(() -> dismissLoading(getBinding().progressBar), 2000);
     }
 
@@ -1131,7 +1122,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
 
     public void hitApiRemoveList() {
-        showLoading(getBinding().progressBar, true);
+        showLoading(getBinding().progressBar);
         JsonObject requestParam = new JsonObject();
         requestParam.addProperty(AppConstants.API_PARAM_WATCHLIST_ID, watchListId);
         viewModel.hitApiRemoveWatchList(token, String.valueOf(watchListId)).observe(SeriesDetailActivity.this, responseWatchList -> {
@@ -1157,7 +1148,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     public void hitApiAddWatchList() {
-        showLoading(getBinding().progressBar, true);
+        showLoading(getBinding().progressBar);
         JsonObject requestParam = new JsonObject();
         requestParam.addProperty(AppConstants.API_PARAM_CONTENT_ID, seriesId);
         requestParam.addProperty(AppConstants.API_PARAM_CONTENT_TYPE, "SERIES");
@@ -1180,7 +1171,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     }
 
-    private void showDialog(String title, String message) {
+    private void showDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogSingleButtonFragment alertDialog = AlertDialogSingleButtonFragment.newInstance(title, message, getResources().getString(R.string.ok));
         alertDialog.setCancelable(false);
@@ -1260,7 +1251,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
 
-    public void commentFragment(int id) {
+    public void commentFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         commentsFragment = new CommentsFragment();
         Bundle args = new Bundle();
@@ -1294,14 +1285,14 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     public void openCommentSection() {
-        commentFragment(163);
+        commentFragment();
         getBinding().interactionSection.showComments.setVisibility(View.GONE);
         getBinding().playerFooter.setVisibility(View.GONE);
         getBinding().fragmentComment.setVisibility(View.VISIBLE);
     }
 
 
-    public void openLoginPage(String message) {
+    public void openLoginPage() {
         preference.setAppPrefJumpTo(MediaTypeConstants.getInstance().getSeries());
         preference.setAppPrefJumpBack(true);
         preference.setAppPrefJumpBackId(seriesId);
@@ -1328,7 +1319,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     public void hitApiLogout() {
         isloggedout = false;
         if (isLogin) {
-            hitApiLogout(SeriesDetailActivity.this, preference.getAppPrefAccessToken());
+            hitApiLogout(preference.getAppPrefAccessToken());
         }
     }
 
@@ -1341,7 +1332,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     }
 
-    public void showSeasonList(ArrayList<SelectedSeasonModel> list, int selectedSeasonId) {
+    public void showSeasonList() {
         getBinding().transparentLayout.setVisibility(View.VISIBLE);
 
         SeasonListAdapter listAdapter = new SeasonListAdapter(list, selectedSeasonId);
@@ -1398,27 +1389,27 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                             //userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
                             if (seasonEpisodesList!=null){
                                 String[] array = getResources().getStringArray(R.array.download_quality);
-                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                userInteractionFragment.setDownloadStatus();
                                 int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                                startDownload(pos,videoId);
+                                startDownload();
 
                             }
                         } else {
                             selectDownloadVideoQuality();
                         }
                     } else {
-                        showWifiSettings(videoQuality);
+                        showWifiSettings();
 //                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
                         //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     if (videoQuality != 3) {
-                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                        userInteractionFragment.setDownloadStatus();
                         if (seasonEpisodesList!=null){
                             String[] array = getResources().getStringArray(R.array.download_quality);
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            userInteractionFragment.setDownloadStatus();
                             int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                            startDownload(pos,videoId);
+                            startDownload();
                         }
                     } else {
                         selectDownloadVideoQuality();
@@ -1434,30 +1425,30 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 if (KsPreferenceKeys.getInstance().getDownloadOverWifi() == 1) {
                     if (NetworkHelper.INSTANCE.isWifiEnabled(this)) {
                         if (videoQuality != 3) {
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            userInteractionFragment.setDownloadStatus();
                             if (seasonEpisodesList!=null){
                                 String[] array = getResources().getStringArray(R.array.download_quality);
-                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                userInteractionFragment.setDownloadStatus();
                                 int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                                startDownload(pos,videoId);
+                                startDownload();
 
                             }
                         } else {
                             selectDownloadVideoQuality();
                         }
                     } else {
-                        showWifiSettings(videoQuality);
+                        showWifiSettings();
 //                        downloadHelper.checkDownloadStatus(downloadAbleVideo);
                         //Toast.makeText(this, "NoWifi", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     if (videoQuality != 3) {
-                        userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                        userInteractionFragment.setDownloadStatus();
                         if (seasonEpisodesList!=null){
                             String[] array = getResources().getStringArray(R.array.download_quality);
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            userInteractionFragment.setDownloadStatus();
                             int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                            startDownload(pos,videoId);
+                            startDownload();
                         }
                     } else {
                         selectDownloadVideoQuality();
@@ -1476,9 +1467,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 AppCommonMethod.resetLanguage("en", SeriesDetailActivity.this);
             }
             if (KsPreferenceKeys.getInstance().getAppPrefLoginStatus()){
-                showDownloadDialog("", getResources().getString(R.string.premium_download_popup_message),1,getResources().getString(R.string.purhcase_options));
+                showDownloadDialog();
             }else {
-                showDownloadDialog("", getResources().getString(R.string.premium_download_loginpopup_message),2,getResources().getString(R.string.login));
+                showDownloadDialog();
             }
 
 
@@ -1487,7 +1478,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         }
     }
 
-    private void showDownloadDialog(String title, String message,int type,String buttonText) {
+    private void showDownloadDialog() {
         FragmentManager fm = getSupportFragmentManager();
         PremiumDownloadPopup alertDialog = PremiumDownloadPopup.newInstance(title, message, buttonText);
         alertDialog.setCancelable(false);
@@ -1505,7 +1496,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         alertDialog.show(fm, "fragment_alert");
     }
 
-    private void startDownload(int pos,String videoId) {
+    private void startDownload() {
         Log.w("instanceof",clickSource+"");
         if (clickSource!=null){
             if (clickSource instanceof SeriesDetailActivity){
@@ -1515,7 +1506,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         Log.w("instanceof",clickSource+" "+2);
                         int position=AppCommonMethod.getDownloadPosition(seasonTabFragment.getSeasonAdapter().getAdapterList(),videoId);
                         EnveuVideoItemBean videoDetails=seasonTabFragment.getSeasonAdapter().getAdapterList().get(position);
-                        seasonTabFragment.notifySingleItem(videoDetails.getkEntryId());
+                        seasonTabFragment.notifySingleItem();
                         countCall = 0;
                         countCall2 = 2;
                         if (userInteractionFragment!=null){
@@ -1562,7 +1553,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         }
     }
 
-    private void showWifiSettings(int videoQuality) {
+    private void showWifiSettings() {
         downloadHelper.changeWifiSetting(new WifiPreferenceListener() {
             @Override
             public void actionP(int value) {
@@ -1570,9 +1561,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     if (videoQuality != 3) {
                         if (seasonEpisodesList!=null){
                             String[] array = getResources().getStringArray(R.array.download_quality);
-                            userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                            userInteractionFragment.setDownloadStatus();
                             int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                            startDownload(pos,downloadId);
+                            startDownload();
                         }
 
                     } else {
@@ -1588,9 +1579,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             downloadHelper.selectVideoQuality(typeofTVOD,position -> {
                 if (seasonEpisodesList!=null){
                     String[] array = getResources().getStringArray(R.array.download_quality);
-                    userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                    userInteractionFragment.setDownloadStatus();
                     int pos =  new SharedPrefHelper(SeriesDetailActivity.this).getInt(SharedPrefesConstants.DOWNLOAD_QUALITY_INDEX, 3);
-                    startDownload(pos,downloadId);
+                    startDownload();
                 }
             });
         }catch (Exception ignored){
@@ -1601,7 +1592,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
 
     private List<EnveuVideoItemBean> getDownloadableEpisodes
-            (List<EnveuVideoItemBean> seasonEpisodes) {
+            () {
         List<EnveuVideoItemBean> downloadableEpisodes = new ArrayList<>();
         for (EnveuVideoItemBean enveuVideoItemBean : seasonEpisodes) {
 //            downloadHelper.findVideo(enveuVideoItemBean.getBrightcoveVideoId(), new VideoListener() {
@@ -1643,10 +1634,10 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                             @Override
                             public void run() {
                                 if (seasonTabFragment!=null){
-                                    seasonTabFragment.cancelDownload(videoId);
+                                    seasonTabFragment.cancelDownload();
                                     if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
                                         userInteractionFragment.isItemCheck();
-                                        userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                        userInteractionFragment.checkSeriesDownloadStatus();
                                     }
                                 }
                             }
@@ -1675,17 +1666,17 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     if (seasonTabFragment!=null){
                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                             if (userInteractionFragment!=null){
-                                userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                userInteractionFragment.setDownloadStatus();
                                 userInteractionFragment.getBinding().downloadText.setText(getResources().getString(R.string.removing_download));
                                 userInteractionFragment.getBinding().downloadText.setTextColor(getResources().getColor(R.color.subtitlecolor));
                             }
                             downloadHelper.removeAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
                                 @Override
                                 public void cancelVideos() {
-                                    userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                    userInteractionFragment.setDownloadStatus();
                                     if (seasonTabFragment!=null){
                                         seasonTabFragment.notifyAdapter();
-                                        userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                        userInteractionFragment.setDownloadStatus();
                                     }
                                 }
                             });
@@ -1723,16 +1714,16 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                         if (seasonTabFragment!=null){
                             if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
                                 if (userInteractionFragment!=null){
-                                    userInteractionFragment.setDownloadStatus(panteao.make.ready.enums.DownloadStatus.REQUESTED);
+                                    userInteractionFragment.setDownloadStatus();
                                     userInteractionFragment.getBinding().downloadText.setText(getResources().getString(R.string.canceling_download));
                                 }
                                 downloadHelper.cancelAllVideo(seasonTabFragment.getSeasonAdapter().getAdapterList(), new CancelCallBack() {
                                     @Override
                                     public void cancelVideos() {
-                                        userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                        userInteractionFragment.setDownloadStatus();
                                         if (seasonTabFragment!=null){
                                             seasonTabFragment.notifyAdapter();
-                                            userInteractionFragment.setDownloadStatus(DownloadStatus.START);
+                                            userInteractionFragment.setDownloadStatus();
                                         }
                                     }
                                 });
@@ -1752,7 +1743,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
 
     class SeasonListAdapter extends RecyclerView.Adapter<SeasonListAdapter.ViewHolder> {
         private final ArrayList<SelectedSeasonModel> list;
-        private int selectedPos;
+        private final int selectedPos;
 
         //TrackGroup list;
         public SeasonListAdapter(ArrayList<SelectedSeasonModel> list, int selectedPos) {
@@ -1788,9 +1779,9 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 getBinding().transparentLayout.setVisibility(View.GONE);
                 if (seasonTabFragment != null) {
                     seasonTabFragment.updateTotalPages();
-                    seasonTabFragment.setSeasonAdapter(null);
+                    seasonTabFragment.setSeasonAdapter();
                     seasonTabFragment.setSelectedSeason(list.get(position).getSelectedId());
-                    showLoading(getBinding().progressBar, true);
+                    showLoading(getBinding().progressBar);
                     seasonTabFragment.getSeasonEpisodes();
                 }
 
@@ -1824,11 +1815,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                             @Override
                             public void run() {
                                 if (seasonTabFragment!=null){
-                                    seasonTabFragment.cancelDownload(videoId);
+                                    seasonTabFragment.cancelDownload();
                                     if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
                                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
                                             if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
-                                                userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                                userInteractionFragment.checkSeriesDownloadStatus();
                                             }
                                         }
                                     }
@@ -1843,7 +1834,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     @Override
-    public void onClick(boolean isClicked) {
+    public void onClick() {
 
     }
 
@@ -1868,7 +1859,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     @Override
-    public void initialStatus(@NonNull @NotNull OfflineManager.AssetDownloadState state) {
+    public void initialStatus() {
 
     }
 
@@ -1890,7 +1881,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                      if (userInteractionFragment!=null){
                          try {
                              userInteractionFragment.isItemCheck();
-                             userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                             userInteractionFragment.checkSeriesDownloadStatus();
                          }catch (Exception e){
 
                          }
@@ -1903,11 +1894,11 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
     }
 
     @Override
-    public void onAssetDownloadFailed(@NonNull @NotNull String assetId, Exception e) {
+    public void onAssetDownloadFailed() {
 
     }
     List<EnveuVideoItemBean> seasonEpisodesList;
-    public void episodesList(List<EnveuVideoItemBean> seasonEpisodes) {
+    public void episodesList() {
         try {
             seasonEpisodesList = new ArrayList<>();
             if (seasonEpisodes != null && seasonEpisodes.size() > 0) {
@@ -1916,7 +1907,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                 }
                 if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
                     userInteractionFragment.isItemCheck();
-                    userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                    userInteractionFragment.checkSeriesDownloadStatus();
                 }
 
             }
@@ -1935,7 +1926,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
         if (countCall==0 && countCall2==2){
             if (seasonTabFragment!=null){
                 countCall=1;
-                seasonTabFragment.downloadStatusChanged(assetId);
+                seasonTabFragment.downloadStatusChanged();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1955,14 +1946,14 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     if (userInteractionFragment!=null && userInteractionFragment.getBinding()!=null){
                         if (seasonTabFragment.getSeasonAdapter()!=null && seasonTabFragment.getSeasonAdapter().getAdapterList()!=null){
                             if (seasonTabFragment.getSeasonAdapter().getAdapterList().size()>0){
-                                userInteractionFragment.checkDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                                userInteractionFragment.checkDownloadStatus();
                             }
                         }
                     }
                    // userInteractionFragment.setDownloadStatus(DownloadStatus.SERIES_DOWNLOADING);
                     try {
                        // Thread.sleep(60);
-                        seasonTabFragment.updateAdapter((int)progress,assetId,downloadHelper,SeriesDetailActivity.this);
+                        seasonTabFragment.updateAdapter();
                     }catch (Exception e){
 
                     }
@@ -1982,7 +1973,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
                     if (userInteractionFragment!=null){
                         try {
                             userInteractionFragment.isItemCheck();
-                            userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                            userInteractionFragment.checkSeriesDownloadStatus();
                         }catch (Exception e){
 
                         }
@@ -2016,7 +2007,7 @@ public class SeriesDetailActivity extends BaseBindingActivity<ActivitySeriesDeta
             try {
                 if (userInteractionFragment!=null && seasonTabFragment!=null && downloadHelper!=null){
                     userInteractionFragment.isItemCheck();
-                    userInteractionFragment.checkSeriesDownloadStatus(seasonTabFragment.getSeasonAdapter().getAdapterList(),downloadHelper);
+                    userInteractionFragment.checkSeriesDownloadStatus();
                 }
             }catch (Exception e){
 

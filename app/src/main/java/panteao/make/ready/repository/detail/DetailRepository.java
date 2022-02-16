@@ -36,12 +36,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import panteao.make.ready.beanModel.responseModels.detailPlayer.ResponseDetailPlayer;
-import panteao.make.ready.beanModel.responseModels.landingTabResponses.CommonRailData;
-import panteao.make.ready.beanModel.responseModels.series.SeriesResponse;
-import panteao.make.ready.beanModel.responseModels.series.season.SeasonResponse;
-import panteao.make.ready.utils.cropImage.helpers.Logger;
-import panteao.make.ready.utils.cropImage.helpers.PrintLogging;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -227,7 +221,7 @@ public class DetailRepository {
                     responseWatchList.setData(Objects.requireNonNull(response.body()).getData());
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -263,7 +257,7 @@ public class DetailRepository {
                     responseWatchList.setData(Objects.requireNonNull(response.body()).getData());
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -297,7 +291,7 @@ public class DetailRepository {
                     responseWatchList.setStatus(true);
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -329,7 +323,7 @@ public class DetailRepository {
                     responseWatchList.setStatus(true);
                     responsePlayer.postValue(responseWatchList);
                 } else {
-                    responseWatchList.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseWatchList.setResponseCode(response.code());
                     responseWatchList.setStatus(false);
                     responsePlayer.postValue(responseWatchList);
                 }
@@ -349,7 +343,7 @@ public class DetailRepository {
     }
 
 
-    public LiveData<ResponseEntitlement> hitApiEntitlement(String token, String sku) {
+    public LiveData<ResponseEntitlement> hitApiEntitlement() {
         MutableLiveData<ResponseEntitlement> responseOutput = new MutableLiveData<>();
 
         /*APIDetails endpoint = RequestConfig.getClientInterceptor(token).create(APIDetails.class);
@@ -401,7 +395,7 @@ public class DetailRepository {
                     responseEntitlement.setData(Objects.requireNonNull(response.body()).getData());
                     responseOutput.postValue(responseEntitlement);
                 } else {
-                    responseEntitlement.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseEntitlement.setResponseCode(response.code());
                     responseEntitlement.setStatus(false);
                     responseOutput.postValue(responseEntitlement);
                 }
@@ -435,7 +429,7 @@ public class DetailRepository {
                     responseMutable.postValue(responseAddComment);
                 } else {
 
-                    responseAddComment.setResponseCode(Objects.requireNonNull(response.code()));
+                    responseAddComment.setResponseCode(response.code());
                     responseAddComment.setStatus(false);
                     responseMutable.postValue(responseAddComment);
                 }
@@ -467,7 +461,7 @@ public class DetailRepository {
                     model.setStatus(true);
                     responseMutable.postValue(model);
                 } else {
-                    model.setResponseCode(Objects.requireNonNull(response.code()));
+                    model.setResponseCode(response.code());
                     model.setStatus(false);
                     responseMutable.postValue(model);
                 }
@@ -533,7 +527,7 @@ public class DetailRepository {
             @Override
             public void onResponse(@NonNull Call<SeriesResponse> call, @NonNull Response<SeriesResponse> response) {
                 if (response.code() == 200) {
-                    PrintLogging.printLog("", response.body() + "getSeriesDetail");
+                    PrintLogging.printLog(response.body() + "getSeriesDetail");
                     mutableLiveData.postValue(response.body());
                 }
             }
@@ -554,7 +548,7 @@ public class DetailRepository {
         call.enqueue(new Callback<SeasonResponse>() {
             @Override
             public void onResponse(@NonNull Call<SeasonResponse> call, @NonNull Response<SeasonResponse> response) {
-                PrintLogging.printLog("", "getVOD");
+                PrintLogging.printLog("getVOD");
 
                 mutableLiveData.postValue(response.body());
             }

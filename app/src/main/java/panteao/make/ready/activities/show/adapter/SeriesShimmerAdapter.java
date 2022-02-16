@@ -15,7 +15,7 @@ import panteao.make.ready.databinding.SeasonShimmerBinding;
 public class SeriesShimmerAdapter extends RecyclerView.Adapter<SeriesShimmerAdapter.ShimmerViewHolder> {
 
 
-    private Context context;
+    private final Context context;
 
     public SeriesShimmerAdapter(Context context) {
         this.context = context;
@@ -49,7 +49,7 @@ public class SeriesShimmerAdapter extends RecyclerView.Adapter<SeriesShimmerAdap
 
 
     public class ShimmerViewHolder extends RecyclerView.ViewHolder {
-        SeasonShimmerBinding itemBinding;
+        final SeasonShimmerBinding itemBinding;
 
         public ShimmerViewHolder(@NonNull SeasonShimmerBinding itemView) {
             super(itemView.getRoot());
