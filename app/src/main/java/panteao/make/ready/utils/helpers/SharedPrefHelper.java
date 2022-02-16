@@ -45,7 +45,7 @@ public class SharedPrefHelper {
     }*/
 
     public String getString(String key, String defValue) {
-        String decryptedValue = cryptUtil.decrypt(mSharedPreferences.getString(key, defValue), AppConstants.MY_MVHUB_ENCRYPTION_KEY);
+        String decryptedValue = cryptUtil.decrypt(mSharedPreferences.getString(key, defValue), AppConstants.OTT_ENCRYPTION_KEY);
         if (decryptedValue == null || decryptedValue.equalsIgnoreCase("") || key.equalsIgnoreCase("DMS_Response")) {
             decryptedValue = mSharedPreferences.getString(key, defValue);
         }
@@ -54,7 +54,7 @@ public class SharedPrefHelper {
 
     public void setString(String key, String value) {
         String encryptedValue;
-        encryptedValue = cryptUtil.encrypt(value, AppConstants.MY_MVHUB_ENCRYPTION_KEY);
+        encryptedValue = cryptUtil.encrypt(value, AppConstants.OTT_ENCRYPTION_KEY);
         if (key.equalsIgnoreCase("DMS_Response") || value.equalsIgnoreCase("")) {
             mEditor.putString(key, value);
         } else {

@@ -3,7 +3,7 @@ package panteao.make.ready.utils.constants;
 import org.jetbrains.annotations.NotNull;
 
 public interface AppConstants {
-    String MY_MVHUB_ENCRYPTION_KEY = "MYMVHUB$KEY";
+    String OTT_ENCRYPTION_KEY = "OTT$KEY";
     String ENVEU_CONFIG = "enveuConfig";
     String IMAGE_TYPE_THUMBNAIL = "THUMBNAIL";
     String IMAGE_TYPE_POSTER = "POSTER";

@@ -1414,12 +1414,6 @@ public class ShowActivity extends BaseBindingActivity<ActivityShowBinding> imple
             }
         }
 
-//        if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("Thai") || KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("हिंदी")) {
-//            AppCommonMethod.updateLanguage("th", MvHubPlusApplication.getInstance());
-//        } else if (KsPreferenceKeys.getInstance().getAppLanguage().equalsIgnoreCase("English")) {
-//            AppCommonMethod.updateLanguage("en", MvHubPlusApplication.getInstance());
-//        }
-
 
     }
 
