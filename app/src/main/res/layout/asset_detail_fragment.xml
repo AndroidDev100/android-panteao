@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginLeft="@dimen/NontonSize10"
+                        android:layout_marginLeft="@dimen/TXTSize10"
                         android:visibility="gone">
 
                         <TextView
@@ -141,10 +141,10 @@
                         android:layout_margin="3dp"
                         android:background="@drawable/rounded_button"
                         android:fontFamily="@font/roboto_regular"
-                        android:paddingLeft="@dimen/NontonSize8"
-                        android:paddingTop="@dimen/NontonSize3"
-                        android:paddingRight="@dimen/NontonSize8"
-                        android:paddingBottom="@dimen/NontonSize3"
+                        android:paddingLeft="@dimen/TXTSize8"
+                        android:paddingTop="@dimen/TXTSize3"
+                        android:paddingRight="@dimen/TXTSize8"
+                        android:paddingBottom="@dimen/TXTSize3"
                         android:text="@string/exclusive"
                         android:textColor="@color/rounded_button_text_color"
                         android:textSize="@dimen/detailPremium"
@@ -288,7 +288,7 @@
                         android:id="@+id/addIcon"
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:src="@drawable/add_to_watchlist" />
 
@@ -309,7 +309,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/NontonSize15"
+                    android:layout_marginLeft="@dimen/TXTSize15"
                     android:orientation="vertical">
 
                     <ImageView
@@ -317,7 +317,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center|center_horizontal"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:src="@drawable/like_icon" />
 
@@ -338,14 +338,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/NontonSize15"
+                    android:layout_marginLeft="@dimen/TXTSize15"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:src="@drawable/share" />
 

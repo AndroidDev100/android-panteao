@@ -8,7 +8,7 @@
         android:id="@+id/rltracks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/NontonSize5"
+        android:layout_margin="@dimen/TXTSize5"
         android:orientation="vertical">
 
         <RadioGroup
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/NontonSize8"
+            android:layout_marginRight="@dimen/TXTSize8"
             android:orientation="horizontal">
 
             <RadioButton
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/NontonSize20"
+            android:layout_marginLeft="@dimen/TXTSize20"
             android:textColor="@color/blackColor"
             android:textSize="@dimen/buyVideo" />
     </RelativeLayout>

@@ -1622,7 +1622,7 @@ public class ChapterActivity extends BaseBindingActivity<ActivityEpisodeBinding>
                     //Loss of audio focus for a long time
                     //Stop playing the sound
 //                    if (fragment != null)
-//                        fragment.pauseNontonPlayer();
+
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     Logger.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");

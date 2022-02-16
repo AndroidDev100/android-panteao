@@ -91,7 +91,7 @@
                                 android:id="@+id/backImage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/NontonSize8"
+                                android:layout_margin="@dimen/TXTSize8"
                                 android:contentDescription="Series Backpress "
                                 android:tint="#FFFFFF"
                                 app:srcCompat="@drawable/back_icon_player" />
@@ -146,8 +146,8 @@
                                 android:layout_height="@dimen/seriesPlayIcon"
                                 android:layout_alignRight="@+id/bannerlabel"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginRight="@dimen/NontonSize12"
-                                android:layout_marginBottom="@dimen/NontonSize10"
+                                android:layout_marginRight="@dimen/TXTSize12"
+                                android:layout_marginBottom="@dimen/TXTSize10"
                                 android:background="@drawable/player"
                                 android:contentDescription="TODO" />
 
@@ -198,7 +198,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/movie_detail_ll_margin_left"
-                            android:layout_marginTop="@dimen/NontonSize5"
+                            android:layout_marginTop="@dimen/TXTSize5"
                             android:layout_marginRight="@dimen/movie_detail_ll_margin_left"
                             android:orientation="vertical">
                             <LinearLayout
@@ -228,8 +228,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
-                                        android:layout_marginTop="@dimen/NontonSize4"
-                                        android:layout_marginLeft="@dimen/NontonSize10">
+                                        android:layout_marginTop="@dimen/TXTSize4"
+                                        android:layout_marginLeft="@dimen/TXTSize10">
 
                                         <TextView
                                             android:id="@+id/tv_purchased"

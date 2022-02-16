@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
-        android:layout_margin="@dimen/NontonSize8">
+        android:layout_margin="@dimen/TXTSize8">
 
 
         <LinearLayout
@@ -25,7 +25,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/NontonSize8"
+                    android:layout_margin="@dimen/TXTSize8"
                     android:orientation="vertical"
                     android:visibility="visible">
 
@@ -34,7 +34,7 @@
                         android:id="@+id/header"
                         android:layout_width="150dp"
                         android:layout_height="20dp"
-                        android:layout_marginBottom="@dimen/NontonSize30"
+                        android:layout_marginBottom="@dimen/TXTSize30"
                         android:background="?attr/list_shimmer"
                         android:visibility="gone" />
 

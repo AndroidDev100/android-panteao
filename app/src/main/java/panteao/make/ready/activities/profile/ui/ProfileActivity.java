@@ -152,7 +152,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
         AppCommonMethod.getTimeStampDOB = 0;
         appSyncBroadcast = new AppSyncBroadcast();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("NONTON_PROFILE_UPDATE");
+        intentFilter.addAction("PROFILE_UPDATE");
         LocalBroadcastManager.getInstance(ProfileActivity.this).registerReceiver(appSyncBroadcast, intentFilter);
 
     }
@@ -409,7 +409,7 @@ public class ProfileActivity extends BaseBindingActivity<ProfileScreenBinding> i
             hideSoftKeyboard(view);
             ProfileActivity.this.getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            AppCommonMethod.showDatePickerNonton(getBinding().calendertxt, ProfileActivity.this);
+            AppCommonMethod.showDatePicker(getBinding().calendertxt, ProfileActivity.this);
         });
 
         getBinding().errorName.setOnTouchListener((view, motionEvent) -> {

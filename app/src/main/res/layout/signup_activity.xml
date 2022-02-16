@@ -64,7 +64,7 @@
                                 android:padding="@dimen/DobPaddingBottom"
                                 android:text="@string/skip"
                                 android:textColor="@color/edittextview"
-                                android:textSize="@dimen/NontonSize14"
+                                android:textSize="@dimen/TXTSize14"
                                 android:visibility="gone" />
 
                             <ImageView
@@ -80,7 +80,7 @@
                                 android:layout_height="match_parent"
                                 android:visibility="gone"
                                 android:layout_centerInParent="true"
-                                android:layout_marginTop="@dimen/NontonSize10"
+                                android:layout_marginTop="@dimen/TXTSize10"
                                 android:gravity="center">
 
                                 <ImageView
@@ -113,7 +113,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/llHeader"
-                            android:layout_marginTop="@dimen/NontonSize40"
+                            android:layout_marginTop="@dimen/TXTSize40"
                             android:gravity="center_vertical"
                             android:orientation="vertical">
 
@@ -122,15 +122,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:paddingBottom="@dimen/NontonSize5">
+                                android:paddingBottom="@dimen/TXTSize5">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/NontonSize2"
+                                    android:layout_marginRight="@dimen/TXTSize2"
                                     android:contentDescription="TODO"
-                                    android:padding="@dimen/NontonSize4"
+                                    android:padding="@dimen/TXTSize4"
                                     android:visibility="gone"
                                     android:scaleType="centerInside"
                                     android:src="?attr/profile_icon_background" />
@@ -161,7 +161,7 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
-                                android:layout_margin="@dimen/NontonSize5"
+                                android:layout_margin="@dimen/TXTSize5"
                                 android:textColor="@color/inspection_color"
                                 android:textSize="@dimen/TextSize12"
                                 android:visibility="invisible" />
@@ -171,16 +171,16 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="@dimen/NontonSize10"
-                                android:paddingBottom="@dimen/NontonSize5">
+                                android:layout_marginTop="@dimen/TXTSize10"
+                                android:paddingBottom="@dimen/TXTSize5">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginRight="@dimen/NontonSize2"
+                                    android:layout_marginRight="@dimen/TXTSize2"
                                     android:contentDescription="TODO"
-                                    android:padding="@dimen/NontonSize4"
+                                    android:padding="@dimen/TXTSize4"
                                     android:visibility="gone"
                                     android:src="?attr/email_icon_background" />
 
@@ -209,7 +209,7 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
-                                android:layout_margin="@dimen/NontonSize5"
+                                android:layout_margin="@dimen/TXTSize5"
                                 android:textColor="@color/inspection_color"
                                 android:textSize="@dimen/TextSize12"
                                 android:visibility="invisible" />
@@ -219,14 +219,14 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="@dimen/NontonSize10"
-                                android:paddingBottom="@dimen/NontonSize5">
+                                android:layout_marginTop="@dimen/TXTSize10"
+                                android:paddingBottom="@dimen/TXTSize5">
 
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:contentDescription="TODO"
-                                    android:padding="@dimen/NontonSize4"
+                                    android:padding="@dimen/TXTSize4"
                                     android:visibility="gone"
                                     android:src="?attr/lock_icon" />
 
@@ -265,7 +265,7 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                             <LinearLayout
                                 android:id="@+id/llSignUp"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/NontonSize45"
+                                android:layout_height="@dimen/TXTSize45"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginTop="@dimen/suaSignUpTop"
                                 android:background="@drawable/rounded_button"
@@ -275,7 +275,7 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 <ImageView
                                     android:layout_width="@dimen/_60sdp"
                                     android:layout_height="@dimen/_61sdp"
-                                    android:layout_marginRight="@dimen/NontonSize5"
+                                    android:layout_marginRight="@dimen/TXTSize5"
                                     android:contentDescription="TODO"
                                     android:scaleType="fitXY"
                                     android:tint="#FFFFFF"
@@ -317,9 +317,9 @@ android:textColorHint="?attr/new_password_text_and_hint_color"
                                 android:id="@+id/tvAlreadyUser"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingTop="@dimen/NontonSize5"
-                                android:paddingRight="@dimen/NontonSize10"
-                                android:paddingBottom="@dimen/NontonSize5">
+                                android:paddingTop="@dimen/TXTSize5"
+                                android:paddingRight="@dimen/TXTSize10"
+                                android:paddingBottom="@dimen/TXTSize5">
 
                                 <TextView
                                     android:layout_width="wrap_content"

@@ -9,23 +9,23 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:orientation="vertical"
-        android:paddingTop="@dimen/NontonSize5">
+        android:paddingTop="@dimen/TXTSize5">
 
         <FrameLayout
             android:id="@+id/commentImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/NontonSize18"
+            android:layout_marginRight="@dimen/TXTSize18"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/item_image"
-                android:layout_width="@dimen/NontonSize40"
-                android:layout_height="@dimen/NontonSize40"
+                android:layout_width="@dimen/TXTSize40"
+                android:layout_height="@dimen/TXTSize40"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/NontonSize10"
+                android:layout_margin="@dimen/TXTSize10"
                 android:src="@drawable/profile_dark" />
 
         </FrameLayout>
@@ -33,8 +33,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/NontonSize8"
-            android:layout_marginBottom="@dimen/NontonSize3"
+            android:layout_marginRight="@dimen/TXTSize8"
+            android:layout_marginBottom="@dimen/TXTSize3"
             android:gravity="center_vertical|start"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/NontonSize1"
+                android:layout_marginTop="@dimen/TXTSize1"
                 android:fontFamily="@font/roboto_medium"
                 android:text=""
                 android:textColor="@color/white"

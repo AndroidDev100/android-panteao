@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/NontonSize10"
+                    android:layout_marginRight="@dimen/TXTSize10"
                     android:contentDescription="TODO"
                     android:transitionName="imageMain"
                     android:background="?attr/search_icon_background"

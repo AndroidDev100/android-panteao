@@ -12,8 +12,6 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.ActivityContactUsBinding;
 
-import static panteao.make.ready.BuildConstants.CONTACT_US;
-
 
 public class ContactUsActivity extends BaseBindingActivity<ActivityContactUsBinding> {
 
@@ -39,7 +37,6 @@ public class ContactUsActivity extends BaseBindingActivity<ActivityContactUsBind
         getBinding().webView.getSettings().setBuiltInZoomControls(true);
         getBinding().webView.getSettings().setUseWideViewPort(true);
         getBinding().webView.getSettings().setLoadWithOverviewMode(true);
-        getBinding().webView.loadUrl(CONTACT_US);
         getBinding().webView.setWebViewClient(new InsideWebViewClient());
 
         getBinding().toolbar.backLayout.setOnClickListener(view -> onBackPressed());

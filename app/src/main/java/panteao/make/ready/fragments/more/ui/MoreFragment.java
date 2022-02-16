@@ -77,7 +77,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//import com.webstreamindonesia.nonton.activities.membershipPlan.ui.MemberShipPlanActivity;
+
 
 
 @SuppressWarnings("StatementWithEmptyBody")
@@ -154,7 +154,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding> imple
     public void onResume() {
         super.onResume();
         intentFilter = new IntentFilter();
-        intentFilter.addAction("NONTON_PROFILE_UPDATE");
+        intentFilter.addAction("PROFILE_UPDATE");
         appSyncBroadcast = new AppSyncBroadcast();
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).registerReceiver(appSyncBroadcast, intentFilter);
         isloggedout = false;

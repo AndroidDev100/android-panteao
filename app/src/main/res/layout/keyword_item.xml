@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="@dimen/NontonSize15"
+        android:layout_marginLeft="@dimen/TXTSize15"
         android:paddingTop="@dimen/_3sdp">
 
 

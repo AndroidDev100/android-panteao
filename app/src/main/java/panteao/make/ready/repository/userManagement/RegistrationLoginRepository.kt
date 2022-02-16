@@ -124,7 +124,7 @@ class RegistrationLoginRepository() {
                                 val responseModel = SignupResponseAccessToken()
                                 responseModel.accessToken = token
                                 responseModel.responseModel = cl
-                                Logger.e("manual", "nNontonToken$token")
+
                                 responseApi.postValue(responseModel)
                                 Logger.e("", "REsponse" + response.body())
                             } else {
@@ -173,7 +173,6 @@ class RegistrationLoginRepository() {
         responseApi = MutableLiveData()
         var check: Boolean
         val preference = KsPreferenceKeys.getInstance()
-        Logger.e("Token", "nNontonToken" + userDetails.accessToken)
         val endpoint = RequestConfig.getClientInterceptor(userDetails.accessToken).create(
             ApiInterface::class.java
         )

@@ -4,7 +4,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/NontonSize5"
+        android:layout_marginTop="@dimen/TXTSize5"
         android:background="?android:selectableItemBackground"
         android:orientation="vertical">
 
@@ -32,8 +32,8 @@
         <View
             android:id="@+id/seperator"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/NontonSize1"
-            android:layout_marginTop="@dimen/NontonSize3"
+            android:layout_height="@dimen/TXTSize1"
+            android:layout_marginTop="@dimen/TXTSize3"
             android:background="@color/home_screen_seperator" />
     </LinearLayout>
 </layout>

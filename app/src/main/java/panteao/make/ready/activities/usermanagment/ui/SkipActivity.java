@@ -190,7 +190,7 @@ public class SkipActivity extends BaseBindingActivity<SkipBinding> implements Al
                 new ToastHandler(SkipActivity.this).show(SkipActivity.this.getResources().getString(R.string.no_internet_connection));
         });
 
-        getBinding().tvDateOfBirth.setOnClickListener(view -> getTimeStampDOB = AppCommonMethod.showDatePickerNonton(getBinding().tvDateOfBirth, SkipActivity.this));
+        getBinding().tvDateOfBirth.setOnClickListener(view -> getTimeStampDOB = AppCommonMethod.showDatePicker(getBinding().tvDateOfBirth, SkipActivity.this));
 
         getBinding().profileLayout.setOnClickListener(view -> {
             uploadImageClick = true;

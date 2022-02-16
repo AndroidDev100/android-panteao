@@ -15,7 +15,7 @@
 
             <LinearLayout
                 android:id="@+id/back_layout"
-                android:layout_marginLeft="@dimen/NontonSize20"
+                android:layout_marginLeft="@dimen/TXTSize20"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical">
@@ -51,7 +51,7 @@
                     android:layout_width="@dimen/watchListWidth"
                     android:layout_height="@dimen/watchListHeight"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
+                    android:layout_margin="@dimen/TXTSize8"
                     android:contentDescription="TODO"
                     app:srcCompat="?attr/share_icon" />
 

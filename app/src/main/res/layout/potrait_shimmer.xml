@@ -26,8 +26,8 @@
 
                 <View
                     android:id="@+id/shimmerViewPotrait"
-                    android:layout_width="@dimen/NontonSize95"
-                    android:layout_height="@dimen/NontonSize168"
+                    android:layout_width="@dimen/TXTSize95"
+                    android:layout_height="@dimen/TXTSize168"
                     android:background="?attr/list_shimmer"
                     android:orientation="vertical" />
 

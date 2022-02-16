@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/NontonSize5">
+        android:padding="@dimen/TXTSize5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/NontonSize12"
+                android:layout_marginLeft="@dimen/TXTSize12"
                 android:layout_weight="1"
                 android:fontFamily="@font/sarabun_v7_thai_latin_extra_light"
                 android:singleLine="true"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                app:cardCornerRadius="@dimen/NontonSize10">
+                app:cardCornerRadius="@dimen/TXTSize10">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,11 +42,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/NontonSize25"
-                        android:layout_marginTop="@dimen/NontonSize10"
-                        android:layout_marginRight="@dimen/NontonSize10"
-                        android:layout_marginBottom="@dimen/NontonSize10"
-                        android:drawablePadding="@dimen/NontonSize10"
+                        android:layout_marginLeft="@dimen/TXTSize25"
+                        android:layout_marginTop="@dimen/TXTSize10"
+                        android:layout_marginRight="@dimen/TXTSize10"
+                        android:layout_marginBottom="@dimen/TXTSize10"
+                        android:drawablePadding="@dimen/TXTSize10"
                         android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                         android:text="@string/show_all_results"
                         android:textColor="?attr/more_text_color"
@@ -62,7 +62,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/NontonSize8"
+            android:layout_marginTop="@dimen/TXTSize8"
             android:overScrollMode="never" />
 
 

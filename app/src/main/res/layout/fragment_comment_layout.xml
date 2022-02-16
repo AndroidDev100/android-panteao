@@ -11,7 +11,7 @@
             android:id="@+id/flUserComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/NontonSize5">
+            android:paddingLeft="@dimen/TXTSize5">
 
 
             <LinearLayout
@@ -21,8 +21,8 @@
 
                 <ImageView
                     android:id="@+id/close_comments"
-                    android:layout_width="@dimen/NontonSize30"
-                    android:layout_height="@dimen/NontonSize30"
+                    android:layout_width="@dimen/TXTSize30"
+                    android:layout_height="@dimen/TXTSize30"
                     android:layout_gravity="right"
                     android:src="@drawable/close_icon" />
 
@@ -30,7 +30,7 @@
                     android:id="@+id/comment_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/NontonSize80" />
+                    android:layout_marginBottom="@dimen/TXTSize80" />
 
 
             </LinearLayout>
@@ -38,18 +38,18 @@
             <RelativeLayout
                 android:id="@+id/write_comment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/NontonSize60"
+                android:layout_height="@dimen/TXTSize60"
                 android:layout_gravity="bottom"
                 android:gravity="bottom">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userImage"
-                    android:layout_width="@dimen/NontonSize40"
-                    android:layout_height="@dimen/NontonSize40"
+                    android:layout_width="@dimen/TXTSize40"
+                    android:layout_height="@dimen/TXTSize40"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/NontonSize10"
-                    android:layout_marginBottom="@dimen/NontonSize5"
+                    android:layout_margin="@dimen/TXTSize10"
+                    android:layout_marginBottom="@dimen/TXTSize5"
                     android:src="@drawable/profile_dark"
                     app:civ_border_color="@color/detail_selection_color" />
 
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/NontonSize20"
+                    android:layout_marginRight="@dimen/TXTSize20"
                     android:layout_toRightOf="@+id/userImage"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
@@ -76,8 +76,8 @@
                     <View
                         android:id="@+id/seperator"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize1"
-                        android:layout_marginTop="@dimen/NontonSize8"
+                        android:layout_height="@dimen/TXTSize1"
+                        android:layout_marginTop="@dimen/TXTSize8"
                         android:background="@color/lightGreyColor"
                         android:visibility="gone" />
 
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/NontonSize3"
+                    android:layout_marginTop="@dimen/TXTSize3"
                     android:layout_toLeftOf="@+id/tvPostComment"
                     android:layout_toRightOf="@+id/userImage"
                     android:textColorHint="@color/blackColor"
@@ -118,13 +118,13 @@
 
                 <ImageView
                     android:id="@+id/tvPostComment"
-                    android:layout_width="@dimen/NontonSize20"
-                    android:layout_height="@dimen/NontonSize20"
+                    android:layout_width="@dimen/TXTSize20"
+                    android:layout_height="@dimen/TXTSize20"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/NontonSize20"
-                    android:layout_marginTop="@dimen/NontonSize5"
-                    android:layout_marginRight="@dimen/NontonSize10"
+                    android:layout_marginLeft="@dimen/TXTSize20"
+                    android:layout_marginTop="@dimen/TXTSize5"
+                    android:layout_marginRight="@dimen/TXTSize10"
                     android:contentDescription="TODO"
                     android:src="@drawable/ic_send"
                     android:visibility="gone" />

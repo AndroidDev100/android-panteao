@@ -94,7 +94,7 @@
                                             android:layout_height="@dimen/_75sdp"
                                             android:src="@drawable/default_profile_pic"
                                             app:civ_border_color="@color/material_grey_400"
-                                            app:civ_border_width="@dimen/NontonSize1" />
+                                            app:civ_border_width="@dimen/TXTSize1" />
 
                                     </LinearLayout>
 
@@ -141,7 +141,7 @@
                             android:id="@+id/recycler_view_more"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/NontonSize10"
+                            android:layout_marginTop="@dimen/TXTSize10"
                             android:nestedScrollingEnabled="false"
                             android:background="?attr/backgroundColor"
                             android:overScrollMode="never"

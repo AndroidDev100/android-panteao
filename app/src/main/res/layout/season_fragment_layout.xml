@@ -48,7 +48,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/season_heading_margin_left"
-                    android:layout_marginTop="@dimen/NontonSize12"
+                    android:layout_marginTop="@dimen/TXTSize12"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/_10sdp"
@@ -104,7 +104,7 @@
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
                 android:layout_below="@id/series_recycler_view"
-                android:layout_marginTop="@dimen/NontonSize15"
+                android:layout_marginTop="@dimen/TXTSize15"
                 android:background="@drawable/rounded_button"
                 android:gravity="center"
                >

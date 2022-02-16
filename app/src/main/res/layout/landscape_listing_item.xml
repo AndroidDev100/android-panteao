@@ -24,13 +24,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/NontonSize120">
+                    android:layout_height="@dimen/TXTSize120">
 
 
                     <ImageView
                         android:id="@+id/itemImage"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize120"
+                        android:layout_height="@dimen/TXTSize120"
                         android:background="@drawable/placeholder_landscape"
                         android:contentDescription="TODO"
                         android:scaleType="fitXY" />
@@ -81,13 +81,13 @@
                             android:id="@+id/tvTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/NontonSize120"
+                            android:layout_marginTop="@dimen/TXTSize120"
                             android:ellipsize="end"
                             android:gravity="left"
                             android:maxLines="1"
                             android:visibility="gone"
                             android:fontFamily="@font/sarabun_v7_thai_latin_light"
-                            android:paddingTop="@dimen/NontonSize2"
+                            android:paddingTop="@dimen/TXTSize2"
                             android:paddingLeft="@dimen/_3sdp"
                             android:textColor="?attr/watchlist_item_title_color"
                             android:textSize="@dimen/_11sdp" />

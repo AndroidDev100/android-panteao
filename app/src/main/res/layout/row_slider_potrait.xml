@@ -42,9 +42,9 @@
                         android:layout_height="?android:attr/actionBarSize"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/above_shado"
-                        android:paddingLeft="@dimen/NontonSize8"
-                        android:paddingRight="@dimen/NontonSize8"
-                        android:paddingBottom="@dimen/NontonSize5">
+                        android:paddingLeft="@dimen/TXTSize8"
+                        android:paddingRight="@dimen/TXTSize8"
+                        android:paddingBottom="@dimen/TXTSize5">
 
                         <TextView
                             android:id="@+id/bannerlabel"
@@ -75,10 +75,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="@dimen/NontonSize12"
+                        android:layout_marginTop="@dimen/TXTSize12"
                         android:gravity="right"
-                        android:paddingLeft="@dimen/NontonSize10"
-                        android:paddingRight="@dimen/NontonSize12">
+                        android:paddingLeft="@dimen/TXTSize10"
+                        android:paddingRight="@dimen/TXTSize12">
 
                         <TextView
                             android:id="@+id/start_value"

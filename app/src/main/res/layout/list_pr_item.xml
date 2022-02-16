@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/NontonSize10">
+        android:paddingTop="@dimen/TXTSize10">
 
         <FrameLayout
             android:id="@+id/searchItemImage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/NontonSize15"
+            android:layout_marginLeft="@dimen/TXTSize15"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.cardview.widget.CardView
@@ -110,7 +110,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/NontonSize10"
+            android:layout_marginLeft="@dimen/TXTSize10"
             android:orientation="horizontal"
             android:weightSum="10"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +122,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/NontonSize10"
+                android:layout_marginRight="@dimen/TXTSize10"
                 android:layout_weight="10"
                 android:orientation="vertical">
 
@@ -173,7 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="@dimen/NontonSize10"
+                android:layout_marginRight="@dimen/TXTSize10"
                 android:visibility="gone">
 
                 <ImageView
@@ -181,7 +181,7 @@
                     android:layout_height="@dimen/_26sdp"
                     android:contentDescription="TODO"
                     android:gravity="center"
-                    android:padding="@dimen/NontonSize5"
+                    android:padding="@dimen/TXTSize5"
                     android:src="?attr/watchlist_delete_icon" />
             </FrameLayout>
 
@@ -191,7 +191,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:layout_marginTop="@dimen/NontonSize10"
+            android:layout_marginTop="@dimen/TXTSize10"
             android:background="@color/home_screen_seperator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchItemImage" />

@@ -22,17 +22,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/NontonSize15"
-            android:paddingTop="@dimen/NontonSize15"
-            android:paddingLeft="@dimen/NontonSize10"
-            android:paddingRight="@dimen/NontonSize10"
+            android:paddingBottom="@dimen/TXTSize15"
+            android:paddingTop="@dimen/TXTSize15"
+            android:paddingLeft="@dimen/TXTSize10"
+            android:paddingRight="@dimen/TXTSize10"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/bank"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/NontonSize30"
+                android:paddingBottom="@dimen/TXTSize30"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -49,8 +49,8 @@
                     android:text="Bank Transfer"
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:textSize="@dimen/font_medium_large"
-                    android:paddingLeft="@dimen/NontonSize10"
-                    android:paddingRight="@dimen/NontonSize10"
+                    android:paddingLeft="@dimen/TXTSize10"
+                    android:paddingRight="@dimen/TXTSize10"
                     android:textColor="?attr/more_item_text_color"
                     android:layout_gravity="center" />
 
@@ -76,8 +76,8 @@
                     android:text="Line"
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:textSize="@dimen/font_medium_large"
-                    android:paddingLeft="@dimen/NontonSize10"
-                    android:paddingRight="@dimen/NontonSize10"
+                    android:paddingLeft="@dimen/TXTSize10"
+                    android:paddingRight="@dimen/TXTSize10"
                     android:textColor="?attr/more_item_text_color"
                     android:layout_gravity="center" />
 

@@ -123,10 +123,10 @@
             android:layout_height="@dimen/continue_watching_progress_height"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/NontonSize4"
-            android:layout_marginTop="@dimen/NontonSize6"
-            android:layout_marginRight="@dimen/NontonSize4"
-            android:layout_marginBottom="@dimen/NontonSize6"
+            android:layout_marginLeft="@dimen/TXTSize4"
+            android:layout_marginTop="@dimen/TXTSize6"
+            android:layout_marginRight="@dimen/TXTSize4"
+            android:layout_marginBottom="@dimen/TXTSize6"
             android:background="@drawable/rounded_button2"
             android:visibility="gone">
 

@@ -31,7 +31,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/NontonSize20"
+                        android:layout_marginBottom="@dimen/TXTSize20"
                         app:layout_constraintDimensionRatio="H,16:9">
 
 
@@ -47,7 +47,7 @@
                                 android:id="@+id/backImage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/NontonSize8"
+                                android:layout_margin="@dimen/TXTSize8"
                                 android:contentDescription="TODO"
                                 android:src="@drawable/back_icon_player"
                                 android:tint="@color/white" />
@@ -85,51 +85,51 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:orientation="vertical"
                         android:visibility="visible">
 
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/NontonSize13"
-                            android:layout_marginRight="@dimen/NontonSize50"
+                            android:layout_height="@dimen/TXTSize13"
+                            android:layout_marginRight="@dimen/TXTSize50"
                             android:background="@color/shimmerDark" />
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/NontonSize8"
-                            android:layout_marginTop="@dimen/NontonSize10"
-                            android:layout_marginRight="@dimen/NontonSize50"
+                            android:layout_height="@dimen/TXTSize8"
+                            android:layout_marginTop="@dimen/TXTSize10"
+                            android:layout_marginRight="@dimen/TXTSize50"
                             android:background="@color/shimmerDark" />
 
                         <View
-                            android:layout_width="@dimen/NontonSize150"
-                            android:layout_height="@dimen/NontonSize10"
-                            android:layout_marginTop="@dimen/NontonSize10"
+                            android:layout_width="@dimen/TXTSize150"
+                            android:layout_height="@dimen/TXTSize10"
+                            android:layout_marginTop="@dimen/TXTSize10"
                             android:background="@color/shimmerDark" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="@dimen/NontonSize10"
+                            android:layout_marginBottom="@dimen/TXTSize10"
                             android:orientation="horizontal">
 
 
                             <View
-                                android:layout_width="@dimen/NontonSize60"
-                                android:layout_height="@dimen/NontonSize15"
+                                android:layout_width="@dimen/TXTSize60"
+                                android:layout_height="@dimen/TXTSize15"
                                 android:layout_alignParentLeft="true"
                                 android:layout_gravity="left|center_vertical"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize60"
-                                android:layout_height="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize60"
+                                android:layout_height="@dimen/TXTSize10"
                                 android:layout_alignParentRight="true"
                                 android:layout_gravity="right|center_vertical"
-                                android:layout_marginRight="@dimen/NontonSize30"
+                                android:layout_marginRight="@dimen/TXTSize30"
 
                                 android:background="@color/shimmerDark" />
 
@@ -138,27 +138,27 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/NontonSize20"
+                            android:layout_marginTop="@dimen/TXTSize20"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/NontonSize10">
+                            android:paddingBottom="@dimen/TXTSize10">
 
                             <View
-                                android:layout_width="@dimen/NontonSize40"
-                                android:layout_height="@dimen/NontonSize45"
+                                android:layout_width="@dimen/TXTSize40"
+                                android:layout_height="@dimen/TXTSize45"
                                 android:layout_marginTop="8dp"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize40"
-                                android:layout_height="@dimen/NontonSize45"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize40"
+                                android:layout_height="@dimen/TXTSize45"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:layout_marginTop="8dp"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize40"
-                                android:layout_height="@dimen/NontonSize45"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize40"
+                                android:layout_height="@dimen/TXTSize45"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:layout_marginTop="8dp"
                                 android:background="@color/shimmerDark" />
 
@@ -181,7 +181,7 @@
                 android:id="@+id/series_shimmer_scroll2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/NontonSize8">
+                android:layout_margin="@dimen/TXTSize8">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,9 +197,9 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/NontonSize15"
-                            android:layout_marginTop="@dimen/NontonSize10"
-                            android:layout_marginRight="@dimen/NontonSize30"
+                            android:layout_height="@dimen/TXTSize15"
+                            android:layout_marginTop="@dimen/TXTSize10"
+                            android:layout_marginRight="@dimen/TXTSize30"
                             android:background="@color/shimmerDark" />
 
 
@@ -207,44 +207,44 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingTop="@dimen/NontonSize10"
-                            android:paddingBottom="@dimen/NontonSize10">
+                            android:paddingTop="@dimen/TXTSize10"
+                            android:paddingBottom="@dimen/TXTSize10">
 
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
                                 android:background="@color/shimmerDark" />
 
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:background="@color/shimmerDark" />
 
                             <View
-                                android:layout_width="@dimen/NontonSize150"
-                                android:layout_height="@dimen/NontonSize84"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_width="@dimen/TXTSize150"
+                                android:layout_height="@dimen/TXTSize84"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:background="#e9e9e9" />
 
                         </LinearLayout>
@@ -265,7 +265,7 @@
                 android:id="@+id/series_shimmer_scroll3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -274,9 +274,9 @@
                     android:orientation="vertical">
 
                     <View
-                        android:layout_width="@dimen/NontonSize150"
-                        android:layout_height="@dimen/NontonSize15"
-                        android:layout_marginTop="@dimen/NontonSize10"
+                        android:layout_width="@dimen/TXTSize150"
+                        android:layout_height="@dimen/TXTSize15"
+                        android:layout_marginTop="@dimen/TXTSize10"
                         android:background="@color/shimmerDark" />
 
 
@@ -285,20 +285,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/NontonSize10"
+                    android:layout_marginTop="@dimen/TXTSize10"
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="@dimen/NontonSize60"
-                        android:layout_height="@dimen/NontonSize20"
+                        android:layout_width="@dimen/TXTSize60"
+                        android:layout_height="@dimen/TXTSize20"
                         android:background="@color/shimmerDark" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize10"
+                        android:layout_height="@dimen/TXTSize10"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/NontonSize10"
-                        android:layout_marginRight="@dimen/NontonSize40"
+                        android:layout_marginLeft="@dimen/TXTSize10"
+                        android:layout_marginRight="@dimen/TXTSize40"
                         android:background="@color/shimmerDark" />
 
                 </LinearLayout>
@@ -306,20 +306,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/NontonSize10"
+                    android:layout_marginTop="@dimen/TXTSize10"
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="@dimen/NontonSize60"
-                        android:layout_height="@dimen/NontonSize20"
+                        android:layout_width="@dimen/TXTSize60"
+                        android:layout_height="@dimen/TXTSize20"
                         android:background="@color/shimmerDark" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize10"
+                        android:layout_height="@dimen/TXTSize10"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/NontonSize10"
-                        android:layout_marginRight="@dimen/NontonSize40"
+                        android:layout_marginLeft="@dimen/TXTSize10"
+                        android:layout_marginRight="@dimen/TXTSize40"
                         android:background="@color/shimmerDark" />
 
                 </LinearLayout>
@@ -327,20 +327,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/NontonSize10"
+                    android:layout_marginTop="@dimen/TXTSize10"
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="@dimen/NontonSize60"
-                        android:layout_height="@dimen/NontonSize20"
+                        android:layout_width="@dimen/TXTSize60"
+                        android:layout_height="@dimen/TXTSize20"
                         android:background="@color/shimmerDark" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize10"
+                        android:layout_height="@dimen/TXTSize10"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/NontonSize10"
-                        android:layout_marginRight="@dimen/NontonSize40"
+                        android:layout_marginLeft="@dimen/TXTSize10"
+                        android:layout_marginRight="@dimen/TXTSize40"
                         android:background="@color/shimmerDark" />
 
                 </LinearLayout>

@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="•"
-                android:textSize="@dimen/NontonSize14"
+                android:textSize="@dimen/TXTSize14"
                 android:textColor="@color/white"
                 android:layout_height="wrap_content">
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:text="@string/live_tag"
                 android:layout_marginLeft="@dimen/_7sdp"
-                android:textSize="@dimen/NontonSize14"
+                android:textSize="@dimen/TXTSize14"
                 android:textColor="@color/white"
                 android:layout_height="wrap_content">
             </TextView>

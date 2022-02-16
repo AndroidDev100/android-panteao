@@ -193,7 +193,7 @@ public class AppCommonMethod {
     private static long mLastClickTime = 0;
     public static ArrayList<String> occuranceList;
 
-    public static long showDatePickerNonton(final TextView viewToUpdate, Context context) {
+    public static long showDatePicker(final TextView viewToUpdate, Context context) {
         DatePickerDialog datePicker;
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR); // current year

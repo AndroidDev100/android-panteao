@@ -6,7 +6,7 @@
         android:id="@+id/cv_tvod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/NontonSize8"
+        android:layout_marginBottom="@dimen/TXTSize8"
         android:background="@drawable/rounded_corner_inapp"
         android:clickable="true">
 
@@ -48,7 +48,7 @@
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize13" />
+                    android:textSize="@dimen/TXTSize13" />
 
             </LinearLayout>
 
@@ -72,7 +72,7 @@
                     android:maxLines="2"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize12" />
+                    android:textSize="@dimen/TXTSize12" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                     android:text=""
                     android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize12" />
+                    android:textSize="@dimen/TXTSize12" />
             </LinearLayout>
 
             <LinearLayout
@@ -120,7 +120,7 @@
                     android:layout_marginRight="@dimen/_2sdp"
                     android:text="@string/subscribed_to_this_plan"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize12" />
+                    android:textSize="@dimen/TXTSize12" />
 
 
             </LinearLayout>
@@ -152,7 +152,7 @@
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:text="@string/expiry_plan"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize12" />
+                    android:textSize="@dimen/TXTSize12" />
 
                 <TextView
                     android:id="@+id/planExpiryDateTxt"
@@ -165,7 +165,7 @@
                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                     android:text="hgkhgkhgkhghggggjjgk"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/NontonSize12" />
+                    android:textSize="@dimen/TXTSize12" />
 
 
             </LinearLayout>
@@ -183,7 +183,7 @@
             android:textColor="@color/black"
             android:gravity="center"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/NontonSize10"
+            android:textSize="@dimen/TXTSize10"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rounded_corner_textview_blue"/>

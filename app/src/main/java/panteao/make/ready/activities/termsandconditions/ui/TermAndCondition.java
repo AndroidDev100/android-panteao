@@ -12,8 +12,6 @@ import panteao.make.ready.baseModels.BaseBindingActivity;
 import panteao.make.ready.R;
 import panteao.make.ready.databinding.ActivityTermsConditionBinding;
 
-import static panteao.make.ready.BuildConstants.TERM_AND_CONDITION;
-
 public class TermAndCondition extends BaseBindingActivity<ActivityTermsConditionBinding> {
 
     @Override
@@ -37,7 +35,6 @@ public class TermAndCondition extends BaseBindingActivity<ActivityTermsCondition
         getBinding().webView.getSettings().setBuiltInZoomControls(true);
         getBinding().webView.getSettings().setUseWideViewPort(true);
         getBinding().webView.getSettings().setLoadWithOverviewMode(true);
-        getBinding().webView.loadUrl(TERM_AND_CONDITION);
         getBinding().webView.setWebViewClient(new InsideWebViewClient());
 
         getBinding().toolbar.backLayout.setOnClickListener(view -> onBackPressed());

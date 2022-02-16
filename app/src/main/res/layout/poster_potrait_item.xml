@@ -31,16 +31,16 @@
             card_view:cardPreventCornerOverlap="false">
 
             <RelativeLayout
-                android:layout_width="@dimen/NontonSize120"
-                android:layout_height="@dimen/NontonSize180">
+                android:layout_width="@dimen/TXTSize120"
+                android:layout_height="@dimen/TXTSize180">
 
                 <ImageView
                     android:id="@+id/itemImage"
                     errorImage="@{@drawable/placeholder_potrait}"
                     imageUrl="@{playlistItem.posterURL}"
                     placeholder="@{@drawable/placeholder_potrait}"
-                    android:layout_width="@dimen/NontonSize120"
-                    android:layout_height="@dimen/NontonSize180"
+                    android:layout_width="@dimen/TXTSize120"
+                    android:layout_height="@dimen/TXTSize180"
                     android:scaleType="fitXY"
                     android:contentDescription="TODO"
                      />
@@ -85,7 +85,7 @@
 
             <RelativeLayout
                 android:id="@+id/titleLayout"
-                android:layout_width="@dimen/NontonSize120"
+                android:layout_width="@dimen/TXTSize120"
                 android:layout_height="wrap_content"
                 android:visibility="gone">
 
@@ -98,12 +98,12 @@
                         android:id="@+id/tvTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/NontonSize180"
+                        android:layout_marginTop="@dimen/TXTSize180"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
                         android:fontFamily="@font/sarabun_v7_thai_latin_light"
-                        android:paddingTop="@dimen/NontonSize2"
+                        android:paddingTop="@dimen/TXTSize2"
                         android:paddingLeft="@dimen/_3sdp"
                         android:visibility="gone"
                         android:textColor="?attr/watchlist_item_title_color"
@@ -182,10 +182,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/continue_watching_progress_height"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/NontonSize4"
-            android:layout_marginTop="@dimen/NontonSize6"
-            android:layout_marginRight="@dimen/NontonSize4"
-            android:layout_marginBottom="@dimen/NontonSize6"
+            android:layout_marginLeft="@dimen/TXTSize4"
+            android:layout_marginTop="@dimen/TXTSize6"
+            android:layout_marginRight="@dimen/TXTSize4"
+            android:layout_marginBottom="@dimen/TXTSize6"
             android:background="@drawable/rounded_button2"
             android:visibility="gone">
 

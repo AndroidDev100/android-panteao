@@ -66,7 +66,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/NontonSize6"
+                                android:layout_marginBottom="@dimen/TXTSize6"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -80,7 +80,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/purchaseLeftMargin"
                                     android:layout_marginRight="@dimen/purchaseRigntMargin"
-                                    android:layout_marginBottom="@dimen/NontonSize4"
+                                    android:layout_marginBottom="@dimen/TXTSize4"
                                     android:ellipsize="end"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                                     android:maxLines="1"
@@ -96,7 +96,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="@dimen/purchaseLeftMargin"
                                     android:layout_marginRight="@dimen/purchaseRigntMargin"
-                                    android:layout_marginBottom="@dimen/NontonSize6"
+                                    android:layout_marginBottom="@dimen/TXTSize6"
                                     android:ellipsize="end"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                                     android:maxLines="2"
@@ -125,7 +125,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/NontonSize20"
+                                    android:layout_marginLeft="@dimen/TXTSize20"
                                     android:ellipsize="end"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                                     android:maxLines="2"
@@ -137,9 +137,9 @@
 
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/NontonSize5"
-                                    android:layout_marginTop="@dimen/NontonSize10"
-                                    android:layout_marginRight="@dimen/NontonSize5"
+                                    android:layout_marginLeft="@dimen/TXTSize5"
+                                    android:layout_marginTop="@dimen/TXTSize10"
+                                    android:layout_marginRight="@dimen/TXTSize5"
                                     android:clipToPadding="false"
                                     android:overScrollMode="never"
                                     android:paddingBottom="10dp" />
@@ -148,18 +148,18 @@
                                 <LinearLayout
 
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/NontonSize45"
+                                    android:layout_height="@dimen/TXTSize45"
                                     android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="@dimen/NontonSize25"
-                                    android:layout_marginTop="@dimen/NontonSize15"
-                                    android:layout_marginRight="@dimen/NontonSize25"
+                                    android:layout_marginLeft="@dimen/TXTSize25"
+                                    android:layout_marginTop="@dimen/TXTSize15"
+                                    android:layout_marginRight="@dimen/TXTSize25"
                                     android:background="@drawable/grey_drawable"
                                     android:gravity="center">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:drawablePadding="@dimen/NontonSize10"
+                                        android:drawablePadding="@dimen/TXTSize10"
                                         android:fontFamily="@font/roboto_regular"
                                         android:text="@string/buy_now"
                                         android:textColor="@color/white"
@@ -181,8 +181,8 @@
                                     android:layout_width="wrap_content"
                                     android:text="No offer available in your region!"
                                     android:textColor="@color/white"
-                                    android:layout_marginTop="@dimen/NontonSize35"
-                                    android:textSize="@dimen/NontonSize15"
+                                    android:layout_marginTop="@dimen/TXTSize35"
+                                    android:textSize="@dimen/TXTSize15"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                                     android:layout_height="wrap_content">
 
@@ -203,9 +203,9 @@
                             android:layout_alignParentBottom="true"
                             android:gravity="center"
                             android:visibility="invisible"
-                            android:layout_marginLeft="@dimen/NontonSize25"
-                            android:layout_marginTop="@dimen/NontonSize10"
-                            android:layout_marginRight="@dimen/NontonSize25"
+                            android:layout_marginLeft="@dimen/TXTSize25"
+                            android:layout_marginTop="@dimen/TXTSize10"
+                            android:layout_marginRight="@dimen/TXTSize25"
                             android:orientation="horizontal">
 
 
@@ -229,8 +229,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="@dimen/NontonSize5"
-                            android:layout_marginTop="@dimen/NontonSize20"
+                            android:layout_marginLeft="@dimen/TXTSize5"
+                            android:layout_marginTop="@dimen/TXTSize20"
                             android:gravity="left"
                             android:visibility="gone">
 
@@ -238,7 +238,7 @@
                                 android:id="@+id/note1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/NontonSize10"
+                                android:layout_marginLeft="@dimen/TXTSize10"
                                 android:fontFamily="@font/roboto_regular"
                                 android:textSize="@dimen/buyVideo" />
 
@@ -249,7 +249,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="@dimen/NontonSize10"
+                            android:layout_marginLeft="@dimen/TXTSize10"
                             android:orientation="horizontal"
                             android:visibility="gone">
 
@@ -257,8 +257,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:layout_marginLeft="@dimen/NontonSize3"
-                                android:layout_marginRight="@dimen/NontonSize8"
+                                android:layout_marginLeft="@dimen/TXTSize3"
+                                android:layout_marginRight="@dimen/TXTSize8"
                                 android:fontFamily="@font/roboto_regular"
                                 android:gravity="left"
                                 android:text="@string/please_unsubcribe_to_continue"
@@ -271,8 +271,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_centerInParent="true"
-                            android:layout_marginTop="@dimen/NontonSize10"
-                            android:layout_marginBottom="@dimen/NontonSize10"
+                            android:layout_marginTop="@dimen/TXTSize10"
+                            android:layout_marginBottom="@dimen/TXTSize10"
                             android:gravity="center"
                             android:visibility="invisible"
                             android:orientation="horizontal">
@@ -414,7 +414,7 @@
                         android:fontFamily="@font/sarabun_v7_thai_latin_light"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:lineSpacingExtra="@dimen/_2sdp"
-                        android:textSize="@dimen/NontonSize13"
+                        android:textSize="@dimen/TXTSize13"
                         android:layout_marginBottom="@dimen/_15sdp"
                         android:text="@string/purchase_title"
                         android:textColor="@color/white"
@@ -492,7 +492,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/NontonSize20"
+                                    android:layout_marginLeft="@dimen/TXTSize20"
                                     android:ellipsize="end"
                                     android:visibility="invisible"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
@@ -505,7 +505,7 @@
                                     android:id="@+id/rv_purchase"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/NontonSize10"
+                                    android:layout_marginTop="@dimen/TXTSize10"
                                     android:clipToPadding="false"
                                     android:overScrollMode="never"
                                     android:paddingBottom="10dp" />
@@ -521,8 +521,8 @@
                                     android:layout_width="wrap_content"
                                     android:text="No offer available in your region!"
                                     android:textColor="@color/white"
-                                    android:layout_marginTop="@dimen/NontonSize35"
-                                    android:textSize="@dimen/NontonSize15"
+                                    android:layout_marginTop="@dimen/TXTSize35"
+                                    android:textSize="@dimen/TXTSize15"
                                     android:fontFamily="@font/sarabun_v7_thai_latin_medium"
                                     android:layout_height="wrap_content">
 
@@ -547,16 +547,16 @@
                     android:id="@+id/btn_buy"
                     android:visibility="visible"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/NontonSize45"
-                    android:layout_marginLeft="@dimen/NontonSize25"
-                    android:layout_marginRight="@dimen/NontonSize25"
+                    android:layout_height="@dimen/TXTSize45"
+                    android:layout_marginLeft="@dimen/TXTSize25"
+                    android:layout_marginRight="@dimen/TXTSize25"
                     android:background="@drawable/grey_drawable"
                     android:gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/NontonSize10"
+                        android:drawablePadding="@dimen/TXTSize10"
                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                         android:text="@string/buy_now"
                         android:textColor="@color/rounded_button_text_color"
@@ -580,7 +580,7 @@
                         android:layout_width="wrap_content"
                         android:textColor="@color/white"
                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"
-                        android:textSize="@dimen/NontonSize10"
+                        android:textSize="@dimen/TXTSize10"
                         android:text="@string/term_condition"
                         android:layout_height="wrap_content">
 
@@ -593,7 +593,7 @@
                         android:layout_weight="1"
                         android:paddingTop="@dimen/_4sdp"
                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"
-                        android:textSize="@dimen/NontonSize10"
+                        android:textSize="@dimen/TXTSize10"
                         android:layout_width="wrap_content"
                         android:textColor="@color/white"
                         android:text="@string/privacy_policy"
@@ -605,7 +605,7 @@
                         android:id="@+id/contact"
                         android:paddingBottom="@dimen/_9sdp"
                         android:gravity="center_horizontal"
-                        android:textSize="@dimen/NontonSize10"
+                        android:textSize="@dimen/TXTSize10"
                         android:layout_weight="1"
                         android:paddingTop="@dimen/_4sdp"
                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"
@@ -627,7 +627,7 @@
 
                 <panteao.make.ready.utils.CustomProgressBarWhite
                     android:id="@+id/progress_bar"
-                    android:layout_marginBottom="@dimen/NontonSize60"
+                    android:layout_marginBottom="@dimen/TXTSize60"
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

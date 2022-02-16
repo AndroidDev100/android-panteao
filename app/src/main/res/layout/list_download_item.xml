@@ -19,13 +19,13 @@
         android:layout_height="wrap_content"
         android:background="?attr/download_item_background"
         android:orientation="vertical"
-        android:paddingTop="@dimen/NontonSize12">
+        android:paddingTop="@dimen/TXTSize12">
 
         <FrameLayout
             android:id="@+id/searchItemImage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/NontonSize15"
+            android:layout_marginLeft="@dimen/TXTSize15"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.cardview.widget.CardView
@@ -49,7 +49,7 @@
             android:id="@+id/list_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/NontonSize10"
+            android:layout_marginLeft="@dimen/TXTSize10"
             android:gravity="top"
             android:orientation="horizontal"
             android:weightSum="10"
@@ -125,7 +125,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
                 app:background_progressbar_color="@android:color/darker_gray"
                 app:progressbar_color="@color/moretitlecolor"
@@ -134,7 +134,7 @@
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:contentDescription="TODO"
                 android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
                 app:srcCompat="@drawable/download_icon"
@@ -145,7 +145,7 @@
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:contentDescription="TODO"
                 android:visibility='@{downloadStatus==DownloadStatus.FAILED ? View.VISIBLE : View.GONE, default="gone"}'
                 app:srcCompat="@drawable/download_error" />
@@ -155,7 +155,7 @@
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:contentDescription="TODO"
                 android:visibility="gone"
                 app:srcCompat="@drawable/more_arrow"
@@ -165,7 +165,7 @@
                 android:layout_width="@dimen/watchListWidth"
                 android:layout_height="@dimen/watchListHeight"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:contentDescription="TODO"
                 app:srcCompat="?attr/pause_download"
                 android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
@@ -175,7 +175,7 @@
                 android:id="@+id/loading_download"
                 android:layout_width="@dimen/watch_ListWidth"
                 android:layout_height="@dimen/watch_ListWidth"
-                android:layout_margin="@dimen/NontonSize8"
+                android:layout_margin="@dimen/TXTSize8"
                 android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}'
                 />
 
@@ -185,7 +185,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:layout_marginTop="@dimen/NontonSize10"
+            android:layout_marginTop="@dimen/TXTSize10"
             android:background="@color/home_screen_seperator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchItemImage" />

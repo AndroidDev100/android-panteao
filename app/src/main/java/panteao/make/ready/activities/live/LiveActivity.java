@@ -60,7 +60,6 @@ import panteao.make.ready.databinding.ActivityLiveBinding;
 import panteao.make.ready.fragments.dialog.AlertDialogFragment;
 import panteao.make.ready.fragments.dialog.AlertDialogSingleButtonFragment;
 import panteao.make.ready.fragments.player.ui.CommentsFragment;
-import panteao.make.ready.fragments.player.ui.NontonPlayerExtended;
 import panteao.make.ready.fragments.player.ui.RecommendationRailFragment;
 import panteao.make.ready.fragments.player.ui.UserInteractionFragment;
 import panteao.make.ready.liveplayer.LivePlayerFragment;
@@ -1095,7 +1094,7 @@ public class LiveActivity extends BaseBindingActivity<ActivityLiveBinding> imple
                     Logger.e(TAG, "AUDIOFOCUS_LOSS");
                     //Loss of audio focus for a long time
                     //Stop playing the sound
-                        //  fragment.pauseNontonPlayer();
+
                         break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     Logger.e(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");

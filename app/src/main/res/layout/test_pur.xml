@@ -26,7 +26,7 @@
                     android:id="@+id/player_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/NontonSize6"
+                    android:layout_marginBottom="@dimen/TXTSize6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/purchaseLeftMargin"
                         android:layout_marginRight="@dimen/purchaseRigntMargin"
-                        android:layout_marginBottom="@dimen/NontonSize4"
+                        android:layout_marginBottom="@dimen/TXTSize4"
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto_medium"
                         android:maxLines="1"
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/purchaseLeftMargin"
                         android:layout_marginRight="@dimen/purchaseRigntMargin"
-                        android:layout_marginBottom="@dimen/NontonSize6"
+                        android:layout_marginBottom="@dimen/TXTSize6"
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto_regular"
                         android:maxLines="2"
@@ -84,7 +84,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/NontonSize20"
+                        android:layout_marginLeft="@dimen/TXTSize20"
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto_regular"
                         android:maxLines="2"
@@ -96,9 +96,9 @@
                         android:id="@+id/rv_purchase"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/NontonSize5"
-                        android:layout_marginTop="@dimen/NontonSize10"
-                        android:layout_marginRight="@dimen/NontonSize5"
+                        android:layout_marginLeft="@dimen/TXTSize5"
+                        android:layout_marginTop="@dimen/TXTSize10"
+                        android:layout_marginRight="@dimen/TXTSize5"
                         android:clipToPadding="false"
                         android:overScrollMode="never"
                         android:paddingBottom="10dp" />
@@ -113,11 +113,11 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/NontonSize25"
-                            android:layout_marginTop="@dimen/NontonSize10"
-                            android:layout_marginRight="@dimen/NontonSize25"
-                            android:layout_marginBottom="@dimen/NontonSize6"
-                            app:cardCornerRadius="@dimen/NontonSize5">
+                            android:layout_marginLeft="@dimen/TXTSize25"
+                            android:layout_marginTop="@dimen/TXTSize10"
+                            android:layout_marginRight="@dimen/TXTSize25"
+                            android:layout_marginBottom="@dimen/TXTSize6"
+                            app:cardCornerRadius="@dimen/TXTSize5">
 
                             <Button
                                 android:id="@+id/btn_buy"

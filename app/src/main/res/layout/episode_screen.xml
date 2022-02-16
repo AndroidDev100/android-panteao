@@ -89,7 +89,7 @@
                 <LinearLayout
                     android:id="@+id/back_button"
                     android:visibility="gone"
-                    android:padding="@dimen/NontonSize20"
+                    android:padding="@dimen/TXTSize20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -168,8 +168,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
-                                        android:layout_marginTop="@dimen/NontonSize4"
-                                        android:layout_marginLeft="@dimen/NontonSize10">
+                                        android:layout_marginTop="@dimen/TXTSize4"
+                                        android:layout_marginLeft="@dimen/TXTSize10">
 
                                         <TextView
                                             android:id="@+id/tv_buy_now"
@@ -236,10 +236,10 @@
                                         android:layout_margin="3dp"
                                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                                         android:background="@drawable/rounded_button"
-                                        android:paddingLeft="@dimen/NontonSize8"
-                                        android:paddingTop="@dimen/NontonSize3"
-                                        android:paddingRight="@dimen/NontonSize8"
-                                        android:paddingBottom="@dimen/NontonSize3"
+                                        android:paddingLeft="@dimen/TXTSize8"
+                                        android:paddingTop="@dimen/TXTSize3"
+                                        android:paddingRight="@dimen/TXTSize8"
+                                        android:paddingBottom="@dimen/TXTSize3"
                                         android:text="@string/exclusive"
                                         android:textColor="@color/rounded_button_text_color"
                                         android:textSize="@dimen/detailPremium"

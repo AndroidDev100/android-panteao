@@ -7,7 +7,7 @@
         android:id="@+id/cv_tvod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/NontonSize8">
+        android:padding="@dimen/TXTSize8">
 
         <!-- MOCK Layout (when you are still fetching data) -->
         <com.facebook.shimmer.ShimmerFrameLayout
@@ -19,12 +19,12 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/NontonSize8">
+                android:layout_margin="@dimen/TXTSize8">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/NontonSize5"
+                    android:layout_marginTop="@dimen/TXTSize5"
                     android:orientation="vertical"
                     android:visibility="visible">
 

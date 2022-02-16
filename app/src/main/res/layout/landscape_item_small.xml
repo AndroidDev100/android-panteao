@@ -34,7 +34,7 @@
                     style="@style/Custom.Widget.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/NontonSize2">
+                    android:layout_marginRight="@dimen/TXTSize2">
 
                     <panteao.make.ready.utils.CustomProgressBar
                         android:id="@+id/progress_bar"
@@ -46,14 +46,14 @@
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/NontonSize63">
+                        android:layout_height="@dimen/TXTSize63">
 
                         <ImageView
                             android:id="@+id/itemImage"
                             errorImage="@{@drawable/placeholder_landscape}"
                             placeholder="@{@drawable/placeholder_landscape}"
-                            android:layout_width="@dimen/NontonSize112"
-                            android:layout_height="@dimen/NontonSize63"
+                            android:layout_width="@dimen/TXTSize112"
+                            android:layout_height="@dimen/TXTSize63"
                             android:background="@drawable/placeholder_landscape"
                             android:contentDescription="TODO"
                             android:scaleType="fitXY" />
@@ -70,13 +70,13 @@
 
 
                             <RelativeLayout
-                                android:layout_width="@dimen/NontonSize95"
-                                android:layout_height="@dimen/NontonSize60">
+                                android:layout_width="@dimen/TXTSize95"
+                                android:layout_height="@dimen/TXTSize60">
 
                                 <ImageView
                                     android:layout_centerInParent="true"
-                                    android:layout_width="@dimen/NontonSize25"
-                                    android:layout_height="@dimen/NontonSize25"
+                                    android:layout_width="@dimen/TXTSize25"
+                                    android:layout_height="@dimen/TXTSize25"
                                     android:background="@drawable/play_icon_ios"
                                     android:contentDescription="TODO"
                                     android:scaleType="fitXY" />
@@ -142,7 +142,7 @@
 
                     <RelativeLayout
                         android:id="@+id/titleLayout"
-                        android:layout_width="@dimen/NontonSize112"
+                        android:layout_width="@dimen/TXTSize112"
                         android:layout_height="wrap_content"
                         android:visibility="gone">
 
@@ -155,13 +155,13 @@
                                 android:id="@+id/tvTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/NontonSize63"
+                                android:layout_marginTop="@dimen/TXTSize63"
                                 android:ellipsize="end"
                                 android:gravity="left"
                                 android:maxLines="1"
                                 android:visibility="gone"
                                 android:fontFamily="@font/sarabun_v7_thai_latin_light"
-                                android:paddingTop="@dimen/NontonSize2"
+                                android:paddingTop="@dimen/TXTSize2"
                                 android:paddingLeft="@dimen/_3sdp"
                                 android:textColor="?attr/watchlist_item_title_color"
                                 android:textSize="@dimen/_8sdp" />

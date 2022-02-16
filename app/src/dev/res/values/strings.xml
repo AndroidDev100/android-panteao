@@ -11,8 +11,7 @@
 
 
     <string name="playstore_base_24">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjMj0QYR08ay2Vh6qmNjHBNgU7DzX1Wsc6dDvk0bFfG9vOkzkEQMMeyPMi/TrvG3WdqTaTK6nmY5Gyfe25ya28CWTkiD/HDflaPR82FdUk6eYXnSnv4fALdhUL3Zb9lhNocaJJCDfrm47VDRpKIJS0Mpr2nXt3o0967zdM2UkikRWybJURcgRm/qWo9PgGRexSYRfAwtUFAiA1mgAowANQrks1mbuPGt0WFz1UiCeQVHhpyPGvJFGT4GViyuMKQwPLZBGKgrXiFtdK+660axSKRdD0Q4djt9ucdTVClW8ADthVuVCqCozXFW5sEjBlv70TP5mgj7CRdEECteJnH4WFQIDAQAB</string>
-    <string name="playstore_subscription_monthly">com.nonton.testing.monthly</string>
-    <string name="playstore_subscription_weekly">com.nonton.testing.weekly</string>
+
 
     <string name="update_has_downloaded">An update has just been downloaded.</string>
     <string name="restart">RESTART APP</string>

@@ -44,7 +44,7 @@
                         android:layout_width="@dimen/watch_ListWidth"
                         android:layout_height="@dimen/watch_ListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize6"
+                        android:layout_margin="@dimen/TXTSize6"
                         android:visibility="gone" />
 
                     <ImageView
@@ -52,7 +52,7 @@
                         android:layout_width="@dimen/watch_ListWidth"
                         android:layout_height="@dimen/watch_ListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize6"
+                        android:layout_margin="@dimen/TXTSize6"
                         android:contentDescription="TODO"
                         app:srcCompat="?attr/watchlist_icon_color" />
 
@@ -90,7 +90,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:visibility="gone" />
 
                     <ImageView
@@ -98,7 +98,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center|center_horizontal"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         app:srcCompat="?attr/like_icon" />
 
@@ -129,7 +129,7 @@
                     android:layout_width="@dimen/watchListWidth"
                     android:layout_height="@dimen/watchListHeight"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
+                    android:layout_margin="@dimen/TXTSize8"
                     android:contentDescription="TODO"
                     app:srcCompat="?attr/share_icon" />
 
@@ -157,7 +157,7 @@
                     android:layout_width="@dimen/watchListWidth"
                     android:layout_height="@dimen/watchListHeight"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
+                    android:layout_margin="@dimen/TXTSize8"
                     android:contentDescription="TODO"
                     app:srcCompat="?attr/trailor_icon" />
 
@@ -195,7 +195,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:visibility='@{downloadStatus==DownloadStatus.START ? View.VISIBLE : View.GONE, default="gone"}'
                         app:srcCompat="@drawable/ic_start_download" />
@@ -205,7 +205,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
                         app:background_progressbar_color="@android:color/darker_gray"
                         app:progressbar_color="@color/moretitlecolor" />
@@ -215,7 +215,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:visibility='@{downloadStatus==DownloadStatus.DOWNLOADED ? View.VISIBLE : View.GONE, default="gone"}'
                         app:srcCompat="@drawable/download_icon" />
@@ -225,7 +225,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:visibility='@{downloadStatus==DownloadStatus.SERIES_DOWNLOADING ? View.VISIBLE : View.GONE, default="gone"}'
                         app:srcCompat="@drawable/series_downloading_icon" />
@@ -236,7 +236,7 @@
                         android:layout_width="@dimen/watchListWidth"
                         android:layout_height="@dimen/watchListHeight"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:visibility='@{downloadStatus==DownloadStatus.PAUSE ? View.VISIBLE : View.GONE, default="gone"}'
                         app:srcCompat="@drawable/pause_download" />
@@ -245,7 +245,7 @@
                         android:id="@+id/loading_download"
                         android:layout_width="@dimen/watch_ListWidth"
                         android:layout_height="@dimen/watch_ListWidth"
-                        android:layout_margin="@dimen/NontonSize5"
+                        android:layout_margin="@dimen/TXTSize5"
                         android:layout_gravity="center"
                         android:visibility='@{downloadStatus==DownloadStatus.REQUESTED ? View.VISIBLE : View.GONE, default="gone"}' />
 
@@ -269,7 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/NontonSize15"
+                android:layout_marginLeft="@dimen/TXTSize15"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -277,7 +277,7 @@
                     android:layout_width="@dimen/watchListWidth"
                     android:layout_height="@dimen/watchListHeight"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/NontonSize8"
+                    android:layout_margin="@dimen/TXTSize8"
                     android:contentDescription="TODO"
                     app:srcCompat="@drawable/chat_icon" />
 

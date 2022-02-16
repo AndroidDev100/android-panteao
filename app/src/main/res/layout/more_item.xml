@@ -12,7 +12,7 @@
             android:id="@+id/mRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/NontonSize12"
+            android:layout_margin="@dimen/TXTSize12"
             android:orientation="horizontal">
 
             <ImageView
@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center|center_vertical"
-                android:layout_marginLeft="@dimen/NontonSize4"
+                android:layout_marginLeft="@dimen/TXTSize4"
                 android:contentDescription="TODO"
                 android:scaleType="centerInside"
                 android:src="@drawable/watch_list" />
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/NontonSize18"
+                android:layout_marginLeft="@dimen/TXTSize18"
                 android:layout_toRightOf="@+id/more_list_icon"
                 android:fontFamily="@font/sarabun_v7_thai_latin_regular"
                 android:gravity="center_vertical"

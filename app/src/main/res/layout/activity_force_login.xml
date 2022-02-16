@@ -111,7 +111,7 @@
                     <TextView
                         android:id="@+id/tvSendEmail"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/NontonSize45"
+                        android:layout_height="@dimen/TXTSize45"
                         android:layout_marginTop="@dimen/_50sdp"
                         android:background="@drawable/rounded_button"
                         android:fontFamily="@font/sarabun_v7_thai_latin_regular"

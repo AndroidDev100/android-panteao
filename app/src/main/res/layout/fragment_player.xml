@@ -55,7 +55,7 @@
                         android:id="@+id/backImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:src="@drawable/back_icon_player"
                         android:tint="@color/white" />
@@ -118,7 +118,7 @@
                         android:id="@+id/ivRetryPlay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/NontonSize8"
+                        android:layout_margin="@dimen/TXTSize8"
                         android:contentDescription="TODO"
                         android:src="@drawable/player"
                         android:visibility="gone" />

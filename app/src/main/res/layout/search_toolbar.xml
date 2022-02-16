@@ -26,8 +26,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/NontonSize10"
-                    android:layout_marginRight="@dimen/NontonSize10"
+                    android:layout_marginLeft="@dimen/TXTSize10"
+                    android:layout_marginRight="@dimen/TXTSize10"
                     android:background="@drawable/ic_arrow_back_black_24dp"
                     android:contentDescription="TODO"
                     android:visibility="gone" />
@@ -40,7 +40,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/NontonSize10"
+                android:layout_marginBottom="@dimen/TXTSize10"
                 android:layout_toLeftOf="@+id/clear_text"
                 android:layout_toRightOf="@+id/back_button"
                 android:orientation="horizontal">
@@ -116,7 +116,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/cancel"
                     android:textColor="?attr/cancel_text_color"
-                    android:textSize="@dimen/NontonSize14" />
+                    android:textSize="@dimen/TXTSize14" />
             </LinearLayout>
         </RelativeLayout>
 
